@@ -1,0 +1,9 @@
+"use server"
+
+export const handleSignUp = async (formData:FormData)=>{
+    const email = formData.get("email")?.toString(); // ← CALL .toString()
+    const password = formData.get("password")?.toString();
+    const name = formData.get("name")?.toString();
+
+    
+}

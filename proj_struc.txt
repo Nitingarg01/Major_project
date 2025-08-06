@@ -1,0 +1,103 @@
+.
+├── README.md
+├── components.json
+├── next-env.d.ts
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── proj_struc.txt
+├── project_str.txt
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── src
+│   ├── app
+│   │   ├── (auth)
+│   │   │   ├── login
+│   │   │   │   ├── actions.ts
+│   │   │   │   └── page.tsx
+│   │   │   └── signup
+│   │   │       ├── actions.ts
+│   │   │       └── page.tsx
+│   │   ├── actions.ts
+│   │   ├── api
+│   │   │   ├── auth
+│   │   │   │   └── [...nextauth]
+│   │   │   │       └── route.ts
+│   │   │   ├── create-interview
+│   │   │   │   └── route.ts
+│   │   │   ├── inngest
+│   │   │   │   └── route.ts
+│   │   │   ├── parse-resume
+│   │   │   │   └── route.ts
+│   │   │   └── setanswers
+│   │   │       └── route.ts
+│   │   ├── auth.ts
+│   │   ├── create
+│   │   │   ├── actions.ts
+│   │   │   ├── form.tsx
+│   │   │   └── page.tsx
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── interview
+│   │   │   ├── [id]
+│   │   │   │   ├── feedback
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── perform
+│   │   │   │       ├── actions.ts
+│   │   │   │       └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── middleware.ts
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── CameraFeed.tsx
+│   │   ├── Chart.tsx
+│   │   ├── FeedbackAccordion.tsx
+│   │   ├── InfoDivs.tsx
+│   │   ├── InterviewCard.tsx
+│   │   ├── InterviewClientForm.tsx
+│   │   ├── InterviewWrapper.tsx
+│   │   ├── IntroModal.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── QuestionAns.tsx
+│   │   └── ui
+│   │       ├── accordion.tsx
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── dialog.tsx
+│   │       ├── form.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       ├── navigation-menu.tsx
+│   │       ├── sonner.tsx
+│   │       ├── tabs.tsx
+│   │       ├── textarea.tsx
+│   │       └── tooltip.tsx
+│   ├── constants
+│   │   └── constants.ts
+│   ├── inngest
+│   │   ├── client.ts
+│   │   └── functions.ts
+│   ├── lib
+│   │   ├── aimodel.ts
+│   │   ├── cloudinary.ts
+│   │   ├── db.ts
+│   │   ├── firebase.ts
+│   │   ├── pdfParse.ts
+│   │   └── utils.ts
+│   └── types
+│       ├── interview.ts
+│       └── user.ts
+├── test
+│   └── data
+│       └── 05-versions-space.pdf
+└── tsconfig.json
+
+27 directories, 74 files

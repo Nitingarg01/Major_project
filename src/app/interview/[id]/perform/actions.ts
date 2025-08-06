@@ -1,0 +1,51 @@
+'use server'
+import { inngest } from "@/inngest/client";
+import client from "@/lib/db";
+import axios from "axios";
+import { ObjectId } from "mongodb";
+
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+export const getInterviewDetails = async (id:string)=>{
+    if(!id){
+        return 
+    }
+     const dbClient = client;
+    const db = dbClient.db();
+
+    const interview = await db.collection("interviews").findOne({_id:new ObjectId(id)})
+    return interview
+}
+
+export const getQuestions = async (interviewId:string)=>{
+    console.log(interviewId)
+    if(!interviewId){
+        return
+    }
+    const db = client.db()
+
+    const interviewQuestions = await db.collection("questions").findOne({interviewId:interviewId})
+    // console.log(interviewQuestions)
+    return interviewQuestions
+}
+
+export const setAnswers = async (data:Record<string, string>[],id:string)=>{
+    try {
+        const response = await axios.post(`${baseURL}/api/setanswers`,{
+            data:data,
+            id:id
+        })
+        // console.log(data)
+
+        inngest.send({
+            name:'app/generateInsights',
+            data:{
+                interviewId:id
+            }
+        })
+
+        return response.data
+    } catch (error:any) {
+        console.log(error.message)
+    }
+}
