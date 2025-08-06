@@ -28,7 +28,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                     type: "password"
                 }
             },
-            authorize: async (credentials) => {
+            authorize: async (credentials,req:Request) => {
 
                 const email = credentials?.email as string | undefined;
                 const password = credentials?.password as string | undefined;
@@ -53,12 +53,12 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 console.log({
                     name: user.name,
                     email: user.email,
-                    id: user._id.toString()
+                    id: user._id.toString(),
                 })
                 return {
                     name: user.name,
                     email: user.email,
-                    id: user._id
+                    id: user._id.toString()
                 }
             }
         })
