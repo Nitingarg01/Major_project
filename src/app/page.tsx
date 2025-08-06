@@ -37,7 +37,7 @@ export default async function Home() {
           </Button>
         </div>
         <div className="flex flex-wrap">
-          {interviews.map((interview)=><InterviewCard interview={interview} key={interview._id}/>)}
+          {interviews.map((interview,index)=><InterviewCard interview={interview} key={index}/>)}
         </div>
       </div>
     </div>
