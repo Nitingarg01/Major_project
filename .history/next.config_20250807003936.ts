@@ -24,29 +24,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages:['pdf-parser'],
   output:"standalone",
-  reactStrictMode:true,
-  webpack:(config,{isServer})=>{
-    if(isServer){
-      config.externals.push('pdf-parse');
-    }
-    return config
-  },
-  async headers(){
-    return [
-      {
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
-          },
-        ],
-      },
-    ]
-  },
-  async rewrites(){
-    return[]
-  }
+  reactStrictMode:true
 };
 
 export default nextConfig;

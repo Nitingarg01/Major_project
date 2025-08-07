@@ -76,7 +76,7 @@ export const parsingResume = async (file:File)=>{
     //     'Content-Type':'multipart/form-data'
     //   }
     // })
-     const res = await axios.post(`/api/parse-resume`,formData,{
+     const res = await axios.post(`${baseURL}/api/parse-resume`,formData,{
       // headers:{
       //   'Content-Type':'multipart/form-data'
       // }

@@ -30,22 +30,6 @@ const nextConfig: NextConfig = {
       config.externals.push('pdf-parse');
     }
     return config
-  },
-  async headers(){
-    return [
-      {
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
-          },
-        ],
-      },
-    ]
-  },
-  async rewrites(){
-    return[]
   }
 };
 

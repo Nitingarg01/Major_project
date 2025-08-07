@@ -8,8 +8,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
 
 export async function POST(request: NextRequest) {
 
-    console.log("✅ Received POST request to /api/parse-resume");
-
     const contentType = request.headers.get("content-type") ?? "";
     if (!contentType.includes("multipart/form-data")) {
         console.log("Invalid Content Type:", contentType)

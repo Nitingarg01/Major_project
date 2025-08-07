@@ -60,23 +60,14 @@ export const parsingResume = async (file:File)=>{
   const formData = new FormData()
   formData.append("resume",file)
 
-  for (const [key, value] of formData.entries()) {
-  if (value instanceof File) {
-    console.log(`📁 Field: ${key}`);
-    console.log(`→ name: ${value.name}`);
-    console.log(`→ type: ${value.type}`);
-    console.log(`→ size: ${value.size}`);
-  } else {
-    console.log(`📝 Field: ${key} = ${value}`);
-  }
-}
+  console.log('parser server action')
   try {
     // const res = await axios.post(`${baseURL}/api/parse-resume`,formData,{
     //   headers:{
     //     'Content-Type':'multipart/form-data'
     //   }
     // })
-     const res = await axios.post(`/api/parse-resume`,formData,{
+     const res = await axios.post(`${baseURL}/api/parse-resume`,formData,{
       // headers:{
       //   'Content-Type':'multipart/form-data'
       // }
