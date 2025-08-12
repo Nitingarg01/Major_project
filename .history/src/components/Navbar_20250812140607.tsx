@@ -63,10 +63,10 @@ const Navbar =  () => {
             <NavigationMenuItem className='font-semibold'>
               <Tooltip>
                 <TooltipTrigger>
-                  Hi {session?.data?.user?.name}
+                  Hi {session?.user?.name}
                 </TooltipTrigger>
                 <TooltipContent>
-                  <span className='font-sm italic '> Email : {session?.data?.user.email}</span>
+                  Email : {session.user.email}
                 </TooltipContent>
               </Tooltip>
               </NavigationMenuItem>

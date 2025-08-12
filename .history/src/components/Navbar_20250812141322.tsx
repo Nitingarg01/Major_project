@@ -67,6 +67,7 @@ const Navbar =  () => {
                 </TooltipTrigger>
                 <TooltipContent>
                   <span className='font-sm italic '> Email : {session?.data?.user.email}</span>
+                 
                 </TooltipContent>
               </Tooltip>
               </NavigationMenuItem>
