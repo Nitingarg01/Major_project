@@ -38,7 +38,7 @@ const Navbar =  () => {
 
   useEffect(() => {
     // Run your refresh logic here
-    update()
+    update
     console.log("Path changed → refresh logic runs");
   }, [pathname]);
 

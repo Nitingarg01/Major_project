@@ -31,14 +31,13 @@ const navItems = [
 ]
 
 const Navbar =  () => {
-  const {data:session,update,status} = useSession();
+  const session = useSession();
   // const session = await auth()
   // console.log(session)
   const pathname = usePathname();
 
   useEffect(() => {
     // Run your refresh logic here
-    update()
     console.log("Path changed → refresh logic runs");
   }, [pathname]);
 
@@ -65,16 +64,16 @@ const Navbar =  () => {
 
         </NavigationMenu>
 
-{status!='unauthenticated' && <>
+{session.status!='unauthenticated' && <>
         <NavigationMenu>
           <NavigationMenuList className='flex flex-row space-x-6 pr-2'>
             <NavigationMenuItem className='font-semibold'>
               <Tooltip>
                 <TooltipTrigger>
-                  Hi {session?.user?.name}
+                  Hi {session?.data?.user?.name}
                 </TooltipTrigger>
                 <TooltipContent>
-                  <span className='font-sm italic '> Email : {session?.user.email}</span>
+                  <span className='font-sm italic '> Email : {session?.data?.user.email}</span>
                 </TooltipContent>
               </Tooltip>
               </NavigationMenuItem>
