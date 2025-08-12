@@ -1,0 +1,138 @@
+'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import z, { email } from 'zod'
+import { handleSignUp } from './actions'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+const schema = z.object({
+  name: z.string().min(3, "Please Enter Valid Name!"),
+  email: z.string().min(6, "Please Enter a valid email.").refine(
+    (val) => val.includes('@') && val.includes('.com'),
+    {
+      message: 'Enter valid email!'
+    }
+  ),
+  password: z.string().min(8, "Password should be minimum 8 characters!"),
+  confirmpassword: z.string().min(8, "Confirm Password should be minimum 8 characters!")
+})
+
+const form = async () => {
+
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmpassword: ''
+    }
+  })
+
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    console.log(data)
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='flex justify-center items-center w-full h-screen'>
+        <Card className='w-full max-w-sm'>
+          <CardHeader>
+            <CardTitle>Create Your Account</CardTitle>
+            <CardDescription>
+              Create a new account and login
+            </CardDescription>
+            <CardAction>
+
+              <Link href='/login'>
+                <Button variant="link">Login</Button>
+              </Link>
+
+            </CardAction>
+          </CardHeader>
+
+          <CardContent className='flex flex-col gap-6'>
+            <FormField
+            control={form.control}
+            name='name'
+            render={({field})=>{
+              return (
+                <FormItem className='grid gap-2'>
+                  <FormLabel>
+                    Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter Name'/>
+                  </FormControl>
+
+                </FormItem>
+              )
+            }}
+            />
+             <FormField
+            control={form.control}
+            name='name'
+            render={({field})=>{
+              return (
+                <FormItem className='grid gap-2'>
+                  <FormLabel>
+                    Email
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter Name'/>
+                  </FormControl>
+
+                </FormItem>
+              )
+            }}
+            />
+             <FormField
+            control={form.control}
+            name='name'
+            render={({field})=>{
+              return (
+                <FormItem className='grid gap-2'>
+                  <FormLabel>
+                    Password 
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter Name'/>
+                  </FormControl>
+
+                </FormItem>
+              )
+            }}
+            />
+             <FormField
+            control={form.control}
+            name='name'
+            render={({field})=>{
+              return (
+                <FormItem className='grid gap-2'>
+                  <FormLabel>
+                    Confirm Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter Name'/>
+                  </FormControl>
+
+                </FormItem>
+              )
+            }}
+            />
+
+          </CardContent>
+        </Card>
+
+      </form>
+
+    </Form>
+  )
+}
+
+export default form
