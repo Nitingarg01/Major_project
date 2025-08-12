@@ -74,10 +74,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
-                if("credits" in user){
-                    token.credits = user.credits
-                }
-                
+                token.credits = user.credits
             } else if (!token.id && token.email) {
 
                 const db = client.db();
@@ -102,6 +99,25 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         signIn: async ({ user, account }) => {
             const dbClient = client;
             const db = dbClient.db()
+
+            // const existingUser = await db.collection("users").findOne({ email: user.email });
+
+            // if (existingUser) {
+            //     const loginProvider = account?.provider;
+            //     if (existingUser.provider && existingUser.provider !== loginProvider) {
+            //         // Prevent login if user signed up using a different method
+            //         console.error(`User tried to sign in with ${loginProvider} but originally used ${existingUser.provider}`);
+            //         return false; // 👈 This prevents the OAuthAccountNotLinked error
+            //     }
+            // } else {
+            //     await db.collection("users").insertOne({
+            //         email: user.email,
+            //         name: user.name,
+            //         provider: account?.provider,
+            //         credits: 3,
+            //         createdAt: new Date(),
+            //     });
+            // }
 
 
             if (account?.provider === 'google') {

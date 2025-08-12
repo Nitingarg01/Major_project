@@ -74,10 +74,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
-                if("credits" in user){
-                    token.credits = user.credits
-                }
-                
+                token.credits = user.credits
             } else if (!token.id && token.email) {
 
                 const db = client.db();
