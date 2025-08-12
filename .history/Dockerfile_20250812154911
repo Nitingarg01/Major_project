@@ -31,4 +31,4 @@ RUN npm install -g concurrently
 EXPOSE 3000
 
 # Start both Next.js and Inngest server
-CMD ["sh", "-c", "concurrently \"npm run start\" \"npx inngest-cli@latest dev"]
+CMD ["sh", "-c", "concurrently \"npm run start\" \"npx inngest-cli@latest dev""]
