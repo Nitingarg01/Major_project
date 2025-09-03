@@ -89,6 +89,9 @@ const InterviewCard = async ({ interview }: InterviewCardProps) => {
           </Tooltip>
             
          </Link>
+
+         {/* Delete Interview Button */}
+         <DeleteInterviewButton interviewId={interview._id.toString()} />
         
         </div>
 
