@@ -3,15 +3,27 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import Link from "next/link"
 import { Brain, Sparkles, ArrowLeft } from "lucide-react"
-import ForgotPasswordForm from "./form"
+import ResetPasswordForm from "./form"
+import { redirect } from "next/navigation"
 
-const ForgotPasswordPage = () => {
+interface ResetPasswordPageProps {
+  searchParams: {
+    token?: string
+  }
+}
+
+const ResetPasswordPage = ({ searchParams }: ResetPasswordPageProps) => {
+  const { token } = searchParams
+
+  if (!token) {
+    redirect('/login')
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -25,31 +37,21 @@ const ForgotPasswordPage = () => {
             <Sparkles className="w-6 h-6 text-purple-600" />
           </div>
           <p className="text-gray-600 text-sm">
-            Reset your password to continue your interview practice
+            Create a new password for your account
           </p>
         </div>
 
         <Card className="shadow-xl border-0">
           <CardHeader className="text-center pb-4">
-            <CardTitle className="text-2xl font-bold text-gray-800">Reset Password</CardTitle>
+            <CardTitle className="text-2xl font-bold text-gray-800">Set New Password</CardTitle>
             <CardDescription className="text-gray-600">
-              Enter your email address and we'll send you a link to reset your password
+              Enter a strong password to secure your account
             </CardDescription>
           </CardHeader>
           
           <CardContent className="space-y-4">
-            <ForgotPasswordForm />
+            <ResetPasswordForm token={token} />
           </CardContent>
-
-          <CardFooter className="flex flex-col space-y-4 pt-6">
-            <div className="text-center text-sm text-gray-600">
-              Remember your password?{" "}
-              <Link href="/login" className="font-medium text-blue-600 hover:underline flex items-center justify-center gap-1">
-                <ArrowLeft className="w-4 h-4" />
-                Back to Sign In
-              </Link>
-            </div>
-          </CardFooter>
         </Card>
 
         {/* Footer */}
@@ -61,4 +63,4 @@ const ForgotPasswordPage = () => {
   )
 }
 
-export default ForgotPasswordPage
+export default ResetPasswordPage
