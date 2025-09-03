@@ -305,6 +305,35 @@ Return ONLY a JSON object with this exact structure:
     }
   }
 
+  private categorizeSkills(skills: string[]): { primary: string[], secondary: string[] } {
+    const frontendSkills = ['React', 'Angular', 'Vue.js', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind'];
+    const backendSkills = ['Node.js', 'Python', 'Java', 'C++', 'Go', 'Ruby', 'PHP', 'C#'];
+    const databaseSkills = ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'Elasticsearch'];
+    const cloudSkills = ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes'];
+
+    const primary = skills.filter(skill => 
+      frontendSkills.includes(skill) || backendSkills.includes(skill)
+    );
+    const secondary = skills.filter(skill => 
+      databaseSkills.includes(skill) || cloudSkills.includes(skill)
+    );
+
+    return { primary: primary.length > 0 ? primary : skills.slice(0, 3), secondary };
+  }
+
+  private getExperienceFocus(experienceLevel: string): string {
+    switch (experienceLevel) {
+      case 'entry':
+        return '- Fundamental concepts and basic implementations\n- Code readability and simple problem-solving\n- Learning ability and growth mindset';
+      case 'mid':
+        return '- Practical application of concepts\n- System design understanding\n- Code optimization and debugging skills';
+      case 'senior':
+        return '- Advanced architecture decisions\n- Leadership and mentoring scenarios\n- Complex system trade-offs and scalability';
+      default:
+        return '- Balanced mix of theory and practice\n- Problem-solving approach\n- Technical communication skills';
+    }
+  }
+
   // Method to detect unusual behavior patterns
   async detectAnomalousActivity(activityLog: any[]): Promise<{
     isAnomalous: boolean
