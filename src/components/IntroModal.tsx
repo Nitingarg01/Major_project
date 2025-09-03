@@ -61,11 +61,32 @@ const IntroModal = ({
         <Dialog open={open}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className='text-lg font-bold'>Important Instructions before Starting your Interview</DialogTitle>
+                    <DialogTitle className='text-lg font-bold'>
+                        {companyName} - {jobTitle} Interview
+                    </DialogTitle>
 
                     <div className='flex flex-col gap-5'>
+                        <div className='bg-blue-50 p-3 rounded-lg'>
+                            <h3 className='font-semibold text-blue-800 mb-2'>Interview Overview</h3>
+                            <div className='space-y-1 text-sm'>
+                                <p><span className='font-medium'>Type:</span> {interviewType.toUpperCase()}</p>
+                                <p><span className='font-medium'>Duration:</span> <span className='font-bold'>{estimatedDuration} minutes</span></p>
+                                {rounds.length > 0 && (
+                                    <div>
+                                        <span className='font-medium'>Rounds:</span>
+                                        <div className='flex flex-wrap gap-1 mt-1'>
+                                            {rounds.map((round, index) => (
+                                                <Badge key={index} variant="outline" className='text-xs'>
+                                                    {round.type} ({round.duration}min)
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        
                         <div className='flex flex-col gap-3'>
-                            <span className='text-md'> Interview duration will be: <span className='font-bold'>15 minutes</span></span>
                             <div className='flex flex-col gap-2 bg-gray-100 p-2'>
                                  <div className='flex flex-row justify-center '>
                                 <div className='flex flex-row gap-3'>
