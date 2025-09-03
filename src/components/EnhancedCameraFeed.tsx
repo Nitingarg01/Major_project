@@ -170,7 +170,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
   useEffect(() => {
     if (!isMonitoring || !isInterviewActive) return;
 
-    const interval = setInterval(performFaceDetection, 3000); // Check every 3 seconds
+    const interval = setInterval(performFaceDetection, 10000); // Check every 10 seconds instead of 3
     return () => clearInterval(interval);
   }, [isMonitoring, isInterviewActive, performFaceDetection]);
 
