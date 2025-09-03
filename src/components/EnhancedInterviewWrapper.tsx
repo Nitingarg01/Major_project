@@ -256,46 +256,68 @@ const EnhancedInterviewWrapper = ({
 // Helper function to create default rounds
 function createDefaultRounds(questions: Question[], interviewType: string): InterviewRound[] {
   if (interviewType === 'mixed') {
-    const questionsPerRound = Math.ceil(questions.length / 4)
+    // Enhanced distribution for mixed interviews (20 questions total)
+    const technicalCount = Math.ceil(questions.length * 0.4); // 8 questions
+    const behavioralCount = Math.ceil(questions.length * 0.3); // 6 questions  
+    const aptitudeCount = Math.ceil(questions.length * 0.2); // 4 questions
+    const dsaCount = questions.length - technicalCount - behavioralCount - aptitudeCount; // 2 questions
+    
+    let questionIndex = 0;
+    
     return [
       {
         id: 'technical-round',
         type: 'technical',
         status: 'in-progress',
-        questions: questions.slice(0, questionsPerRound),
+        questions: questions.slice(questionIndex, questionIndex + technicalCount),
+        duration: 30
+      },
+      {
+        id: 'behavioral-round', 
+        type: 'behavioral',
+        status: 'pending',
+        questions: questions.slice(questionIndex += technicalCount, questionIndex + behavioralCount),
         duration: 25
       },
       {
-        id: 'behavioral-round',
-        type: 'behavioral',
-        status: 'pending',
-        questions: questions.slice(questionsPerRound, questionsPerRound * 2),
-        duration: 20
-      },
-      {
         id: 'aptitude-round',
-        type: 'aptitude',
+        type: 'aptitude', 
         status: 'pending',
-        questions: questions.slice(questionsPerRound * 2, questionsPerRound * 3),
-        duration: 15
+        questions: questions.slice(questionIndex += behavioralCount, questionIndex + aptitudeCount),
+        duration: 20
       },
       {
         id: 'dsa-round',
         type: 'dsa',
-        status: 'pending',
-        questions: questions.slice(questionsPerRound * 3),
-        duration: 20
+        status: 'pending', 
+        questions: questions.slice(questionIndex += aptitudeCount),
+        duration: 25
       }
     ]
   } else {
+    // Single type interviews with appropriate durations
+    const duration = getDurationForType(interviewType, questions.length);
+    
     return [{
       id: `${interviewType}-round`,
       type: interviewType as any,
       status: 'in-progress',
       questions: questions,
-      duration: 30
+      duration: duration
     }]
   }
+}
+
+function getDurationForType(interviewType: string, questionCount: number): number {
+  const baseTimePerQuestion = {
+    'technical': 3,   // 3 minutes per technical question
+    'behavioral': 2.5, // 2.5 minutes per behavioral question
+    'aptitude': 2,    // 2 minutes per aptitude question
+    'dsa': 4         // 4 minutes per DSA question
+  };
+  
+  const timePerQuestion = baseTimePerQuestion[interviewType as keyof typeof baseTimePerQuestion] || 3;
+  return Math.ceil(questionCount * timePerQuestion);
 }
 
 export default EnhancedInterviewWrapper
