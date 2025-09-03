@@ -6,7 +6,7 @@ import { c } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { id, jobDesc, skills, companyName, projectContext, workExDetails,jobTitle } = body
+        const { id, jobDesc, skills, companyName, projectContext, workExDetails, jobTitle, experienceLevel, interviewType } = body
 
         if (!jobDesc || !companyName || !skills || skills.length === 0) {
             return NextResponse.json(
