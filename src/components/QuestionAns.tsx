@@ -26,10 +26,10 @@ const qnaschema = z.object({
 const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormReturn<any>,index:number}) => {
     const recognitionRef = useRef(null);
 
-
     const [micOn, setMicOn] = useState(false);
     const [transcript, setTranscript] = useState('');
-     const fieldName = `submitted.${index}.answer`; // Dynamic field name for form
+    const [showFeedback, setShowFeedback] = useState(false);
+    const fieldName = `submitted.${index}.answer`; // Dynamic field name for form
 
     const {control,setValue,getValues} = useFormContext()
     const value = useWatch({
