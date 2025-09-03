@@ -4,7 +4,7 @@ import { getLogo } from '@/lib/utils'
 import Image from 'next/image'
 import { Badge } from "@/components/ui/badge"
 import { Button } from './ui/button'
-import { FileText } from 'lucide-react';
+import { FileText, Trash2, AlertTriangle } from 'lucide-react';
 import { MessageCircleCode } from 'lucide-react';
 import {
   Tooltip,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tooltip"
 import Link from 'next/link'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
+import DeleteInterviewButton from './DeleteInterviewButton'
 
 function capitalizeFirstWord(str: string) {
   if (!str) return "";
