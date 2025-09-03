@@ -236,13 +236,13 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         {/* Camera Controls */}
         <div className="flex justify-center gap-3">
           <Tooltip>
-            <TooltipTrigger>
-              <button
+            <TooltipTrigger asChild>
+              <div
                 onClick={() => setCameraOn(prev => !prev)}
-                className={`p-2 rounded-full ${cameraOn ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors`}
+                className={`p-2 rounded-full cursor-pointer ${cameraOn ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors`}
               >
                 {cameraOn ? <Camera className="w-5 h-5" /> : <CameraOff className="w-5 h-5" />}
-              </button>
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               {cameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
