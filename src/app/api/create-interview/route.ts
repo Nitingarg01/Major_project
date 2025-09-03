@@ -2,6 +2,18 @@ import client from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { type NextRequest, NextResponse } from "next/server";
 
+// Helper function for question counts
+function getQuestionCountForType(interviewType: string): number {
+  switch (interviewType) {
+    case 'mixed': return 20;
+    case 'technical': return 15;
+    case 'behavioral': return 12;
+    case 'aptitude': return 18;
+    case 'dsa': return 14;
+    default: return 15;
+  }
+}
+
 // Import AI model for immediate question generation
 async function generateQuestionsImmediately(interviewData: any) {
     try {
