@@ -35,11 +35,17 @@ const page = async ({ params }: PageProps) => {
   const data = Object.values(arr) as number[]
   console.log(data,labels)
 
-  if(!det){
+  if(!det || !det.extracted){
     return (
-      <div className='flex flex-col gap-2 font-semibold text-2xl'>
-        <span>Feedback Results would be Ready soon!</span>
-        <span>Please Come back in some time</span>
+      <div className='flex flex-col gap-2 font-semibold text-2xl items-center justify-center min-h-[50vh]'>
+        <div className='bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text'>
+          <span>🔄 Generating Your Detailed Feedback...</span>
+        </div>
+        <span className='text-lg text-gray-600'>Please refresh the page in a few moments</span>
+        <div className='mt-4 text-sm text-gray-500'>
+          <p>Our AI is analyzing your interview performance</p>
+          <p>This usually takes 30-60 seconds</p>
+        </div>
       </div>
     )
   }
