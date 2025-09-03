@@ -2,7 +2,7 @@ import React from 'react'
 import { getInterviewDetails, getQuestions } from '../perform/actions'
 import FeedbackAccordion from '@/components/FeedbackAccordion'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import Chart from '@/components/Chart'
+import EnhancedFeedback from '@/components/EnhancedFeedback'
 import { auth } from '@/app/auth'
 import { redirect } from 'next/navigation'
 
