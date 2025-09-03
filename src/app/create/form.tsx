@@ -63,6 +63,27 @@ const Createform = () => {
     const [showSkillSuggestions, setShowSkillSuggestions] = useState(false)
 
     const onSubmit = async (data: z.infer<typeof schema>) => {
+        // Validate required fields before submitting
+        if (!data.jobTitle || data.jobTitle.length < 3) {
+            toast.error("Job Title is too short (minimum 3 characters)");
+            return;
+        }
+        
+        if (!data.jobDesc || data.jobDesc.length < 30) {
+            toast.error("Job Description is too short (minimum 30 characters)");
+            return;
+        }
+        
+        if (!data.skills || data.skills.length < 3) {
+            toast.error("Please add at least 3 skills");
+            return;
+        }
+        
+        if (!data.companyName || data.companyName.length < 1) {
+            toast.error("Please enter a company name");
+            return;
+        }
+
         setLoading(true)
         try {
             const response = await createInterview(data, projectContext, workExDetails)
