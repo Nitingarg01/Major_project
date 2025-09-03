@@ -52,7 +52,13 @@ export const createQuestions = inngest.createFunction(
         // `
 
         const prompt = `
-        // This will be replaced with AI model call 
+        // Use the enhanced AI model for better question generation
+        const { aiInterviewModel } = await import('@/lib/aimodel')
+        
+        let resumeContent = '';
+        if (interview?.projectContext?.length > 0 || interview?.workExDetails?.length > 0) {
+            resumeContent = `Projects: ${interview.projectContext?.join(', ') || 'None'}\nWork Experience: ${interview.workExDetails?.join(', ') || 'None'}`;
+        } 
 
         The job description for this role is: ${interview?.jobDesc}.  
         The candidate has the following skills: ${interview?.skills?.join(", ")}.  
