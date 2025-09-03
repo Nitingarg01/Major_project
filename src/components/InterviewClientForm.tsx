@@ -71,17 +71,18 @@ const InterviewClientForm = ({
             setTimeLeft((prev: number) => {
                 if (prev <= 1) {
                     clearInterval(timer)
-                    // form.handleSubmit(onSubmit)()
-                    // return 0
+                    // Auto-submit when time runs out
                     const formData = form.getValues()
                     onSubmit(formData)
+                    return 0
                 }
                 return prev - 1
             })
         }, 1000)
 
+        // Cleanup function to clear timer when component unmounts
         return () => clearInterval(timer)
-    }, [])
+    }, [form, onSubmit]) // Add dependencies
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60)
