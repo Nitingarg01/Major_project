@@ -28,11 +28,11 @@ const page = async ({ params }: PageProps) => {
 
 
 
-  const arr = det?.extracted?.parameterScores
+  const arr = det?.extracted?.parameterScores || {}
   console.log(det)
 
-  const labels = Object.keys(arr!) as string[]
-  const data = Object.values(arr!) as number[]
+  const labels = Object.keys(arr) as string[]
+  const data = Object.values(arr) as number[]
   console.log(data,labels)
 
   if(!det){
