@@ -1,124 +1,196 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader } from './ui/dialog'
+import React from 'react'
 import { Button } from './ui/button'
-import { DialogTitle } from '@radix-ui/react-dialog'
-import InfoDivs from './InfoDivs'
-import { instructions } from '@/constants/constants'
-import { Mic, MicOff } from 'lucide-react'
-import { ArrowRight } from 'lucide-react';
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft } from 'lucide-react';
+import { Badge } from './ui/badge'
+import { Clock, Camera, Mic, Brain, AlertTriangle, CheckCircle, Target } from 'lucide-react'
+import { InterviewRound } from '@/types/interview'
 
-type Props = {
-    onStart: () => void;
-    companyName?: string;
-    jobTitle?: string;
-    interviewType?: string;
-    estimatedDuration?: number;
-    rounds?: Array<{
-        type: string;
-        duration: number;
-    }>;
+interface IntroModalProps {
+  onStart: () => void
+  companyName?: string
+  jobTitle?: string
+  interviewType?: string
+  estimatedDuration?: number
+  rounds?: InterviewRound[]
 }
 
 const IntroModal = ({ 
-    onStart, 
-    companyName = "Company", 
-    jobTitle = "Position", 
-    interviewType = "mixed",
-    estimatedDuration = 15,
-    rounds = []
-}: Props) => {
+  onStart, 
+  companyName, 
+  jobTitle, 
+  interviewType,
+  estimatedDuration,
+  rounds 
+}: IntroModalProps) => {
+  return (
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <Brain className="w-10 h-10 text-blue-600" />
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+            AI Mock Interview
+          </h1>
+          <Target className="w-10 h-10 text-purple-600" />
+        </div>
+        
+        {companyName && jobTitle && (
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">
+              {jobTitle} at {companyName}
+            </h2>
+            <Badge variant="outline" className="mt-2">
+              {interviewType?.toUpperCase()} Interview
+            </Badge>
+          </div>
+        )}
+      </div>
 
-    const [open, setOpen] = useState<boolean>(true)
+      {/* Interview Rounds */}
+      {rounds && rounds.length > 0 && (
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <Target className="w-5 h-5 text-green-600" />
+            Interview Structure
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {rounds.map((round, index) => (
+              <div key={round.id} className="border rounded-lg p-4 bg-gray-50">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-medium capitalize">{round.type} Round</h4>
+                  <Badge variant="secondary">{round.duration} min</Badge>
+                </div>
+                <p className="text-sm text-gray-600">
+                  {round.questions.length} questions • {round.type} focus
+                </p>
+              </div>
+            ))}
+          </div>
+          {estimatedDuration && (
+            <div className="mt-4 text-center">
+              <div className="flex items-center justify-center gap-2 text-blue-600">
+                <Clock className="w-4 h-4" />
+                <span className="font-medium">Total Duration: ~{estimatedDuration} minutes</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
-    const handleStart = () => {
-        setOpen(false)
-        onStart();
-    }
+      {/* Instructions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        {/* Requirements */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-green-600">
+            <CheckCircle className="w-5 h-5" />
+            Requirements
+          </h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-center gap-3">
+              <Camera className="w-4 h-4 text-blue-500" />
+              <span>Camera access for monitoring</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Mic className="w-4 h-4 text-blue-500" />
+              <span>Microphone for voice responses</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Brain className="w-4 h-4 text-blue-500" />
+              <span>Quiet environment</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Clock className="w-4 h-4 text-blue-500" />
+              <span>Stable internet connection</span>
+            </li>
+          </ul>
+        </div>
 
-    const [startBut,setStartBut] = useState<boolean>(false)
-    const [timeValue,setTimeValue] = useState<number>(0)
+        {/* Guidelines */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-orange-600">
+            <AlertTriangle className="w-5 h-5" />
+            Guidelines
+          </h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex gap-3">
+              <span className="text-orange-500">•</span>
+              <span>Look directly at the camera</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-orange-500">•</span>
+              <span>Avoid switching tabs or windows</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-orange-500">•</span>
+              <span>Answer clearly and concisely</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-orange-500">•</span>
+              <span>Take your time to think</span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-    useEffect(()=>{
-        const timer = setInterval(()=>{
-            setTimeValue((prev:any)=>{
-                if(prev>=100){
-                    clearInterval(timer)
-                    setStartBut(true)
-                    return 100
-                }
-                return prev+10
-            })
-        },600)
-
-        return ()=>clearInterval(timer)
-    },[])
-
-    return (
-        <Dialog open={open}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle className='text-lg font-bold'>
-                        {companyName} - {jobTitle} Interview
-                    </DialogTitle>
-
-                    <div className='flex flex-col gap-5'>
-                        <div className='bg-blue-50 p-3 rounded-lg'>
-                            <h3 className='font-semibold text-blue-800 mb-2'>Interview Overview</h3>
-                            <div className='space-y-1 text-sm'>
-                                <p><span className='font-medium'>Type:</span> {interviewType.toUpperCase()}</p>
-                                <p><span className='font-medium'>Duration:</span> <span className='font-bold'>{estimatedDuration} minutes</span></p>
-                                {rounds.length > 0 && (
-                                    <div>
-                                        <span className='font-medium'>Rounds:</span>
-                                        <div className='flex flex-wrap gap-1 mt-1'>
-                                            {rounds.map((round, index) => (
-                                                <Badge key={index} variant="outline" className='text-xs'>
-                                                    {round.type} ({round.duration}min)
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                        
-                        <div className='flex flex-col gap-3'>
-                            <div className='flex flex-col gap-2 bg-gray-100 p-2'>
-                                 <div className='flex flex-row justify-center '>
-                                <div className='flex flex-row gap-3'>
-                                     <MicOff/>
-                                <ArrowRight/>
-                                <Mic/>
-                                <ArrowRight/>
-                                <MicOff/>
-                                </div>
-                            </div>
-                            <span className='text-xs'><span className='text-xs font-bold'>IMPORTANT : </span>Click On Mic Button to Record and then after completing your answer click again to save.</span>
-                            </div>
-                           
-                            <div className='flex flex-col text-sm gap-2 bg-gray-100 '>
-                                
-                                <span className='flex flex-row gap-1'><span className='flex flex-row gap-2'><Badge variant='default'>Submit</Badge><ArrowLeft size={20}/></span><span className=''>Press Submit only after you have attempted all questions.</span></span>
-                                <span className='p-1'>Your answers will be saved automatically as you move to another question</span>
-                                
-                            </div>
-
-                        </div>
-                        <div className='flex flex-col gap-2'>
-                            {instructions.map((inst, index) => <InfoDivs message={inst.message} type={inst.type} key={index} />)}
-                        </div>
-                    </div>
-
-                </DialogHeader>
-{startBut ? <Button variant='default' className='' onClick={handleStart}>Start Interview</Button> : <Progress value={timeValue}/>}                
-            </DialogContent>
+      {/* Features */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-8">
+        <h3 className="text-lg font-semibold mb-4 text-center">What You'll Experience</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div className="space-y-2">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+              <Brain className="w-6 h-6 text-blue-600" />
+            </div>
+            <h4 className="font-medium">AI-Powered Questions</h4>
+            <p className="text-xs text-gray-600">Tailored to your experience and role</p>
+          </div>
           
-        </Dialog>
-    )
+          <div className="space-y-2">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+              <Camera className="w-6 h-6 text-green-600" />
+            </div>
+            <h4 className="font-medium">Real-time Monitoring</h4>
+            <p className="text-xs text-gray-600">Professional interview simulation</p>
+          </div>
+          
+          <div className="space-y-2">
+            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+              <Target className="w-6 h-6 text-purple-600" />
+            </div>
+            <h4 className="font-medium">Instant Feedback</h4>
+            <p className="text-xs text-gray-600">Detailed analysis and improvement tips</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Privacy Note */}
+      <div className="bg-gray-50 rounded-lg p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-blue-500 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-medium text-gray-800 mb-1">Privacy & Security</p>
+            <p className="text-gray-600">
+              Your camera feed is processed locally for monitoring. No video is recorded or stored. 
+              All data is encrypted and used only for interview analysis.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Start Button */}
+      <div className="text-center">
+        <Button 
+          onClick={onStart}
+          size="lg"
+          className="px-12 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+        >
+          Start Interview
+        </Button>
+        <p className="text-xs text-gray-500 mt-3">
+          By starting, you agree to our monitoring and feedback policies
+        </p>
+      </div>
+    </div>
+  )
 }
 
 export default IntroModal

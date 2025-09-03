@@ -1,7 +1,6 @@
 import client from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { type NextRequest, NextResponse } from "next/server";
-import { c } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
 
 export async function POST(request: NextRequest) {
     try {
@@ -18,6 +17,7 @@ export async function POST(request: NextRequest) {
         const dbClient = client;
         const db = dbClient.db();
 
+        // Create interview without deducting credits (free service)
         const result = await db.collection("interviews").insertOne({
             userId: id,
             jobDesc,
@@ -28,39 +28,26 @@ export async function POST(request: NextRequest) {
             workExDetails: workExDetails ?? [],
             experienceLevel: experienceLevel ?? 'mid',
             interviewType: interviewType ?? 'mixed',
-            createdAt: Date.now(),
+            createdAt: new Date(),
             status: 'ready'
         })
 
-        //ye user ke credits update krne ka logic
-        const user = await db.collection('users').findOne({_id:new ObjectId(id)})
-        console.log('user finding',id)
-        console.log('user found',user)
+        console.log('✅ Interview created successfully for user:', id)
 
-        if(user?.credits){
-            const updatedUser =  await db.collection('users').findOneAndUpdate(
-            {_id:new ObjectId(id)},
-            {
-                $set:{
-                    credits:user.credits-1
-                }
+        return NextResponse.json(
+            { 
+                message: "Interview created successfully!", 
+                id: result.insertedId,
+                status: 'ready'
             },
-            {returnDocument:"after"}
-        )
-
-         return NextResponse.json(
-            { message: "Form saved successfully", id: result.insertedId,newCredits:updatedUser?.credits, },
             { status: 201 }
         );
-        }else{
-            return NextResponse.json({message:'Already Minimum',newCredits:user?.credits,id:result.insertedId})
-        }
-      
+
     } catch (error) {
-        console.error("Error saving form:", error);
+        console.error("❌ Error creating interview:", error);
         return NextResponse.json(
             {
-                error: "Something went wrong."
+                error: "Failed to create interview"
             },
             { status: 500 }
         )
