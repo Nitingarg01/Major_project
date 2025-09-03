@@ -43,10 +43,16 @@ const CreateLoginForm = () => {
       formData.append("password", data.password)
       
       const response = await handleLogin(formData)
-      toast.success("Logged In Successfully!")
-      router.push('/')
+      
+      // Only execute success logic if we get a successful response
+      if (response?.success) {
+        toast.success("Logged In Successfully!")
+        router.push('/')
+      }
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.")
+      // Display the actual error message from the server
+      const errorMessage = error instanceof Error ? error.message : "Login failed. Please check your credentials."
+      toast.error(errorMessage)
     } finally {
       setIsLoading(false)
     }
