@@ -26,8 +26,10 @@ export async function POST(request: NextRequest) {
             companyName,
             projectContext: projectContext ?? [],
             workExDetails: workExDetails ?? [],
-            createdAt:Date.now(),
-            status:'ready'
+            experienceLevel: experienceLevel ?? 'mid',
+            interviewType: interviewType ?? 'mixed',
+            createdAt: Date.now(),
+            status: 'ready'
         })
 
         //ye user ke credits update krne ka logic
