@@ -54,21 +54,17 @@ const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+    <Tooltip>
+      <TooltipTrigger asChild>
         <div>
-          <Tooltip>
-            <TooltipTrigger>
-              <Trash2 className='cursor-pointer w-5 h-5 text-red-500 hover:text-red-700 transition-colors' />
-            </TooltipTrigger>
-            <TooltipContent>
-              <span className="text-red-600">Delete Interview</span>
-            </TooltipContent>
-          </Tooltip>
-        </div>
-      </DialogTrigger>
-      
-      <DialogContent className="sm:max-w-md">
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <div>
+                <Trash2 className='cursor-pointer w-5 h-5 text-red-500 hover:text-red-700 transition-colors' />
+              </div>
+            </DialogTrigger>
+            
+            <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-red-600">
             <AlertTriangle className="w-5 h-5" />
