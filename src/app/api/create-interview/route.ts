@@ -22,7 +22,7 @@ async function generateQuestionsImmediately(interviewData: any) {
             experienceLevel: interviewData.experienceLevel || 'mid',
             interviewType: interviewData.interviewType || 'mixed',
             resumeContent: resumeContent || undefined,
-            numberOfQuestions: 12
+            numberOfQuestions: this.getQuestionCountForType(interviewData.interviewType || 'mixed')
         });
 
         // Convert to the format expected by the database
