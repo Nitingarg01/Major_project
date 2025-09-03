@@ -104,6 +104,8 @@ const EnhancedInterviewWrapper = ({
     if (!interviewSession) return
 
     try {
+      console.log('Completing round:', { answers, timeSpent })
+      
       const { session: updatedSession, roundResult } = await roundManager.completeRound(
         interviewSession,
         answers,
@@ -117,14 +119,35 @@ const EnhancedInterviewWrapper = ({
       if (updatedSession.currentRound < updatedSession.rounds.length) {
         setCurrentRound(updatedSession.currentRound)
         setActivityAlerts([]) // Clear alerts for new round
+        
+        // Show transition message
+        toast.success(`Round ${currentRound + 1} completed! Moving to next round...`)
       } else {
         // Interview completed - generate final report
-        const finalReport = await roundManager.generateFinalReport(updatedSession)
-        console.log('Final Interview Report:', finalReport)
-        // Here you would redirect to enhanced feedback page
+        try {
+          const finalReport = await roundManager.generateFinalReport(updatedSession)
+          console.log('Final Interview Report:', finalReport)
+          
+          // Save the final report and redirect to feedback
+          toast.success("Interview completed! Generating your feedback...")
+          
+          // Wait a moment then redirect to feedback page
+          setTimeout(() => {
+            window.location.href = `/interview/${id}/feedback`
+          }, 2000)
+        } catch (error) {
+          console.error('Error generating final report:', error)
+          toast.error("Error generating feedback. Please check your results later.")
+          
+          // Fallback: redirect to home
+          setTimeout(() => {
+            window.location.href = '/'
+          }, 1500)
+        }
       }
     } catch (error) {
       console.error('Error completing round:', error)
+      toast.error("Error completing round. Please try again.")
     }
   }
 
