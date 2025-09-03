@@ -1,34 +1,36 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import z, { email } from 'zod'
-import { handleGoogleSingup, handleSignUp } from './actions'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import Link from 'next/link'
+import z from 'zod'
+import { handleSignUp } from './actions'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { signIn } from '@/app/auth'
-import Image from "next/image"
-import logo from 'public/image.png'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { Eye, EyeOff } from 'lucide-react'
 
 const schema = z.object({
   name: z.string().min(3, "Please Enter Valid Name!"),
   email: z.string().min(6, "Please Enter a valid email.").refine(
-    (val) => val.includes('@') && val.includes('.com'),
+    (val) => val.includes('@') && val.includes('.'),
     {
       message: 'Enter valid email!'
     }
   ),
   password: z.string().min(8, "Password should be minimum 8 characters!"),
   confirmpassword: z.string().min(8, "Confirm Password should be minimum 8 characters!")
+}).refine((data) => data.password === data.confirmpassword, {
+  path: ["confirmpassword"],
+  message: "Passwords do not match",
 })
 
 const CreateSignUp = () => {
-
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  
   const router = useRouter()
   const form = useForm({
     resolver: zodResolver(schema),
@@ -41,133 +43,155 @@ const CreateSignUp = () => {
   })
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const formData = new FormData()
-    formData.append("name",data.name)
-    formData.append("email",data.email)
-    formData.append("password",data.password)
-    const response = await handleSignUp(formData)
-    if(response.status==='success'){
-      toast.success("User Created! Now you can login")
-      router.push('/login')
-    }else if(response.status==='failed'){
-      toast.error("User could not be created, Try Again!")
+    setIsLoading(true)
+    try {
+      const formData = new FormData()
+      formData.append("name", data.name)
+      formData.append("email", data.email)
+      formData.append("password", data.password)
+      
+      const response = await handleSignUp(formData)
+      if (response.status === 'success') {
+        toast.success("Account created successfully! You can now sign in.")
+        router.push('/login')
+      } else if (response.status === 'failed') {
+        toast.error("Could not create account. Please try again!")
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again!")
+    } finally {
+      setIsLoading(false)
     }
   }
 
-
-const passwordsMatch = form.watch("password") === form.watch("confirmpassword");
-
-  
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex justify-center items-center w-full h-screen'>
-        <Card className='w-full max-w-sm'>
-          <CardHeader>
-            <CardTitle>Create Your Account</CardTitle>
-            <CardDescription>
-              Create a new account and login
-            </CardDescription>
-            <CardAction>
+      <form className='flex flex-col gap-6' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => {
+            return (
+              <FormItem className='grid gap-2'>
+                <FormLabel>
+                  Full Name<span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder='Enter your full name' 
+                    {...field} 
+                    disabled={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+        
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => {
+            return (
+              <FormItem className='grid gap-2'>
+                <FormLabel>
+                  Email<span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder='Enter your email' 
+                    {...field}
+                    type="email"
+                    disabled={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+        
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => {
+            return (
+              <FormItem className='grid gap-2'>
+                <FormLabel>
+                  Password<span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input 
+                      placeholder='Create a password (min 8 characters)' 
+                      {...field} 
+                      type={showPassword ? "text" : "password"}
+                      disabled={isLoading}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+        
+        <FormField
+          control={form.control}
+          name='confirmpassword'
+          render={({ field }) => {
+            return (
+              <FormItem className='grid gap-2'>
+                <FormLabel>
+                  Confirm Password<span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input 
+                      placeholder='Confirm your password' 
+                      {...field} 
+                      type={showConfirmPassword ? "text" : "password"}
+                      disabled={isLoading}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
 
-              <Link href='/login'>
-                <Button variant="link">Login</Button>
-              </Link>
-
-            </CardAction>
-          </CardHeader>
-
-          <CardContent className='flex flex-col gap-6'>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => {
-                return (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel>
-                      Name<span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter Name' {...field} />
-                    </FormControl>
-
-                  </FormItem>
-                )
-              }}
-            />
-            <FormField
-              control={form.control}
-              name='email'
-              render={({ field }) => {
-                return (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel>
-                      Email<span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter Email' {...field} />
-                    </FormControl>
-
-                  </FormItem>
-                )
-              }}
-            />
-            <FormField
-              control={form.control}
-              name='password'
-              render={({ field }) => {
-                return (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel>
-                      Password<span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter Password' {...field} type='password'/>
-                    </FormControl>
-
-                  </FormItem>
-                )
-              }}
-            />
-            <FormField
-              control={form.control}
-              name='confirmpassword'
-              render={({ field }) => {
-                return (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel>
-                      Confirm Password<span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Confirm Password' {...field} type='password'/>
-                    </FormControl>
-
-                  </FormItem>
-                )
-              }}
-            />
-            <span>
-              {!passwordsMatch &&
-                form.getValues("confirmpassword").length > 0 && (<span className="text-red-500 text-sm">Passwords do not match.</span>)}
-            </span>
-            <Button type="submit" className="w-full mt-2">
-              Sign Up
-            </Button>
-          </CardContent>
-          <CardFooter className='flex-col gap-2'>
-<Button variant="outline" className="w-full" onClick={handleGoogleSingup} disabled={passwordsMatch}>
-            <div className="flex flex-row gap-1"><Image src={logo} width={20} height={20} alt="logo" /><span> Sign Up With Google</span></div>
-          </Button>
-          </CardFooter>
-        </Card>
-
+        <Button 
+          type="submit" 
+          className="w-full mt-2" 
+          disabled={isLoading || !form.formState.isValid}
+        >
+          {isLoading ? 'Creating Account...' : 'Create Account'}
+        </Button>
       </form>
-
-        {/* <form action={handleGoogleSingup}> */}
-          
-        {/* </form> */}
-
-  
-
     </Form>
   )
 }
