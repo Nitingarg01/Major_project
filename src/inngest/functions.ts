@@ -52,8 +52,7 @@ export const createQuestions = inngest.createFunction(
         // `
 
         const prompt = `
-        You are an interviewer from the company: ${interview?.jobTitle}. 
-        Your task is to create an interview for the role: ${interview?.jobDesc}. 
+        // This will be replaced with AI model call 
 
         The job description for this role is: ${interview?.jobDesc}.  
         The candidate has the following skills: ${interview?.skills?.join(", ")}.  
