@@ -19,15 +19,26 @@ const Sidebar = ({credits, id}: {credits: number, id: string}) => {
     // Fetch user interview statistics
     const fetchStats = async () => {
       try {
-        // This would be an API call to get user statistics
-        // For now, showing mock data
-        setUserStats({
-          totalInterviews: 12,
-          completedInterviews: 8,
-          averageScore: 85
-        });
+        const response = await fetch('/api/user/stats');
+        if (response.ok) {
+          const stats = await response.json();
+          setUserStats(stats);
+        } else {
+          // Fallback to default values if API fails
+          setUserStats({
+            totalInterviews: 0,
+            completedInterviews: 0,
+            averageScore: 0
+          });
+        }
       } catch (error) {
         console.error('Error fetching stats:', error);
+        // Fallback to default values
+        setUserStats({
+          totalInterviews: 0,
+          completedInterviews: 0,
+          averageScore: 0
+        });
       }
     };
     
