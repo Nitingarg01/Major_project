@@ -199,19 +199,32 @@ class AIInterviewAPITester:
 
 def main():
     print("🚀 Starting AI Interview Platform API Testing")
-    print("=" * 50)
+    print("=" * 60)
+    print("Testing Features: Forgot Password, Delete Interview, One-Click Creation, Streaming AI")
+    print("=" * 60)
     
     # Setup
     tester = AIInterviewAPITester("http://localhost:3000")
     
-    # Test page accessibility first
+    # Test page accessibility first (including forgot password pages)
     tester.test_page_accessibility()
     
-    # Test API endpoints
-    tester.test_api_endpoints()
+    # Test authentication endpoints
+    tester.test_auth_endpoints()
+    
+    # Test specific features mentioned in review request
+    tester.test_one_click_interview_creation()
+    tester.test_delete_interview()
+    tester.test_streaming_ai_feedback()
+    
+    # Test other API endpoints
+    tester.test_generate_questions_api()
+    tester.test_resume_parsing()
+    tester.test_performance_analysis()
     
     # Print results
-    print(f"\n📊 Test Results:")
+    print(f"\n📊 Test Results Summary:")
+    print("=" * 40)
     print(f"Tests passed: {tester.tests_passed}/{tester.tests_run}")
     print(f"Success rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
     
@@ -220,6 +233,7 @@ def main():
         return 0
     else:
         print("⚠️  Some tests failed. Check the details above.")
+        print("\nNote: Some failures are expected due to authentication requirements.")
         return 1
 
 if __name__ == "__main__":
