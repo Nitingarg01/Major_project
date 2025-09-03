@@ -12,7 +12,15 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft } from 'lucide-react';
 
 type Props = {
-    onStart: () => void
+    onStart: () => void;
+    companyName?: string;
+    jobTitle?: string;
+    interviewType?: string;
+    estimatedDuration?: number;
+    rounds?: Array<{
+        type: string;
+        duration: number;
+    }>;
 }
 
 const IntroModal = ({ onStart }: Props) => {
