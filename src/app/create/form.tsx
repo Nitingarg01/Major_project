@@ -406,7 +406,7 @@ const Createform = () => {
                             variant="default" 
                             type="submit" 
                             className="w-full md:w-auto px-12 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
-                            disabled={!form.formState.isValid || loading || uploading}
+                            disabled={loading || uploading}
                         >
                             {loading ? (
                                 <span className="flex items-center gap-2">
