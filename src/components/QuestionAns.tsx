@@ -80,7 +80,7 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
 
     return (
         <>
-            <div className='flex flex-row justify-center'>
+            <div className='flex flex-row justify-between items-center mb-4'>
                 <div onClick={() => setMicOn(prev => !prev)} className="cursor-pointer">
                     {micOn ? (
                         <Tooltip>
@@ -94,23 +94,50 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
                         </Tooltip>
                     )}
                 </div>
+                
+                {/* Toggle Feedback Button */}
+                {value && value.length > 20 && (
+                    <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setShowFeedback(!showFeedback)}
+                    >
+                        {showFeedback ? 'Hide Feedback' : 'Get AI Feedback'}
+                    </Button>
+                )}
             </div>
-            <div className='flex flex-col gap-2 w-full'>
-                <div className='h-[12vh]'>
-                    {question.question}
+            
+            <div className='flex flex-col gap-4 w-full'>
+                <div className='bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500'>
+                    <h3 className="font-semibold text-blue-800 mb-2">Question {index + 1}:</h3>
+                    <p className="text-gray-700">{question.question}</p>
                 </div>
-                <div className=' w-full'>
-                    <Textarea placeholder='You Answer here' value={value || ''} onChange={(e) => {
-                        // setTranscript(e.target.value)
-                        console.log(e.target.value)
-                        setValue(fieldName,e.target.value)
-                        }} className='h-[13vh] overflow-scroll' />      
-                        {errorMessage && <span className='text-sm text-red-500'>{errorMessage}</span>}
-                                   
+                
+                <div className='w-full'>
+                    <Textarea 
+                        placeholder='Type your answer here or use the microphone...' 
+                        value={value || ''} 
+                        onChange={(e) => {
+                            setValue(fieldName, e.target.value)
+                        }} 
+                        className='min-h-[120px] text-base' 
+                    />      
+                    {errorMessage && <span className='text-sm text-red-500 mt-1 block'>{errorMessage}</span>}                   
                 </div>
+
+                {/* Streaming Feedback Section */}
+                {showFeedback && value && value.length > 20 && (
+                    <div className="mt-6 border-t pt-6">
+                        <StreamingFeedback
+                            question={question.question}
+                            userAnswer={value}
+                            expectedAnswer={question.expectedAnswer}
+                            difficulty="medium"
+                        />
+                    </div>
+                )}
             </div>
         </>
-
     )
 }
 
