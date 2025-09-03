@@ -28,6 +28,41 @@ interface CompanyIntelligence {
   };
 }
 
+// Company search suggestions for autofill
+export const COMPANY_SUGGESTIONS = [
+  'Google Software Engineer',
+  'Google Frontend Engineer', 
+  'Google Backend Engineer',
+  'Google Full Stack Engineer',
+  'Google Data Scientist',
+  'Google Product Manager',
+  'Microsoft Software Engineer',
+  'Microsoft Azure Engineer',
+  'Microsoft Full Stack Developer',
+  'Microsoft Data Engineer',
+  'Amazon Software Engineer',
+  'Amazon AWS Engineer',
+  'Amazon Full Stack Developer',
+  'Amazon DevOps Engineer',
+  'Meta Software Engineer',
+  'Meta Frontend Engineer',
+  'Meta React Developer',
+  'Meta Full Stack Engineer',
+  'Apple iOS Developer',
+  'Apple Software Engineer',
+  'Apple Full Stack Developer',
+  'Netflix Software Engineer',
+  'Tesla Software Engineer',
+  'Uber Software Engineer',
+  'Airbnb Software Engineer',
+  'LinkedIn Software Engineer',
+  'Spotify Software Engineer',
+  'Twitter Software Engineer',
+  'Salesforce Software Engineer',
+  'Oracle Software Engineer',
+  'IBM Software Engineer'
+];
+
 // Enhanced company database with real insights
 const companyDatabase: { [key: string]: CompanyData } = {
   'Google': {
