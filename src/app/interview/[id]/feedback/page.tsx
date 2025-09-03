@@ -3,22 +3,37 @@ import { getInterviewDetails, getQuestions } from '../perform/actions'
 import FeedbackAccordion from '@/components/FeedbackAccordion'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import EnhancedFeedback from '@/components/EnhancedFeedback'
+import CompanyPreparationDashboard from '@/components/CompanyPreparationDashboard'
 import { auth } from '@/app/auth'
 import { redirect } from 'next/navigation'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { 
+  Building2, 
+  TrendingUp, 
+  Target, 
+  Award, 
+  FileText, 
+  Home, 
+  RotateCcw,
+  Lightbulb,
+  CheckCircle,
+  AlertTriangle,
+  Star
+} from 'lucide-react'
+import Link from 'next/link'
+import CompanyIntelligenceService from '@/lib/companyIntelligence'
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
 
-
 const page = async ({ params }: PageProps) => {
-
-  
-    const session = await auth()
-    if(!session?.user){
-      redirect('/login')
-    }
-  
+  const session = await auth()
+  if(!session?.user){
+    redirect('/login')
+  }
 
   const id = (await params).id as string
   console.log("feedback", id)
@@ -26,7 +41,19 @@ const page = async ({ params }: PageProps) => {
   const interview = await getInterviewDetails(id)
   const det = await getQuestions(id)
 
+  if (!interview) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+        <div className="text-2xl font-bold text-red-600">Interview Not Found</div>
+        <Link href="/">
+          <Button>Go Home</Button>
+        </Link>
+      </div>
+    )
+  }
 
+  // Get company intelligence for enhanced feedback
+  const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName)
 
   const arr = det?.extracted?.parameterScores || {}
   console.log(det)
@@ -37,59 +64,250 @@ const page = async ({ params }: PageProps) => {
 
   if(!det || !det.extracted){
     return (
-      <div className='flex flex-col gap-2 font-semibold text-2xl items-center justify-center min-h-[50vh]'>
-        <div className='bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text'>
+      <div className='flex flex-col gap-4 font-semibold text-2xl items-center justify-center min-h-[50vh] p-8'>
+        <div className='bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text text-center'>
           <span>🔄 Generating Your Detailed Feedback...</span>
         </div>
-        <span className='text-lg text-gray-600'>Please refresh the page in a few moments</span>
-        <div className='mt-4 text-sm text-gray-500'>
-          <p>Our AI is analyzing your interview performance</p>
-          <p>This usually takes 30-60 seconds</p>
+        <div className="bg-white rounded-lg p-6 border border-gray-200 text-center max-w-md">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <span className='text-lg text-gray-600'>Please refresh the page in a few moments</span>
+          <div className='mt-4 text-sm text-gray-500'>
+            <p>Our AI is analyzing your interview performance</p>
+            <p>This usually takes 30-60 seconds</p>
+          </div>
+          <Button onClick={() => window.location.reload()} className="mt-4">
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Refresh Page
+          </Button>
         </div>
       </div>
     )
   }
 
+  // Calculate company-specific insights
+  const overallScore = det?.extracted?.overallScore || 0
+  const readinessScore = Math.min(100, Math.max(0, overallScore * 10))
+  
+  // Generate company-specific recommendations
+  const companySpecificTips = companyIntelligence?.companyData?.preparationTips || [
+    'Study the company culture and values thoroughly',
+    'Practice common interview questions for this role',
+    'Research recent company developments and news',
+    'Prepare specific examples that demonstrate relevant skills'
+  ]
+
+  // Create preparation metrics based on performance
+  const preparationMetrics = {
+    technicalReadiness: Math.max(0, Math.min(100, (data.find((_, i) => labels[i].toLowerCase().includes('technical') || labels[i].toLowerCase().includes('problem')) || overallScore) * 10)),
+    behavioralReadiness: Math.max(0, Math.min(100, (data.find((_, i) => labels[i].toLowerCase().includes('behavioral') || labels[i].toLowerCase().includes('communication')) || overallScore) * 10)),
+    companyKnowledge: Math.max(0, Math.min(100, readinessScore * 0.8)), // Based on overall performance
+    culturalFit: Math.max(0, Math.min(100, readinessScore * 0.9))
+  }
+  
+  // Generate strengths and improvements
+  const strengths = labels.filter((_, index) => data[index] >= 7).map(label => 
+    `Strong ${label.toLowerCase()} skills demonstrated`
+  )
+  const improvements = labels.filter((_, index) => data[index] < 5).map(label => 
+    `Focus on improving ${label.toLowerCase()} abilities`
+  )
+
+  // Company insights for dashboard
+  const companyInsights = {
+    companyName: interview.companyName,
+    readinessScore,
+    strengths: strengths.length > 0 ? strengths : ['Completed full interview session', 'Showed engagement and effort'],
+    improvements: improvements.length > 0 ? improvements : ['Continue practicing to build confidence'],
+    companySpecificTips,
+    interviewIntelligence: {
+      averageRounds: companyIntelligence?.interviewInsights?.averageRounds || 4,
+      expectedDifficulty: companyIntelligence?.companyData?.difficulty || 'medium',
+      keyFocusAreas: companyIntelligence?.interviewInsights?.keySkillsRequired || ['Technical Skills', 'Problem Solving'],
+      culturalValues: companyIntelligence?.companyData?.culture || ['Innovation', 'Collaboration'],
+      techStack: companyIntelligence?.companyData?.techStack || [],
+      recentNews: companyIntelligence?.recentUpdates || []
+    },
+    preparationMetrics,
+    confidenceBuilder: {
+      completedMockInterviews: 1,
+      averageScore: Math.round(overallScore * 10),
+      improvementTrend: Math.max(0, Math.round((overallScore - 5) * 2)),
+      readyForRealInterview: overallScore >= 7
+    }
+  }
+
+  const getScoreColor = (score: number) => {
+    if (score >= 8) return 'bg-green-400'
+    if (score >= 6) return 'bg-blue-400' 
+    if (score >= 4) return 'bg-yellow-400'
+    return 'bg-red-400'
+  }
+
+  const getScoreMessage = (score: number) => {
+    if (score >= 8) return { message: "Excellent performance! You're ready for the real interview.", icon: CheckCircle, color: "text-green-800" }
+    if (score >= 6) return { message: "Good performance with room for improvement.", icon: Target, color: "text-blue-800" }
+    if (score >= 4) return { message: "Average performance. Focus on key areas for improvement.", icon: AlertTriangle, color: "text-yellow-800" }
+    return { message: "Needs significant improvement before interviewing.", icon: AlertTriangle, color: "text-red-800" }
+  }
+
+  const scoreInfo = getScoreMessage(overallScore)
+  const ScoreIcon = scoreInfo.icon
+
   return (
     <div className='flex flex-col'>
-      <div className='flex flex-col mx-18 p-2 mt-3 gap-6'>
-        <div className='flex flex-col'>
-          <span className='bg-gradient-to-r from-orange-500 to-blue-500 text-transparent bg-clip-text font-extrabold text-4xl'>Your Feedback for </span>
-          <span className='text-xl text-gray-500'>{interview?.jobTitle} Role at {interview?.companyName}</span>
-        </div>
-        <div className={`${det?.extracted?.overallScore < 3 ? 'bg-red-400' : det?.extracted?.overallScore < 7 ? 'bg-yellow-200' : 'bg-green-300'} w-[18vw] p-1 rounded-md`}>
-          <span className='text-2xl font-semibold'>Overall Score: {det?.extracted?.overallScore} / 10</span>
-        </div>
-
-        <div className='flex flex-row w-full'>
-          {/* <div className='w-[50%]'>
-            <FeedbackAccordion advice={det?.extracted?.adviceForImprovement}/>
+      <div className='flex flex-col mx-4 p-2 mt-3 gap-6 max-w-7xl mx-auto'>
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
+          <div className='flex flex-col items-center text-center mb-4'>
+            <span className='bg-gradient-to-r from-orange-500 to-blue-500 text-transparent bg-clip-text font-extrabold text-4xl mb-2'>
+              Interview Feedback Report
+            </span>
+            <div className="flex items-center gap-2 text-lg text-gray-600">
+              <Building2 className="w-5 h-5" />
+              <span>{interview?.jobTitle} Role at {interview?.companyName}</span>
+            </div>
           </div>
-
-           <div className='w-[50%]'>
-second
-          </div> */}
-          <Tabs defaultValue='visual' className='w-full ' color='black' >
-            <TabsList className='w-full flex flex-row gap-2'>
-              <TabsTrigger value="visual">Visual Feedback</TabsTrigger>
-              <TabsTrigger value="question">Question Wise Feedback</TabsTrigger>
-            </TabsList>
-            <TabsContent value="visual" className='flex flex-col gap-5'>
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <span className="text-lg">
-                  <span className='font-semibold text-blue-800'>Overall Verdict:</span> 
-                  <span className="text-blue-700 ml-2">{det?.extracted?.overallVerdict}</span>
-                </span>
+          
+          {/* Overall Score Display */}
+          <div className="flex justify-center mb-6">
+            <div className={`${getScoreColor(overallScore)} w-32 h-32 rounded-full flex flex-col items-center justify-center text-white shadow-lg`}>
+              <div className="text-3xl font-bold">{overallScore}</div>
+              <div className="text-sm">/ 10</div>
+            </div>
+          </div>
+          
+          {/* Score Message */}
+          <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
+            <div className={`flex items-center justify-center gap-2 ${scoreInfo.color} mb-2`}>
+              <ScoreIcon className="w-5 h-5" />
+              <span className="font-semibold">{scoreInfo.message}</span>
+            </div>
+            {companyIntelligence && (
+              <div className="text-sm text-gray-600">
+                Based on {companyIntelligence.companyData.name}'s interview standards and {companyIntelligence.companyData.difficulty} difficulty level
               </div>
-              <EnhancedFeedback 
-                data={data} 
-                labels={labels}
-                overallScore={det?.extracted?.overallScore || 0}
-              />
-            </TabsContent>
-            <TabsContent value="question"><FeedbackAccordion advice={det?.extracted?.adviceForImprovement}/></TabsContent>
-          </Tabs>
+            )}
+          </div>
+        </div>
 
+        {/* Main Content Tabs */}
+        <Tabs defaultValue='visual' className='w-full' color='black'>
+          <TabsList className='w-full flex flex-row gap-2 bg-white p-1 rounded-lg border'>
+            <TabsTrigger value="visual" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              Performance Analysis
+            </TabsTrigger>
+            <TabsTrigger value="questions" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              Question-wise Feedback
+            </TabsTrigger>
+            <TabsTrigger value="preparation" className="flex items-center gap-2">
+              <Target className="w-4 h-4" />
+              Preparation Dashboard
+            </TabsTrigger>
+          </TabsList>
+          
+          {/* Performance Analysis Tab */}
+          <TabsContent value="visual" className='flex flex-col gap-5 mt-6'>
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <span className="text-lg">
+                <span className='font-semibold text-blue-800'>Overall Verdict:</span> 
+                <span className="text-blue-700 ml-2">{det?.extracted?.overallVerdict}</span>
+              </span>
+            </div>
+            
+            <EnhancedFeedback 
+              data={data} 
+              labels={labels}
+              overallScore={det?.extracted?.overallScore || 0}
+            />
+
+            {/* Company-Specific Insights */}
+            {companyIntelligence && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-blue-600" />
+                    {companyIntelligence.companyData.name} Interview Insights
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Company Focus Areas:</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {companyIntelligence.companyData.focusAreas.map((area: string, index: number) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {area}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Interview Difficulty:</h4>
+                      <Badge 
+                        variant={companyIntelligence.companyData.difficulty === 'hard' ? 'destructive' : 'secondary'}
+                        className="capitalize"
+                      >
+                        {companyIntelligence.companyData.difficulty}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lightbulb className="w-4 h-4 text-yellow-600" />
+                      <span className="font-medium text-yellow-800">Key Preparation Tip</span>
+                    </div>
+                    <p className="text-sm text-yellow-700">
+                      {companyIntelligence.companyData.preparationTips[0]}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+          
+          {/* Question-wise Feedback Tab */}
+          <TabsContent value="questions" className="mt-6">
+            <FeedbackAccordion advice={det?.extracted?.adviceForImprovement}/>
+          </TabsContent>
+          
+          {/* Preparation Dashboard Tab */}
+          <TabsContent value="preparation" className="mt-6">
+            <CompanyPreparationDashboard 
+              companyInsights={companyInsights}
+              onStartNewInterview={() => window.location.href = '/create'}
+              onViewDetailedFeedback={() => {}}
+            />
+          </TabsContent>
+        </Tabs>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center gap-4">
+            <Link href="/">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Home className="w-4 h-4" />
+                Back to Dashboard
+              </Button>
+            </Link>
+            <Link href="/create">
+              <Button className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                <Star className="w-4 h-4" />
+                Practice Again
+              </Button>
+            </Link>
+          </div>
+          
+          {overallScore >= 7 && (
+            <div className="bg-green-50 px-4 py-2 rounded-lg border border-green-200">
+              <span className="text-green-800 font-medium flex items-center gap-2">
+                <Award className="w-4 h-4" />
+                Ready for Real Interview!
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
