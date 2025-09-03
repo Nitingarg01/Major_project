@@ -69,6 +69,8 @@ export const createInterview = async (data: formD, projectContext: string[], wor
       projectContext: projectContext,
       workExDetails: workExDetails,
       jobTitle: data.jobTitle,
+      experienceLevel: data.experienceLevel,
+      interviewType: data.interviewType,
       createdAt: new Date()
     })
     // toast("Interview Created Successfully")
