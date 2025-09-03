@@ -75,14 +75,17 @@ second
               <TabsTrigger value="question">Question Wise Feedback</TabsTrigger>
             </TabsList>
             <TabsContent value="visual" className='flex flex-col gap-5'>
-              <div>
-                <span>
-                  <span className='font-semibold'>Overall Verdict :</span> {det?.extracted?.overallVerdict}</span>
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <span className="text-lg">
+                  <span className='font-semibold text-blue-800'>Overall Verdict:</span> 
+                  <span className="text-blue-700 ml-2">{det?.extracted?.overallVerdict}</span>
+                </span>
               </div>
-              <div style={{ width: '35vw', margin: '0 auto' }} className='flex flex-col'>
-                <span className='font-bold text-2xl'>Various Areas you have been Scored Upon</span>
-                <Chart data={data} labels={labels}/>
-              </div>
+              <EnhancedFeedback 
+                data={data} 
+                labels={labels}
+                overallScore={det?.extracted?.overallScore || 0}
+              />
             </TabsContent>
             <TabsContent value="question"><FeedbackAccordion advice={det?.extracted?.adviceForImprovement}/></TabsContent>
           </Tabs>
