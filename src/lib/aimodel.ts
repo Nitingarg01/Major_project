@@ -287,33 +287,59 @@ Ensure questions are progressive, realistic, and thoroughly test the candidate's
     answers: string[], 
     jobTitle: string,
     skills: string[]
-  ): Promise<InterviewAnalysis> {
-    const prompt = `Analyze this interview performance for a ${jobTitle} position requiring skills: ${skills.join(', ')}.
+  ): Promise<any> {
+    const prompt = `You are an expert interview assessor. Analyze this interview performance for a ${jobTitle} position requiring skills: ${skills.join(', ')}.
 
-Questions and Answers:
+Questions and Answers Analysis:
 ${questions.map((q, index) => `
-Q${index + 1}: ${q.question}
-Expected: ${q.expectedAnswer}
+Q${index + 1} [${q.difficulty}] [${q.category}]: ${q.question}
+Expected Key Points: ${q.expectedAnswer}
 Candidate Answer: ${answers[index] || 'No answer provided'}
-Difficulty: ${q.difficulty}
-Points: ${q.points}
+Max Points: ${q.points}
 `).join('\n')}
 
-Provide detailed analysis including:
-1. Overall score (0-100)
-2. Comprehensive feedback
-3. Key strengths identified
-4. Areas for improvement
-5. Specific recommendations
+Provide comprehensive analysis with:
 
-Return ONLY a JSON object with this exact structure:
+1. **Overall Performance Score** (0-10 scale)
+2. **Parameter-wise Scoring** (0-10 each):
+   - Technical Knowledge
+   - Problem Solving
+   - Communication Skills
+   - Analytical Thinking
+   - Practical Application
+3. **Overall Verdict** (2-3 sentences summary)
+4. **Question-wise Detailed Feedback**
+5. **Strengths and Improvements**
+
+Return ONLY a JSON object with this EXACT structure:
 {
-  "score": number,
-  "feedback": "Detailed overall assessment",
-  "strengths": ["strength1", "strength2", ...],
-  "improvements": ["area1", "area2", ...],
-  "recommendations": ["recommendation1", "recommendation2", ...]
-}`
+  "overallScore": number (0-10),
+  "parameterScores": {
+    "Technical Knowledge": number (0-10),
+    "Problem Solving": number (0-10), 
+    "Communication Skills": number (0-10),
+    "Analytical Thinking": number (0-10),
+    "Practical Application": number (0-10)
+  },
+  "overallVerdict": "Brief 2-3 sentence performance summary",
+  "adviceForImprovement": [
+    {
+      "question": "Question text",
+      "advice": "Detailed feedback and improvement suggestions"
+    }
+  ],
+  "strengths": ["strength1", "strength2", "strength3"],
+  "improvements": ["improvement1", "improvement2", "improvement3"],
+  "recommendations": ["recommendation1", "recommendation2", "recommendation3"]
+}
+
+Evaluation Criteria:
+- Score 8-10: Excellent answers with depth and clarity
+- Score 6-7: Good understanding with minor gaps
+- Score 4-5: Basic understanding, needs improvement
+- Score 0-3: Poor understanding or no answer
+
+Focus on constructive feedback that helps the candidate improve while highlighting their strengths.`
 
     try {
       const result = await this.model.generateContent(prompt)
