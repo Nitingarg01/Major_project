@@ -47,16 +47,23 @@ const InterviewClientForm = ({
 
     const onSubmit = async (data: z.infer<typeof schema>) => {
         try {
-            toast("Submitting Answers")
+            toast("Submitting Answers...")
             await setAnswers(data.submitted, id)
-            toast.success("Answers Submitted")
-            setTimeout(() => {
-                router.push('/')
-            }, 1500)
+            toast.success("Answers Submitted Successfully!")
+            
+            // If this is part of a multi-round interview, trigger round completion
+            if (onRoundComplete) {
+                onRoundComplete()
+            } else {
+                // If it's a single round or final round, redirect to home
+                setTimeout(() => {
+                    router.push('/')
+                }, 1500)
+            }
         } catch (error) {
-            toast.error("Answer Submission Failed")
+            console.error('Submission error:', error)
+            toast.error("Answer Submission Failed. Please try again.")
         }
-
     }
 
     useEffect(() => {
