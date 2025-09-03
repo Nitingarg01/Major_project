@@ -223,32 +223,63 @@ Return ONLY a JSON array with this exact structure:
   }
 
   private generateMixedPrompt(jobTitle: string, companyName: string, skills: string[], jobDescription: string, experienceLevel: string, resumeContent?: string, numberOfQuestions: number = 12): string {
-    return `Create a comprehensive interview question set of ${numberOfQuestions} questions for a ${experienceLevel} level ${jobTitle} at ${companyName}.
+    const technicalCount = Math.ceil(numberOfQuestions * 0.4);
+    const behavioralCount = Math.ceil(numberOfQuestions * 0.3);
+    const problemSolvingCount = Math.ceil(numberOfQuestions * 0.2);
+    const dsaCount = numberOfQuestions - technicalCount - behavioralCount - problemSolvingCount;
 
-Mix the questions as follows:
-- 40% Technical questions (based on: ${skills.join(', ')})
-- 30% Behavioral questions
-- 20% Problem-solving/Aptitude
-- 10% DSA/Coding concepts
+    return `Create a comprehensive ${numberOfQuestions}-question interview for a ${experienceLevel} level ${jobTitle} at ${companyName}.
+
+EXACT QUESTION BREAKDOWN:
+- Technical Questions: ${technicalCount} (Skills: ${skills.join(', ')})
+- Behavioral Questions: ${behavioralCount} (Leadership, teamwork, problem-solving approach)
+- Problem-solving/Aptitude: ${problemSolvingCount} (Logic puzzles, analytical thinking)
+- DSA/Coding Concepts: ${dsaCount} (Data structures, algorithms, complexity)
 
 Job Description: ${jobDescription}
 ${resumeContent ? `Candidate's Background: ${resumeContent}` : ''}
 
-Ensure questions are:
-1. Relevant to the role and company
-2. Appropriate for experience level
-3. Well-balanced across categories
-4. Progressive in difficulty
-5. Realistic interview scenarios
+TECHNICAL QUESTIONS should cover:
+- Core technology stack implementation
+- System design principles
+- Best practices and code quality
+- Real-world debugging scenarios
+- ${companyName}-specific technology challenges
+
+BEHAVIORAL QUESTIONS should assess:
+- Leadership and team collaboration
+- Conflict resolution and communication
+- Learning agility and adaptability
+- Cultural fit for ${companyName}
+- Career motivation and goals
+
+PROBLEM-SOLVING should include:
+- Logical reasoning puzzles
+- Mathematical problem-solving
+- Pattern recognition challenges
+- Critical thinking scenarios
+
+DSA QUESTIONS should focus on:
+- Common data structures (arrays, trees, graphs)
+- Algorithm optimization techniques
+- Time/space complexity analysis
+- Practical coding scenarios
+
+Difficulty Distribution:
+- Easy: ${Math.ceil(numberOfQuestions * 0.25)} questions
+- Medium: ${Math.ceil(numberOfQuestions * 0.5)} questions  
+- Hard: ${Math.floor(numberOfQuestions * 0.25)} questions
 
 Return ONLY a JSON array with this exact structure:
 [
   {
-    "question": "Interview question",
-    "expectedAnswer": "Comprehensive expected answer",
+    "question": "Detailed question with clear context and requirements",
+    "expectedAnswer": "Comprehensive answer including key concepts, evaluation criteria, and follow-up points",
     "difficulty": "easy|medium|hard"
   }
-]`
+]
+
+Ensure questions are progressive, realistic, and thoroughly test the candidate's fit for the ${jobTitle} role at ${companyName}.`
   }
 
   async analyzeInterviewPerformance(
