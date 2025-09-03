@@ -1,6 +1,6 @@
 import React from 'react'
 import { getInterviewDetails, getQuestions } from './actions'
-import InterviewWrapper from '@/components/InterviewWrapper';
+import EnhancedInterviewWrapper from '@/components/EnhancedInterviewWrapper';
 import { auth } from '@/app/auth';
 import { redirect } from 'next/navigation';
 
