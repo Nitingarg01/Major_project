@@ -32,7 +32,7 @@ const InterviewClientForm = ({
     onRoundComplete?: () => void 
 }) => {
 
-    const TOTAL_TIME = 20*45 // in seconds
+    const TOTAL_TIME = 30*60 // 30 minutes in seconds
 
     const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
 
