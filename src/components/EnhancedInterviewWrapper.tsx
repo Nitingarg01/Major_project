@@ -6,8 +6,10 @@ import { Question, InterviewRound } from '@/types/interview'
 import EnhancedCameraFeed from './EnhancedCameraFeed'
 import { Badge } from './ui/badge'
 import { Progress } from './ui/progress'
-import { Clock, AlertTriangle, CheckCircle, Circle } from 'lucide-react'
+import { Clock, AlertTriangle, CheckCircle, Circle, Building2, Users, Brain, Target } from 'lucide-react'
 import { Button } from './ui/button'
+import EnhancedRoundManager, { InterviewSession, RoundResult } from '@/lib/enhancedRoundManager'
+import CompanyIntelligenceService from '@/lib/companyIntelligence'
 
 interface ActivityAlert {
   type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost';
@@ -30,8 +32,8 @@ const EnhancedInterviewWrapper = ({
   id, 
   interviewType = 'mixed',
   rounds,
-  companyName,
-  jobTitle
+  companyName = 'TechCorp',
+  jobTitle = 'Software Engineer'
 }: EnhancedInterviewWrapperProps) => {
   const [started, setStarted] = useState<boolean>(false)
   const [cameraOn, setCameraOn] = useState(true)
@@ -40,13 +42,51 @@ const EnhancedInterviewWrapper = ({
   const [interviewStartTime, setInterviewStartTime] = useState<Date | null>(null)
   const [timeElapsed, setTimeElapsed] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [interviewSession, setInterviewSession] = useState<InterviewSession | null>(null)
+  const [companyIntelligence, setCompanyIntelligence] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-  // If no rounds provided, create default rounds based on interview type
-  const interviewRounds: InterviewRound[] = rounds || createDefaultRounds(questions, interviewType)
+  const roundManager = EnhancedRoundManager.getInstance()
+  const intelligenceService = CompanyIntelligenceService.getInstance()
+
+  // Initialize enhanced session
+  useEffect(() => {
+    const initializeEnhancedSession = async () => {
+      setIsLoading(true)
+      try {
+        // Get company intelligence
+        const intelligence = await intelligenceService.getCompanyIntelligence(companyName)
+        setCompanyIntelligence(intelligence)
+
+        // Initialize enhanced interview session
+        const session = await roundManager.initializeSession(
+          'current-user-id', // Would come from auth
+          id,
+          companyName,
+          jobTitle,
+          interviewType
+        )
+        setInterviewSession(session)
+      } catch (error) {
+        console.error('Error initializing enhanced session:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    initializeEnhancedSession()
+  }, [companyName, jobTitle, interviewType, id])
 
   const handleStart = () => {
     setStarted(true)
     setInterviewStartTime(new Date())
+    
+    // Mark first round as in-progress
+    if (interviewSession) {
+      const updatedSession = { ...interviewSession }
+      updatedSession.rounds[0].status = 'in-progress'
+      setInterviewSession(updatedSession)
+    }
   }
 
   const handleActivityDetected = useCallback((activity: ActivityAlert) => {
@@ -58,6 +98,35 @@ const EnhancedInterviewWrapper = ({
       setTimeout(() => setIsPaused(false), 3000) // Resume after 3 seconds
     }
   }, [])
+
+  // Enhanced round completion handler
+  const handleRoundComplete = async (answers: string[], timeSpent: number) => {
+    if (!interviewSession) return
+
+    try {
+      const { session: updatedSession, roundResult } = await roundManager.completeRound(
+        interviewSession,
+        answers,
+        timeSpent,
+        activityAlerts.filter(alert => alert.severity === 'high')
+      )
+
+      setInterviewSession(updatedSession)
+      
+      // Move to next round if available
+      if (updatedSession.currentRound < updatedSession.rounds.length) {
+        setCurrentRound(updatedSession.currentRound)
+        setActivityAlerts([]) // Clear alerts for new round
+      } else {
+        // Interview completed - generate final report
+        const finalReport = await roundManager.generateFinalReport(updatedSession)
+        console.log('Final Interview Report:', finalReport)
+        // Here you would redirect to enhanced feedback page
+      }
+    } catch (error) {
+      console.error('Error completing round:', error)
+    }
+  }
 
   // Timer for interview
   useEffect(() => {
@@ -106,8 +175,8 @@ const EnhancedInterviewWrapper = ({
   }
 
   const getCurrentRoundQuestions = () => {
-    if (interviewRounds[currentRound]) {
-      return interviewRounds[currentRound].questions
+    if (interviewSession && interviewSession.rounds[currentRound]) {
+      return interviewSession.rounds[currentRound].questions
     }
     return questions.slice(currentRound * 5, (currentRound + 1) * 5) // Fallback
   }
@@ -122,8 +191,30 @@ const EnhancedInterviewWrapper = ({
   }
 
   const getRoundProgress = () => {
-    const completed = interviewRounds.filter(r => r.status === 'completed').length
-    return (completed / interviewRounds.length) * 100
+    if (!interviewSession) return 0
+    const completed = interviewSession.rounds.filter(r => r.status === 'completed').length
+    return (completed / interviewSession.rounds.length) * 100
+  }
+
+  const getCompanyIcon = (roundType: string) => {
+    switch (roundType) {
+      case 'technical': return Brain
+      case 'behavioral': return Users
+      case 'system-design': return Target
+      default: return Building2
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-lg text-gray-600">Preparing your {companyName} interview experience...</p>
+          <p className="text-sm text-gray-500">Loading company-specific questions and insights</p>
+        </div>
+      </div>
+    )
   }
 
   if (!started) {
@@ -133,24 +224,41 @@ const EnhancedInterviewWrapper = ({
         companyName={companyName}
         jobTitle={jobTitle}
         interviewType={interviewType}
-        estimatedDuration={interviewRounds.reduce((sum, round) => sum + round.duration, 0)}
-        rounds={interviewRounds}
+        estimatedDuration={interviewSession?.rounds.reduce((sum, round) => sum + round.duration, 0) || 90}
+        rounds={interviewSession?.rounds || []}
+        companyIntelligence={companyIntelligence}
       />
     )
   }
 
+  const currentRoundData = interviewSession?.rounds[currentRound]
+
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
-      {/* Interview Header */}
+      {/* Enhanced Interview Header */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">
-              {companyName} - {jobTitle}
-            </h2>
-            <p className="text-gray-600">
-              Round {currentRound + 1} of {interviewRounds.length} - {interviewRounds[currentRound]?.type.toUpperCase()}
-            </p>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="bg-blue-100 p-2 rounded-lg">
+                <Building2 className="w-5 h-5 text-blue-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">
+                {companyName} - {jobTitle}
+              </h2>
+            </div>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <span>Round {currentRound + 1} of {interviewSession?.rounds.length || 1}</span>
+              <span className="flex items-center gap-1">
+                {currentRoundData && React.createElement(getCompanyIcon(currentRoundData.type), { className: "w-4 h-4" })}
+                {currentRoundData?.type.toUpperCase() || 'INTERVIEW'}
+              </span>
+              {companyIntelligence && (
+                <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+                  {companyIntelligence.companyData.difficulty} difficulty
+                </Badge>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-sm">
@@ -165,30 +273,67 @@ const EnhancedInterviewWrapper = ({
           </div>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-          <Progress value={getRoundProgress()} className="h-2" />
+        {/* Enhanced Progress Bar */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>Interview Progress</span>
+            <span>{Math.round(getRoundProgress())}% Complete</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div 
+              className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-300"
+              style={{ width: `${getRoundProgress()}%` }}
+            ></div>
+          </div>
         </div>
 
-        {/* Round Status */}
-        <div className="flex gap-2 flex-wrap">
-          {interviewRounds.map((round, index) => (
-            <div key={round.id} className="flex items-center gap-1">
-              {round.status === 'completed' ? (
-                <CheckCircle className="w-4 h-4 text-green-600" />
-              ) : round.status === 'in-progress' ? (
-                <div className="w-4 h-4 border-2 border-blue-600 rounded-full border-t-transparent animate-spin" />
-              ) : (
-                <Circle className="w-4 h-4 text-gray-400" />
-              )}
-              <span className={`text-xs px-2 py-1 rounded ${
-                index === currentRound ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'
-              }`}>
-                {round.type}
+        {/* Enhanced Round Status */}
+        <div className="flex gap-2 flex-wrap mt-4">
+          {interviewSession?.rounds.map((round, index) => {
+            const IconComponent = getCompanyIcon(round.type)
+            return (
+              <div key={round.id} className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 px-3 py-2">
+                {round.status === 'completed' ? (
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                ) : round.status === 'in-progress' ? (
+                  <div className="w-4 h-4 border-2 border-blue-600 rounded-full border-t-transparent animate-spin" />
+                ) : (
+                  <Circle className="w-4 h-4 text-gray-400" />
+                )}
+                <IconComponent className="w-4 h-4 text-gray-600" />
+                <span className={`text-xs font-medium ${
+                  index === currentRound ? 'text-blue-800' : 'text-gray-600'
+                }`}>
+                  {round.type}
+                </span>
+                {round.score && (
+                  <Badge variant="secondary" className="text-xs ml-1">
+                    {Math.round(round.score)}%
+                  </Badge>
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Company Intelligence Insights */}
+        {companyIntelligence && (
+          <div className="mt-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
+            <div className="flex items-center gap-2 mb-2">
+              <Target className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-medium text-blue-800">
+                {companyName} Interview Focus
               </span>
             </div>
-          ))}
-        </div>
+            <div className="flex flex-wrap gap-1">
+              {companyIntelligence.interviewInsights.keySkillsRequired.slice(0, 4).map((skill: string, index: number) => (
+                <Badge key={index} variant="outline" className="text-xs border-blue-300 text-blue-700">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -221,6 +366,16 @@ const EnhancedInterviewWrapper = ({
                 </div>
               </div>
             )}
+
+            {/* Company Tips */}
+            {companyIntelligence && companyIntelligence.companyData.preparationTips.length > 0 && (
+              <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="text-sm font-medium text-green-800 mb-2">💡 {companyName} Tips</h4>
+                <p className="text-xs text-green-700">
+                  {companyIntelligence.companyData.preparationTips[0]}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -230,9 +385,10 @@ const EnhancedInterviewWrapper = ({
             <InterviewClientForm 
               questions={getCurrentRoundQuestions()} 
               id={id}
-              roundId={interviewRounds[currentRound]?.id}
+              roundId={currentRoundData?.id}
               onRoundComplete={() => {
-                if (currentRound < interviewRounds.length - 1) {
+                // This will be handled by the form submission
+                if (currentRound < (interviewSession?.rounds.length || 1) - 1) {
                   setCurrentRound(prev => prev + 1)
                 }
               }}
@@ -251,73 +407,6 @@ const EnhancedInterviewWrapper = ({
       </div>
     </div>
   )
-}
-
-// Helper function to create default rounds
-function createDefaultRounds(questions: Question[], interviewType: string): InterviewRound[] {
-  if (interviewType === 'mixed') {
-    // Enhanced distribution for mixed interviews (20 questions total)
-    const technicalCount = Math.ceil(questions.length * 0.4); // 8 questions
-    const behavioralCount = Math.ceil(questions.length * 0.3); // 6 questions  
-    const aptitudeCount = Math.ceil(questions.length * 0.2); // 4 questions
-    const dsaCount = questions.length - technicalCount - behavioralCount - aptitudeCount; // 2 questions
-    
-    let questionIndex = 0;
-    
-    return [
-      {
-        id: 'technical-round',
-        type: 'technical',
-        status: 'in-progress',
-        questions: questions.slice(questionIndex, questionIndex + technicalCount),
-        duration: 30
-      },
-      {
-        id: 'behavioral-round', 
-        type: 'behavioral',
-        status: 'pending',
-        questions: questions.slice(questionIndex += technicalCount, questionIndex + behavioralCount),
-        duration: 25
-      },
-      {
-        id: 'aptitude-round',
-        type: 'aptitude', 
-        status: 'pending',
-        questions: questions.slice(questionIndex += behavioralCount, questionIndex + aptitudeCount),
-        duration: 20
-      },
-      {
-        id: 'dsa-round',
-        type: 'dsa',
-        status: 'pending', 
-        questions: questions.slice(questionIndex += aptitudeCount),
-        duration: 25
-      }
-    ]
-  } else {
-    // Single type interviews with appropriate durations
-    const duration = getDurationForType(interviewType, questions.length);
-    
-    return [{
-      id: `${interviewType}-round`,
-      type: interviewType as any,
-      status: 'in-progress',
-      questions: questions,
-      duration: duration
-    }]
-  }
-}
-
-function getDurationForType(interviewType: string, questionCount: number): number {
-  const baseTimePerQuestion = {
-    'technical': 3,   // 3 minutes per technical question
-    'behavioral': 2.5, // 2.5 minutes per behavioral question
-    'aptitude': 2,    // 2 minutes per aptitude question
-    'dsa': 4         // 4 minutes per DSA question
-  };
-  
-  const timePerQuestion = baseTimePerQuestion[interviewType as keyof typeof baseTimePerQuestion] || 3;
-  return Math.ceil(questionCount * timePerQuestion);
 }
 
 export default EnhancedInterviewWrapper
