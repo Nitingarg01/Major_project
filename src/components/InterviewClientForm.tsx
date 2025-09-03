@@ -20,7 +20,17 @@ const schema = z.object({
 
 
 
-const InterviewClientForm = ({ questions, id }: { questions: Question[], id: string }) => {
+const InterviewClientForm = ({ 
+    questions, 
+    id, 
+    roundId,
+    onRoundComplete 
+}: { 
+    questions: Question[], 
+    id: string,
+    roundId?: string,
+    onRoundComplete?: () => void 
+}) => {
 
     const TOTAL_TIME = 20*45 // in seconds
 
