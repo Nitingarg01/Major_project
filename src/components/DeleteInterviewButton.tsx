@@ -118,6 +118,12 @@ const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  </div>
+</TooltipTrigger>
+<TooltipContent>
+  <span className="text-red-600">Delete Interview</span>
+</TooltipContent>
+</Tooltip>
   )
 }
 
