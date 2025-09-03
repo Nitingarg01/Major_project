@@ -3,10 +3,6 @@ import { auth } from "./auth";
 import client from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { Interview, InterviewCardProps } from "@/types/interview";
-import { inngest } from "@/inngest/client";
-import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
-
-
 
 export const getUserInterviews = async () => {
         const session = await auth()
@@ -19,7 +15,6 @@ export const getUserInterviews = async () => {
         const dbClient = client;
         const db = dbClient.db();
 
-        // const interviews = await db.collection("interviews").find({ userId: userId }).toArray();
         const interviews = await db.collection("interviews").find({ userId: userId }).toArray() as unknown as Interview[];
         return interviews
 }
