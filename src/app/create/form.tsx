@@ -35,7 +35,9 @@ const Createform = () => {
             jobTitle:'',
             jobDesc: '',
             skills: [],
-            companyName: ''
+            companyName: '',
+            experienceLevel: 'mid',
+            interviewType: 'mixed'
         }
     })
 
