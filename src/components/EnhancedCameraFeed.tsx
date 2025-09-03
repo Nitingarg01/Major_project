@@ -83,11 +83,12 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
 
     if (!ctx) return;
 
-    // Simple mock face detection logic
-    // In a real implementation, use face-api.js or similar
+    // Improved mock face detection logic with more realistic behavior
     const mockDetection = () => {
       const random = Math.random();
-      if (random > 0.9) {
+      
+      // Reduce false positive rates significantly
+      if (random > 0.98) { // Only 2% chance of no face alert
         setFaceDetectionStatus('no_face');
         addActivityAlert({
           type: 'no_face',
@@ -95,7 +96,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
           severity: 'high',
           timestamp: new Date()
         });
-      } else if (random > 0.85) {
+      } else if (random > 0.97) { // Only 1% chance of multiple faces
         setFaceDetectionStatus('multiple_faces');
         addActivityAlert({
           type: 'multiple_faces',
@@ -103,7 +104,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
           severity: 'high',
           timestamp: new Date()
         });
-      } else if (random > 0.8) {
+      } else if (random > 0.95) { // Only 2% chance of looking away
         addActivityAlert({
           type: 'looking_away',
           message: 'Looking away from camera',
