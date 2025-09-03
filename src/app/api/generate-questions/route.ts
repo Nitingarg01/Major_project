@@ -100,11 +100,11 @@ export async function POST(request: NextRequest) {
 
 function getQuestionCount(interviewType: string): number {
   switch (interviewType) {
-    case 'mixed': return 16;
-    case 'technical': return 12;
-    case 'behavioral': return 10;
-    case 'aptitude': return 15;
-    case 'dsa': return 10;
-    default: return 12;
+    case 'mixed': return 20;      // Increased for comprehensive coverage
+    case 'technical': return 15;  // More technical depth
+    case 'behavioral': return 12; // Better behavioral assessment  
+    case 'aptitude': return 18;   // More aptitude challenges
+    case 'dsa': return 14;        // More algorithm practice
+    default: return 15;
   }
 }
