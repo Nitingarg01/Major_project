@@ -97,29 +97,43 @@ class AIInterviewModel {
   }
 
   private generateTechnicalPrompt(jobTitle: string, companyName: string, skills: string[], jobDescription: string, experienceLevel: string, resumeContent?: string, numberOfQuestions: number = 10): string {
-    return `You are an expert technical interviewer for ${companyName}. Generate ${numberOfQuestions} technical interview questions for a ${experienceLevel} level ${jobTitle} position.
+    const skillCategories = this.categorizeSkills(skills);
+    
+    return `You are an expert technical interviewer for ${companyName}. Generate ${numberOfQuestions} diverse technical interview questions for a ${experienceLevel} level ${jobTitle} position.
 
 Skills required: ${skills.join(', ')}
 Job Description: ${jobDescription}
 ${resumeContent ? `Candidate's Resume Context: ${resumeContent}` : ''}
 
-Generate questions that are:
-1. Specific to the mentioned skills and job requirements
-2. Appropriate for ${experienceLevel} level candidates
-3. Mix of theoretical concepts and practical problem-solving
-4. Include some scenario-based questions specific to ${companyName}'s domain
-5. Progressive difficulty (easy to hard)
+Generate a well-balanced mix of questions covering:
+1. **Core Technical Skills** (40%): Deep dive into ${skillCategories.primary.join(', ')}
+2. **System Design** (20%): Architecture, scalability, database design
+3. **Problem Solving** (20%): Algorithm optimization, debugging scenarios
+4. **Best Practices** (10%): Code quality, testing, security
+5. **Company-specific** (10%): ${companyName}'s tech stack and domain challenges
+
+Question Distribution by Difficulty:
+- Easy: ${Math.ceil(numberOfQuestions * 0.3)} questions (fundamentals, basic concepts)
+- Medium: ${Math.ceil(numberOfQuestions * 0.5)} questions (practical application, mid-level concepts)  
+- Hard: ${Math.floor(numberOfQuestions * 0.2)} questions (complex scenarios, advanced topics)
+
+For ${experienceLevel} level candidates, focus on:
+${this.getExperienceFocus(experienceLevel)}
 
 Return ONLY a JSON array with this exact structure:
 [
   {
-    "question": "Detailed technical question",
-    "expectedAnswer": "Comprehensive expected answer with key points",
+    "question": "Detailed technical question with context and specific requirements",
+    "expectedAnswer": "Comprehensive expected answer with key technical concepts, code examples where relevant, and evaluation criteria",
     "difficulty": "easy|medium|hard"
   }
 ]
 
-Focus on real-world applications and ensure questions test both depth of knowledge and practical problem-solving abilities.`
+Ensure questions are:
+- Technology-specific and practical
+- Include real-world scenarios from ${companyName}'s domain
+- Test both theoretical knowledge and hands-on problem-solving
+- Progressive in complexity within each difficulty level`
   }
 
   private generateBehavioralPrompt(jobTitle: string, companyName: string, jobDescription: string, experienceLevel: string, numberOfQuestions: number = 8): string {
