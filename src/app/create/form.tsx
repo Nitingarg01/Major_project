@@ -17,6 +17,8 @@ const schema = z.object({
     jobDesc: z.string().min(30, "Job Description Too Short"),
     skills: z.array(z.string().min(1, "Enter Valid Skill")).min(5, "Enter at least 5 Skills"),
     companyName: z.string().min(1, "Enter Valid Company Name"),
+    experienceLevel: z.enum(['entry', 'mid', 'senior']),
+    interviewType: z.enum(['technical', 'behavioral', 'aptitude', 'dsa', 'mixed']),
     resume: z.any().optional()
 })
 
