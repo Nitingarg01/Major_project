@@ -51,6 +51,41 @@ export const createQuestions = inngest.createFunction(
             
         // `
 
+        // Use the enhanced AI model for better question generation
+        const { aiInterviewModel } = await import('@/lib/aimodel')
+        
+        let resumeContent = '';
+        if (interview?.projectContext?.length > 0 || interview?.workExDetails?.length > 0) {
+            resumeContent = `Projects: ${interview.projectContext?.join(', ') || 'None'}\nWork Experience: ${interview.workExDetails?.join(', ') || 'None'}`;
+        }
+
+        let extracted;
+        console.log('LLM Generated text!')
+
+        try {
+            const questions = await aiInterviewModel.generateInterviewQuestions({
+                jobTitle: interview?.jobTitle || 'Software Engineer',
+                companyName: interview?.companyName || 'Tech Company',
+                skills: interview?.skills || [],
+                jobDescription: interview?.jobDesc || '',
+                experienceLevel: interview?.experienceLevel || 'mid',
+                interviewType: interview?.interviewType || 'mixed',
+                resumeContent: resumeContent || undefined,
+                numberOfQuestions: 12
+            })
+
+            // Convert to the format expected by the database
+            extracted = questions.map(q => ({
+                question: q.question,
+                expectedAnswer: q.expectedAnswer,
+                difficulty: q.difficulty,
+                category: q.category,
+                points: q.points
+            }))
+        } catch (error) {
+            console.error('Caught error:', error);
+            return { message: 'Error Occured',error:error }
+        }
         console.log('Text Converted to JSON!')
 
         const queDb = await db.collection("questions").insertOne({
