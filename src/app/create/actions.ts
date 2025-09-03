@@ -12,7 +12,9 @@ type formD = {
   jobDesc: string,
   skills: string[],
   companyName: string,
-  jobTitle: string
+  jobTitle: string,
+  experienceLevel: 'entry' | 'mid' | 'senior',
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed'
 }
 
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
