@@ -23,7 +23,14 @@ type Props = {
     }>;
 }
 
-const IntroModal = ({ onStart }: Props) => {
+const IntroModal = ({ 
+    onStart, 
+    companyName = "Company", 
+    jobTitle = "Position", 
+    interviewType = "mixed",
+    estimatedDuration = 15,
+    rounds = []
+}: Props) => {
 
     const [open, setOpen] = useState<boolean>(true)
 
