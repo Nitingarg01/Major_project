@@ -183,6 +183,48 @@ const Createform = () => {
                     }}
                 />
 
+                <FormField
+                    control={form.control}
+                    name="experienceLevel"
+                    render={({ field }) => {
+                        return (
+                            <FormItem>
+                                <FormLabel>Experience Level<span className="text-red-500">*</span></FormLabel>
+                                <FormControl>
+                                    <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-2">
+                                        <option value="entry">Entry Level (0-2 years)</option>
+                                        <option value="mid">Mid Level (2-5 years)</option>
+                                        <option value="senior">Senior Level (5+ years)</option>
+                                    </select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )
+                    }}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="interviewType"
+                    render={({ field }) => {
+                        return (
+                            <FormItem>
+                                <FormLabel>Interview Type<span className="text-red-500">*</span></FormLabel>
+                                <FormControl>
+                                    <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-2">
+                                        <option value="mixed">Mixed (Technical + Behavioral + Aptitude + DSA)</option>
+                                        <option value="technical">Technical Only</option>
+                                        <option value="behavioral">Behavioral Only</option>
+                                        <option value="aptitude">Aptitude Only</option>
+                                        <option value="dsa">DSA (Data Structures & Algorithms)</option>
+                                    </select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )
+                    }}
+                />
+
                 <div className="flex flex-row justify-center">
                     <span className="font-bold">OR</span>
                 </div>
