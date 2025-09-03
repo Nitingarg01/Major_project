@@ -409,12 +409,7 @@ const EnhancedInterviewWrapper = ({
               questions={getCurrentRoundQuestions()} 
               id={id}
               roundId={currentRoundData?.id}
-              onRoundComplete={() => {
-                // This will be handled by the form submission
-                if (currentRound < (interviewSession?.rounds.length || 1) - 1) {
-                  setCurrentRound(prev => prev + 1)
-                }
-              }}
+              onRoundComplete={handleRoundComplete}
             />
           ) : (
             <div className="flex flex-col items-center justify-center p-8 bg-yellow-50 border border-yellow-200 rounded-lg">
