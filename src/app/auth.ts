@@ -8,7 +8,7 @@ import { DBUser } from "@/types/user";
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
     adapter: MongoDBAdapter(client),
-    debug:true,
+    debug: true,
     session: {
         strategy: "jwt"
     },
@@ -16,7 +16,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID ?? '',
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-            allowDangerousEmailAccountLinking:true
+            allowDangerousEmailAccountLinking: true
         }),
         Credentials({
             name: "credentials",
@@ -31,10 +31,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 }
             },
             authorize: async (credentials, req: Request) => {
-
                 const email = credentials?.email as string | undefined;
                 const password = credentials?.password as string | undefined;
-                // console.log(email, password)
 
                 if (!email || !password) {
                     throw new Error("Please Enter Valid Credentials!")
@@ -56,16 +54,11 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 if (!isMatch) {
                     throw new Error("Invalid Email or Password")
                 }
-                console.log({
-                    name: user.name,
-                    email: user.email,
-                    id: user._id.toString(),
-                })
+
                 return {
                     name: user.name,
                     email: user.email,
                     id: user._id.toString(),
-                    credits: user.credits
                 }
             }
         })
@@ -76,20 +69,13 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
-                if("credits" in user){
-                    token.credits = user.credits
-                }
-                
             } else if (!token.id && token.email) {
-
                 const db = client.db();
                 const existingUser = await db
                     .collection("users")
                     .findOne({ email: token.email });
                 if (existingUser) {
                     token.id = existingUser._id.toString();
-                    token.credits = existingUser.credits;
-
                 }
             }
             return token;
@@ -98,39 +84,35 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             session.user.id = token.id as string;
             session.user.email = token.email!;
             session.user.name = token.name;
-            session.user.credits = token.credits as number;
             return session;
         },
         signIn: async ({ user, account }) => {
             const dbClient = client;
             const db = dbClient.db()
 
-
             if (account?.provider === 'google') {
                 try {
                     const { email, id, name, } = user
 
-
                     const alreadyUser = await db.collection("users").findOne({ email: email?.toLowerCase() })
 
-                    if(alreadyUser){
-                        if(!alreadyUser.googleId){
+                    if (alreadyUser) {
+                        if (!alreadyUser.googleId) {
                             await db.collection('users').updateOne(
-                                {email:email?.toLocaleLowerCase()},
+                                { email: email?.toLocaleLowerCase() },
                                 {
-                                    $set:{
-                                        googleId:id,
-                                        updatedAt:new Date()
+                                    $set: {
+                                        googleId: id,
+                                        updatedAt: new Date()
                                     }
                                 }
                             )
                         }
-                    }else{
-                         await db.collection("users").insertOne({
+                    } else {
+                        await db.collection("users").insertOne({
                             email: email?.toLowerCase(),
                             name: name,
                             googleId: id,
-                            credits: 3,
                             createdAt: new Date(),
                             updatedAt: new Date()
                         });
@@ -150,4 +132,3 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         newUser: '/signup',
     }
 })
-
