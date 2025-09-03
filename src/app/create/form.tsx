@@ -143,7 +143,7 @@ const Createform = () => {
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    {/* Company Selection */}
+                    {/* Company Selection with Autofill */}
                     <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
                         <FormField
                             control={form.control}
@@ -152,15 +152,34 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="flex items-center gap-2 text-lg font-semibold">
                                         <Building2 className="w-5 h-5 text-blue-600" />
-                                        Company Name<span className="text-red-500">*</span>
+                                        Company & Role Search<span className="text-red-500">*</span>
                                     </FormLabel>
-                                    <FormControl>
-                                        <Input 
-                                            placeholder="Enter company name or select from popular ones below" 
-                                            {...field} 
-                                            className="h-12 text-lg"
+                                    <div className="space-y-4">
+                                        <CompanyAutofill
+                                            onSelect={(company, jobTitle, companyData) => {
+                                                form.setValue("companyName", company)
+                                                form.setValue("jobTitle", jobTitle)
+                                                if (companyData) {
+                                                    // Auto-fill relevant skills from company tech stack
+                                                    const currentSkills = form.getValues("skills")
+                                                    const techSkills = companyData.techStack.slice(0, 3).filter((skill: string) => 
+                                                        !currentSkills.includes(skill)
+                                                    )
+                                                    if (techSkills.length > 0) {
+                                                        form.setValue("skills", [...currentSkills, ...techSkills])
+                                                    }
+                                                }
+                                            }}
+                                            placeholder="Search for company and role (e.g., Google Software Engineer)"
                                         />
-                                    </FormControl>
+                                        <FormControl>
+                                            <Input 
+                                                placeholder="Or type company name manually" 
+                                                {...field} 
+                                                className="h-12 text-lg"
+                                            />
+                                        </FormControl>
+                                    </div>
                                     <div className="mt-3">
                                         <p className="text-sm text-gray-600 mb-2">Popular companies:</p>
                                         <div className="flex flex-wrap gap-2">
