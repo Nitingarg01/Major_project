@@ -1,6 +1,5 @@
 "use server"
 import { signIn, signOut } from "@/app/auth";
-import { redirect } from "next/navigation";
 
 export const handleLogin = async (formData: FormData) => {
    const email = formData.get("email")?.toString();
@@ -18,11 +17,11 @@ export const handleLogin = async (formData: FormData) => {
      })
 
      if (result?.error) {
-       throw new Error(result.error)
+       throw new Error("Invalid email or password")
      }
 
-     // If login is successful, redirect to home page
-     redirect('/')
+     // Return success indicator instead of redirecting here
+     return { success: true }
    } catch (error) {
      console.error('Login error:', error)
      // Re-throw the error so it can be handled by the client
