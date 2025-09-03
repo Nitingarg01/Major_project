@@ -75,20 +75,27 @@ const InterviewCard = async ({ interview }: InterviewCardProps) => {
           </div>
            <div className='flex flex-row-reverse gap-3 mr-2'>
          
-          <Link href={`/interview/${interview._id}/feedback`} className={`${interview?.status==='ready' ? 'hidden' : ''}`}>
+          <div className={`${interview?.status==='ready' ? 'hidden' : ''}`}>
            <Tooltip>
-            <TooltipTrigger><FileText className='cursor-pointer'/></TooltipTrigger>
+            <TooltipTrigger asChild>
+              <Link href={`/interview/${interview._id}/feedback`}>
+                <FileText className='cursor-pointer'/>
+              </Link>
+            </TooltipTrigger>
             <TooltipContent>View Feedback</TooltipContent>
           </Tooltip>
-          </Link>
+          </div>
          
-         <Link href={`/interview/${interview._id}/perform`} className={`${interview?.status==='completed' ? 'hidden' : ''}`}>
+         <div className={`${interview?.status==='completed' ? 'hidden' : ''}`}>
          <Tooltip>
-            <TooltipTrigger><MessageCircleCode className='cursor-pointer'/></TooltipTrigger>
+            <TooltipTrigger asChild>
+              <Link href={`/interview/${interview._id}/perform`}>
+                <MessageCircleCode className='cursor-pointer'/>
+              </Link>
+            </TooltipTrigger>
             <TooltipContent>Give Interview</TooltipContent>
           </Tooltip>
-            
-         </Link>
+         </div>
 
          {/* Delete Interview Button */}
          <DeleteInterviewButton interviewId={interview._id.toString()} />
