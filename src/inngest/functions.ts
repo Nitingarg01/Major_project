@@ -51,63 +51,6 @@ export const createQuestions = inngest.createFunction(
             
         // `
 
-        const prompt = `
-        // Use the enhanced AI model for better question generation
-        const { aiInterviewModel } = await import('@/lib/aimodel')
-        
-        let resumeContent = '';
-        if (interview?.projectContext?.length > 0 || interview?.workExDetails?.length > 0) {
-            resumeContent = `Projects: ${interview.projectContext?.join(', ') || 'None'}\nWork Experience: ${interview.workExDetails?.join(', ') || 'None'}`;
-        } 
-
-        The job description for this role is: ${interview?.jobDesc}.  
-        The candidate has the following skills: ${interview?.skills?.join(", ")}.  
-        The candidate has the following project descriptions: ${interview?.projectContext?.join(", ")}.  
-        The candidate’s work experience is: ${interview?.workExDetails?.join(", ")}.  
-
-        Using this information:
-        1. Generate exactly **5** medium-level interview questions to evaluate the candidate’s suitability for **this company** and **this role**.  
-        2. Each question should be concise but relevant to the provided skills, projects, work experience, and job description.  
-        3. Provide the **most apt answer** you think a strong candidate would give.  
-        4. The **total** of all questions and answers combined must not exceed **200 words**.  
-
-        Output Format:
-        Return ONLY a valid JSON array of objects in this exact structure (no extra text, comments, or formatting):
-
-        [
-        {
-            "question": "string",
-            "expectedAnswer": "string"
-        }
-        ]
-
-        If you cannot generate the answers for any reason, return an **empty JSON array**: []
-        Do not include any content other than the JSON.
-        `
-
-
-        const model = await genAI.getGenerativeModel({
-            model: modelUsed,
-            generationConfig: {
-                temperature: 0.9,
-                responseMimeType:'application/json'
-            }
-        })
-
-        
-
-        let extracted;
-        console.log('LLM Generated text!')
-
-        try {
-            const result = await model.generateContent(prompt)
-        const text = (await result).response.text()
-            const cleaned = text.replace(/```json\s*([\s\S]*?)\s*```/, '$1').trim();
-            extracted = JSON.parse(cleaned)
-        } catch (error) {
-            console.error('Caught error:', error);
-            return { message: 'Error Occured',error:error }
-        }
         console.log('Text Converted to JSON!')
 
         const queDb = await db.collection("questions").insertOne({
