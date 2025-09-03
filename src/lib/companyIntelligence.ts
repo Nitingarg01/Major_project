@@ -214,8 +214,190 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'Prepare quality-focused examples',
       'Know Apple\'s privacy stance'
     ]
+  },
+  'Netflix': {
+    name: 'Netflix',
+    industry: 'Streaming/Entertainment',
+    techStack: ['Java', 'Python', 'JavaScript', 'React', 'Spring Boot', 'Microservices', 'AWS', 'Kafka'],
+    culture: ['Freedom and responsibility', 'High performance', 'Innovation', 'Data-driven decisions'],
+    values: ['Judgment', 'Communication', 'Impact', 'Curiosity', 'Innovation', 'Courage', 'Passion', 'Honesty', 'Selflessness'],
+    recentNews: [
+      'Global streaming expansion and localization',
+      'Investment in original content production',
+      'Advanced recommendation algorithms',
+      'Gaming platform development'
+    ],
+    commonQuestions: [
+      'How would you improve Netflix\'s recommendation system?',
+      'Design a system to handle millions of concurrent video streams',
+      'How do you ensure high availability for global streaming?',
+      'Describe your approach to A/B testing for user features',
+      'How would you optimize video encoding and delivery?'
+    ],
+    interviewProcess: ['Recruiter Screen', 'Technical Phone', 'Onsite (4-5 rounds)', 'Reference Checks'],
+    difficulty: 'hard',
+    focusAreas: ['Distributed Systems', 'Scalability', 'Data Engineering', 'Performance', 'Innovation'],
+    preparationTips: [
+      'Understand distributed systems and microservices architecture',
+      'Study Netflix\'s tech blog and engineering culture',
+      'Practice system design for streaming platforms',
+      'Prepare for cultural fit questions around freedom and responsibility',
+      'Know their technology stack and deployment practices'
+    ]
+  },
+  'Tesla': {
+    name: 'Tesla',
+    industry: 'Automotive/Energy',
+    techStack: ['Python', 'C++', 'JavaScript', 'React', 'Django', 'PostgreSQL', 'Redis', 'Docker'],
+    culture: ['Innovation', 'Sustainability', 'First principles thinking', 'Rapid iteration', 'Mission-driven'],
+    values: ['Accelerating sustainable transport', 'Environmental responsibility', 'Continuous improvement'],
+    recentNews: [
+      'Full Self-Driving technology advancement',
+      'Global Supercharger network expansion',
+      'Energy storage solutions growth',
+      'Manufacturing efficiency improvements'
+    ],
+    commonQuestions: [
+      'How would you optimize battery management systems?',
+      'Design a system for autonomous vehicle data processing',
+      'How do you approach real-time control systems?',
+      'Describe your experience with embedded systems',
+      'How would you improve manufacturing efficiency?'
+    ],
+    interviewProcess: ['Phone Screen', 'Technical Assessment', 'Onsite (3-5 rounds)', 'Final Review'],
+    difficulty: 'hard',
+    focusAreas: ['Embedded Systems', 'Real-time Processing', 'Machine Learning', 'Hardware Integration', 'Optimization'],
+    preparationTips: [
+      'Understand automotive software and embedded systems',
+      'Study Tesla\'s mission and sustainability goals',
+      'Practice problems related to real-time systems',
+      'Prepare for questions about innovation and problem-solving',
+      'Know about electric vehicle technology and energy systems'
+    ]
+  },
+  'Uber': {
+    name: 'Uber',
+    industry: 'Transportation/Logistics',
+    techStack: ['Go', 'Java', 'Python', 'JavaScript', 'React', 'Kafka', 'MySQL', 'Redis'],
+    culture: ['Customer obsession', 'Innovation', 'Global mindset', 'Collaboration', 'Inclusion'],
+    values: ['We build globally, we live locally', 'We are customer obsessed', 'We celebrate differences'],
+    recentNews: [
+      'Autonomous vehicle development progress',
+      'Uber Eats expansion and optimization',
+      'Driver and rider experience improvements',
+      'Sustainability and electrification initiatives'
+    ],
+    commonQuestions: [
+      'How would you design Uber\'s matching algorithm?',
+      'Design a system for real-time location tracking',
+      'How do you handle surge pricing optimization?',
+      'Describe your approach to handling millions of rides',
+      'How would you design a food delivery system?'
+    ],
+    interviewProcess: ['Phone Screen', 'Technical Interview', 'Onsite (4-5 rounds)', 'Hiring Committee'],
+    difficulty: 'medium',
+    focusAreas: ['Distributed Systems', 'Real-time Systems', 'Algorithms', 'Scalability', 'Mobile Development'],
+    preparationTips: [
+      'Understand real-time systems and location services',
+      'Study Uber\'s business model and technical challenges',
+      'Practice system design for marketplace platforms',
+      'Prepare for questions about optimization and algorithms',
+      'Know about mobile development and user experience'
+    ]
+  },
+  'Airbnb': {
+    name: 'Airbnb',
+    industry: 'Travel/Hospitality',
+    techStack: ['Ruby', 'Java', 'JavaScript', 'React', 'Rails', 'MySQL', 'Redis', 'Kafka'],
+    culture: ['Belong anywhere', 'Champion the mission', 'Be a host', 'Embrace the adventure'],
+    values: ['Champion the mission', 'Be a host', 'Embrace the adventure', 'Be a cereal entrepreneur'],
+    recentNews: [
+      'Enhanced safety and trust features',
+      'Expansion into experiences and long-term stays',
+      'Host support and community building',
+      'Sustainable travel initiatives'
+    ],
+    commonQuestions: [
+      'How would you design Airbnb\'s search and ranking system?',
+      'Design a system for handling booking conflicts',
+      'How do you ensure trust and safety on the platform?',
+      'Describe your approach to personalized recommendations',
+      'How would you handle international expansion challenges?'
+    ],
+    interviewProcess: ['Recruiter Screen', 'Technical Phone', 'Onsite (4-6 rounds)', 'Reference Checks'],
+    difficulty: 'medium',
+    focusAreas: ['Product Engineering', 'Trust and Safety', 'International Scale', 'User Experience', 'Community'],
+    preparationTips: [
+      'Understand marketplace dynamics and trust systems',
+      'Study Airbnb\'s values and community focus',
+      'Practice system design for booking platforms',
+      'Prepare for questions about cultural fit and belonging',
+      'Know about international business and localization'
+    ]
   }
 };
+
+// Enhanced search function for autofill
+export function searchCompanyAndRole(query: string): { suggestions: string[]; companyData: CompanyData | null } {
+  const lowerQuery = query.toLowerCase().trim();
+  
+  // Filter suggestions based on query
+  const suggestions = COMPANY_SUGGESTIONS.filter(suggestion => 
+    suggestion.toLowerCase().includes(lowerQuery)
+  ).slice(0, 10); // Limit to 10 suggestions
+
+  // Extract company name from query
+  let detectedCompany = null;
+  const companies = Object.keys(companyDatabase);
+  
+  for (const company of companies) {
+    if (lowerQuery.includes(company.toLowerCase())) {
+      detectedCompany = companyDatabase[company];
+      break;
+    }
+  }
+
+  return {
+    suggestions,
+    companyData: detectedCompany
+  };
+}
+
+// Parse job title and company from search query
+export function parseJobQuery(query: string): { company: string; jobTitle: string } {
+  const lowerQuery = query.toLowerCase();
+  
+  // Common job title patterns
+  const jobTitlePatterns = [
+    'software engineer', 'frontend engineer', 'backend engineer', 'full stack engineer',
+    'data scientist', 'product manager', 'devops engineer', 'mobile developer',
+    'ios developer', 'android developer', 'machine learning engineer', 'data engineer'
+  ];
+  
+  let jobTitle = 'Software Engineer'; // default
+  let company = '';
+  
+  // Find job title
+  for (const pattern of jobTitlePatterns) {
+    if (lowerQuery.includes(pattern)) {
+      jobTitle = pattern.split(' ').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
+      break;
+    }
+  }
+  
+  // Find company name
+  const companies = Object.keys(companyDatabase);
+  for (const comp of companies) {
+    if (lowerQuery.includes(comp.toLowerCase())) {
+      company = comp;
+      break;
+    }
+  }
+  
+  return { company, jobTitle };
+}
 
 export class CompanyIntelligenceService {
   private static instance: CompanyIntelligenceService;
