@@ -256,19 +256,24 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
 
       {/* Current Round Details */}
       <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-        <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-lg bg-gradient-to-r ${getRoundColor(rounds[currentRound]?.type)}`}>
-            <RoundIcon className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h4 className="font-medium text-gray-800">
-              Current: {rounds[currentRound]?.type.charAt(0).toUpperCase() + rounds[currentRound]?.type.slice(1)} Round
-            </h4>
-            <p className="text-sm text-gray-600">
-              {rounds[currentRound]?.questions?.length || 0} questions • {rounds[currentRound]?.duration} minutes
-            </p>
-          </div>
-        </div>
+        {(() => {
+          const CurrentRoundIcon = getRoundIcon(rounds[currentRound]?.type)
+          return (
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg bg-gradient-to-r ${getRoundColor(rounds[currentRound]?.type)}`}>
+                <CurrentRoundIcon className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-800">
+                  Current: {rounds[currentRound]?.type.charAt(0).toUpperCase() + rounds[currentRound]?.type.slice(1)} Round
+                </h4>
+                <p className="text-sm text-gray-600">
+                  {rounds[currentRound]?.questions?.length || 0} questions • {rounds[currentRound]?.duration} minutes
+                </p>
+              </div>
+            </div>
+          )
+        })()}
       </div>
     </div>
   )
