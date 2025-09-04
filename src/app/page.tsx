@@ -49,7 +49,7 @@ export default async function Home() {
           </p>
           
           {/* Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8">
             <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">
               <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
               <h3 className="font-semibold text-blue-800">Multi-Round Interviews</h3>
@@ -64,6 +64,11 @@ export default async function Home() {
               <Users className="w-8 h-8 text-purple-600 mx-auto mb-2" />
               <h3 className="font-semibold text-purple-800">Company Specific</h3>
               <p className="text-sm text-purple-700">Practice for your dream companies</p>
+            </div>
+            <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-4 rounded-lg">
+              <Sparkles className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-orange-800">Resume Analyzer</h3>
+              <p className="text-sm text-orange-700">AI-powered resume scoring & tips</p>
             </div>
           </div>
 
