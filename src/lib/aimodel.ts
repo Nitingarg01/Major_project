@@ -136,10 +136,22 @@ Ensure questions are:
 - Progressive in complexity within each difficulty level`
   }
 
-  private generateBehavioralPrompt(jobTitle: string, companyName: string, jobDescription: string, experienceLevel: string, numberOfQuestions: number = 8): string {
+  private generateBehavioralPrompt(jobTitle: string, companyName: string, jobDescription: string, experienceLevel: string, numberOfQuestions: number = 8, resumeContent?: string): string {
+    const resumeBasedQuestions = resumeContent ? `
+
+CANDIDATE'S BACKGROUND:
+${resumeContent}
+
+PERSONALIZATION INSTRUCTIONS:
+- Include 2-3 questions directly referencing their specific work experiences, projects, or achievements mentioned in their resume
+- Ask about challenges they faced in projects they've listed
+- Explore their role in team projects they've described
+- Reference specific companies, technologies, or accomplishments from their background
+- Ask about lessons learned from their career progression as shown in their resume` : '';
+
     return `You are an experienced HR interviewer at ${companyName}. Generate ${numberOfQuestions} behavioral interview questions for a ${experienceLevel} level ${jobTitle} position.
 
-Job Description: ${jobDescription}
+Job Description: ${jobDescription}${resumeBasedQuestions}
 
 Generate questions that assess:
 1. Leadership and teamwork abilities
@@ -149,19 +161,21 @@ Generate questions that assess:
 5. Conflict resolution
 6. Time management and prioritization
 7. Company culture fit for ${companyName}
+${resumeContent ? '8. Specific experiences and achievements from their background' : ''}
 
 Use STAR method framework (Situation, Task, Action, Result) where applicable.
+${resumeContent ? 'Make at least 3 questions specific to their resume experiences.' : ''}
 
 Return ONLY a JSON array with this exact structure:
 [
   {
-    "question": "Behavioral question using STAR framework",
+    "question": "Behavioral question using STAR framework${resumeContent ? ' (some should reference their specific experiences)' : ''}",
     "expectedAnswer": "What a good answer should include (key elements)",
     "difficulty": "easy|medium|hard"
   }
 ]
 
-Make questions relevant to ${companyName}'s work environment and values.`
+Make questions relevant to ${companyName}'s work environment and values${resumeContent ? ' while incorporating their personal career journey' : ''}.`
   }
 
   private generateAptitudePrompt(jobTitle: string, companyName: string, numberOfQuestions: number = 10): string {
