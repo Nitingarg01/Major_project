@@ -14,7 +14,7 @@ import { LoaderFive } from "@/components/ui/loader";
 import { Badge } from "@/components/ui/badge";
 import { Search, Building2, Users, Briefcase, Upload, FileText, Sparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import CompanyAutofill from "@/components/CompanyAutofill";
+import EnhancedCompanySearch from "@/components/EnhancedCompanySearch";
 
 const schema = z.object({
     jobTitle: z.string().min(3, "Job Title Too Short"),
