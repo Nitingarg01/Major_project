@@ -155,7 +155,7 @@ const Createform = () => {
                                         Company & Role Search<span className="text-red-500">*</span>
                                     </FormLabel>
                                     <div className="space-y-4">
-                                        <CompanyAutofill
+                                        <EnhancedCompanySearch
                                             onSelect={(company, jobTitle, companyData) => {
                                                 form.setValue("companyName", company)
                                                 form.setValue("jobTitle", jobTitle)
