@@ -40,13 +40,13 @@ const page = async ({ params }: PageProps) => {
           <div className='flex flex-row justify-center'>
             <div className='border-2 bg-gray-50 rounded-lg w-[80%] flex flex-col items-center p-2' >
 
-              {det!==null ? <SuperEnhancedInterviewWrapper 
+              {det!==null ? <EnhancedInterviewWrapper 
                 questions={det?.questions} 
                 id={id}
                 interviewType={interview?.interviewType}
                 companyName={interview?.companyName}
                 jobTitle={interview?.jobTitle}
-              /> : <span className='text-2xl font-semibold'>Interview Not Ready Please Visit After Few Minutes</span>}
+              /> : <span className='text-2xl font-semibold'>Enhanced Interview Not Ready - Please Visit After Few Minutes</span>}
               
             </div>
           </div>
