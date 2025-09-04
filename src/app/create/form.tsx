@@ -406,19 +406,19 @@ const Createform = () => {
                                                 >
                                                     {uploading ? "Processing..." : "Choose Resume File"}
                                                 </label>
-                                                <p className="text-sm text-gray-500 mt-2">
+                                                <div className="text-sm text-gray-500 mt-2">
                                                     {uploading ? (
-                                                        <span className="flex items-center gap-2 justify-center">
+                                                        <div className="flex items-center gap-2 justify-center">
                                                             <LoaderFive />
                                                             Extracting skills and experience...
-                                                        </span>
+                                                        </div>
                                                     ) : (
-                                                        <>
+                                                        <div>
                                                             Upload PDF, DOC, or DOCX • Max 5MB
                                                             {fileName && <><br /><span className="text-green-600 font-medium">📄 {fileName}</span></>}
-                                                        </>
+                                                        </div>
                                                     )}
-                                                </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
