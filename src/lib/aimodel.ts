@@ -61,7 +61,7 @@ class AIInterviewModel {
         prompt = this.generateTechnicalPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions)
         break
       case 'behavioral':
-        prompt = this.generateBehavioralPrompt(jobTitle, companyName, jobDescription, experienceLevel, numberOfQuestions)
+        prompt = this.generateBehavioralPrompt(jobTitle, companyName, jobDescription, experienceLevel, numberOfQuestions, resumeContent)
         break
       case 'aptitude':
         prompt = this.generateAptitudePrompt(jobTitle, companyName, numberOfQuestions)
