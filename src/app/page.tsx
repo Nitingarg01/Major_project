@@ -79,18 +79,26 @@ export default async function Home() {
         </div>
 
         {/* Action Section */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-2xl font-bold text-gray-800">Your Interview Sessions</h2>
               <p className="text-gray-600">Track your progress and continue practicing</p>
             </div>
-            <Button variant="default" className="px-6 py-3 text-lg">
-              <Link href='/create' className="flex flex-row gap-2 items-center">
-                <IoMdAdd className="w-5 h-5" />
-                Create New Interview
-              </Link>
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="outline" className="px-6 py-3 text-lg">
+                <Link href='/resume-analyzer' className="flex flex-row gap-2 items-center">
+                  <Sparkles className="w-5 h-5" />
+                  Resume Analyzer
+                </Link>
+              </Button>
+              <Button variant="default" className="px-6 py-3 text-lg">
+                <Link href='/create' className="flex flex-row gap-2 items-center">
+                  <IoMdAdd className="w-5 h-5" />
+                  Create New Interview
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Interview Cards */}
