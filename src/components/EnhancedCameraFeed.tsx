@@ -149,13 +149,13 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
     return () => stopCamera();
   }, [cameraOn, addActivityAlert]);
 
-  // Face detection interval
+  // Simple face monitoring interval
   useEffect(() => {
     if (!isMonitoring || !isInterviewActive) return;
 
-    const interval = setInterval(performFaceDetection, 10000); // Check every 10 seconds instead of 3
+    const interval = setInterval(performFaceMonitoring, 15000); // Check every 15 seconds
     return () => clearInterval(interval);
-  }, [isMonitoring, isInterviewActive, performFaceDetection]);
+  }, [isMonitoring, isInterviewActive, performFaceMonitoring]);
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
