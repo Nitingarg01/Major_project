@@ -55,26 +55,7 @@ export class FreeLLMService {
   }
 
   private initializeProviders() {
-    // Together.ai - Primary Provider (Free Tier: 60 requests/min)
-    if (process.env.TOGETHER_API_KEY || process.env.NEXT_PUBLIC_TOGETHER_API_KEY) {
-      this.providers.push({
-        name: 'together',
-        apiUrl: 'https://api.together.xyz/v1/chat/completions',
-        apiKey: process.env.TOGETHER_API_KEY || process.env.NEXT_PUBLIC_TOGETHER_API_KEY || '',
-        models: {
-          'llama-3.1-8b': 'meta-llama/Llama-3.1-8B-Instruct-Turbo',
-          'llama-3.1-70b': 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
-          'mistral-7b': 'mistralai/Mistral-7B-Instruct-v0.1'
-        },
-        rateLimits: {
-          requestsPerMinute: 60,
-          requestsPerDay: 1000
-        },
-        priority: 1
-      });
-    }
-
-    // Groq - Secondary Provider (Free Tier: 30 requests/min, ultra-fast)
+    // Groq - PRIMARY Provider (Free Tier: 30 requests/min, ultra-fast)
     if (process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY) {
       this.providers.push({
         name: 'groq',
@@ -89,11 +70,29 @@ export class FreeLLMService {
           requestsPerMinute: 30,
           requestsPerDay: 14400
         },
+        priority: 1
+      });
+    }
+
+    // Gemini - SECONDARY Provider (Generous free tier, excellent for analysis)
+    if (process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+      this.providers.push({
+        name: 'gemini',
+        apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+        apiKey: process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
+        models: {
+          'gemini-pro': 'gemini-pro',
+          'gemini-1.5-flash': 'gemini-1.5-flash'
+        },
+        rateLimits: {
+          requestsPerMinute: 60,
+          requestsPerDay: 1500
+        },
         priority: 2
       });
     }
 
-    // Hugging Face - Backup Provider (Free Inference API)
+    // Hugging Face - TERTIARY Provider (Free Inference API, reliable backup)
     if (process.env.HUGGINGFACE_API_KEY || process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY) {
       this.providers.push({
         name: 'huggingface',
@@ -108,6 +107,25 @@ export class FreeLLMService {
           requestsPerDay: 1000
         },
         priority: 3
+      });
+    }
+
+    // Emergent LLM - FALLBACK Provider (Premium quality, pay-per-use)
+    if (process.env.EMERGENT_LLM_KEY || process.env.NEXT_PUBLIC_EMERGENT_LLM_KEY) {
+      this.providers.push({
+        name: 'emergent',
+        apiUrl: 'https://integrations.emergentagent.com/api/v1/llm/chat',
+        apiKey: process.env.EMERGENT_LLM_KEY || process.env.NEXT_PUBLIC_EMERGENT_LLM_KEY || '',
+        models: {
+          'gpt-4o-mini': 'gpt-4o-mini',
+          'gpt-4o': 'gpt-4o',
+          'claude-3-haiku': 'claude-3-haiku'
+        },
+        rateLimits: {
+          requestsPerMinute: 100,
+          requestsPerDay: 10000
+        },
+        priority: 4
       });
     }
 
