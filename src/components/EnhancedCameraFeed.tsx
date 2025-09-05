@@ -73,50 +73,33 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
     };
   }, [isInterviewActive, addActivityAlert]);
 
-  // Face detection simulation (in a real app, you'd use ML libraries like face-api.js)
-  const performFaceDetection = useCallback(async () => {
-    if (!videoRef.current || !canvasRef.current || !cameraOn) return;
+  // Simple face monitoring - just check if video is active and provide alerts
+  const performFaceMonitoring = useCallback(async () => {
+    if (!videoRef.current || !cameraOn) {
+      setFaceDetectionStatus('no_face');
+      addActivityAlert({
+        type: 'no_face',
+        message: 'No face detected - Camera not active',
+        severity: 'high',
+        timestamp: new Date()
+      });
+      return;
+    }
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
     const video = videoRef.current;
-
-    if (!ctx) return;
-
-    // Improved mock face detection logic with more realistic behavior
-    const mockDetection = () => {
-      const random = Math.random();
-      
-      // Reduce false positive rates significantly
-      if (random > 0.98) { // Only 2% chance of no face alert
-        setFaceDetectionStatus('no_face');
-        addActivityAlert({
-          type: 'no_face',
-          message: 'No face detected in camera',
-          severity: 'high',
-          timestamp: new Date()
-        });
-      } else if (random > 0.97) { // Only 1% chance of multiple faces
-        setFaceDetectionStatus('multiple_faces');
-        addActivityAlert({
-          type: 'multiple_faces',
-          message: 'Multiple faces detected',
-          severity: 'high',
-          timestamp: new Date()
-        });
-      } else if (random > 0.95) { // Only 2% chance of looking away
-        addActivityAlert({
-          type: 'looking_away',
-          message: 'Looking away from camera',
-          severity: 'medium',
-          timestamp: new Date()
-        });
-      } else {
-        setFaceDetectionStatus('face_found');
-      }
-    };
-
-    mockDetection();
+    
+    // Simple check - if video is playing and has data, assume face is present
+    if (video.readyState >= 2 && !video.paused) {
+      setFaceDetectionStatus('face_found');
+    } else {
+      setFaceDetectionStatus('no_face');
+      addActivityAlert({
+        type: 'no_face',
+        message: 'Please ensure your face is visible in the camera',
+        severity: 'medium',
+        timestamp: new Date()
+      });
+    }
   }, [cameraOn, addActivityAlert]);
 
   // Start camera
