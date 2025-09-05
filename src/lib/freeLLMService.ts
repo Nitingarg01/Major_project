@@ -99,8 +99,8 @@ export class FreeLLMService {
         apiUrl: 'https://api-inference.huggingface.co/models',
         apiKey: process.env.HUGGINGFACE_API_KEY || process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY || '',
         models: {
-          'mistral-7b': 'mistralai/Mistral-7B-Instruct-v0.1',
-          'llama-2-7b': 'meta-llama/Llama-2-7b-chat-hf'
+          'mistral-7b': 'microsoft/DialoGPT-medium',
+          'llama-2-7b': 'microsoft/DialoGPT-medium'
         },
         rateLimits: {
           requestsPerMinute: 10,
