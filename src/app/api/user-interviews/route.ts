@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10');
 
-    const db = client.db();
+    const db = client.db("Cluster0");
     
     // Get user's recent interviews
     const interviews = await db
