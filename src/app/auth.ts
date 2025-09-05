@@ -1,13 +1,11 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import client from "@/lib/db";
 import { compare } from "bcrypt-ts"
 import { DBUser } from "@/types/user";
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
-    adapter: MongoDBAdapter(client),
     debug: true,
     session: {
         strategy: "jwt"
