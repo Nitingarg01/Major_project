@@ -38,6 +38,11 @@ export const createInterview = async (data: formD, projectContext: string[], wor
       jobTitle: data.jobTitle,
       experienceLevel: data.experienceLevel,
       interviewType: data.interviewType,
+      selectedRounds: data.selectedRounds || ['technical', 'behavioral'],
+      estimatedDuration: data.estimatedDuration || 60,
+      difficultyPreference: data.difficultyPreference || 'adaptive',
+      companyIntelligence: data.companyIntelligence,
+      roundConfigs: data.roundConfigs,
       createdAt: new Date()
     })
     
