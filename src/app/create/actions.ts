@@ -8,7 +8,12 @@ type formD = {
   companyName: string,
   jobTitle: string,
   experienceLevel: 'entry' | 'mid' | 'senior',
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed'
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed',
+  selectedRounds?: string[],
+  estimatedDuration?: number,
+  difficultyPreference?: 'adaptive' | 'fixed',
+  companyIntelligence?: any,
+  roundConfigs?: any[]
 }
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
