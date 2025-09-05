@@ -196,7 +196,8 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                 muted
                 className="w-full h-full object-cover rounded-lg"
               />
-              <canvas ref={canvasRef} className="hidden" width="640" height="480" />
+              
+              {/* Simple monitoring overlay - no complex canvas needed */}
               
               {/* Monitoring Status Overlay */}
               {isInterviewActive && (
