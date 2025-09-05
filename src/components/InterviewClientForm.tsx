@@ -54,8 +54,6 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
         setIsSubmitting(true)
         
         try {
-            toast.loading("Submitting your answers...")
-            
             const timeSpent = Math.floor((Date.now() - startTime) / 1000)
             const answers = data.submitted.map(item => item.answer)
             
@@ -63,19 +61,36 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
             if (onRoundComplete) {
                 onRoundComplete(answers, timeSpent)
                 toast.success("Round completed! Moving to next round...")
-            } else {
-                // Traditional single round interview
-                await setAnswers(data.submitted, id)
-                toast.success("Answers submitted successfully!")
-                
-                // Wait a moment then redirect to feedback
-                setTimeout(() => {
-                    router.push(`/interview/${id}/feedback`)
-                }, 1500)
+                return
             }
-        } catch (error) {
+
+            // Traditional single round interview with timeout protection
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+            })
+
+            const submitPromise = setAnswers(data.submitted, id)
+
+            await Promise.race([submitPromise, timeoutPromise])
+            
+            toast.success("Answers submitted successfully!")
+            
+            // Wait a moment then redirect to feedback
+            setTimeout(() => {
+                router.push(`/interview/${id}/feedback`)
+            }, 1500)
+            
+        } catch (error: any) {
             console.error('Submission error:', error)
-            toast.error("Failed to submit answers. Please try again.")
+            
+            let errorMessage = "Failed to submit answers. Please try again."
+            if (error.message === 'Request timeout') {
+                errorMessage = "Submission is taking longer than expected. Please check your connection and try again."
+            } else if (error.response?.status === 500) {
+                errorMessage = "Server error occurred. Your answers may have been saved. Please check your interview status."
+            }
+            
+            toast.error(errorMessage)
         } finally {
             setIsSubmitting(false)
         }
