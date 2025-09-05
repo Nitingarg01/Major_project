@@ -210,6 +210,10 @@ export class FreeLLMService {
 
     if (provider.name === 'huggingface') {
       return this.callHuggingFace(provider, request, modelName);
+    } else if (provider.name === 'gemini') {
+      return this.callGemini(provider, request, modelName);
+    } else if (provider.name === 'emergent') {
+      return this.callEmergent(provider, request, modelName);
     } else {
       return this.callOpenAICompatible(provider, request, modelName);
     }
