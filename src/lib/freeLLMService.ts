@@ -132,8 +132,9 @@ export class FreeLLMService {
     // Sort providers by priority
     this.providers.sort((a, b) => a.priority - b.priority);
     
-    console.log(`✅ Initialized ${this.providers.length} free LLM providers:`, 
-      this.providers.map(p => p.name).join(', '));
+    console.log(`✅ Initialized ${this.providers.length} optimized LLM providers:`, 
+      this.providers.map(p => `${p.name} (priority ${p.priority})`).join(', '));
+    console.log(`🎯 Provider order: ${this.providers.map(p => p.name).join(' → ')}`);
   }
 
   private canMakeRequest(providerName: string): boolean {
