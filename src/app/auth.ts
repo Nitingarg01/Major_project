@@ -37,7 +37,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 }
 
                 const dbClient = client;
-                const db = dbClient.db()
+                const db = dbClient.db("Cluster0")
 
                 const user = await db.collection("users").findOne({ email: email });
                 if (!user) {
