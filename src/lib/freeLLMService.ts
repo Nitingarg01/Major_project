@@ -384,7 +384,40 @@ export class FreeLLMService {
         model: 'llama-3.1-8b'
       });
 
-      const questions = JSON.parse(response.content.replace(/```json\n?|\n?```/g, ''));
+      // Enhanced JSON extraction - try multiple approaches
+      let jsonContent = response.content;
+      
+      // Remove markdown code blocks
+      jsonContent = jsonContent.replace(/```json\n?|\n?```/g, '');
+      jsonContent = jsonContent.replace(/```\n?|\n?```/g, '');
+      
+      // Try to find JSON array in the response
+      const jsonMatch = jsonContent.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        jsonContent = jsonMatch[0];
+      }
+      
+      // Clean up common formatting issues
+      jsonContent = jsonContent.trim();
+      
+      let questions;
+      try {
+        questions = JSON.parse(jsonContent);
+      } catch (parseError) {
+        console.warn('Failed to parse JSON, trying to extract from response:', parseError);
+        // If JSON parsing fails, look for a JSON-like structure
+        const arrayMatch = response.content.match(/\[\s*{[\s\S]*}\s*\]/);
+        if (arrayMatch) {
+          questions = JSON.parse(arrayMatch[0]);
+        } else {
+          throw new Error(`Unable to extract valid JSON from response: ${response.content.substring(0, 200)}...`);
+        }
+      }
+      
+      if (!Array.isArray(questions)) {
+        throw new Error('Response is not an array');
+      }
+
       return questions.map((q: any, index: number) => ({
         ...q,
         id: q.id || `q-${Date.now()}-${index}`,
