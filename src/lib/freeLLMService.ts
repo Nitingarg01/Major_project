@@ -78,11 +78,11 @@ export class FreeLLMService {
     if (process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       this.providers.push({
         name: 'gemini',
-        apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+        apiUrl: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent',
         apiKey: process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
         models: {
-          'gemini-pro': 'gemini-pro',
-          'gemini-1.5-flash': 'gemini-1.5-flash'
+          'gemini-1.5-flash': 'gemini-1.5-flash',
+          'gemini-pro': 'gemini-1.5-pro'
         },
         rateLimits: {
           requestsPerMinute: 60,
