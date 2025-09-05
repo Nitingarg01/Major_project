@@ -494,7 +494,40 @@ export class FreeLLMService {
         model: 'llama-3.1-8b'
       });
 
-      const problems = JSON.parse(response.content.replace(/```json\n?|\n?```/g, ''));
+      // Enhanced JSON extraction for DSA problems
+      let jsonContent = response.content;
+      
+      // Remove markdown code blocks
+      jsonContent = jsonContent.replace(/```json\n?|\n?```/g, '');
+      jsonContent = jsonContent.replace(/```\n?|\n?```/g, '');
+      
+      // Try to find JSON array in the response
+      const jsonMatch = jsonContent.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        jsonContent = jsonMatch[0];
+      }
+      
+      // Clean up common formatting issues
+      jsonContent = jsonContent.trim();
+      
+      let problems;
+      try {
+        problems = JSON.parse(jsonContent);
+      } catch (parseError) {
+        console.warn('Failed to parse DSA JSON, trying to extract from response:', parseError);
+        // If JSON parsing fails, look for a JSON-like structure
+        const arrayMatch = response.content.match(/\[\s*{[\s\S]*}\s*\]/);
+        if (arrayMatch) {
+          problems = JSON.parse(arrayMatch[0]);
+        } else {
+          throw new Error(`Unable to extract valid JSON from response: ${response.content.substring(0, 200)}...`);
+        }
+      }
+      
+      if (!Array.isArray(problems)) {
+        throw new Error('Response is not an array');
+      }
+
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `dsa-${Date.now()}-${index}`,
