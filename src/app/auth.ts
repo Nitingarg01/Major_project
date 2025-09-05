@@ -86,7 +86,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         },
         signIn: async ({ user, account }) => {
             const dbClient = client;
-            const db = dbClient.db()
+            const db = dbClient.db("Cluster0")
 
             if (account?.provider === 'google') {
                 try {
