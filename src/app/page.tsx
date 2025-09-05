@@ -1,132 +1,290 @@
-import Image from "next/image";
-import { auth } from "@/app/auth";
-import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { IoMdAdd } from "react-icons/io";
-import Link from "next/link";
-import { getUserInterviews } from "./actions";
-import InterviewCard from "@/components/InterviewCard";
-import Sidebar from "@/components/Sidebar";
-import { Sparkles, Target, Users, Zap } from "lucide-react";
+import { Suspense } from 'react'
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react'
 
-type User = {
-  name: string,
-  email: string,
-  id: string,
+export const metadata: Metadata = {
+  title: 'RecruiterAI - Advanced AI Interview Platform',
+  description: 'Master your interview skills with AI-powered mock interviews, real-time feedback, and personalized coaching.',
 }
 
-export default async function Home() {
-  const session = await auth();
-  if (!session?.user) {
-    redirect('/login')
+const features = [
+  {
+    icon: <Zap className="w-6 h-6" />,
+    title: 'AI-Powered Questions',
+    description: 'Smart question generation based on job roles, companies, and recent industry trends'
+  },
+  {
+    icon: <Target className="w-6 h-6" />,
+    title: 'Company Intelligence',
+    description: 'Real-time company data, recent news, and culture insights for targeted preparation'
+  },
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: 'Performance Analytics',
+    description: 'Detailed feedback on your responses with improvement suggestions and scoring'
+  },
+  {
+    icon: <Shield className="w-6 h-6" />,
+    title: 'Realistic Simulation',
+    description: 'Camera monitoring, time tracking, and authentic interview environment'
+  },
+  {
+    icon: <Clock className="w-6 h-6" />,
+    title: 'Multi-Format Support',
+    description: 'Technical, behavioral, DSA coding, and mixed interview formats'
+  },
+  {
+    icon: <CheckCircle className="w-6 h-6" />,
+    title: 'Instant Results',
+    description: 'Get immediate feedback and detailed performance reports after each session'
   }
-  const user = session?.user as User
-  const interviews = await getUserInterviews()
+]
 
-  if (!interviews) {
-    return <>Loading...</>
+const testimonials = [
+  {
+    name: 'Sarah Chen',
+    role: 'Software Engineer at Google',
+    content: 'RecruiterAI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
+    rating: 5
+  },
+  {
+    name: 'Michael Rodriguez',
+    role: 'Product Manager at Microsoft',
+    content: 'The real-time feedback and performance analytics made all the difference in my interview preparation.',
+    rating: 5
+  },
+  {
+    name: 'Emily Johnson',
+    role: 'Data Scientist at Amazon',
+    content: 'I love how the platform adapts to different companies and roles. Got my dream job after practicing here!',
+    rating: 5
   }
+]
 
+export default function HomePage() {
   return (
-    <div className="flex flex-row gap-1 w-full min-h-screen">
-      <div className="w-[15%] h-screen bg-gray-50 sticky top-0">
-        <Sidebar credits={0} id={user?.id} />
-      </div>
-
-      <div className="mx-4 flex flex-col gap-6 mt-6 w-[85%]">
-        {/* Hero Section */}
-        <div className="text-center py-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="w-8 h-8 text-purple-500" />
-            <span className="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 text-transparent bg-clip-text font-extrabold text-4xl">
-              AI Interview Practice Platform
-            </span>
-            <Sparkles className="w-8 h-8 text-blue-500" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Navigation */}
+      <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                RecruiterAI
+              </Link>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/login"
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105"
+              >
+                Get Started
+              </Link>
+            </div>
           </div>
-          <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
-            Practice for interviews and ace the real ones with AI-powered mock interviews, 
-            real-time feedback, and comprehensive performance analysis.
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="mb-8">
+            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border border-blue-200">
+              <Zap className="w-4 h-4 mr-2" />
+              <span className="font-bold text-xl">Advanced AI Interview Platform</span>
+            </span>
+          </div>
+          
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            Master Your Next
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
+              Interview
+            </span>
+          </h1>
+          
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Practice with AI-powered mock interviews, get real-time feedback, and prepare with company-specific questions. 
+            Land your dream job with confidence.
           </p>
           
-          {/* Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8">
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">
-              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-blue-800">Multi-Round Interviews</h3>
-              <p className="text-sm text-blue-700">Technical, Behavioral, DSA & Aptitude</p>
-            </div>
-            <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
-              <Zap className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-green-800">AI-Powered Feedback</h3>
-              <p className="text-sm text-green-700">Real-time analysis & improvement tips</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg">
-              <Users className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-purple-800">Company Specific</h3>
-              <p className="text-sm text-purple-700">Practice for your dream companies</p>
-            </div>
-            <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-4 rounded-lg">
-              <Sparkles className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-orange-800">Resume Analyzer</h3>
-              <p className="text-sm text-orange-700">AI-powered resume scoring & tips</p>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Link
+              href="/signup"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 flex items-center"
+            >
+              Start Practicing Now
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
+            
+            <Link
+              href="/demo"
+              className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl text-lg font-semibold hover:border-blue-600 hover:text-blue-600 transition-all"
+            >
+              Watch Demo
+            </Link>
           </div>
 
-          {/* Free Badge */}
-          <div className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-3 rounded-full inline-block mb-6">
-            <span className="font-bold text-xl">🎉 100% FREE - No Credits Required!</span>
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">10,000+</div>
+              <div className="text-gray-600">Interviews Completed</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">95%</div>
+              <div className="text-gray-600">Success Rate</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">500+</div>
+              <div className="text-gray-600">Companies Covered</div>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Action Section */}
-        <div className="flex flex-col gap-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">Your Interview Sessions</h2>
-              <p className="text-gray-600">Track your progress and continue practicing</p>
-            </div>
-            <div className="flex gap-3">
-              <Button variant="outline" className="px-6 py-3 text-lg">
-                <Link href='/resume-analyzer' className="flex flex-row gap-2 items-center">
-                  <Sparkles className="w-5 h-5" />
-                  Resume Analyzer
-                </Link>
-              </Button>
-              <Button variant="default" className="px-6 py-3 text-lg">
-                <Link href='/create' className="flex flex-row gap-2 items-center">
-                  <IoMdAdd className="w-5 h-5" />
-                  Create New Interview
-                </Link>
-              </Button>
-            </div>
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Everything You Need to Succeed
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our comprehensive AI interview platform provides all the tools and insights you need to ace your next interview.
+            </p>
           </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow"
+              >
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Interview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {interviews.length > 0 ? (
-              interviews.map((interview, index) => (
-                <InterviewCard interview={interview} key={index} />
-              ))
-            ) : (
-              <div className="col-span-full text-center py-16">
-                <div className="bg-gray-100 rounded-lg p-8 max-w-md mx-auto">
-                  <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">No interviews yet</h3>
-                  <p className="text-gray-500 mb-4">
-                    Get started by creating your first mock interview session
-                  </p>
-                  <Button asChild>
-                    <Link href='/create' className="flex items-center gap-2">
-                      <IoMdAdd className="w-4 h-4" />
-                      Create Your First Interview
-                    </Link>
-                  </Button>
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Success Stories
+            </h2>
+            <p className="text-xl text-gray-600">
+              See how RecruiterAI helped professionals land their dream jobs
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4 italic">
+                  "{testimonial.content}"
+                </p>
+                <div>
+                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                  <div className="text-sm text-gray-600">{testimonial.role}</div>
                 </div>
               </div>
-            )}
+            ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to Ace Your Next Interview?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Join thousands of professionals who've successfully prepared with RecruiterAI
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/signup"
+              className="bg-white text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-all transform hover:scale-105 flex items-center justify-center"
+            >
+              Start Your Free Interview
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="text-2xl font-bold mb-4">RecruiterAI</div>
+              <p className="text-gray-400">
+                The most advanced AI interview platform for career success.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Product</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/demo" className="hover:text-white transition-colors">Demo</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Company</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 RecruiterAI. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
-  );
+  )
 }

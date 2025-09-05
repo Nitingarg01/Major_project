@@ -1,64 +1,76 @@
 'use client'
-
-import { Dispatch, SetStateAction, useEffect, useRef, useState, useCallback } from 'react';
-import { VideoOff, Camera, CameraOff, AlertTriangle, Eye, EyeOff, Shield, Activity } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { Badge } from './ui/badge';
-import { Progress } from './ui/progress';
+import React, { useRef, useEffect, useState, useCallback } from 'react'
+import { Card, CardContent } from './ui/card'
+import { Badge } from './ui/badge'
+import { Button } from './ui/button'
+import { Camera, CameraOff, AlertTriangle, Shield, Eye, EyeOff, Activity } from 'lucide-react'
 import * as faceapi from 'face-api.js';
 
-type Props = {
-  cameraOn: boolean;
-  setCameraOn: Dispatch<SetStateAction<boolean>>;
-  onActivityDetected?: (activity: ActivityAlert) => void;
-  isInterviewActive?: boolean;
+interface AdvancedCameraFeedProps {
+  isRecording: boolean;
+  onRecordingChange: (recording: boolean) => void;
+  onAnomalyDetected?: (anomaly: string) => void;
+  enableFaceDetection?: boolean;
+  enableMisbehaviorDetection?: boolean;
+  className?: string;
 }
 
-interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
-  timestamp: Date;
-  confidence?: number;
-}
-
-interface FaceDetectionData {
-  facesCount: number;
-  facePosition: { x: number; y: number; width: number; height: number } | null;
-  eyeGazeDirection: 'center' | 'left' | 'right' | 'up' | 'down' | 'unknown';
-  confidence: number;
-}
-
-const AdvancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInterviewActive = false }: Props) => {
+const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
+  isRecording,
+  onRecordingChange,
+  onAnomalyDetected,
+  enableFaceDetection = false,
+  enableMisbehaviorDetection = false,
+  className = ""
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const detectionIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const lookingAwayTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  const [activityAlerts, setActivityAlerts] = useState<ActivityAlert[]>([]);
-  const [isMonitoring, setIsMonitoring] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [faceDetected, setFaceDetected] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
-  const [faceDetectionData, setFaceDetectionData] = useState<FaceDetectionData>({
-    facesCount: 0,
-    facePosition: null,
-    eyeGazeDirection: 'unknown',
-    confidence: 0
-  });
+  const [detectionActive, setDetectionActive] = useState(false);
+  const [anomalies, setAnomalies] = useState<string[]>([]);
+  const [faceDetectionHealth, setFaceDetectionHealth] = useState<'loading' | 'ready' | 'failed'>('loading');
   
-  // Enhanced monitoring states
-  const [tabSwitchCount, setTabSwitchCount] = useState(0);
-  const [focusLostCount, setFocusLostCount] = useState(0);
-  const [lookingAwayStartTime, setLookingAwayStartTime] = useState<Date | null>(null);
-  const [consecutiveLookingAwayTime, setConsecutiveLookingAwayTime] = useState(0);
-  const [faceDetectionHealth, setFaceDetectionHealth] = useState<'good' | 'poor' | 'failed'>('good');
+  // Camera permissions and constraints
+  const getCameraConstraints = () => ({
+    video: {
+      width: { ideal: 1280, max: 1920 },
+      height: { ideal: 720, max: 1080 },
+      frameRate: { ideal: 30, max: 30 },
+      facingMode: 'user'
+    },
+    audio: false
+  });
 
-  // Load face-api.js models
+  // Load face-api.js models with better error handling
   useEffect(() => {
     const loadModels = async () => {
+      // Skip face detection model loading if not enabled
+      if (!enableFaceDetection) {
+        setModelsLoaded(true);
+        setFaceDetectionHealth('ready');
+        return;
+      }
+
       try {
-        const MODEL_URL = '/models'; // You'll need to add models to public/models
+        const MODEL_URL = '/models'; // Models should be in public/models
         
+        // Check if models exist before loading
+        const modelExists = await fetch(`${MODEL_URL}/tiny_face_detector_model-weights_manifest.json`)
+          .then(res => res.ok)
+          .catch(() => false);
+
+        if (!modelExists) {
+          console.warn('Face detection models not found, using fallback detection');
+          setFaceDetectionHealth('failed');
+          setModelsLoaded(true);
+          return;
+        }
+
         await Promise.all([
           faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
           faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -67,518 +79,318 @@ const AdvancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         ]);
         
         setModelsLoaded(true);
+        setFaceDetectionHealth('ready');
         console.log('Face detection models loaded successfully');
       } catch (error) {
-        console.error('Error loading face detection models:', error);
+        console.warn('Face detection models failed to load, using fallback:', error);
         setFaceDetectionHealth('failed');
-        // Fallback to basic detection
+        // Still set models as loaded to allow fallback detection
         setModelsLoaded(true);
       }
     };
 
     loadModels();
+  }, [enableFaceDetection]);
+
+  // Initialize camera
+  const initializeCamera = useCallback(async () => {
+    try {
+      setCameraError(null);
+      
+      const stream = await navigator.mediaDevices.getUserMedia(getCameraConstraints());
+      streamRef.current = stream;
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+        setIsInitialized(true);
+      }
+    } catch (error: any) {
+      console.error('Camera initialization failed:', error);
+      setCameraError(
+        error.name === 'NotAllowedError' 
+          ? 'Camera permission denied. Please allow camera access and refresh.'
+          : error.name === 'NotFoundError'
+          ? 'No camera found. Please connect a camera device.'
+          : 'Camera initialization failed. Please check your camera settings.'
+      );
+    }
   }, []);
 
-  const addActivityAlert = useCallback((alert: ActivityAlert) => {
-    setActivityAlerts(prev => [...prev.slice(-9), alert]); // Keep last 10 alerts
-    onActivityDetected?.(alert);
-  }, [onActivityDetected]);
-
-  // Enhanced tab switch and focus detection
-  useEffect(() => {
-    if (!isInterviewActive) return;
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        setTabSwitchCount(prev => prev + 1);
-        addActivityAlert({
-          type: 'tab_switch',
-          message: `Tab switched or browser minimized (${tabSwitchCount + 1} times)`,
-          severity: tabSwitchCount >= 2 ? 'high' : 'medium',
-          timestamp: new Date(),
-          confidence: 1.0
-        });
-      }
-    };
-
-    const handleFocusLost = () => {
-      setFocusLostCount(prev => prev + 1);
-      addActivityAlert({
-        type: 'window_focus_lost',
-        message: `Window focus lost (${focusLostCount + 1} times)`,
-        severity: focusLostCount >= 3 ? 'high' : 'medium',
-        timestamp: new Date(),
-        confidence: 0.9
-      });
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Detect Alt+Tab, Ctrl+Tab, Cmd+Tab
-      if ((e.altKey && e.key === 'Tab') || (e.ctrlKey && e.key === 'Tab') || (e.metaKey && e.key === 'Tab')) {
-        addActivityAlert({
-          type: 'tab_switch',
-          message: 'Attempted to switch applications',
-          severity: 'high',
-          timestamp: new Date(),
-          confidence: 1.0
-        });
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('blur', handleFocusLost);
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('blur', handleFocusLost);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isInterviewActive, addActivityAlert, tabSwitchCount, focusLostCount]);
-
-  // Advanced face detection with real ML
-  const performAdvancedFaceDetection = useCallback(async () => {
-    if (!videoRef.current || !canvasRef.current || !cameraOn || !modelsLoaded) return;
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx || video.videoWidth === 0 || video.videoHeight === 0) return;
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    try {
-      // Use face-api.js for real face detection
-      const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceExpressions();
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const facesCount = detections.length;
-      let eyeGazeDirection: FaceDetectionData['eyeGazeDirection'] = 'unknown';
-      let facePosition: FaceDetectionData['facePosition'] = null;
-      let averageConfidence = 0;
-
-      if (facesCount === 0) {
-        // No face detected
-        setFaceDetectionData(prev => ({ ...prev, facesCount: 0, confidence: 0 }));
-        
-        if (faceDetectionHealth === 'good') {
-          addActivityAlert({
-            type: 'no_face',
-            message: 'No face detected in camera view',
-            severity: 'high',
-            timestamp: new Date(),
-            confidence: 0.95
-          });
-        }
-      } else if (facesCount === 1) {
-        // Single face detected - analyze gaze direction
-        const detection = detections[0];
-        const landmarks = detection.landmarks;
-        const box = detection.detection.box;
-        
-        facePosition = {
-          x: box.x,
-          y: box.y,
-          width: box.width,
-          height: box.height
-        };
-
-        averageConfidence = detection.detection.score;
-
-        // Analyze eye gaze direction using landmarks
-        if (landmarks) {
-          const leftEye = landmarks.getLeftEye();
-          const rightEye = landmarks.getRightEye();
-          const nose = landmarks.getNose();
-          
-          // Calculate gaze direction based on eye and nose positions
-          const eyeCenter = {
-            x: (leftEye[0].x + rightEye[3].x) / 2,
-            y: (leftEye[0].y + rightEye[3].y) / 2
-          };
-          
-          const noseCenter = {
-            x: nose[3].x,
-            y: nose[3].y
-          };
-          
-          const faceCenter = {
-            x: box.x + box.width / 2,
-            y: box.y + box.height / 2
-          };
-
-          // Determine gaze direction
-          const horizontalOffset = Math.abs(eyeCenter.x - faceCenter.x) / box.width;
-          const verticalOffset = Math.abs(eyeCenter.y - faceCenter.y) / box.height;
-
-          if (horizontalOffset > 0.15) {
-            eyeGazeDirection = eyeCenter.x < faceCenter.x ? 'left' : 'right';
-          } else if (verticalOffset > 0.1) {
-            eyeGazeDirection = eyeCenter.y < faceCenter.y ? 'up' : 'down';
-          } else {
-            eyeGazeDirection = 'center';
-          }
-
-          // Handle looking away detection with 5-second threshold
-          if (eyeGazeDirection !== 'center') {
-            if (!lookingAwayStartTime) {
-              setLookingAwayStartTime(new Date());
-            } else {
-              const timeLookingAway = (new Date().getTime() - lookingAwayStartTime.getTime()) / 1000;
-              setConsecutiveLookingAwayTime(timeLookingAway);
-              
-              if (timeLookingAway > 5) { // 5 second threshold
-                addActivityAlert({
-                  type: 'looking_away',
-                  message: `Looking away from screen for ${Math.round(timeLookingAway)} seconds`,
-                  severity: timeLookingAway > 10 ? 'high' : 'medium',
-                  timestamp: new Date(),
-                  confidence: 0.85
-                });
-                
-                // Reset timer to prevent spam
-                setLookingAwayStartTime(new Date());
-              }
-            }
-          } else {
-            // Reset looking away timer when looking at center
-            setLookingAwayStartTime(null);
-            setConsecutiveLookingAwayTime(0);
-          }
-        }
-
-        // Draw face detection rectangle
-        ctx.strokeStyle = '#00ff00';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(box.x, box.y, box.width, box.height);
-
-      } else {
-        // Multiple faces detected
-        setFaceDetectionData(prev => ({ ...prev, facesCount }));
-        
-        addActivityAlert({
-          type: 'multiple_faces',
-          message: `${facesCount} faces detected in camera`,
-          severity: 'high',
-          timestamp: new Date(),
-          confidence: 0.9
-        });
-
-        // Draw all face rectangles
-        detections.forEach(detection => {
-          const box = detection.detection.box;
-          ctx.strokeStyle = '#ff0000';
-          ctx.lineWidth = 2;
-          ctx.strokeRect(box.x, box.y, box.width, box.height);
-        });
-      }
-
-      setFaceDetectionData({
-        facesCount,
-        facePosition,
-        eyeGazeDirection,
-        confidence: averageConfidence
-      });
-
-      setFaceDetectionHealth('good');
-
-    } catch (error) {
-      console.error('Face detection error:', error);
-      setFaceDetectionHealth('poor');
-      
-      // Fallback to basic detection
-      fallbackDetection();
+  // Stop camera
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
     }
-  }, [cameraOn, modelsLoaded, addActivityAlert, lookingAwayStartTime, faceDetectionHealth]);
+    setIsInitialized(false);
+    setDetectionActive(false);
+    setFaceDetected(false);
+  }, []);
+
+  // Toggle recording
+  const toggleRecording = () => {
+    if (!isInitialized) {
+      initializeCamera();
+      return;
+    }
+    
+    if (isRecording) {
+      stopCamera();
+      onRecordingChange(false);
+    } else {
+      onRecordingChange(true);
+      if (enableFaceDetection && modelsLoaded) {
+        setDetectionActive(true);
+        startFaceDetection();
+      }
+    }
+  };
+
+  // Face detection with fallback
+  const performFaceDetection = async (video: HTMLVideoElement) => {
+    try {
+      if (faceDetectionHealth === 'ready' && faceapi.nets.tinyFaceDetector.params) {
+        // Use face-api.js for real face detection
+        const detections = await faceapi
+          .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+          .withFaceLandmarks()
+          .withFaceExpressions();
+
+        return detections.length > 0;
+      } else {
+        // Fallback: Use basic video analysis
+        return await performFallbackDetection(video);
+      }
+    } catch (error) {
+      console.warn('Face detection failed, using fallback:', error);
+      return await performFallbackDetection(video);
+    }
+  };
+
+  // Start face detection loop
+  const startFaceDetection = useCallback(() => {
+    if (!videoRef.current || !detectionActive) return;
+
+    const detectFaces = async () => {
+      if (!videoRef.current || !detectionActive) return;
+
+      try {
+        const faceDetected = await performFaceDetection(videoRef.current);
+        setFaceDetected(faceDetected);
+
+        if (!faceDetected && enableMisbehaviorDetection) {
+          addAnomaly('No face detected');
+          onAnomalyDetected?.('No face detected in frame');
+        }
+
+        // Continue detection loop
+        if (detectionActive) {
+          setTimeout(detectFaces, 500); // Check every 500ms
+        }
+      } catch (error) {
+        console.error('Face detection error:', error);
+        setTimeout(detectFaces, 1000);
+      }
+    };
+
+    detectFaces();
+  }, [detectionActive, enableMisbehaviorDetection, onAnomalyDetected]);
 
   // Fallback detection when face-api.js fails
-  const fallbackDetection = useCallback(() => {
-    // Simple mock detection with reduced false positives
-    const random = Math.random();
-    
-    if (random > 0.99) { // Very rare false alerts
-      addActivityAlert({
-        type: 'no_face',
-        message: 'Face detection uncertain',
-        severity: 'medium',
-        timestamp: new Date(),
-        confidence: 0.5
-      });
-    }
-  }, [addActivityAlert]);
+  const performFallbackDetection = async (video: HTMLVideoElement): Promise<boolean> => {
+    try {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return false;
 
-  // Start camera with enhanced settings
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
-            width: { ideal: 1280, max: 1920 },
-            height: { ideal: 720, max: 1080 },
-            facingMode: 'user',
-            frameRate: { ideal: 30, max: 60 }
-          },
-          audio: false
-        });
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Simple brightness analysis to detect presence
+      let totalBrightness = 0;
+      let nonZeroPixels = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const brightness = (r + g + b) / 3;
         
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          
-          // Wait for video to be ready
-          videoRef.current.onloadedmetadata = () => {
-            setIsMonitoring(true);
-          };
+        if (brightness > 10) {
+          totalBrightness += brightness;
+          nonZeroPixels++;
         }
-      } catch (err) {
-        console.error("Enhanced camera access error:", err);
-        addActivityAlert({
-          type: 'no_face',
-          message: 'Camera access denied or unavailable',
-          severity: 'high',
-          timestamp: new Date(),
-          confidence: 1.0
-        });
       }
-    };
 
-    const stopCamera = () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-        streamRef.current = null;
-      }
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
-      }
-      setIsMonitoring(false);
+      const avgBrightness = nonZeroPixels > 0 ? totalBrightness / nonZeroPixels : 0;
       
-      // Clear timers
-      if (detectionIntervalRef.current) {
-        clearInterval(detectionIntervalRef.current);
-      }
-      if (lookingAwayTimerRef.current) {
-        clearTimeout(lookingAwayTimerRef.current);
-      }
-    };
-
-    if (cameraOn) {
-      startCamera();
-    } else {
-      stopCamera();
+      // Basic heuristic: if there's sufficient variation and brightness, assume face present
+      return avgBrightness > 30 && nonZeroPixels > (canvas.width * canvas.height * 0.1);
+    } catch (error) {
+      console.error('Fallback detection failed:', error);
+      return true; // Assume face present if detection fails
     }
+  };
 
-    return () => stopCamera();
-  }, [cameraOn, addActivityAlert]);
+  // Add anomaly detection
+  const addAnomaly = (anomaly: string) => {
+    setAnomalies(prev => {
+      const newAnomalies = [anomaly, ...prev.slice(0, 4)];
+      return newAnomalies;
+    });
+  };
 
-  // Face detection interval - more frequent for better accuracy
+  // Cleanup on unmount
   useEffect(() => {
-    if (!isMonitoring || !isInterviewActive || !modelsLoaded) return;
-
-    detectionIntervalRef.current = setInterval(performAdvancedFaceDetection, 2000); // Every 2 seconds
-    
     return () => {
-      if (detectionIntervalRef.current) {
-        clearInterval(detectionIntervalRef.current);
-      }
+      stopCamera();
     };
-  }, [isMonitoring, isInterviewActive, performAdvancedFaceDetection, modelsLoaded]);
+  }, [stopCamera]);
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-blue-500';
-      default: return 'bg-gray-500';
+  // Auto-start detection when recording starts
+  useEffect(() => {
+    if (isRecording && enableFaceDetection && modelsLoaded && !detectionActive) {
+      setDetectionActive(true);
+      startFaceDetection();
+    } else if (!isRecording) {
+      setDetectionActive(false);
     }
-  };
-
-  const getFaceStatusColor = () => {
-    if (!isInterviewActive) return 'text-gray-500';
-    
-    if (faceDetectionData.facesCount === 1 && faceDetectionData.eyeGazeDirection === 'center') {
-      return 'text-green-500';
-    } else if (faceDetectionData.facesCount === 0) {
-      return 'text-red-500';
-    } else if (faceDetectionData.facesCount > 1) {
-      return 'text-red-500';
-    } else {
-      return 'text-yellow-500';
-    }
-  };
-
-  const getGazeStatus = () => {
-    if (!isInterviewActive) return 'Inactive';
-    
-    switch (faceDetectionData.eyeGazeDirection) {
-      case 'center': return 'Looking at screen';
-      case 'left': return 'Looking left';
-      case 'right': return 'Looking right';
-      case 'up': return 'Looking up';
-      case 'down': return 'Looking down';
-      default: return 'Analyzing...';
-    }
-  };
+  }, [isRecording, enableFaceDetection, modelsLoaded, detectionActive, startFaceDetection]);
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
-      {/* Camera Feed */}
-      <div className="relative">
-        <div className="h-[320px] w-[320px] border-2 border-gray-300 rounded-lg flex items-center justify-center mb-3 bg-gray-100 overflow-hidden">
-          {!cameraOn ? (
-            <div className="flex flex-col items-center text-gray-600">
-              <VideoOff className="w-16 h-16 mb-2" />
-              <span className="text-sm font-medium">Camera is Off</span>
-              <span className="text-xs text-gray-500 mt-1">Turn on camera for monitoring</span>
+    <Card className={`w-full max-w-2xl mx-auto ${className}`}>
+      <CardContent className="p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Camera className="w-5 h-5 text-blue-600" />
+            <h3 className="text-lg font-semibold">Interview Camera</h3>
+            {enableFaceDetection && (
+              <Badge variant={faceDetectionHealth === 'ready' ? 'default' : 'secondary'}>
+                {faceDetectionHealth === 'ready' ? 'AI Detection' : 'Basic Detection'}
+              </Badge>
+            )}
+          </div>
+          
+          {isInitialized && (
+            <div className="flex items-center gap-2">
+              {enableFaceDetection && (
+                <Badge variant={faceDetected ? 'default' : 'destructive'} className="text-xs">
+                  {faceDetected ? (
+                    <><Eye className="w-3 h-3 mr-1" />Face Detected</>
+                  ) : (
+                    <><EyeOff className="w-3 h-3 mr-1" />No Face</>
+                  )}
+                </Badge>
+              )}
+              <Badge variant={isRecording ? 'destructive' : 'secondary'} className="text-xs">
+                {isRecording ? (
+                  <><Activity className="w-3 h-3 mr-1 animate-pulse" />Recording</>
+                ) : (
+                  'Ready'
+                )}
+              </Badge>
+            </div>
+          )}
+        </div>
+
+        {/* Video Feed */}
+        <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video">
+          {cameraError ? (
+            <div className="flex flex-col items-center justify-center h-full text-white p-6">
+              <AlertTriangle className="w-12 h-12 mb-4 text-red-400" />
+              <p className="text-center mb-4">{cameraError}</p>
+              <Button onClick={initializeCamera} variant="outline" size="sm">
+                Try Again
+              </Button>
             </div>
           ) : (
             <>
               <video
                 ref={videoRef}
+                className="w-full h-full object-cover"
                 autoPlay
-                playsInline
                 muted
-                className="w-full h-full object-cover rounded-lg"
-                style={{ transform: 'scaleX(-1)' }} // Mirror effect
+                playsInline
               />
-              <canvas 
-                ref={canvasRef} 
-                className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
-                style={{ transform: 'scaleX(-1)' }}
+              <canvas
+                ref={canvasRef}
+                className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                style={{ display: 'none' }}
               />
               
-              {/* Enhanced Monitoring Status Overlay */}
-              {isInterviewActive && (
-                <div className="absolute top-2 right-2 flex flex-col gap-1">
-                  <div className={`flex items-center gap-1 px-2 py-1 bg-black/80 rounded text-white text-xs ${getFaceStatusColor()}`}>
-                    <Eye className="w-3 h-3" />
-                    <span>Faces: {faceDetectionData.facesCount}</span>
-                  </div>
-                  
-                  <div className={`flex items-center gap-1 px-2 py-1 bg-black/80 rounded text-white text-xs ${getFaceStatusColor()}`}>
-                    <Activity className="w-3 h-3" />
-                    <span>{getGazeStatus()}</span>
-                  </div>
-                  
-                  {isMonitoring && modelsLoaded && (
-                    <div className="flex items-center gap-1 px-2 py-1 bg-green-600/90 rounded text-white text-xs">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span>AI Active</span>
+              {/* Overlay indicators */}
+              {isInitialized && (
+                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                  {enableFaceDetection && (
+                    <div className={`px-2 py-1 rounded text-xs font-medium ${
+                      faceDetected 
+                        ? 'bg-green-500/80 text-white' 
+                        : 'bg-red-500/80 text-white'
+                    }`}>
+                      {faceDetected ? '✓ Face Detected' : '⚠ No Face'}
                     </div>
                   )}
-
-                  {faceDetectionHealth !== 'good' && (
-                    <div className="flex items-center gap-1 px-2 py-1 bg-yellow-600/90 rounded text-white text-xs">
-                      <AlertTriangle className="w-3 h-3" />
-                      <span>Fallback Mode</span>
+                  
+                  {isRecording && (
+                    <div className="bg-red-500/80 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
+                      <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse" />
+                      REC
                     </div>
                   )}
-                </div>
-              )}
-
-              {/* Looking away timer */}
-              {consecutiveLookingAwayTime > 0 && consecutiveLookingAwayTime < 5 && (
-                <div className="absolute bottom-2 left-2 right-2">
-                  <div className="bg-yellow-600/90 text-white text-xs px-2 py-1 rounded">
-                    Looking away: {Math.round(consecutiveLookingAwayTime)}s / 5s
-                  </div>
-                  <Progress 
-                    value={(consecutiveLookingAwayTime / 5) * 100} 
-                    className="h-1 mt-1"
-                  />
                 </div>
               )}
             </>
           )}
         </div>
 
-        {/* Camera Controls */}
-        <div className="flex justify-center gap-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div
-                onClick={() => setCameraOn(prev => !prev)}
-                className={`p-2 rounded-full cursor-pointer ${cameraOn ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors`}
-              >
-                {cameraOn ? <Camera className="w-5 h-5" /> : <CameraOff className="w-5 h-5" />}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              {cameraOn ? 'Turn Off Camera' : 'Turn On Camera'}
-            </TooltipContent>
-          </Tooltip>
-        </div>
-      </div>
-
-      {/* Enhanced Activity Monitoring Stats */}
-      {isInterviewActive && (
-        <div className="w-full max-w-sm space-y-3">
-          {/* Detection Status */}
-          <div className="bg-white rounded-lg p-3 border border-gray-200">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-gray-700">Detection Status</span>
-              <Badge variant={modelsLoaded ? 'default' : 'secondary'} className="text-xs">
-                {modelsLoaded ? 'AI Ready' : 'Loading...'}
-              </Badge>
-            </div>
-            
-            {faceDetectionData.confidence > 0 && (
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs text-gray-600">
-                  <span>Confidence</span>
-                  <span>{Math.round(faceDetectionData.confidence * 100)}%</span>
-                </div>
-                <Progress value={faceDetectionData.confidence * 100} className="h-1" />
-              </div>
+        {/* Controls */}
+        <div className="flex items-center justify-center mt-4 gap-4">
+          <Button
+            onClick={toggleRecording}
+            variant={isRecording ? "destructive" : "default"}
+            className="flex items-center gap-2"
+          >
+            {isRecording ? (
+              <><CameraOff className="w-4 h-4" />Stop Camera</>
+            ) : (
+              <><Camera className="w-4 h-4" />Start Camera</>
             )}
-          </div>
-
-          {/* Activity Stats */}
-          <div className="bg-white rounded-lg p-3 border border-gray-200">
-            <div className="grid grid-cols-2 gap-3 text-xs text-gray-600">
-              <div className="text-center">
-                <div className="text-lg font-bold text-red-600">{tabSwitchCount}</div>
-                <div>Tab Switches</div>
-              </div>
-              <div className="text-center">
-                <div className="text-lg font-bold text-yellow-600">{focusLostCount}</div>
-                <div>Focus Lost</div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Recent Activity Alerts */}
-          {activityAlerts.length > 0 && (
-            <div className="bg-white rounded-lg p-3 border border-gray-200">
-              <h4 className="text-xs font-medium text-gray-700 flex items-center gap-1 mb-2">
-                <Shield className="w-3 h-3" />
-                Security Alerts
-              </h4>
-              <div className="max-h-24 overflow-y-auto space-y-1">
-                {activityAlerts.slice(-3).map((alert, index) => (
-                  <div key={index} className="flex items-center gap-2 text-xs">
-                    <Badge variant="outline" className={`${getSeverityColor(alert.severity)} text-white text-xs px-1 py-0`}>
-                      {alert.severity}
-                    </Badge>
-                    <span className="text-gray-600 truncate flex-1">{alert.message}</span>
-                    {alert.confidence && (
-                      <span className="text-xs text-gray-400">
-                        {Math.round(alert.confidence * 100)}%
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          </Button>
         </div>
-      )}
-    </div>
+
+        {/* Anomaly Detection */}
+        {enableMisbehaviorDetection && anomalies.length > 0 && (
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="w-4 h-4 text-yellow-600" />
+              <span className="text-sm font-medium text-yellow-800">Detection Alerts</span>
+            </div>
+            <div className="space-y-1">
+              {anomalies.map((anomaly, index) => (
+                <div key={index} className="text-xs text-yellow-700">
+                  • {anomaly}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Status Information */}
+        <div className="mt-4 text-xs text-gray-500 space-y-1">
+          <div>Camera Status: {isInitialized ? 'Connected' : 'Disconnected'}</div>
+          {enableFaceDetection && (
+            <div>Detection: {faceDetectionHealth === 'ready' ? 'AI-Powered' : 'Basic Fallback'}</div>
+          )}
+          <div>Recording: {isRecording ? 'Active' : 'Inactive'}</div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
