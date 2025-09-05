@@ -316,7 +316,7 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
                 <li>• Real-time company news integration</li>
                 <li>• Better quality interview questions</li>
                 <li>• Automatic provider switching</li>
-                <li>• 100% free - no costs involved</li>
+                <li>• Cost-effective solution with multiple providers</li>
               </ul>
             </div>
           </div>
