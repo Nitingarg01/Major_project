@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
-import EnhancedAIService from '@/lib/enhancedAIService';
+import EmergentAIService from '@/lib/emergentAIService';
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         interviewId: interviewId
       });
 
-      if (existingQuestions) {
+      if (existingQuestions && existingQuestions.questions && existingQuestions.questions.length > 0) {
         return NextResponse.json({
           message: 'Questions already exist',
           questionsCount: existingQuestions.questions.length,
@@ -44,51 +44,40 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Prepare enhanced parameters
-    const enhancedParams = {
-      jobTitle: interview.jobTitle,
-      companyName: interview.companyName,
-      skills: interview.skills || [],
-      jobDescription: interview.jobDesc,
-      experienceLevel: interview.experienceLevel || 'mid',
-      interviewType: interview.interviewType || 'mixed',
-      resumeContent: buildResumeContent(interview),
-      numberOfQuestions: getEnhancedQuestionCount(interview.interviewType),
-      difficultyDistribution: getDifficultyDistribution(interview.experienceLevel)
-    };
-
-    const aiService = EnhancedAIService.getInstance();
+    const emergentAI = EmergentAIService.getInstance();
     
     // Generate enhanced questions based on interview type
     let allQuestions: any[] = [];
     
     if (interview.interviewType === 'mixed') {
-      // Generate mixed questions
-      const technicalQuestions = await aiService.generateEnhancedQuestions({
-        ...enhancedParams,
+      // Generate mixed questions with enhanced DSA problems
+      console.log('Generating mixed interview questions...');
+      
+      // Technical Questions (40%)
+      const technicalQuestions = await emergentAI.generateInterviewQuestions({
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
         interviewType: 'technical',
-        numberOfQuestions: Math.ceil(enhancedParams.numberOfQuestions * 0.4)
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 8
       });
 
-      const behavioralQuestions = await aiService.generateEnhancedQuestions({
-        ...enhancedParams,
+      // Behavioral Questions (30%)
+      const behavioralQuestions = await emergentAI.generateInterviewQuestions({
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
         interviewType: 'behavioral',
-        numberOfQuestions: Math.ceil(enhancedParams.numberOfQuestions * 0.3)
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 6
       });
 
-      // Generate DSA problems
-      const dsaProblems = await aiService.generateDSAProblems(
+      // DSA Problems (5+ unique problems as requested)
+      const dsaProblems = await emergentAI.generateDSAQuestions(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
-        ['Array', 'String', 'Dynamic Programming', 'Tree'],
-        2
-      );
-
-      // Generate aptitude questions
-      const aptitudeQuestions = await aiService.generateAptitudeQuestions(
-        ['verbal', 'numerical', 'logical'],
-        getAptitudeDifficulty(interview.experienceLevel),
-        Math.ceil(enhancedParams.numberOfQuestions * 0.2)
+        6 // Generate 6 unique DSA problems
       );
 
       allQuestions = [
@@ -102,24 +91,15 @@ export async function POST(request: NextRequest) {
           difficulty: p.difficulty,
           points: getDSAPoints(p.difficulty),
           problemData: p
-        })),
-        ...aptitudeQuestions.map(q => ({
-          id: q.id,
-          question: q.question,
-          expectedAnswer: q.options[q.correctAnswer],
-          category: 'aptitude',
-          difficulty: q.difficulty,
-          points: getAptitudePoints(q.difficulty),
-          aptitudeData: q
         }))
       ];
     } else if (interview.interviewType === 'dsa') {
-      // Generate only DSA problems
-      const dsaProblems = await aiService.generateDSAProblems(
+      // Generate only DSA problems (5+ unique as requested)
+      console.log('Generating DSA-only interview questions...');
+      const dsaProblems = await emergentAI.generateDSAQuestions(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
-        interview.skills.filter(skill => isDSASkill(skill)),
-        enhancedParams.numberOfQuestions
+        8 // Generate 8 unique DSA problems for DSA-only interviews
       );
 
       allQuestions = dsaProblems.map(p => ({
@@ -131,26 +111,17 @@ export async function POST(request: NextRequest) {
         points: getDSAPoints(p.difficulty),
         problemData: p
       }));
-    } else if (interview.interviewType === 'aptitude') {
-      // Generate only aptitude questions
-      const aptitudeQuestions = await aiService.generateAptitudeQuestions(
-        ['verbal', 'numerical', 'logical', 'spatial'],
-        getAptitudeDifficulty(interview.experienceLevel),
-        enhancedParams.numberOfQuestions
-      );
-
-      allQuestions = aptitudeQuestions.map(q => ({
-        id: q.id,
-        question: q.question,
-        expectedAnswer: q.options[q.correctAnswer],
-        category: 'aptitude',
-        difficulty: q.difficulty,
-        points: getAptitudePoints(q.difficulty),
-        aptitudeData: q
-      }));
     } else {
       // Generate single-type questions (technical/behavioral)
-      allQuestions = await aiService.generateEnhancedQuestions(enhancedParams);
+      console.log(`Generating ${interview.interviewType} interview questions...`);
+      allQuestions = await emergentAI.generateInterviewQuestions({
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: interview.interviewType,
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: getEnhancedQuestionCount(interview.interviewType)
+      });
     }
 
     // Enhanced question document with metadata
@@ -174,9 +145,7 @@ export async function POST(request: NextRequest) {
       })),
       metadata: {
         generatedAt: new Date(),
-        aiService: 'enhanced-gemini',
-        parameters: enhancedParams,
-        version: '2.0',
+        aiService: 'emergent-ai',
         totalQuestions: allQuestions.length,
         categoryBreakdown: getCategoryBreakdown(allQuestions),
         difficultyBreakdown: getDifficultyBreakdown(allQuestions)
@@ -191,7 +160,7 @@ export async function POST(request: NextRequest) {
       { upsert: true }
     );
 
-    // Update interview status with enhanced metadata
+    // Update interview status
     await db.collection('interviews').updateOne(
       { _id: new ObjectId(interviewId) },
       { 
@@ -203,8 +172,10 @@ export async function POST(request: NextRequest) {
       }
     );
 
+    console.log(`✅ Generated ${allQuestions.length} questions successfully`);
+
     return NextResponse.json({
-      message: 'Enhanced questions generated successfully',
+      message: 'Enhanced questions generated successfully with Emergent AI',
       questionsCount: allQuestions.length,
       questions: allQuestions,
       metadata: questionDoc.metadata,
