@@ -322,39 +322,7 @@ export class FreeLLMService {
     }
   }
 
-  private async callEmergent(provider: ProviderConfig, request: LLMRequest, modelName: string): Promise<LLMResponse> {
-    const response = await fetch(provider.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${provider.apiKey}`,
-      },
-      body: JSON.stringify({
-        messages: request.messages,
-        model: modelName,
-        max_tokens: request.max_tokens || 4000,
-        temperature: request.temperature || 0.7,
-      }),
-    });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Emergent API error: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    
-    if (data.content || data.message) {
-      return {
-        content: data.content || data.message,
-        provider: provider.name,
-        model: modelName,
-        usage: data.usage
-      };
-    } else {
-      throw new Error(`Invalid response format from Emergent: ${JSON.stringify(data)}`);
-    }
-  }
 
   // Convenience methods for different use cases
   public async generateInterviewQuestions(params: {
