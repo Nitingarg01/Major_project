@@ -1,4 +1,3 @@
-'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
@@ -13,6 +12,7 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Clock, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react'
 import { Badge } from './ui/badge'
+import { SubmittingLoadingSpinner } from './ui/loading-spinner'
 
 const schema = z.object({
     submitted: z.array(z.record(z.string(), z.string().min(10, 'Please provide a more detailed answer')))
