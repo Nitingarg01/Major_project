@@ -68,7 +68,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 token.email = user.email;
                 token.name = user.name;
             } else if (!token.id && token.email) {
-                const db = client.db();
+                const db = client.db("Cluster0");
                 const existingUser = await db
                     .collection("users")
                     .findOne({ email: token.email });
