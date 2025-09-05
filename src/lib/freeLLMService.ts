@@ -110,24 +110,8 @@ export class FreeLLMService {
       });
     }
 
-    // Emergent LLM - FALLBACK Provider (Premium quality, pay-per-use)
-    if (process.env.EMERGENT_LLM_KEY || process.env.NEXT_PUBLIC_EMERGENT_LLM_KEY) {
-      this.providers.push({
-        name: 'emergent',
-        apiUrl: 'https://integrations.emergentagent.com/api/v1/llm/chat',
-        apiKey: process.env.EMERGENT_LLM_KEY || process.env.NEXT_PUBLIC_EMERGENT_LLM_KEY || '',
-        models: {
-          'gpt-4o-mini': 'gpt-4o-mini',
-          'gpt-4o': 'gpt-4o',
-          'claude-3-haiku': 'claude-3-haiku'
-        },
-        rateLimits: {
-          requestsPerMinute: 100,
-          requestsPerDay: 10000
-        },
-        priority: 4
-      });
-    }
+    // Remove Emergent for now - needs different integration approach
+    // Focus on working providers: Groq → Gemini → Hugging Face
 
     // Sort providers by priority
     this.providers.sort((a, b) => a.priority - b.priority);
