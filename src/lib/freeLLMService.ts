@@ -298,6 +298,81 @@ export class FreeLLMService {
     }
   }
 
+  private async callGemini(provider: ProviderConfig, request: LLMRequest, modelName: string): Promise<LLMResponse> {
+    // Convert messages to Gemini format
+    const prompt = request.messages.map(msg => msg.content).join('\n\n');
+    
+    const response = await fetch(`${provider.apiUrl}?key=${provider.apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: request.temperature || 0.7,
+          maxOutputTokens: request.max_tokens || 4000,
+        }
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Gemini API error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+      return {
+        content: data.candidates[0].content.parts[0].text,
+        provider: provider.name,
+        model: modelName,
+        usage: data.usageMetadata
+      };
+    } else {
+      throw new Error(`Invalid response format from Gemini: ${JSON.stringify(data)}`);
+    }
+  }
+
+  private async callEmergent(provider: ProviderConfig, request: LLMRequest, modelName: string): Promise<LLMResponse> {
+    const response = await fetch(provider.apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${provider.apiKey}`,
+      },
+      body: JSON.stringify({
+        messages: request.messages,
+        model: modelName,
+        max_tokens: request.max_tokens || 4000,
+        temperature: request.temperature || 0.7,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Emergent API error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    if (data.content || data.message) {
+      return {
+        content: data.content || data.message,
+        provider: provider.name,
+        model: modelName,
+        usage: data.usage
+      };
+    } else {
+      throw new Error(`Invalid response format from Emergent: ${JSON.stringify(data)}`);
+    }
+  }
+
   // Convenience methods for different use cases
   public async generateInterviewQuestions(params: {
     jobTitle: string;
