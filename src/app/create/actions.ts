@@ -19,15 +19,15 @@ type formD = {
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 export const createInterview = async (data: formD, projectContext: string[], workExDetails: string[]) => {
-  const session = await auth()
-  
-  if (!session?.user?.id) {
-    throw new Error("User not authenticated")
-  }
-
-  console.log("Creating interview with one-click generation...")
-  
   try {
+    const session = await auth()
+    
+    if (!session?.user?.id) {
+      return { success: false, error: "User not authenticated" }
+    }
+
+    console.log("Creating interview with one-click generation...")
+    
     const res = await axios.post(`${baseURL}/api/create-interview`, {
       id: session.user.id,
       jobDesc: data.jobDesc,
@@ -52,7 +52,7 @@ export const createInterview = async (data: formD, projectContext: string[], wor
   } catch (error: any) {
     console.error('❌ Interview creation failed:', error)
     const errorMessage = error.response?.data?.error || error.message || "Failed to create interview"
-    throw new Error(errorMessage)
+    return { success: false, error: errorMessage }
   }
 }
 
