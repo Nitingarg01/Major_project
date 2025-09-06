@@ -445,7 +445,7 @@ int main() {
 // Helper functions for language templates
 function getReturnType(problem: DSAProblem): string {
   // Simple heuristic based on problem examples
-  const output = problem.examples[0]?.output || ''
+  const output = problem?.examples?.[0]?.output || ''
   if (output.includes('[') || output.includes(',')) return 'int[]'
   if (!isNaN(Number(output))) return 'int'
   return 'String'
