@@ -73,26 +73,32 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         })
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, account, profile }) {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
             } else if (!token.id && token.email) {
-                const db = client.db("Cluster0");
-                const existingUser = await db
-                    .collection("users")
-                    .findOne({ email: token.email });
-                if (existingUser) {
-                    token.id = existingUser._id.toString();
+                try {
+                    const db = client.db("Cluster0");
+                    const existingUser = await db
+                        .collection("users")
+                        .findOne({ email: token.email });
+                    if (existingUser) {
+                        token.id = existingUser._id.toString();
+                    }
+                } catch (error) {
+                    console.error("Error fetching user in JWT callback:", error);
                 }
             }
             return token;
         },
         async session({ session, token }) {
-            session.user.id = token.id as string;
-            session.user.email = token.email!;
-            session.user.name = token.name;
+            if (token) {
+                session.user.id = token.id as string;
+                session.user.email = token.email!;
+                session.user.name = token.name;
+            }
             return session;
         },
         signIn: async ({ user, account }) => {
