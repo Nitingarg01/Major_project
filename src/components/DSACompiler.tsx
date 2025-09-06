@@ -68,7 +68,7 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
 }
 
 // Test your solution
-// console.log(solution(${problem.examples[0]?.input || '[1,2,3]'}));`,
+// console.log(solution(${problem?.examples?.[0]?.input || '[1,2,3]'}));`,
     
     java: `public class Solution {
     public static ${getReturnType(problem)} solution(${getJavaParams(problem)}) {
