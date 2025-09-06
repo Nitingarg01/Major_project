@@ -327,7 +327,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                 {suggestions.map((suggestion, index) => (
                   <div
                     key={index}
-                    ref={el => suggestionRefs.current[index] = el}
+                    ref={(el) => { suggestionRefs.current[index] = el }}
                     onClick={() => handleSelect(suggestion.name)}
                     className={`px-4 py-4 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all ${
                       index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'
