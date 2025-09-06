@@ -179,14 +179,47 @@ const NewInterviewWrapper = ({
         const companyInfo = await aiService.researchCompany(companyName)
         setCompanyData(companyInfo)
 
-        // Generate questions for all enabled rounds
-        const questionsResult = await aiService.generateInterviewQuestions({
-          companyName,
-          jobTitle,
-          skills,
-          experienceLevel,
-          rounds: roundConfigs
-        })
+        // Generate questions for all enabled rounds with timestamp to ensure uniqueness
+        const timestamp = Date.now()
+        const questionsResult: {[roundType: string]: any[]} = {}
+        
+        for (const round of roundConfigs) {
+          if (!round.enabled) continue
+          
+          try {
+            if (round.type === 'dsa') {
+              // Generate DSA problems specifically
+              const dsaProblems = await aiService.generateDSAProblems(
+                companyName,
+                experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                round.questionCount
+              );
+              questionsResult[round.type] = dsaProblems
+            } else if (round.type === 'aptitude') {
+              // Generate aptitude questions
+              const aptitudeQuestions = await aiService.generateAptitudeQuestions(
+                ['verbal', 'numerical', 'logical', 'spatial'],
+                experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                round.questionCount
+              );
+              questionsResult[round.type] = aptitudeQuestions
+            } else {
+              // Generate regular interview questions
+              const roundQuestions = await aiService.generateInterviewQuestions({
+                companyName,
+                jobTitle,
+                skills,
+                experienceLevel,
+                rounds: [round] // Generate for this specific round
+              })
+              questionsResult[round.type] = roundQuestions[round.type] || []
+            }
+          } catch (roundError) {
+            console.error(`Error generating ${round.type} questions:`, roundError)
+            // Use fallback questions for this round
+            questionsResult[round.type] = questions.slice(0, round.questionCount)
+          }
+        }
 
         setGeneratedQuestions(questionsResult)
 
@@ -195,7 +228,7 @@ const NewInterviewWrapper = ({
           setCurrentRoundQuestions(questionsResult[roundConfigs[0].type])
         }
 
-        toast.success(`🎉 Interview prepared for ${companyName}!`)
+        toast.success(`🎉 Interview prepared for ${companyName}! ${Object.keys(questionsResult).length} rounds ready.`)
       } catch (error) {
         console.error('Error initializing interview:', error)
         toast.error('Failed to initialize interview. Using fallback questions.')
