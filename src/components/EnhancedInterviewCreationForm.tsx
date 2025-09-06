@@ -16,8 +16,6 @@ import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Switch } from "@/components/ui/switch"
 
 // Icons
 import { 
@@ -702,7 +700,7 @@ const EnhancedInterviewCreationForm = () => {
                                   <div className="flex flex-wrap gap-1">
                                     {skills.map((skill) => (
                                       <Badge 
-                                        key={skill}
+                                        key={`category-${category}-${skill}`}
                                         variant="secondary" 
                                         className="cursor-pointer hover:bg-blue-100 text-xs"
                                         onClick={() => addSkillFromCategory(skill)}
@@ -722,7 +720,7 @@ const EnhancedInterviewCreationForm = () => {
                           <AnimatePresence>
                             {field.value.map((skill, index) => (
                               <motion.div
-                                key={skill}
+                                key={`selected-${skill}-${index}`}
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}

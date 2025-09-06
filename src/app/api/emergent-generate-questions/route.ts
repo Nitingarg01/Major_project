@@ -118,8 +118,8 @@ export async function POST(request: NextRequest) {
           difficulty: p.difficulty,
           points: getDSAPoints(p.difficulty),
           problemData: p,
-          provider: p.provider || 'emergent',
-          model: p.model || 'gpt-4o-mini'
+          provider: 'emergent',
+          model: 'gpt-4o-mini'
         }))
       ];
     } else if (interview.interviewType === 'dsa') {
@@ -138,8 +138,8 @@ export async function POST(request: NextRequest) {
         difficulty: p.difficulty,
         points: getDSAPoints(p.difficulty),
         problemData: p,
-        provider: p.provider || 'emergent',
-        model: p.model || 'gpt-4o-mini'
+        provider: 'emergent',
+        model: 'gpt-4o-mini'
       }));
     } else {
       console.log(`🎯 Generating ${interview.interviewType} interview questions...`);

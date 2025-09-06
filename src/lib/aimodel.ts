@@ -406,6 +406,17 @@ Focus on constructive feedback that helps the candidate improve while highlighti
     }
   }
 
+  // Public method to generate content
+  async generateContent(prompt: string): Promise<any> {
+    try {
+      const result = await this.model.generateContent(prompt)
+      return result
+    } catch (error) {
+      console.error('Error generating content:', error)
+      throw new Error('Failed to generate content')
+    }
+  }
+
   // Method to detect unusual behavior patterns
   async detectAnomalousActivity(activityLog: any[]): Promise<{
     isAnomalous: boolean

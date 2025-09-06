@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
           }
 
           // Generate actual feedback using AI
-          const result = await aiInterviewModel.model.generateContent(prompt)
+          const result = await aiInterviewModel.generateContent(prompt)
           const response = await result.response
           const text = response.text()
           

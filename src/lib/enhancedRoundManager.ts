@@ -118,6 +118,109 @@ export class EnhancedRoundManager {
     return EnhancedRoundManager.instance;
   }
 
+  // Initialize a new interview session
+  public async initializeSession(
+    userId: string,
+    interviewId: string,
+    companyName: string,
+    jobTitle: string,
+    interviewType: string
+  ): Promise<InterviewSession> {
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Create default rounds based on interview type
+    const rounds: InterviewRound[] = this.createDefaultRounds(interviewType);
+    
+    const session: InterviewSession = {
+      sessionId,
+      userId,
+      interviewId,
+      companyName,
+      jobTitle,
+      rounds,
+      currentRound: 0,
+      sessionData: {
+        startTime: new Date(),
+        totalTimeSpent: 0,
+        overallProgress: 0
+      },
+      roundResults: [],
+      sessionMetadata: {
+        userAgent: '',
+        ipAddress: '',
+        cameraEnabled: false,
+        suspiciousActivity: []
+      }
+    };
+
+    return session;
+  }
+
+  // Create default rounds based on interview type
+  private createDefaultRounds(interviewType: string): InterviewRound[] {
+    const baseRounds: InterviewRound[] = [];
+    
+    switch (interviewType) {
+      case 'technical':
+        baseRounds.push({
+          id: 'technical_1',
+          type: 'technical',
+          status: 'pending',
+          questions: [],
+          duration: 45
+        });
+        break;
+      case 'behavioral':
+        baseRounds.push({
+          id: 'behavioral_1',
+          type: 'behavioral',
+          status: 'pending',
+          questions: [],
+          duration: 30
+        });
+        break;
+      case 'dsa':
+        baseRounds.push({
+          id: 'dsa_1',
+          type: 'dsa',
+          status: 'pending',
+          questions: [],
+          duration: 60
+        });
+        break;
+      case 'aptitude':
+        baseRounds.push({
+          id: 'aptitude_1',
+          type: 'aptitude',
+          status: 'pending',
+          questions: [],
+          duration: 25
+        });
+        break;
+      case 'mixed':
+      default:
+        baseRounds.push(
+          {
+            id: 'technical_1',
+            type: 'technical',
+            status: 'pending',
+            questions: [],
+            duration: 30
+          },
+          {
+            id: 'behavioral_1',
+            type: 'behavioral',
+            status: 'pending',
+            questions: [],
+            duration: 20
+          }
+        );
+        break;
+    }
+    
+    return baseRounds;
+  }
+
   // Complete a round with enhanced analysis
   public async completeRound(
     session: InterviewSession,

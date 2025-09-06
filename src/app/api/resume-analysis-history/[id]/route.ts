@@ -4,7 +4,7 @@ import client from "@/lib/db";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -12,7 +12,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: "Analysis ID is required" }, { status: 400 });
     }

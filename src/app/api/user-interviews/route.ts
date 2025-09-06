@@ -64,10 +64,24 @@ export async function GET(request: NextRequest) {
         })
     ]);
     
-    const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = await Promise.race([
+    const result = await Promise.race([
       dbQueries,
       timeout
     ]);
+
+    // Handle timeout case
+    if (result === 'timeout') {
+      return NextResponse.json({
+        error: 'Database query timeout',
+        interviews: [],
+        totalInterviews: 0,
+        completedInterviews: 0,
+        inProgressInterviews: 0
+      }, { status: 408 });
+    }
+
+    // Type assertion since we know it's the dbQueries result at this point
+    const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = result as [any[], number, number, number];
 
     console.log('Database query results:', {
       interviewsCount: interviews.length,
@@ -91,16 +105,18 @@ export async function GET(request: NextRequest) {
     
     // Provide more specific error messages
     let errorMessage = 'Internal server error';
-    if (error.message === 'Database query timeout') {
-      errorMessage = 'Database connection timeout';
-    } else if (error.message.includes('MongoNetworkError')) {
-      errorMessage = 'Database connection failed';
+    if (error instanceof Error) {
+      if (error.message === 'Database query timeout') {
+        errorMessage = 'Database connection timeout';
+      } else if (error.message.includes('MongoNetworkError')) {
+        errorMessage = 'Database connection failed';
+      }
     }
     
     return NextResponse.json(
       { 
         error: errorMessage,
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
       },
       { status: 500 }
     );

@@ -12,13 +12,13 @@ import ResetPasswordForm from "./form"
 import { redirect } from "next/navigation"
 
 interface ResetPasswordPageProps {
-  searchParams: {
+  searchParams: Promise<{
     token?: string
-  }
+  }>
 }
 
-const ResetPasswordPage = ({ searchParams }: ResetPasswordPageProps) => {
-  const { token } = searchParams
+const ResetPasswordPage = async ({ searchParams }: ResetPasswordPageProps) => {
+  const { token } = await searchParams
 
   if (!token) {
     redirect('/login')
