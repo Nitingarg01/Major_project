@@ -101,45 +101,61 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             }
             return session;
         },
-        signIn: async ({ user, account }) => {
-            const dbClient = client;
-            const db = dbClient.db("Cluster0")
+        signIn: async ({ user, account, profile }) => {
+            try {
+                const dbClient = client;
+                const db = dbClient.db("Cluster0")
 
-            if (account?.provider === 'google') {
-                try {
-                    const { email, id, name, } = user
+                if (account?.provider === 'google') {
+                    const { email, id, name } = user
 
-                    const alreadyUser = await db.collection("users").findOne({ email: email?.toLowerCase() })
+                    if (!email) {
+                        console.error("No email provided by Google");
+                        return false;
+                    }
+
+                    const alreadyUser = await db.collection("users").findOne({ 
+                        email: email.toLowerCase() 
+                    });
 
                     if (alreadyUser) {
+                        // Update existing user with Google ID if missing
                         if (!alreadyUser.googleId) {
                             await db.collection('users').updateOne(
-                                { email: email?.toLocaleLowerCase() },
+                                { email: email.toLowerCase() },
                                 {
                                     $set: {
                                         googleId: id,
                                         updatedAt: new Date()
                                     }
                                 }
-                            )
+                            );
                         }
+                        // Set user.id to existing user's ID for consistency
+                        user.id = alreadyUser._id.toString();
                     } else {
-                        await db.collection("users").insertOne({
-                            email: email?.toLowerCase(),
+                        // Create new user
+                        const newUser = await db.collection("users").insertOne({
+                            email: email.toLowerCase(),
                             name: name,
                             googleId: id,
                             createdAt: new Date(),
                             updatedAt: new Date()
                         });
+                        user.id = newUser.insertedId.toString();
                     }
 
-                    return true
-                } catch (error) {
-                    console.error("Error in Google signIn callback:", error);
-                    throw new Error("Error while Creating User")
+                    return true;
+                } else if (account?.provider === 'credentials') {
+                    // For credentials provider, user.id should already be set from authorize
+                    return true;
                 }
+
+                return true;
+            } catch (error) {
+                console.error("Error in signIn callback:", error);
+                return false;
             }
-            return true
         }
     },
     pages: {
