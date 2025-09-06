@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
-import EmergentAIService from '@/lib/emergentAIService';
+import FreeLLMService from '@/lib/freeLLMService';
+import EnhancedCompanyIntelligenceService from '@/lib/enhancedCompanyIntelligence';
 
 export async function POST(request: NextRequest) {
   try {
