@@ -8,7 +8,18 @@ import { DBUser } from "@/types/user";
 export const { auth, signIn, signOut, handlers } = NextAuth({
     debug: true,
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
+        maxAge: 24 * 60 * 60 // 24 hours
+    },
+    cookies: {
+        sessionToken: {
+            name: 'next-auth.session-token',
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production'
+            }
+        }
     },
     providers: [
         Google({
