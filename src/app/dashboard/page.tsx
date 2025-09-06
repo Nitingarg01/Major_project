@@ -46,6 +46,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats>({ total: 0, completed: 0, inProgress: 0 })
   const [loading, setLoading] = useState(true)
   const [hasInitialized, setHasInitialized] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   useEffect(() => {
     console.log('Auth status changed:', status)
