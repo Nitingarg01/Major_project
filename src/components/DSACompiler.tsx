@@ -54,15 +54,15 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
 
   // Language templates
   const languageTemplates = {
-    python: `def solution(${problem.examples[0]?.input.split(' ').map((_, i) => `param${i + 1}`).join(', ') || 'nums'}):
+    python: `def solution(${problem?.examples?.[0]?.input?.split(' ').map((_, i) => `param${i + 1}`).join(', ') || 'nums'}):
     # Write your solution here
     pass
 
 # Test your solution
-# result = solution(${problem.examples[0]?.input || '[1,2,3]'})
+# result = solution(${problem?.examples?.[0]?.input || '[1,2,3]'})
 # print(result)`,
     
-    javascript: `function solution(${problem.examples[0]?.input.split(' ').map((_, i) => `param${i + 1}`).join(', ') || 'nums'}) {
+    javascript: `function solution(${problem?.examples?.[0]?.input?.split(' ').map((_, i) => `param${i + 1}`).join(', ') || 'nums'}) {
     // Write your solution here
     
 }
