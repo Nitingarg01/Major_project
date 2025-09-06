@@ -242,7 +242,7 @@ export async function POST(request: NextRequest) {
         const db = dbClient.db();
 
         const interviewData = {
-            userId: id,
+            userId: userId, // Use the resolved userId
             jobDesc,
             skills,
             jobTitle,
