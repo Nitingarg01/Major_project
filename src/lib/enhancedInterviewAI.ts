@@ -454,7 +454,7 @@ export class EnhancedInterviewAI {
           { role: 'user', content: userMessage }
         ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
 
-        const questions = this.extractJSON(response);
+        const questions = extractJSON(response);
         
         questionsByRound[round.type] = questions.map((q: any, index: number) => ({
           id: q.id || `${round.type}-${Date.now()}-${index}`,
