@@ -220,12 +220,13 @@ export async function POST(request: NextRequest) {
             questions: questions,
             answers: [],
             interviewId: interviewResult.insertedId.toString(),
-            difficultyLevel: 'hard', // Mark questions as hard
+            difficultyLevel: 'adaptive',
             metadata: {
                 generatedAt: new Date(),
-                difficultyLevel: 'hard',
-                questionType: 'hard-mode',
-                averagePoints: questions.reduce((sum, q) => sum + (q.points || 45), 0) / questions.length
+                difficultyLevel: 'adaptive',
+                questionType: 'emergent-llm',
+                averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
+                service: 'emergent-llm'
             }
         });
 
@@ -236,28 +237,29 @@ export async function POST(request: NextRequest) {
                 $set: {
                     questions: questionsResult.insertedId,
                     status: 'ready',
-                    difficultyLevel: 'hard',
+                    difficultyLevel: 'adaptive',
                     questionStats: {
                         totalQuestions: questions.length,
-                        averageDifficulty: 'hard',
-                        averageTimeLimit: questions.reduce((sum, q) => sum + (q.timeLimit || 12), 0) / questions.length,
-                        totalPoints: questions.reduce((sum, q) => sum + (q.points || 45), 0)
+                        averageDifficulty: 'adaptive',
+                        averageTimeLimit: questions.reduce((sum, q) => sum + (q.timeLimit || 8), 0) / questions.length,
+                        totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0)
                     }
                 }
             }
         );
 
-        console.log('🔥 One-click HARD interview creation completed successfully!');
+        console.log('🎉 One-click interview creation completed successfully!');
 
         return NextResponse.json(
             { 
-                message: "HARD Interview created and ready to start!", 
+                message: "Interview created and ready to start!", 
                 id: interviewResult.insertedId,
                 status: 'ready',
                 questionsCount: questions.length,
-                difficultyLevel: 'HARD',
-                averagePoints: questions.reduce((sum, q) => sum + (q.points || 45), 0) / questions.length,
-                totalPoints: questions.reduce((sum, q) => sum + (q.points || 45), 0)
+                difficultyLevel: 'ADAPTIVE',
+                averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
+                totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0),
+                service: 'emergent-llm'
             },
             { status: 201 }
         );
