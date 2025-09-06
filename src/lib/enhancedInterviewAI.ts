@@ -8,6 +8,8 @@
  * - Comprehensive interview rounds management
  */
 
+import { extractJSON } from './jsonExtractor';
+
 interface CompanyResearchData {
   name: string;
   industry: string;
