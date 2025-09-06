@@ -126,11 +126,11 @@ export default function DashboardPage() {
         console.error('API returned success: false', data.error)
         throw new Error(data.error || 'Failed to fetch data')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching interviews:', error)
-      if (error.name === 'AbortError') {
+      if (error?.name === 'AbortError') {
         toast.error('Request timeout. Please try again.')
-      } else if (error.message.includes('401')) {
+      } else if (error?.message?.includes('401')) {
         console.error('Authentication error - redirecting to login')
         setHasInitialized(false) // Reset initialization flag
         router.push('/login')
