@@ -620,7 +620,7 @@ export class EnhancedInterviewAI {
         { role: 'user', content: userMessage }
       ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
 
-      const questions = JSON.parse(response.replace(/```json\n?|\n?```/g, ''));
+      const questions = this.extractJSON(response);
       return questions.map((q: any, index: number) => ({
         ...q,
         id: q.id || `apt-${Date.now()}-${index}`
