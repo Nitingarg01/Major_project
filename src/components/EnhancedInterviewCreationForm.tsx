@@ -235,17 +235,35 @@ const EnhancedInterviewCreationForm = () => {
         roundConfigs: serializableRoundConfigs
       }
 
+      console.log("🚀 Submitting interview creation request...")
       const response = await createInterview(enhancedData, [], [])
       
       if (response.success) {
         toast.success("🎉 Enhanced Interview Created Successfully!")
-        router.push('/')
+        console.log("✅ Interview created, navigating to dashboard...")
+        
+        // Small delay to ensure the toast is shown
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 1000)
       } else {
+        console.error("❌ Interview creation failed:", response.error)
+        
+        // Handle authentication failures
+        if (response.redirect === '/login') {
+          toast.error("🔒 Session expired. Redirecting to login...")
+          setTimeout(() => {
+            router.push('/login')
+          }, 2000)
+          return
+        }
+        
         throw new Error(response.error || "Failed to create interview")
       }
     } catch (error) {
       console.error('Interview creation error:', error)
-      toast.error(`❌ Interview Creation Failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      toast.error(`❌ Interview Creation Failed: ${errorMessage}`)
     } finally {
       setLoading(false)
     }
