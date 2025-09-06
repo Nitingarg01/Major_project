@@ -127,7 +127,7 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
             return (
               <div
                 key={index}
-                ref={el => suggestionRefs.current[index] = el}
+                ref={(el) => { suggestionRefs.current[index] = el }}
                 onClick={() => handleSelect(suggestion)}
                 className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 hover:bg-gray-50 ${
                   index === selectedIndex ? 'bg-blue-50 border-blue-200' : ''
