@@ -3,6 +3,8 @@
  * Handles question generation, response analysis, and interview feedback
  */
 
+import { extractJSON } from './jsonExtractor';
+
 interface EmergentAIRequest {
   messages: Array<{
     role: 'system' | 'user' | 'assistant';
