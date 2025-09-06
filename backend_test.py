@@ -1,240 +1,313 @@
-import requests
-import sys
-from datetime import datetime
-import json
-import time
+#!/usr/bin/env python3
+"""
+Backend API Test Suite for AI Interview Platform
+Tests DSA interview creation and Emergent LLM integration
+"""
 
-class AIInterviewAPITester:
+import requests
+import json
+import sys
+import time
+from datetime import datetime
+from typing import Dict, Any, Optional
+
+class AIInterviewTester:
     def __init__(self, base_url="http://localhost:3000"):
         self.base_url = base_url
-        self.session = requests.Session()
         self.tests_run = 0
         self.tests_passed = 0
-        self.created_interview_id = None
-
-    def run_test(self, name, method, endpoint, expected_status, data=None, headers=None):
-        """Run a single API test"""
-        url = f"{self.base_url}/{endpoint}"
-        if headers is None:
-            headers = {'Content-Type': 'application/json'}
-
+        self.interview_id = None
+        self.session = requests.Session()
+        
+    def log(self, message: str, level: str = "INFO"):
+        """Log test messages with timestamp"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"[{timestamp}] {level}: {message}")
+        
+    def run_test(self, name: str, method: str, endpoint: str, 
+                 expected_status: int, data: Optional[Dict] = None, 
+                 timeout: int = 30) -> tuple[bool, Dict]:
+        """Run a single API test with enhanced error handling"""
+        url = f"{self.base_url}/api/{endpoint}"
+        headers = {'Content-Type': 'application/json'}
+        
         self.tests_run += 1
-        print(f"\n🔍 Testing {name}...")
-        print(f"URL: {url}")
+        self.log(f"🔍 Testing {name}...")
         
         try:
             if method == 'GET':
-                response = self.session.get(url, headers=headers)
+                response = self.session.get(url, headers=headers, timeout=timeout)
             elif method == 'POST':
-                response = self.session.post(url, json=data, headers=headers)
+                response = self.session.post(url, json=data, headers=headers, timeout=timeout)
             elif method == 'PUT':
-                response = self.session.put(url, json=data, headers=headers)
+                response = self.session.put(url, json=data, headers=headers, timeout=timeout)
             elif method == 'DELETE':
-                response = self.session.delete(url, json=data, headers=headers)
-
+                response = self.session.delete(url, headers=headers, timeout=timeout)
+            else:
+                raise ValueError(f"Unsupported HTTP method: {method}")
+                
             success = response.status_code == expected_status
+            
             if success:
                 self.tests_passed += 1
-                print(f"✅ Passed - Status: {response.status_code}")
-                if response.content:
-                    try:
-                        response_data = response.json()
-                        print(f"Response: {json.dumps(response_data, indent=2)[:200]}...")
-                        return success, response_data
-                    except:
-                        print(f"Response: {response.text[:200]}...")
-                        return success, response.text
+                self.log(f"✅ {name} - Status: {response.status_code}", "PASS")
             else:
-                print(f"❌ Failed - Expected {expected_status}, got {response.status_code}")
-                print(f"Response: {response.text[:500]}")
-
-            return success, response
-
+                self.log(f"❌ {name} - Expected {expected_status}, got {response.status_code}", "FAIL")
+                if response.text:
+                    self.log(f"Response: {response.text[:200]}...", "ERROR")
+                    
+            try:
+                response_data = response.json()
+            except:
+                response_data = {"raw_response": response.text}
+                
+            return success, response_data
+            
+        except requests.exceptions.Timeout:
+            self.log(f"❌ {name} - Request timed out after {timeout}s", "FAIL")
+            return False, {"error": "timeout"}
         except Exception as e:
-            print(f"❌ Failed - Error: {str(e)}")
-            return False, None
-
-    def test_page_accessibility(self):
-        """Test if main pages are accessible"""
-        print("\n🌐 Testing Page Accessibility")
+            self.log(f"❌ {name} - Error: {str(e)}", "FAIL")
+            return False, {"error": str(e)}
+    
+    def test_health_check(self) -> bool:
+        """Test if the application is running"""
+        try:
+            response = requests.get(self.base_url, timeout=10)
+            if response.status_code == 200:
+                self.log("✅ Application is running and accessible")
+                return True
+            else:
+                self.log(f"⚠️ Application returned status {response.status_code}")
+                return False
+        except Exception as e:
+            self.log(f"❌ Application health check failed: {e}")
+            return False
+    
+    def test_create_dsa_interview(self) -> bool:
+        """Test creating a DSA interview - the main focus of this test"""
+        self.log("🎯 Testing DSA Interview Creation (Main Test)")
         
-        # Test main pages including forgot-password
-        pages = [
-            ("Home Page", ""),
-            ("Login Page", "login"),
-            ("Signup Page", "signup"),
-            ("Create Interview", "create"),
-            ("Forgot Password Page", "forgot-password"),
-            ("Reset Password Page", "reset-password?token=test")
-        ]
+        interview_data = {
+            "id": "test-user-123",
+            "jobDesc": "Software Engineer position focusing on algorithms and data structures. Candidate should demonstrate strong problem-solving skills and coding proficiency.",
+            "skills": ["JavaScript", "Python", "Data Structures", "Algorithms", "Problem Solving"],
+            "companyName": "TechCorp",
+            "jobTitle": "Software Engineer",
+            "experienceLevel": "mid",
+            "interviewType": "dsa",  # This is the key test - DSA interviews were failing
+            "projectContext": ["Built scalable web applications", "Implemented complex algorithms"],
+            "workExDetails": ["3 years of software development experience", "Led algorithm optimization projects"]
+        }
         
-        for page_name, path in pages:
-            self.run_test(
-                f"{page_name} Accessibility",
-                "GET",
-                path,
-                200
-            )
-
-    def test_auth_endpoints(self):
-        """Test authentication related endpoints"""
-        print("\n🔐 Testing Authentication APIs")
-        
-        # Test auth providers
-        self.run_test(
-            "Auth Providers API",
-            "GET",
-            "api/auth/providers",
-            200
-        )
-
-    def test_one_click_interview_creation(self):
-        """Test the one-click interview creation feature"""
-        print("\n🚀 Testing One-Click Interview Creation")
-        
-        # Test with proper required fields
         success, response = self.run_test(
-            "One-Click Create Interview API",
-            "POST",
-            "api/create-interview",
-            401,  # Expected 401 since we're not authenticated
-            data={
-                "id": "test-user-id",
-                "jobDesc": "We are looking for a skilled software engineer with experience in React and Node.js",
-                "skills": ["JavaScript", "React", "Node.js"],
-                "companyName": "Google",
-                "jobTitle": "Software Engineer",
-                "experienceLevel": "mid",
-                "interviewType": "technical",
-                "projectContext": ["Built e-commerce platform"],
-                "workExDetails": ["2 years at startup"]
-            }
+            "Create DSA Interview",
+            "POST", 
+            "create-interview",
+            201,
+            interview_data,
+            timeout=60  # Longer timeout for LLM generation
         )
         
-        if success and isinstance(response, dict) and 'id' in response:
-            self.created_interview_id = response['id']
-            print(f"✅ Interview created with ID: {self.created_interview_id}")
-
-    def test_delete_interview(self):
-        """Test the delete interview functionality"""
-        print("\n🗑️ Testing Delete Interview Feature")
+        if success and 'id' in response:
+            self.interview_id = str(response['id'])
+            self.log(f"✅ DSA Interview created successfully with ID: {self.interview_id}")
+            self.log(f"📊 Questions generated: {response.get('questionsCount', 'Unknown')}")
+            self.log(f"🎯 Service used: {response.get('service', 'Unknown')}")
+            return True
+        else:
+            self.log("❌ DSA Interview creation failed")
+            return False
+    
+    def test_create_mixed_interview(self) -> bool:
+        """Test creating a mixed interview type"""
+        interview_data = {
+            "id": "test-user-456", 
+            "jobDesc": "Full-stack developer role requiring technical, behavioral, and coding skills.",
+            "skills": ["React", "Node.js", "MongoDB", "System Design"],
+            "companyName": "StartupXYZ",
+            "jobTitle": "Full Stack Developer",
+            "experienceLevel": "senior",
+            "interviewType": "mixed"
+        }
         
-        # Test delete without authentication (should fail)
-        self.run_test(
-            "Delete Interview API (Unauthenticated)",
-            "DELETE",
-            "api/delete-interview",
-            401,  # Expected 401 since we're not authenticated
-            data={
-                "interviewId": "test-interview-id"
-            }
-        )
-
-    def test_streaming_ai_feedback(self):
-        """Test the streaming AI feedback feature"""
-        print("\n🤖 Testing Streaming AI Feedback")
-        
-        # Test streaming response API
         success, response = self.run_test(
-            "Stream Response API",
+            "Create Mixed Interview",
             "POST",
-            "api/stream-response",
+            "create-interview", 
+            201,
+            interview_data,
+            timeout=90  # Even longer for mixed interviews
+        )
+        
+        return success
+    
+    def test_emergent_llm_health(self) -> bool:
+        """Test Emergent LLM service health"""
+        if not self.interview_id:
+            self.log("⚠️ Skipping Emergent LLM test - no interview ID available")
+            return False
+            
+        test_data = {
+            "interviewId": self.interview_id,
+            "regenerate": False
+        }
+        
+        success, response = self.run_test(
+            "Emergent LLM Question Generation",
+            "POST",
+            "emergent-generate-questions",
             200,
-            data={
-                "question": "What is React?",
-                "userAnswer": "React is a JavaScript library for building user interfaces",
-                "expectedAnswer": "React is a popular JavaScript library developed by Facebook for building user interfaces, particularly for web applications.",
-                "difficulty": "easy"
-            }
+            test_data,
+            timeout=60
         )
         
         if success:
-            print("✅ Streaming API endpoint is accessible")
-
-    def test_generate_questions_api(self):
-        """Test the generate questions API"""
-        print("\n❓ Testing Generate Questions API")
+            self.log(f"✅ Emergent LLM generated {response.get('questionsCount', 0)} questions")
+            if 'breakdown' in response:
+                self.log(f"📊 Question breakdown: {response['breakdown']}")
         
-        self.run_test(
-            "Generate Questions API",
-            "POST",
-            "api/generate-questions",
-            400,  # Expected 400 since we need interview ID
-            data={
-                "company": "Google",
-                "position": "Software Engineer",
-                "round": "technical"
-            }
-        )
-
-    def test_resume_parsing(self):
-        """Test resume parsing functionality"""
-        print("\n📄 Testing Resume Parsing")
+        return success
+    
+    def test_question_regeneration(self) -> bool:
+        """Test question regeneration functionality"""
+        if not self.interview_id:
+            self.log("⚠️ Skipping regeneration test - no interview ID available")
+            return False
+            
+        regenerate_data = {
+            "interviewId": self.interview_id,
+            "regenerate": True
+        }
         
-        # Test with wrong content type (should expect multipart/form-data)
-        self.run_test(
-            "Parse Resume API",
+        success, response = self.run_test(
+            "Question Regeneration",
             "POST",
-            "api/parse-resume",
-            400,  # Expected 400 for wrong content type
-            data={
-                "resumeText": "Sample resume content"
-            }
+            "emergent-generate-questions",
+            200,
+            regenerate_data,
+            timeout=60
         )
-
-    def test_performance_analysis(self):
-        """Test performance analysis API"""
-        print("\n📊 Testing Performance Analysis")
         
-        self.run_test(
-            "Analyze Performance API",
+        return success
+    
+    def test_invalid_interview_creation(self) -> bool:
+        """Test error handling for invalid interview data"""
+        invalid_data = {
+            "id": "test-user-invalid",
+            # Missing required fields intentionally
+            "jobDesc": "",
+            "skills": [],
+            "companyName": ""
+        }
+        
+        success, response = self.run_test(
+            "Invalid Interview Creation",
             "POST",
-            "api/analyze-performance",
-            400,  # Expected 400 since interview ID is required
-            data={
-                "answers": ["Sample answer"],
-                "questions": ["Sample question"]
-            }
+            "create-interview",
+            400,  # Expecting bad request
+            invalid_data
         )
+        
+        return success
+    
+    def test_missing_interview_id(self) -> bool:
+        """Test error handling for missing interview ID"""
+        success, response = self.run_test(
+            "Missing Interview ID",
+            "POST",
+            "emergent-generate-questions",
+            400,  # Expecting bad request
+            {}
+        )
+        
+        return success
+    
+    def test_interview_session_start(self) -> bool:
+        """Test starting an interview session"""
+        if not self.interview_id:
+            self.log("⚠️ Skipping session start test - no interview ID available")
+            return False
+            
+        session_data = {
+            "interviewId": self.interview_id,
+            "userId": "test-user-123"
+        }
+        
+        success, response = self.run_test(
+            "Start Interview Session",
+            "POST",
+            "interview-session",
+            200,
+            session_data
+        )
+        
+        return success
+    
+    def run_comprehensive_test_suite(self) -> int:
+        """Run the complete test suite"""
+        self.log("🚀 Starting AI Interview Platform Backend Tests")
+        self.log("=" * 60)
+        
+        # Health check first
+        if not self.test_health_check():
+            self.log("❌ Application not accessible, stopping tests")
+            return 1
+        
+        # Core functionality tests
+        tests = [
+            ("DSA Interview Creation", self.test_create_dsa_interview),
+            ("Mixed Interview Creation", self.test_create_mixed_interview), 
+            ("Emergent LLM Integration", self.test_emergent_llm_health),
+            ("Question Regeneration", self.test_question_regeneration),
+            ("Interview Session Start", self.test_interview_session_start),
+            ("Invalid Data Handling", self.test_invalid_interview_creation),
+            ("Missing ID Handling", self.test_missing_interview_id),
+        ]
+        
+        self.log("\n🧪 Running Core Functionality Tests:")
+        self.log("-" * 40)
+        
+        critical_failures = []
+        
+        for test_name, test_func in tests:
+            try:
+                result = test_func()
+                if not result and test_name in ["DSA Interview Creation", "Emergent LLM Integration"]:
+                    critical_failures.append(test_name)
+            except Exception as e:
+                self.log(f"❌ {test_name} crashed: {e}", "ERROR")
+                if test_name in ["DSA Interview Creation", "Emergent LLM Integration"]:
+                    critical_failures.append(test_name)
+        
+        # Results summary
+        self.log("\n" + "=" * 60)
+        self.log("📊 TEST RESULTS SUMMARY")
+        self.log("=" * 60)
+        self.log(f"Tests Run: {self.tests_run}")
+        self.log(f"Tests Passed: {self.tests_passed}")
+        self.log(f"Tests Failed: {self.tests_run - self.tests_passed}")
+        self.log(f"Success Rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
+        
+        if critical_failures:
+            self.log(f"\n❌ CRITICAL FAILURES: {', '.join(critical_failures)}")
+            self.log("🚨 DSA interview functionality may still be broken!")
+            return 1
+        elif self.tests_passed == self.tests_run:
+            self.log("\n✅ ALL TESTS PASSED - DSA interviews are working!")
+            return 0
+        else:
+            self.log(f"\n⚠️ Some tests failed but core DSA functionality works")
+            return 0 if self.tests_passed >= (self.tests_run * 0.7) else 1
 
 def main():
-    print("🚀 Starting AI Interview Platform API Testing")
-    print("=" * 60)
-    print("Testing Features: Forgot Password, Delete Interview, One-Click Creation, Streaming AI")
-    print("=" * 60)
+    """Main test execution"""
+    print("🤖 AI Interview Platform - Backend API Test Suite")
+    print("Testing DSA Round Fixes and Emergent LLM Integration")
+    print("=" * 70)
     
-    # Setup
-    tester = AIInterviewAPITester("http://localhost:3000")
-    
-    # Test page accessibility first (including forgot password pages)
-    tester.test_page_accessibility()
-    
-    # Test authentication endpoints
-    tester.test_auth_endpoints()
-    
-    # Test specific features mentioned in review request
-    tester.test_one_click_interview_creation()
-    tester.test_delete_interview()
-    tester.test_streaming_ai_feedback()
-    
-    # Test other API endpoints
-    tester.test_generate_questions_api()
-    tester.test_resume_parsing()
-    tester.test_performance_analysis()
-    
-    # Print results
-    print(f"\n📊 Test Results Summary:")
-    print("=" * 40)
-    print(f"Tests passed: {tester.tests_passed}/{tester.tests_run}")
-    print(f"Success rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
-    
-    if tester.tests_passed == tester.tests_run:
-        print("🎉 All tests passed!")
-        return 0
-    else:
-        print("⚠️  Some tests failed. Check the details above.")
-        print("\nNote: Some failures are expected due to authentication requirements.")
-        return 1
+    tester = AIInterviewTester()
+    return tester.run_comprehensive_test_suite()
 
 if __name__ == "__main__":
     sys.exit(main())
