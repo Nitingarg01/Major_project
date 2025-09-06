@@ -158,19 +158,12 @@ const Createform = () => {
                                         <EnhancedCompanySearch
                                             onSelect={(company, jobTitle, companyData) => {
                                                 form.setValue("companyName", company)
-                                                form.setValue("jobTitle", jobTitle)
-                                                if (companyData) {
-                                                    // Auto-fill relevant skills from company tech stack
-                                                    const currentSkills = form.getValues("skills")
-                                                    const techSkills = companyData.techStack.slice(0, 3).filter((skill: string) => 
-                                                        !currentSkills.includes(skill)
-                                                    )
-                                                    if (techSkills.length > 0) {
-                                                        form.setValue("skills", [...currentSkills, ...techSkills])
-                                                    }
+                                                // Since we're only suggesting companies now, user will fill job title manually
+                                                if (jobTitle && jobTitle.trim()) {
+                                                    form.setValue("jobTitle", jobTitle)
                                                 }
                                             }}
-                                            placeholder="Search for company and role (e.g., Google Software Engineer)"
+                                            placeholder="Search for companies (e.g., Google, Microsoft, Amazon)"
                                         />
                                         <FormControl>
                                             <Input 
