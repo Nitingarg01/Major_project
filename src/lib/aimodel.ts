@@ -361,7 +361,7 @@ Focus on constructive feedback that helps the candidate improve while highlighti
       const response = await result.response
       const text = response.text()
       
-      return JSON.parse(text.replace(/```json\n?|\n?```/g, ''))
+      return extractJSON(text)
     } catch (error) {
       console.error('Error analyzing performance:', error)
       throw new Error('Failed to analyze interview performance')
