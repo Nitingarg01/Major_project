@@ -45,40 +45,53 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const emergentAI = EmergentAIService.getInstance();
+    console.log(`🚀 Generating enhanced questions for ${interview.companyName} ${interview.jobTitle} using Groq API...`);
+
+    const freeLLMService = FreeLLMService.getInstance();
+    const companyIntelligence = EnhancedCompanyIntelligenceService.getInstance();
+    
+    // Get enhanced company intelligence with recent news and posts
+    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
+      interview.companyName,
+      interview.jobTitle
+    );
+
+    console.log(`📊 Company intelligence gathered for ${interview.companyName}`);
     
     // Generate enhanced questions based on interview type
     let allQuestions: any[] = [];
     
     if (interview.interviewType === 'mixed') {
-      // Generate mixed questions with enhanced DSA problems
-      console.log('Generating mixed interview questions...');
+      console.log('🔄 Generating comprehensive mixed interview questions with Groq...');
       
-      // Technical Questions (40%)
-      const technicalQuestions = await emergentAI.generateInterviewQuestions({
+      // Technical Questions (40%) - Enhanced with company context
+      const technicalQuestions = await freeLLMService.generateInterviewQuestions({
         jobTitle: interview.jobTitle,
         companyName: interview.companyName,
         skills: interview.skills || [],
         interviewType: 'technical',
         experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: 8
+        numberOfQuestions: 8,
+        companyIntelligence: enhancedCompanyData?.company_data
       });
 
-      // Behavioral Questions (30%)
-      const behavioralQuestions = await emergentAI.generateInterviewQuestions({
+      // Behavioral Questions (30%) - Company culture focused
+      const behavioralQuestions = await freeLLMService.generateInterviewQuestions({
         jobTitle: interview.jobTitle,
         companyName: interview.companyName,
         skills: interview.skills || [],
         interviewType: 'behavioral',
         experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: 6
+        numberOfQuestions: 6,
+        companyIntelligence: enhancedCompanyData?.company_data
       });
 
-      // DSA Problems (5+ unique problems as requested)
-      const dsaProblems = await emergentAI.generateDSAQuestions(
+      // DSA Problems (30%) - Company-specific difficulty
+      const dsaProblems = await freeLLMService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
-        6 // Generate 6 unique DSA problems
+        6,
+        enhancedCompanyData?.company_data
       );
 
       allQuestions = [
@@ -91,16 +104,18 @@ export async function POST(request: NextRequest) {
           category: 'dsa',
           difficulty: p.difficulty,
           points: getDSAPoints(p.difficulty),
-          problemData: p
+          problemData: p,
+          provider: p.provider,
+          model: p.model
         }))
       ];
     } else if (interview.interviewType === 'dsa') {
-      // Generate only DSA problems (5+ unique as requested)
-      console.log('Generating DSA-only interview questions...');
-      const dsaProblems = await emergentAI.generateDSAQuestions(
+      console.log('💻 Generating DSA-focused interview questions with Groq...');
+      const dsaProblems = await freeLLMService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
-        8 // Generate 8 unique DSA problems for DSA-only interviews
+        8,
+        enhancedCompanyData?.company_data
       );
 
       allQuestions = dsaProblems.map(p => ({
@@ -110,18 +125,20 @@ export async function POST(request: NextRequest) {
         category: 'dsa',
         difficulty: p.difficulty,
         points: getDSAPoints(p.difficulty),
-        problemData: p
+        problemData: p,
+        provider: p.provider,
+        model: p.model
       }));
     } else {
-      // Generate single-type questions (technical/behavioral)
-      console.log(`Generating ${interview.interviewType} interview questions...`);
-      allQuestions = await emergentAI.generateInterviewQuestions({
+      console.log(`🎯 Generating ${interview.interviewType} interview questions with Groq...`);
+      allQuestions = await freeLLMService.generateInterviewQuestions({
         jobTitle: interview.jobTitle,
         companyName: interview.companyName,
         skills: interview.skills || [],
         interviewType: interview.interviewType,
         experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: getEnhancedQuestionCount(interview.interviewType)
+        numberOfQuestions: getEnhancedQuestionCount(interview.interviewType),
+        companyIntelligence: enhancedCompanyData?.company_data
       });
     }
 
