@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 const { hash } = require('bcrypt-ts');
 
 async function createTestUser() {
-  const uri = process.env.MONGODB_URI;
+  const uri = 'mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0';
   const client = new MongoClient(uri);
   
   try {
