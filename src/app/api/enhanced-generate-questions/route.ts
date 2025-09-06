@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Enhanced question document with metadata
+    // Enhanced question document with company intelligence and Groq metadata
     const questionDoc = {
       interviewId: interviewId,
       questions: allQuestions.map(q => ({
@@ -155,18 +155,30 @@ export async function POST(request: NextRequest) {
         timeLimit: q.timeLimit,
         followUpQuestions: q.followUpQuestions || [],
         evaluationCriteria: q.evaluationCriteria || [],
-        companyRelevance: q.companyRelevance || 7,
+        companyRelevance: q.companyRelevance || 8,
         tags: q.tags || [],
         hints: q.hints || [],
         problemData: q.problemData || null,
-        aptitudeData: q.aptitudeData || null
+        provider: q.provider || 'groq',
+        model: q.model || 'llama-3.1-8b'
       })),
+      companyIntelligence: enhancedCompanyData ? {
+        industry: enhancedCompanyData.company_data.industry,
+        tech_stack: enhancedCompanyData.company_data.tech_stack,
+        culture: enhancedCompanyData.company_data.culture,
+        recent_news: enhancedCompanyData.company_data.recent_news,
+        recent_posts: enhancedCompanyData.company_data.recent_posts.slice(0, 3),
+        difficulty: enhancedCompanyData.company_data.difficulty,
+        focus_areas: enhancedCompanyData.company_data.focus_areas
+      } : null,
       metadata: {
         generatedAt: new Date(),
-        aiService: 'emergent-ai',
+        aiService: 'groq-llm-service',
         totalQuestions: allQuestions.length,
         categoryBreakdown: getCategoryBreakdown(allQuestions),
-        difficultyBreakdown: getDifficultyBreakdown(allQuestions)
+        difficultyBreakdown: getDifficultyBreakdown(allQuestions),
+        providerBreakdown: getProviderBreakdown(allQuestions),
+        companyIntelligenceUsed: !!enhancedCompanyData
       },
       status: 'ready'
     };
