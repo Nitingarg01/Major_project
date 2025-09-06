@@ -52,26 +52,56 @@ async function validateSession() {
 
 export const createInterview = async (data: formD, projectContext: string[], workExDetails: string[]) => {
   try {
-    // Validate session with retry mechanism
-    let session
-    try {
-      session = await validateSession()
-    } catch (error) {
-      console.log("❌ Session validation failed:", error)
-      return { success: false, error: "Authentication required. Please sign in again.", redirect: '/login' }
+    console.log("🎯 SERVER ACTION - Starting BULLETPROOF interview creation");
+    
+    // SUPER AGGRESSIVE session validation with multiple strategies
+    let session;
+    let sessionAttempts = 0;
+    const maxSessionAttempts = 5;
+    
+    while (sessionAttempts < maxSessionAttempts) {
+      try {
+        console.log(`🔄 Session attempt ${sessionAttempts + 1}/${maxSessionAttempts}`);
+        session = await validateSession();
+        
+        if (session?.user?.id) {
+          console.log("✅ Session validated successfully:", session.user.id);
+          break;
+        }
+        
+      } catch (error) {
+        console.log(`⚠️ Session validation ${sessionAttempts + 1} failed:`, error);
+        sessionAttempts++;
+        
+        if (sessionAttempts < maxSessionAttempts) {
+          // Progressive delay: 500ms, 1s, 1.5s, 2s, 2.5s
+          const delay = 500 * sessionAttempts;
+          console.log(`🔄 Retrying session validation in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
     }
 
-    console.log("✅ Session verified for user:", session.user.id)
-    console.log("🚀 Creating interview with one-click generation...")
+    if (!session?.user?.id) {
+      console.log("❌ All session validation attempts failed - this should be rare!");
+      return { 
+        success: false, 
+        error: "Please refresh the page and try again",
+        retry: true // Signal that user can retry
+      };
+    }
+
+    console.log("✅ SESSION CONFIRMED - User:", session.user.id);
+    console.log("🚀 Creating interview with MAXIMUM persistence...");
     
-    // Prepare the request with proper headers and session user ID
+    // Prepare bulletproof request data
     const requestData = {
-      id: session.user.id, // Always use the session user ID for security
+      id: session.user.id, // Always use authenticated session user ID
       jobDesc: data.jobDesc,
       skills: data.skills,
       companyName: data.companyName,
-      projectContext: projectContext,
-      workExDetails: workExDetails,
+      projectContext: projectContext || [],
+      workExDetails: workExDetails || [],
       jobTitle: data.jobTitle,
       experienceLevel: data.experienceLevel,
       interviewType: data.interviewType,
@@ -81,85 +111,123 @@ export const createInterview = async (data: formD, projectContext: string[], wor
       companyIntelligence: data.companyIntelligence,
       roundConfigs: data.roundConfigs,
       createdAt: new Date()
-    }
+    };
 
-    console.log("📤 Sending request to API:", baseURL + '/api/create-interview')
+    console.log("📤 Sending bulletproof request to API:", baseURL + '/api/create-interview');
     
-    // Retry mechanism for API calls
-    let res
-    let retryCount = 0
-    const maxRetries = 2
+    // MEGA RETRY mechanism for API calls
+    let res;
+    let retryCount = 0;
+    const maxRetries = 4; // Increased retries
     
     while (retryCount <= maxRetries) {
       try {
+        console.log(`🔥 API attempt ${retryCount + 1}/${maxRetries + 1}`);
+        
         res = await axios.post(`${baseURL}/api/create-interview`, requestData, {
           headers: {
             'Content-Type': 'application/json',
-            // Don't add session cookies here as they should be handled automatically
           },
-          timeout: 120000, // Increased to 2 minutes for complex interview generation
+          timeout: 180000, // Increased to 3 minutes
           validateStatus: (status) => status < 500 // Don't throw on 4xx errors
-        })
-        break // Success, exit retry loop
+        });
+        
+        console.log(`✅ API call successful with status: ${res.status}`);
+        break; // Success, exit retry loop
+        
       } catch (error: any) {
-        retryCount++
+        retryCount++;
+        console.log(`❌ API attempt ${retryCount} failed:`, error.message);
+        
         if (retryCount > maxRetries) {
-          throw error // Re-throw if max retries exceeded
+          throw error; // Re-throw if max retries exceeded
         }
         
-        if (error.response?.status === 401) {
-          // Don't retry on auth errors
-          throw error
+        // Don't retry immediately on auth errors - but do try once more after delay
+        if (error.response?.status === 401 && retryCount < maxRetries) {
+          console.log(`🔄 Auth error - trying to recover session...`);
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          continue;
         }
         
-        console.log(`⚠️ API call failed, retrying... (${retryCount}/${maxRetries})`)
-        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)) // Exponential backoff
+        const delay = 1000 * retryCount; // Progressive delay
+        console.log(`⚠️ Retrying API call in ${delay}ms... (${retryCount}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
     
+    // Handle response with maximum user-friendliness
     if (res.status === 401) {
-      console.log("❌ Authentication failed at API level")
-      return { success: false, error: "Session expired. Please sign in again.", redirect: '/login' }
+      console.log("❌ Authentication failed at API level - but don't give up!");
+      return { 
+        success: false, 
+        error: "Please refresh the page and try again",
+        retry: true
+      };
     }
     
     if (res.status >= 400) {
-      console.log("❌ API error:", res.status, res.data)
-      return { success: false, error: res.data?.error || `Server error: ${res.status}` }
+      console.log("❌ API error:", res.status, res.data);
+      const errorMsg = res.data?.error || `Server error: ${res.status}`;
+      return { 
+        success: false, 
+        error: errorMsg.includes("Session") ? "Please try again" : errorMsg,
+        retry: true
+      };
     }
     
-    console.log('✅ Interview created successfully:', res.data?.id)
+    console.log('🎉 SUCCESS! Interview created:', res.data?.id);
     
     // Revalidate the dashboard path to refresh data
-    revalidatePath('/dashboard')
+    revalidatePath('/dashboard');
+    revalidatePath('/');
     
     return { 
       success: true, 
       data: res.data,
       message: "Interview created successfully!"
-    }
+    };
 
   } catch (error: any) {
-    console.error('❌ Interview creation failed:', error)
+    console.error('🚨 CRITICAL: Interview creation failed:', error);
     
-    // Handle different types of errors
+    // Handle different types of errors gracefully
     if (error.code === 'ECONNREFUSED') {
-      return { success: false, error: "Server is not responding. Please try again later." }
+      return { 
+        success: false, 
+        error: "Server is not responding. Please try again.",
+        retry: true
+      };
     }
     
     if (error.code === 'ECONNABORTED') {
-      return { success: false, error: "Request timed out. The interview generation is taking longer than expected. Please try again." }
+      return { 
+        success: false, 
+        error: "Request timed out. Please try again.",
+        retry: true
+      };
     }
     
     if (error.response?.status === 401) {
-      return { success: false, error: "Authentication failed. Please sign in again.", redirect: '/login' }
+      return { 
+        success: false, 
+        error: "Please refresh the page and try again",
+        retry: true
+      };
     }
     
-    if (error.response?.status === 403) {
-      return { success: false, error: "Access denied. Please check your permissions." }
-    }
+    const errorMessage = error.response?.data?.error || error.message || "Failed to create interview";
     
-    const errorMessage = error.response?.data?.error || error.message || "Failed to create interview"
-    return { success: false, error: errorMessage }
+    // Make all error messages user-friendly and never suggest logout
+    const friendlyMessage = errorMessage.includes("Session") || errorMessage.includes("Authentication")
+      ? "Please try again"
+      : errorMessage;
+    
+    return { 
+      success: false, 
+      error: friendlyMessage,
+      retry: true
+    };
   }
 }
 
