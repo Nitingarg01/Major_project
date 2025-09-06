@@ -4,7 +4,7 @@
  * Uses Emergent Universal Key for reliable multi-provider access
  */
 
-import { load } from 'dotenv';
+import { config } from 'dotenv';
 import { extractJSON } from './jsonExtractor';
 
 // Load environment variables
