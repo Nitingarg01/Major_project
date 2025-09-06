@@ -182,8 +182,8 @@ export default function DashboardPage() {
     })
   }
 
-  // Show loading wrapper during loading or session loading
-  if (status === 'loading' || loading) {
+  // Show loading wrapper only when session is loading or we're fetching data
+  if (status === 'loading' || (loading && !hasInitialized)) {
     return (
       <LoadingWrapper 
         isLoading={true}
@@ -193,6 +193,11 @@ export default function DashboardPage() {
         <div />
       </LoadingWrapper>
     )
+  }
+
+  // If not authenticated, redirect (this should not show loading)
+  if (status === 'unauthenticated') {
+    return null
   }
 
   return (
