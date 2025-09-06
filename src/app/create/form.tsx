@@ -14,7 +14,7 @@ import { LoaderFive } from "@/components/ui/loader";
 import { Badge } from "@/components/ui/badge";
 import { Search, Building2, Users, Briefcase, Upload, FileText, Sparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import EnhancedCompanySearch from "@/components/EnhancedCompanySearch";
+import SimpleCompanyAutofill from "@/components/SimpleCompanyAutofill";
 
 const schema = z.object({
     jobTitle: z.string().min(3, "Job Title Too Short"),
@@ -88,10 +88,11 @@ const Createform = () => {
         setLoading(true)
         try {
             const response = await createInterview(data, projectContext, workExDetails)
-            toast.success("🎉 Interview Created Successfully!")
+            toast.success("🎉 Interview Created Successfully with HARD Questions!")
             router.push('/dashboard')
         } catch (error) {
-            toast.error("❌ Interview Creation Failed!")
+            console.error('Interview creation error:', error)
+            toast.error("❌ Interview Creation Failed! Please try again.")
         } finally {
             setLoading(false)
         }
@@ -135,15 +136,19 @@ const Createform = () => {
                 <div className="flex items-center justify-center gap-2 mb-4">
                     <Sparkles className="w-8 h-8 text-purple-500" />
                     <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
-                        Create AI Interview
+                        Create HARD AI Interview
                     </h1>
                 </div>
-                <p className="text-gray-600">Configure your personalized mock interview session</p>
+                <p className="text-gray-600">Configure your challenging mock interview session</p>
+                <div className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-400 p-4 mt-4 rounded">
+                    <p className="text-red-800 font-semibold">⚡ HARD Mode: Questions designed for senior-level challenges</p>
+                    <p className="text-red-700 text-sm">Get ready for complex scenarios and advanced technical questions!</p>
+                </div>
             </div>
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    {/* Company Selection with Autofill */}
+                    {/* Company Selection with Simple Autofill */}
                     <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
                         <FormField
                             control={form.control}
@@ -152,18 +157,14 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="flex items-center gap-2 text-lg font-semibold">
                                         <Building2 className="w-5 h-5 text-blue-600" />
-                                        Company & Role Search<span className="text-red-500">*</span>
+                                        Company Name<span className="text-red-500">*</span>
                                     </FormLabel>
                                     <div className="space-y-4">
-                                        <EnhancedCompanySearch
+                                        <SimpleCompanyAutofill
                                             onSelect={(company, jobTitle, companyData) => {
                                                 form.setValue("companyName", company)
-                                                // Since we're only suggesting companies now, user will fill job title manually
-                                                if (jobTitle && jobTitle.trim()) {
-                                                    form.setValue("jobTitle", jobTitle)
-                                                }
                                             }}
-                                            placeholder="Search for companies (e.g., Google, Microsoft, Amazon)"
+                                            placeholder="Type company name (e.g., Google, Microsoft)"
                                         />
                                         <FormControl>
                                             <Input 
@@ -224,9 +225,9 @@ const Createform = () => {
                                     </FormLabel>
                                     <FormControl>
                                         <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-3 bg-white">
-                                            <option value="entry">Entry Level (0-2 years)</option>
-                                            <option value="mid">Mid Level (2-5 years)</option>
-                                            <option value="senior">Senior Level (5+ years)</option>
+                                            <option value="entry">Entry Level (0-2 years) - Gets HARD questions anyway</option>
+                                            <option value="mid">Mid Level (2-5 years) - HARD questions</option>
+                                            <option value="senior">Senior Level (5+ years) - EXTRA HARD questions</option>
                                         </select>
                                     </FormControl>
                                     <FormMessage />
@@ -244,7 +245,7 @@ const Createform = () => {
                                 <FormLabel className="font-semibold">Job Description<span className="text-red-500">*</span></FormLabel>
                                 <FormControl>
                                     <Textarea 
-                                        placeholder="Describe the job role, responsibilities, and requirements..."
+                                        placeholder="Describe the job role, responsibilities, and requirements... (Be detailed for better HARD questions)"
                                         {...field} 
                                         className="min-h-24"
                                     />
@@ -276,7 +277,7 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="font-semibold">
                                         Skills<span className="text-red-500">*</span>
-                                        <span className="text-sm text-gray-500 ml-2">({field.value.length}/15)</span>
+                                        <span className="text-sm text-gray-500 ml-2">({field.value.length}/15) - More skills = Harder questions</span>
                                     </FormLabel>
                                     
                                     <div className="flex gap-2">
@@ -300,7 +301,7 @@ const Createform = () => {
                                     {/* Skill Suggestions */}
                                     {showSkillSuggestions && (
                                         <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-sm text-gray-600 mb-3">Popular skills by category:</p>
+                                            <p className="text-sm text-gray-600 mb-3">Popular skills by category (more skills = harder questions):</p>
                                             <div className="space-y-3">
                                                 {Object.entries(skillCategories).map(([category, skills]) => (
                                                     <div key={category}>
@@ -359,14 +360,14 @@ const Createform = () => {
                         name="interviewType"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-semibold">Interview Type<span className="text-red-500">*</span></FormLabel>
+                                <FormLabel className="font-semibold">Interview Type<span className="text-red-500">*</span> (All are HARD mode)</FormLabel>
                                 <FormControl>
                                     <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-3 bg-white">
-                                        <option value="mixed">🎯 Mixed (Technical + Behavioral + Aptitude + DSA)</option>
-                                        <option value="technical">💻 Technical Only</option>
-                                        <option value="behavioral">🤝 Behavioral Only</option>
-                                        <option value="aptitude">🧠 Aptitude Only</option>
-                                        <option value="dsa">⚡ DSA (Data Structures & Algorithms)</option>
+                                        <option value="mixed">🎯 Mixed HARD (Technical + Behavioral + Aptitude + DSA)</option>
+                                        <option value="technical">💻 Technical HARD Only</option>
+                                        <option value="behavioral">🤝 Behavioral HARD Only</option>
+                                        <option value="aptitude">🧠 Aptitude HARD Only</option>
+                                        <option value="dsa">⚡ DSA HARD (Data Structures & Algorithms)</option>
                                     </select>
                                 </FormControl>
                                 <FormMessage />
@@ -387,7 +388,7 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="flex items-center gap-2 font-semibold">
                                         <FileText className="w-5 h-5 text-green-600" />
-                                        Upload Resume (Auto-fill skills & details)
+                                        Upload Resume (Auto-fill skills & details for HARD questions)
                                     </FormLabel>
                                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
                                         <div className="flex flex-col items-center gap-4">
@@ -403,7 +404,7 @@ const Createform = () => {
                                                     {uploading ? (
                                                         <div className="flex items-center gap-2 justify-center">
                                                             <LoaderFive />
-                                                            Extracting skills and experience...
+                                                            Extracting skills for HARD questions...
                                                         </div>
                                                     ) : (
                                                         <div>
@@ -439,18 +440,18 @@ const Createform = () => {
                         <Button 
                             variant="default" 
                             type="submit" 
-                            className="w-full md:w-auto px-12 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
+                            className="w-full md:w-auto px-12 py-4 text-lg bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700" 
                             disabled={loading || uploading}
                         >
                             {loading ? (
                                 <span className="flex items-center gap-2">
                                     <LoaderFive />
-                                    Creating Interview...
+                                    Creating HARD Interview...
                                 </span>
                             ) : (
                                 <span className="flex items-center gap-2">
                                     <Sparkles className="w-5 h-5" />
-                                    Create AI Interview
+                                    Create HARD AI Interview
                                 </span>
                             )}
                         </Button>
