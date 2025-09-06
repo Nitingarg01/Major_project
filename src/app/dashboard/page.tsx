@@ -413,6 +413,19 @@ export default function DashboardPage() {
                             </Button>
                           </Link>
                         )}
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => deleteInterview(interview._id)}
+                          disabled={deletingId === interview._id}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                        >
+                          {deletingId === interview._id ? (
+                            <div className="w-4 h-4 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
+                          ) : (
+                            <Trash2 className="w-4 h-4" />
+                          )}
+                        </Button>
                       </div>
                     </div>
                   ))}
