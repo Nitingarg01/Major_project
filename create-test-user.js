@@ -8,7 +8,8 @@ async function createTestUser() {
   try {
     const envContent = fs.readFileSync('.env.local', 'utf8');
     const mongoLine = envContent.split('\n').find(line => line.startsWith('MONGODB_URI='));
-    uri = mongoLine ? mongoLine.split('=')[1].replace(/"/g, '') : null;
+    uri = mongoLine ? mongoLine.split('=')[1].replace(/"/g, '').trim() : null;
+    console.log('Parsed URI:', uri);
   } catch (error) {
     console.error('Could not read .env.local file:', error);
     return;
