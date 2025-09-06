@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+
 // Icons
 import { 
   Building2, Briefcase, Users, Code, Brain, Calculator, 
@@ -27,6 +28,7 @@ import {
 // Services
 import { createInterview, parsingResume } from "@/app/create/actions"
 import EnhancedInterviewAI from '@/lib/enhancedInterviewAI'
+import { useSession } from "next-auth/react"
 
 const schema = z.object({
   jobTitle: z.string().min(2, "Job Title Too Short"),
@@ -117,7 +119,14 @@ const SKILL_CATEGORIES = {
 
 const EnhancedInterviewCreationForm = () => {
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [loading, setLoading] = useState(false)
+  
+  // Debug session status
+  React.useEffect(() => {
+    console.log("Session status:", status)
+    console.log("Session data:", session)
+  }, [status, session])
   const [uploading, setUploading] = useState(false)
   const [fileName, setFileName] = useState('')
   const [skillInput, setSkillInput] = useState('')
@@ -195,6 +204,28 @@ const EnhancedInterviewCreationForm = () => {
   }, [companyName, researchCompany])
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    console.log("🚀 onSubmit called with data:", data)
+    console.log("📊 Current session status:", status)
+    console.log("👤 Current session:", session)
+    
+    // Check session status first - but don't block if it's taking too long
+    if (status === "loading") {
+      // Wait a bit for session to load, but don't block indefinitely
+      console.log("Session is loading, waiting...");
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // If still loading after 1 second, proceed anyway (session might be valid on server)
+      if (status === "loading") {
+        console.log("Session still loading, proceeding with server-side validation");
+      }
+    }
+    
+    if (status === "unauthenticated") {
+      toast.error("Please sign in to create an interview");
+      router.push('/login');
+      return;
+    }
+
     if (!data.jobTitle || data.jobTitle.length < 2) {
       toast.error("Job Title is too short");
       return;
@@ -236,34 +267,33 @@ const EnhancedInterviewCreationForm = () => {
       }
 
       console.log("🚀 Submitting interview creation request...")
+      console.log("👤 User ID:", session?.user?.id || "Will be validated server-side")
       const response = await createInterview(enhancedData, [], [])
       
       if (response.success) {
         toast.success("🎉 Enhanced Interview Created Successfully!")
-        console.log("✅ Interview created, navigating to dashboard...")
+        console.log("✅ Interview created:", response.data?.id)
         
-        // Small delay to ensure the toast is shown
+        // Wait a moment then redirect
         setTimeout(() => {
-          router.push('/dashboard')
+          router.push('/')
         }, 1000)
       } else {
         console.error("❌ Interview creation failed:", response.error)
         
         // Handle authentication failures
         if (response.redirect === '/login') {
-          toast.error("🔒 Session expired. Redirecting to login...")
+          toast.error("Session expired. Redirecting to login...")
           setTimeout(() => {
             router.push('/login')
           }, 2000)
-          return
+        } else {
+          toast.error(response.error || "❌ Interview Creation Failed!")
         }
-        
-        throw new Error(response.error || "Failed to create interview")
       }
     } catch (error) {
       console.error('Interview creation error:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
-      toast.error(`❌ Interview Creation Failed: ${errorMessage}`)
+      toast.error("❌ Interview Creation Failed!")
     } finally {
       setLoading(false)
     }
