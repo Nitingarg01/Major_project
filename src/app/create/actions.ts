@@ -64,9 +64,9 @@ export const createInterview = async (data: formD, projectContext: string[], wor
     console.log("✅ Session verified for user:", session.user.id)
     console.log("🚀 Creating interview with one-click generation...")
     
-    // Prepare the request with proper headers
+    // Prepare the request with proper headers and session user ID
     const requestData = {
-      id: session.user.id,
+      id: session.user.id, // Always use the session user ID for security
       jobDesc: data.jobDesc,
       skills: data.skills,
       companyName: data.companyName,
