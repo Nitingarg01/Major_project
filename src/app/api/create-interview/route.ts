@@ -14,16 +14,16 @@ function getQuestionCountForType(interviewType: string): number {
   }
 }
 
-// Import FreeLLMService for immediate HARD question generation
-async function generateHardQuestionsImmediately(interviewData: any) {
+// Import EmergentLLMService for reliable question generation
+async function generateQuestionsImmediately(interviewData: any) {
     try {
-        const FreeLLMService = await import('@/lib/freeLLMService');
+        const EmergentLLMService = await import('@/lib/emergentLLMService');
         const EnhancedCompanyIntelligenceService = await import('@/lib/enhancedCompanyIntelligence');
         
-        const freeLLMService = FreeLLMService.default.getInstance();
+        const emergentLLMService = EmergentLLMService.default.getInstance();
         const companyIntelligence = EnhancedCompanyIntelligenceService.default.getInstance();
         
-        console.log('🔥 Generating HARD questions with Groq AI...');
+        console.log('🚀 Generating questions with Emergent LLM Service...');
         
         // Get enhanced company intelligence
         const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
@@ -33,34 +33,104 @@ async function generateHardQuestionsImmediately(interviewData: any) {
 
         console.log('📊 Company intelligence gathered for', interviewData.companyName);
         
-        // Generate HARD questions using the new method
-        const questions = await freeLLMService.generateHardInterviewQuestions({
-            jobTitle: interviewData.jobTitle || 'Software Engineer',
-            companyName: interviewData.companyName,
-            skills: interviewData.skills || [],
-            interviewType: interviewData.interviewType || 'mixed',
-            experienceLevel: 'senior', // Force senior level for HARD questions
-            numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed'),
-            companyIntelligence: enhancedCompanyData?.company_data,
-            difficultyLevel: 'hard' // Force hard difficulty
-        });
+        let allQuestions: any[] = [];
+        
+        // Generate questions based on interview type
+        if (interviewData.interviewType === 'mixed') {
+            // Technical Questions
+            const technicalQuestions = await emergentLLMService.generateInterviewQuestions({
+                jobTitle: interviewData.jobTitle || 'Software Engineer',
+                companyName: interviewData.companyName,
+                skills: interviewData.skills || [],
+                interviewType: 'technical',
+                experienceLevel: interviewData.experienceLevel || 'mid',
+                numberOfQuestions: 8,
+                companyIntelligence: enhancedCompanyData?.company_data
+            });
 
-        // Convert to the format expected by the database
-        const formattedQuestions = questions.map(q => ({
-            question: q.question,
-            expectedAnswer: q.expectedAnswer,
-            difficulty: 'hard', // Force hard difficulty
-            category: q.category,
-            points: q.points || 45, // High points for hard questions
-            timeLimit: q.timeLimit || 12, // Longer time for hard questions
-            provider: q.provider || 'groq',
-            model: q.model || 'llama-3.1-70b',
-            evaluationCriteria: q.evaluationCriteria || ['Advanced Technical Depth', 'System Thinking'],
-            tags: [...(q.tags || []), 'hard', 'senior-level']
-        }));
+            // Behavioral Questions
+            const behavioralQuestions = await emergentLLMService.generateInterviewQuestions({
+                jobTitle: interviewData.jobTitle || 'Software Engineer',
+                companyName: interviewData.companyName,
+                skills: interviewData.skills || [],
+                interviewType: 'behavioral',
+                experienceLevel: interviewData.experienceLevel || 'mid',
+                numberOfQuestions: 6,
+                companyIntelligence: enhancedCompanyData?.company_data
+            });
 
-        console.log(`✅ ${formattedQuestions.length} HARD questions generated successfully with Groq`);
-        return formattedQuestions;
+            // DSA Problems
+            const dsaProblems = await emergentLLMService.generateDSAProblems(
+                interviewData.companyName,
+                getDSADifficulty(interviewData.experienceLevel),
+                6
+            );
+
+            allQuestions = [
+                ...technicalQuestions,
+                ...behavioralQuestions,
+                ...dsaProblems.map(p => ({
+                    question: p.title,
+                    expectedAnswer: p.description,
+                    difficulty: p.difficulty,
+                    category: 'dsa',
+                    points: getDSAPoints(p.difficulty),
+                    timeLimit: 30,
+                    provider: 'emergent',
+                    model: 'gpt-4o-mini',
+                    evaluationCriteria: ['Problem Solving', 'Code Quality', 'Algorithm Understanding'],
+                    tags: ['dsa', 'coding', interviewData.companyName],
+                    problemData: p
+                }))
+            ];
+        } else if (interviewData.interviewType === 'dsa') {
+            const dsaProblems = await emergentLLMService.generateDSAProblems(
+                interviewData.companyName,
+                getDSADifficulty(interviewData.experienceLevel),
+                8
+            );
+
+            allQuestions = dsaProblems.map(p => ({
+                question: p.title,
+                expectedAnswer: p.description,
+                difficulty: p.difficulty,
+                category: 'dsa',
+                points: getDSAPoints(p.difficulty),
+                timeLimit: 45,
+                provider: 'emergent',
+                model: 'gpt-4o-mini',
+                evaluationCriteria: ['Problem Solving', 'Code Quality', 'Algorithm Understanding'],
+                tags: ['dsa', 'coding', interviewData.companyName],
+                problemData: p
+            }));
+        } else {
+            // Single type interview (technical, behavioral, or aptitude)
+            const questions = await emergentLLMService.generateInterviewQuestions({
+                jobTitle: interviewData.jobTitle || 'Software Engineer',
+                companyName: interviewData.companyName,
+                skills: interviewData.skills || [],
+                interviewType: interviewData.interviewType as 'technical' | 'behavioral' | 'aptitude',
+                experienceLevel: interviewData.experienceLevel || 'mid',
+                numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'technical'),
+                companyIntelligence: enhancedCompanyData?.company_data
+            });
+
+            allQuestions = questions.map(q => ({
+                question: q.question,
+                expectedAnswer: q.expectedAnswer,
+                difficulty: q.difficulty,
+                category: q.category,
+                points: q.points || 15,
+                timeLimit: q.timeLimit || 8,
+                provider: 'emergent',
+                model: 'gpt-4o-mini',
+                evaluationCriteria: q.evaluationCriteria || ['Technical Knowledge', 'Communication'],
+                tags: q.tags || [interviewData.jobTitle, interviewData.companyName]
+            }));
+        }
+
+        console.log(`✅ ${allQuestions.length} questions generated successfully with Emergent LLM`);
+        return allQuestions;
         
     } catch (error) {
         console.error('❌ Error generating HARD questions:', error);
