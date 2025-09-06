@@ -160,7 +160,7 @@ export class EmergentAIService {
         ]
       });
 
-      const problems = JSON.parse(response.replace(/```json\n?|\n?```/g, ''));
+      const problems = extractJSON(response);
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `dsa-${Date.now()}-${index}`,
