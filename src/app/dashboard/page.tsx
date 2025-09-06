@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { useLoading } from '@/components/ClientNavbar'
 
 interface Interview {
   _id: string
@@ -43,6 +44,7 @@ export default function DashboardPage() {
   const [interviews, setInterviews] = useState<Interview[]>([])
   const [stats, setStats] = useState<DashboardStats>({ total: 0, completed: 0, inProgress: 0 })
   const [loading, setLoading] = useState(true)
+  const { setIsLoading } = useLoading()
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -55,18 +57,48 @@ export default function DashboardPage() {
     }
   }, [status, router])
 
+  // Update global loading state
+  useEffect(() => {
+    setIsLoading(loading)
+    return () => setIsLoading(false) // Cleanup on unmount
+  }, [loading, setIsLoading])
+
   const fetchUserInterviews = async () => {
     try {
-      const response = await fetch('/api/user-interviews?limit=5')
+      setLoading(true)
+      
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+      
+      const response = await fetch('/api/user-interviews?limit=5', {
+        signal: controller.signal,
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      })
+      
+      clearTimeout(timeoutId)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
       const data = await response.json()
 
       if (data.success) {
         setInterviews(data.interviews)
         setStats(data.stats)
+      } else {
+        throw new Error(data.error || 'Failed to fetch data')
       }
     } catch (error) {
       console.error('Error fetching interviews:', error)
-      toast.error('Failed to load interviews')
+      if (error.name === 'AbortError') {
+        toast.error('Request timeout. Please try again.')
+      } else {
+        toast.error('Failed to load interviews. Please refresh the page.')
+      }
     } finally {
       setLoading(false)
     }
@@ -112,8 +144,11 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto mb-6"></div>
+          <div className="space-y-2">
+            <p className="text-lg font-medium text-gray-700">Loading your dashboard...</p>
+            <p className="text-sm text-gray-500">Please wait while we fetch your data</p>
+          </div>
         </div>
       </div>
     )
