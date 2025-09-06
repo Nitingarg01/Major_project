@@ -93,7 +93,7 @@ ${getCppReturnType(problem)} solution(${getCppParams(problem)}) {
 
 int main() {
     // Test your solution
-    // cout << solution(${problem.examples[0]?.input || '{1,2,3}'}) << endl;
+    // cout << solution(${problem?.examples?.[0]?.input || '{1,2,3}'}) << endl;
     return 0;
 }`
   }
