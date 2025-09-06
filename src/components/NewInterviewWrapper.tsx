@@ -363,9 +363,13 @@ const NewInterviewWrapper = ({
 
     switch (currentRoundConfig.type) {
       case 'dsa':
+        // Ensure we have DSA problems and pass the first one to DSACompiler
+        const dsaProblems = currentRoundQuestions || []
+        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
+        
         return (
           <DSACompiler
-            problem={currentRoundQuestions[0]} // DSA problems
+            problem={dsaProblem}
             onSubmit={handleRoundComplete}
             timeLimit={currentRoundConfig.duration}
           />
@@ -374,7 +378,7 @@ const NewInterviewWrapper = ({
       case 'aptitude':
         return (
           <AptitudeQuiz
-            questions={currentRoundQuestions}
+            questions={currentRoundQuestions || []}
             onComplete={handleRoundComplete}
             timeLimit={currentRoundConfig.duration}
           />
@@ -383,7 +387,7 @@ const NewInterviewWrapper = ({
       default:
         return (
           <InterviewClientForm 
-            questions={currentRoundQuestions} 
+            questions={currentRoundQuestions || []} 
             id={id}
             roundId={currentRoundConfig.id}
             onRoundComplete={handleRoundComplete}
