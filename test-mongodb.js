@@ -1,8 +1,17 @@
 const { MongoClient } = require('mongodb');
-require('dotenv').config({ path: '.env.local' });
+const fs = require('fs');
 
 async function testConnection() {
-  const uri = process.env.MONGODB_URI;
+  // Read environment variables from .env.local
+  let uri;
+  try {
+    const envContent = fs.readFileSync('.env.local', 'utf8');
+    const mongoLine = envContent.split('\n').find(line => line.startsWith('MONGODB_URI='));
+    uri = mongoLine ? mongoLine.split('=')[1] : null;
+  } catch (error) {
+    console.error('Could not read .env.local file:', error);
+    return;
+  }
   console.log('Testing MongoDB connection...');
   console.log('URI exists:', !!uri);
   
