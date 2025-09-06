@@ -17,33 +17,35 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
 
     const db = client.db("Cluster0");
+    const userId = session.user.id;
     
-    // Get user's recent interviews
-    const interviews = await db
-      .collection('interviews')
-      .find({ userId: session.user.id })
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .toArray();
-
-    // Get interview stats
-    const totalInterviews = await db
-      .collection('interviews')
-      .countDocuments({ userId: session.user.id });
-
-    const completedInterviews = await db
-      .collection('interviews')
-      .countDocuments({ 
-        userId: session.user.id, 
-        status: 'completed' 
-      });
-
-    const inProgressInterviews = await db
-      .collection('interviews')
-      .countDocuments({ 
-        userId: session.user.id, 
-        status: { $in: ['ready', 'in-progress'] }
-      });
+    // Run all database queries in parallel for better performance
+    const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = await Promise.all([
+      // Get user's recent interviews
+      db.collection('interviews')
+        .find({ userId })
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .toArray(),
+      
+      // Get total interviews count
+      db.collection('interviews')
+        .countDocuments({ userId }),
+      
+      // Get completed interviews count
+      db.collection('interviews')
+        .countDocuments({ 
+          userId, 
+          status: 'completed' 
+        }),
+      
+      // Get in-progress interviews count
+      db.collection('interviews')
+        .countDocuments({ 
+          userId, 
+          status: { $in: ['ready', 'in-progress'] }
+        })
+    ]);
 
     return NextResponse.json({
       success: true,
