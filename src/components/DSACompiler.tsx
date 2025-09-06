@@ -456,7 +456,7 @@ function getJavaParams(problem: DSAProblem): string {
 }
 
 function getCppReturnType(problem: DSAProblem): string {
-  const output = problem.examples[0]?.output || ''
+  const output = problem?.examples?.[0]?.output || ''
   if (output.includes('[') || output.includes(',')) return 'vector<int>'
   if (!isNaN(Number(output))) return 'int'
   return 'string'
