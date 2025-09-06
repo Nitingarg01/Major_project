@@ -89,7 +89,7 @@ const Createform = () => {
         try {
             const response = await createInterview(data, projectContext, workExDetails)
             toast.success("🎉 Interview Created Successfully!")
-            router.push('/')
+            router.push('/dashboard')
         } catch (error) {
             toast.error("❌ Interview Creation Failed!")
         } finally {
