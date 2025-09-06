@@ -335,7 +335,7 @@ export class EnhancedInterviewAI {
         { role: 'user', content: userMessage }
       ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
 
-      const companyData = this.extractJSON(response);
+      const companyData = extractJSON(response);
       
       // Validate and enhance the data
       const enhancedData: CompanyResearchData = {
