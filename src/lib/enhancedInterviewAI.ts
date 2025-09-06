@@ -566,7 +566,7 @@ export class EnhancedInterviewAI {
         { role: 'user', content: userMessage }
       ], { provider: 'groq', model: 'llama-3.1-8b-instant', temperature: 0.8, max_tokens: 6000 });
 
-      const problems = this.extractJSON(response);
+      const problems = extractJSON(response);
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `dsa-${Date.now()}-${index}`,
