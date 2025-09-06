@@ -65,25 +65,42 @@ const Navbar = () => {
 
         </NavigationMenu>
 
-{status!='unauthenticated' && <>
+{status === 'authenticated' && session?.user && (
         <NavigationMenu>
           <NavigationMenuList className='flex flex-row space-x-6 pr-2'>
             <NavigationMenuItem className='font-semibold'>
               <Tooltip>
                 <TooltipTrigger>
-                  Hi {session?.user?.name}
+                  Hi {session.user.name}
                 </TooltipTrigger>
                 <TooltipContent>
-                  <span className='font-sm italic '> Email : {session?.user.email}</span>
+                  <span className='font-sm italic'> Email: {session.user.email}</span>
                 </TooltipContent>
               </Tooltip>
-              </NavigationMenuItem>
+            </NavigationMenuItem>
             <NavigationMenuItem>
               <Button variant="default" onClick={handleLogout}>Sign Out</Button>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-</>}
+      )}
+
+      {status === 'unauthenticated' && (
+        <NavigationMenu>
+          <NavigationMenuList className='flex flex-row space-x-4 pr-2'>
+            <NavigationMenuItem>
+              <Link href="/login" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                Sign In
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/signup">
+                <Button variant="default">Get Started</Button>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      )}
 
       </div>
 
