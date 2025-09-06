@@ -133,26 +133,46 @@ async function generateQuestionsImmediately(interviewData: any) {
         return allQuestions;
         
     } catch (error) {
-        console.error('❌ Error generating HARD questions:', error);
-        // Return some default HARD questions as fallback
+        console.error('❌ Error generating questions:', error);
+        // Return some default questions as fallback
         return [
             {
-                question: "Design a distributed system architecture for real-time collaboration that can handle 10M+ concurrent users. Discuss data consistency, conflict resolution, scalability challenges, and monitoring strategies. How would you handle network partitions and ensure data integrity?",
-                expectedAnswer: "A comprehensive senior-level answer covering distributed system principles, CAP theorem, eventual consistency, operational transformation for conflict resolution, microservices architecture, load balancing strategies, database sharding, caching layers, monitoring and alerting, fault tolerance mechanisms, and disaster recovery procedures.",
-                difficulty: "hard",
+                question: "Tell me about your experience with software development and how you approach solving complex technical problems.",
+                expectedAnswer: "A comprehensive answer covering technical experience, problem-solving methodology, examples of complex problems solved, and lessons learned from challenging projects.",
+                difficulty: "medium",
                 category: "technical",
-                points: 50,
-                timeLimit: 15
+                points: 15,
+                timeLimit: 8
             },
             {
-                question: "Describe a situation where you had to make a critical technical decision that your team strongly disagreed with. How did you handle the conflict, build consensus, and what was the outcome? What would you do differently?",
-                expectedAnswer: "Should demonstrate senior leadership skills, ability to handle technical conflicts, data-driven decision making, stakeholder management, building consensus through technical evidence, learning from outcomes, and adapting leadership style.",
-                difficulty: "hard", 
+                question: "Describe a situation where you had to work with a difficult team member. How did you handle it and what was the outcome?",
+                expectedAnswer: "Should demonstrate interpersonal skills, conflict resolution, communication strategies, and professional growth from the experience.",
+                difficulty: "medium", 
                 category: "behavioral",
-                points: 45,
-                timeLimit: 12
+                points: 12,
+                timeLimit: 6
             }
         ];
+    }
+}
+
+// Helper function for DSA difficulty
+function getDSADifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
+    switch (experienceLevel) {
+        case 'entry': return 'easy';
+        case 'mid': return 'medium';
+        case 'senior': return 'hard';
+        default: return 'medium';
+    }
+}
+
+// Helper function for DSA points
+function getDSAPoints(difficulty: string): number {
+    switch (difficulty) {
+        case 'easy': return 15;
+        case 'medium': return 25;
+        case 'hard': return 40;
+        default: return 20;
     }
 }
 
