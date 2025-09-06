@@ -16,7 +16,7 @@ export interface Interview  {
 
 export interface InterviewRound {
   id: string;
-  type: 'technical' | 'behavioral' | 'aptitude' | 'dsa';
+  type: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
   status: 'pending' | 'completed' | 'in-progress';
   questions: Question[];
   answers?: string[];
