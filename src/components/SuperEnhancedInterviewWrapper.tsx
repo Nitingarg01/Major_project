@@ -477,7 +477,7 @@ const SuperEnhancedInterviewWrapper = ({
         return (
           <AptitudeQuiz
             questions={sampleAptitudeQuestions}
-            onComplete={handleRoundComplete}
+            onComplete={(results) => handleRoundComplete(results, results.timeSpent || 0)}
             timeLimit={currentRoundData.duration}
           />
         )
