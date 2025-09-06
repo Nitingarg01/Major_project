@@ -50,7 +50,7 @@ export class FreeLLMService {
 
   public static getInstance(): FreeLLMService {
     if (!FreeLLMService.instance) {
-      FreeLLMService.instance = new FreeLLLMService();
+      FreeLLMService.instance = new FreeLLMService();
     }
     return FreeLLMService.instance;
   }
