@@ -333,7 +333,7 @@ export class EnhancedInterviewAI {
         { role: 'user', content: userMessage }
       ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
 
-      const companyData = JSON.parse(response.replace(/```json\n?|\n?```/g, ''));
+      const companyData = this.extractJSON(response);
       
       // Validate and enhance the data
       const enhancedData: CompanyResearchData = {
