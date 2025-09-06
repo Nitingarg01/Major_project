@@ -467,10 +467,10 @@ export class EnhancedInterviewAI {
     `;
 
     try {
-      const response = await this.callEmergentAPI([
+      const response = await this.callAIProvider([
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
-      ]);
+      ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
 
       const problems = JSON.parse(response.replace(/```json\n?|\n?```/g, ''));
       return problems.map((p: any, index: number) => ({
