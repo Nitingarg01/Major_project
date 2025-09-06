@@ -202,7 +202,7 @@ export default function DashboardPage() {
       } else {
         throw new Error(data.error || 'Failed to delete interview')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting interview:', error)
       toast.error('Failed to delete interview. Please try again.')
     } finally {
