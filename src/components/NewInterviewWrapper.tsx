@@ -370,7 +370,7 @@ const NewInterviewWrapper = ({
         return (
           <DSACompiler
             problem={dsaProblem}
-            onSubmit={handleRoundComplete}
+            onSubmit={(code, results) => handleRoundComplete([code], results.timeSpent || 0)}
             timeLimit={currentRoundConfig.duration}
           />
         )
