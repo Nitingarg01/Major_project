@@ -9,7 +9,7 @@ import { extractJSON } from './jsonExtractor';
 
 // Load environment variables
 if (typeof process !== 'undefined') {
-  load();
+  config();
 }
 
 interface EmergentLLMRequest {
