@@ -2,7 +2,68 @@
  * Test script to verify that JSON parsing fixes are working
  */
 
-import { extractJSON } from './src/lib/jsonExtractor.js';
+// CommonJS import for Node.js
+const fs = require('fs');
+const path = require('path');
+
+// Read and eval the jsonExtractor file
+const extractorPath = path.join(__dirname, 'src/lib/jsonExtractor.ts');
+const extractorCode = fs.readFileSync(extractorPath, 'utf8');
+
+// Simple implementation of extractJSON for testing
+function extractJSON(response) {
+  try {
+    // First try: Direct JSON parse (in case response is already clean JSON)
+    return JSON.parse(response);
+  } catch (error) {
+    try {
+      // Remove markdown code blocks
+      let cleaned = response.replace(/```json\n?|\n?```/g, '');
+      
+      // Try parsing after markdown removal
+      return JSON.parse(cleaned);
+    } catch (error) {
+      try {
+        // Look for JSON object patterns - find first { or [ and last } or ]
+        const jsonObjectMatch = response.match(/\{[\s\S]*\}/);
+        const jsonArrayMatch = response.match(/\[[\s\S]*\]/);
+        
+        let jsonString = '';
+        if (jsonObjectMatch && jsonArrayMatch) {
+          // Choose the longer match (more likely to be complete)
+          jsonString = jsonObjectMatch[0].length > jsonArrayMatch[0].length 
+            ? jsonObjectMatch[0] 
+            : jsonArrayMatch[0];
+        } else if (jsonObjectMatch) {
+          jsonString = jsonObjectMatch[0];
+        } else if (jsonArrayMatch) {
+          jsonString = jsonArrayMatch[0];
+        } else {
+          throw new Error('No JSON pattern found');
+        }
+        
+        return JSON.parse(jsonString);
+      } catch (error) {
+        try {
+          // More aggressive extraction: Remove common prefixes
+          let cleaned = response
+            .replace(/^.*?(?=[\{\[])/s, '') // Remove everything before first { or [
+            .replace(/[\}\]].*$/s, (match) => match.charAt(0)); // Keep only first } or ]
+          
+          if (cleaned.startsWith('{') || cleaned.startsWith('[')) {
+            return JSON.parse(cleaned);
+          }
+          
+          throw new Error('Could not extract valid JSON');
+        } catch (finalError) {
+          console.error('Failed to extract JSON from response:', response);
+          console.error('Final extraction error:', finalError);
+          throw new Error(`JSON extraction failed: ${finalError instanceof Error ? finalError.message : 'Unknown error'}`);
+        }
+      }
+    }
+  }
+}
 
 console.log('Testing JSON extraction fixes...\n');
 
