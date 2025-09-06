@@ -243,7 +243,7 @@ const AdvancedCameraMonitoring = ({
     return diff / (frame1.data.length / 4);
   };
 
-  // Camera management
+  // Camera management with improved error handling
   useEffect(() => {
     const startCamera = async () => {
       try {
@@ -259,10 +259,31 @@ const AdvancedCameraMonitoring = ({
         streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          await videoRef.current.play();
+          
+          // Improved play() handling to fix the play() request error
+          const playPromise = videoRef.current.play();
+          
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                // Video started successfully
+                setIsMonitoring(true);
+                setFaceDetectionStatus('detecting');
+              })
+              .catch((error) => {
+                console.error("Video play error:", error);
+                // Handle the play() request interruption error
+                if (error.name !== 'AbortError') {
+                  addActivityAlert({
+                    type: 'camera_blocked',
+                    message: 'Camera playback interrupted',
+                    severity: 'medium',
+                    timestamp: new Date()
+                  });
+                }
+              });
+          }
         }
-        setIsMonitoring(true);
-        setFaceDetectionStatus('detecting');
       } catch (err) {
         console.error("Camera access error:", err);
         setCameraBlockedCount(prev => prev + 1);
@@ -281,6 +302,8 @@ const AdvancedCameraMonitoring = ({
         streamRef.current = null;
       }
       if (videoRef.current) {
+        // Pause before removing srcObject to prevent play() request errors
+        videoRef.current.pause();
         videoRef.current.srcObject = null;
       }
       setIsMonitoring(false);
