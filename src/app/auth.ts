@@ -9,7 +9,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     debug: true,
     session: {
         strategy: "jwt",
-        maxAge: 24 * 60 * 60 // 24 hours
+        maxAge: 24 * 60 * 60, // 24 hours
+        updateAge: 15 * 60, // Update session every 15 minutes
     },
     cookies: {
         sessionToken: {
@@ -17,10 +18,12 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             options: {
                 httpOnly: true,
                 sameSite: 'lax',
-                secure: process.env.NODE_ENV === 'production'
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 24 * 60 * 60 // 24 hours
             }
         }
     },
+    trustHost: true, // This helps with session validation in some environments
     providers: [
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID ?? '',
