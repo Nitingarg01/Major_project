@@ -23,13 +23,31 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 // Helper function to validate and refresh session if needed
 async function validateSession() {
-  const session = await auth()
+  let session;
+  let attempts = 0;
+  const maxAttempts = 3;
   
-  if (!session?.user?.id) {
-    throw new Error("No valid session found")
+  while (attempts < maxAttempts) {
+    try {
+      session = await auth()
+      if (session?.user?.id) {
+        return session;
+      }
+      attempts++;
+      if (attempts < maxAttempts) {
+        console.log(`⚠️ Session validation attempt ${attempts}/${maxAttempts} failed, retrying...`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    } catch (error) {
+      console.error("❌ Session validation error:", error);
+      attempts++;
+      if (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    }
   }
   
-  return session
+  throw new Error("No valid session found after multiple attempts")
 }
 
 export const createInterview = async (data: formD, projectContext: string[], workExDetails: string[]) => {
