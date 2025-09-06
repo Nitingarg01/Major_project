@@ -264,10 +264,10 @@ export class EnhancedInterviewAI {
         Ensure all arrays have at least 3-5 relevant items.
       `;
 
-      const response = await this.callEmergentAPI([
+      const response = await this.callAIProvider([
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
-      ]);
+      ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
 
       const companyData = JSON.parse(response.replace(/```json\n?|\n?```/g, ''));
       
