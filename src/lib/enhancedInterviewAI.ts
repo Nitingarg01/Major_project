@@ -1,7 +1,7 @@
 /**
  * Enhanced Interview AI Service - Rebuilt for Better Performance
  * Features:
- * - Emergent LLM Key as primary AI service (fast & free)
+ * - Multiple AI providers (Groq, Hugging Face, Gemini)
  * - Company research via web search for unknown companies
  * - Dynamic difficulty adjustment
  * - Better question generation with validation
