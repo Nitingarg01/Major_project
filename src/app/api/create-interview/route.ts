@@ -179,55 +179,124 @@ function getDSAPoints(difficulty: string): number {
 
 export async function POST(request: NextRequest) {
     try {
-        // Enhanced authentication with retry mechanism
+        console.log("🎯 CREATE INTERVIEW API - Starting with MAXIMUM session tolerance");
+        
+        // SUPER AGGRESSIVE session validation - try everything possible
         let session;
         let authAttempts = 0;
-        const maxAuthAttempts = 3;
+        const maxAuthAttempts = 5; // Increased attempts
         
         while (authAttempts < maxAuthAttempts) {
             try {
-                session = await auth()
+                console.log(`🔄 Session validation attempt ${authAttempts + 1}/${maxAuthAttempts}`);
+                session = await auth();
+                
                 if (session?.user?.id) {
+                    console.log("✅ Valid session found:", session.user.id);
                     break; // Valid session found
                 }
+                
+                // If no session but we're not at max attempts, try again
                 authAttempts++;
                 if (authAttempts < maxAuthAttempts) {
-                    console.log(`⚠️ Session validation attempt ${authAttempts}/${maxAuthAttempts} failed, retrying...`);
-                    await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before retry
+                    console.log(`⚠️ No session found, retrying in ${500 * authAttempts}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, 500 * authAttempts));
                 }
+                
             } catch (authError) {
-                console.error("❌ Auth error:", authError);
+                console.error("❌ Auth attempt error:", authError);
                 authAttempts++;
                 if (authAttempts < maxAuthAttempts) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
         }
         
+        // FINAL CHECK - Be more lenient about what constitutes a valid session
         if (!session?.user?.id) {
-            console.log("❌ Authentication failed after", maxAuthAttempts, "attempts")
+            console.log("❌ No valid session after", maxAuthAttempts, "attempts");
+            
+            // Instead of immediately failing, try one more approach
+            console.log("🔄 Final session recovery attempt...");
+            try {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                session = await auth();
+                
+                if (session?.user?.id) {
+                    console.log("🎉 Session recovered on final attempt!");
+                } else {
+                    console.log("❌ Final session recovery failed");
+                    return NextResponse.json(
+                        { error: "Session expired. Please sign in again." },
+                        { status: 401 }
+                    );
+                }
+            } catch (finalError) {
+                console.error("❌ Final session recovery error:", finalError);
+                return NextResponse.json(
+                    { error: "Session expired. Please sign in again." },
+                    { status: 401 }
+                );
+            }
+        }
+
+        console.log("✅ AUTHENTICATED USER CONFIRMED:", session.user.id);
+        
+        const body = await request.json();
+        const { 
+            id, 
+            jobDesc, 
+            skills, 
+            companyName, 
+            projectContext, 
+            workExDetails, 
+            jobTitle, 
+            experienceLevel, 
+            interviewType,
+            selectedRounds,
+            estimatedDuration,
+            difficultyPreference,
+            companyIntelligence,
+            roundConfigs
+        } = body;
+
+        // ALWAYS use the authenticated session user ID for security
+        const userId = session.user.id;
+        
+        console.log("🛡️ Using authenticated user ID:", userId);
+        console.log("📝 Request user ID (ignored for security):", id);
+
+        if (!jobDesc || !companyName || !skills || skills.length === 0) {
             return NextResponse.json(
-                { error: "Session expired. Please sign in again." },
-                { status: 401 }
+                { error: "Missing required fields" },
+                { status: 400 }
             );
         }
 
-        console.log("✅ Authenticated user:", session.user.id)
-        
-        const body = await request.json()
-        const { id, jobDesc, skills, companyName, projectContext, workExDetails, jobTitle, experienceLevel, interviewType } = body
+        console.log('🚀 Creating interview with BULLETPROOF session handling...');
 
-        // More flexible user ID validation - use session user ID if no ID provided
-        const userId = id || session.user.id;
-        
-        // Verify that the authenticated user matches the request (but be more lenient)
-        if (id && session.user.id !== id) {
-            console.log("❌ User ID mismatch:", session.user.id, "vs", id)
-            return NextResponse.json(
-                { error: "Access denied" },
-                { status: 403 }
-            );
-        }
+        const dbClient = client;
+        const db = dbClient.db();
+
+        const interviewData = {
+            userId: userId, // ALWAYS use session user ID
+            jobDesc,
+            skills,
+            jobTitle,
+            companyName,
+            projectContext: projectContext ?? [],
+            workExDetails: workExDetails ?? [],
+            experienceLevel: experienceLevel ?? 'mid',
+            interviewType: interviewType ?? 'mixed',
+            selectedRounds: selectedRounds ?? ['technical', 'behavioral'],
+            estimatedDuration: estimatedDuration ?? 60,
+            difficultyPreference: difficultyPreference ?? 'adaptive',
+            companyIntelligence: companyIntelligence,
+            roundConfigs: roundConfigs,
+            difficultyLevel: 'adaptive',
+            createdAt: new Date(),
+            status: 'generating'
+        };
 
         if (!jobDesc || !companyName || !skills || skills.length === 0) {
             return NextResponse.json(
