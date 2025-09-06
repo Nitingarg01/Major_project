@@ -233,7 +233,7 @@ export class EnhancedAIService {
       const text = response.text();
 
       try {
-        const questions = JSON.parse(text.replace(/```json\n?|\n?```/g, ''));
+        const questions = extractJSON(text);
         return questions.map((q: any) => ({
           ...q,
           id: q.id || `apt-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
