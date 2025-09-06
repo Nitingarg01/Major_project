@@ -44,10 +44,17 @@ export default function DashboardPage() {
   const [interviews, setInterviews] = useState<Interview[]>([])
   const [stats, setStats] = useState<DashboardStats>({ total: 0, completed: 0, inProgress: 0 })
   const [loading, setLoading] = useState(true)
+  const [hasInitialized, setHasInitialized] = useState(false)
 
   useEffect(() => {
     console.log('Auth status changed:', status)
     console.log('Session:', session)
+    
+    // Prevent multiple initializations
+    if (hasInitialized) {
+      console.log('Already initialized, skipping...')
+      return
+    }
     
     if (status === 'loading') {
       console.log('Session still loading...')
@@ -62,13 +69,14 @@ export default function DashboardPage() {
 
     if (status === 'authenticated' && session?.user?.id) {
       console.log('User authenticated, fetching interviews...')
+      setHasInitialized(true)
       fetchUserInterviews()
     } else if (status === 'authenticated' && !session?.user?.id) {
       console.error('Authenticated but no user ID found')
       toast.error('Authentication error. Please try logging in again.')
       router.push('/login')
     }
-  }, [status, session?.user?.id, router])
+  }, [status, hasInitialized, router])
 
   const fetchUserInterviews = async () => {
     try {
