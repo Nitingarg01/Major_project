@@ -265,10 +265,10 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error) {
-        console.error("❌ Error in HARD interview creation:", error);
+        console.error("❌ Error in interview creation:", error);
         return NextResponse.json(
             {
-                error: "Failed to create HARD interview",
+                error: "Failed to create interview",
                 details: error instanceof Error ? error.message : "Unknown error"
             },
             { status: 500 }
