@@ -81,7 +81,7 @@ class AIInterviewModel {
       const text = response.text()
       
       // Parse the JSON response
-      const questions = JSON.parse(text.replace(/```json\n?|\n?```/g, ''))
+      const questions = extractJSON(text)
       
       return questions.map((q: any, index: number) => ({
         id: `${interviewType}_${index + 1}`,
