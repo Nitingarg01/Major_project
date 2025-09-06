@@ -4,23 +4,40 @@ import { auth } from '@/app/auth';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('GET /api/user-interviews called')
+    
     const session = await auth();
+    console.log('Session data:', { 
+      hasSession: !!session, 
+      hasUser: !!session?.user, 
+      hasUserId: !!session?.user?.id,
+      userId: session?.user?.id
+    });
     
     if (!session?.user?.id) {
+      console.log('No session or user ID found')
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - Please log in' },
         { status: 401 }
       );
     }
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10');
+    console.log('Query limit:', limit)
 
+    console.log('Connecting to MongoDB...')
     const db = client.db("Cluster0");
     const userId = session.user.id;
     
-    // Run all database queries in parallel for better performance
-    const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = await Promise.all([
+    console.log('Running database queries for user:', userId)
+    
+    // Add timeout wrapper for database operations
+    const timeout = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Database query timeout')), 8000)
+    )
+    
+    const dbQueries = Promise.all([
       // Get user's recent interviews
       db.collection('interviews')
         .find({ userId })
@@ -46,6 +63,18 @@ export async function GET(request: NextRequest) {
           status: { $in: ['ready', 'in-progress'] }
         })
     ]);
+    
+    const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = await Promise.race([
+      dbQueries,
+      timeout
+    ]);
+
+    console.log('Database query results:', {
+      interviewsCount: interviews.length,
+      totalInterviews,
+      completedInterviews,
+      inProgressInterviews
+    })
 
     return NextResponse.json({
       success: true,
@@ -59,8 +88,20 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Error fetching user interviews:', error);
+    
+    // Provide more specific error messages
+    let errorMessage = 'Internal server error';
+    if (error.message === 'Database query timeout') {
+      errorMessage = 'Database connection timeout';
+    } else if (error.message.includes('MongoNetworkError')) {
+      errorMessage = 'Database connection failed';
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     );
   }
