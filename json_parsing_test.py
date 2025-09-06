@@ -339,7 +339,7 @@ class JSONParsingTester:
             return 1
 
 def main():
-    tester = JSONParsingTester("http://localhost:3001")
+    tester = JSONParsingTester("http://localhost:3000")
     return tester.run_all_tests()
 
 if __name__ == "__main__":
