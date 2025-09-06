@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { extractJSON } from './jsonExtractor';
 
 interface QuestionGenerationParams {
   jobTitle: string;
