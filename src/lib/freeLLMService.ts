@@ -652,7 +652,7 @@ export class FreeLLMService {
         model: 'llama-3.1-8b'
       });
 
-      const analysis = JSON.parse(response.content.replace(/```json\n?|\n?```/g, ''));
+      const analysis = extractJSON(response.content);
       return {
         score: Math.max(0, Math.min(10, analysis.score || 5)),
         feedback: analysis.feedback || 'Response analyzed successfully.',
