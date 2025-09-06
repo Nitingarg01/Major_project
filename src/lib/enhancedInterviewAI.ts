@@ -102,42 +102,111 @@ export class EnhancedInterviewAI {
     return EnhancedInterviewAI.instance;
   }
 
-  private async callEmergentAPI(messages: Array<{role: string; content: string}>, options?: {
+  private async callAIProvider(messages: Array<{role: string; content: string}>, options?: {
+    provider?: 'groq' | 'huggingface' | 'gemini';
     model?: string;
-    provider?: string;
     temperature?: number;
     max_tokens?: number;
   }): Promise<string> {
-    if (!this.emergentApiKey) {
-      throw new Error('Emergent API key not configured');
-    }
-
+    const provider = options?.provider || 'groq';
+    
     try {
-      const response = await fetch(this.baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.emergentApiKey}`,
-        },
-        body: JSON.stringify({
-          messages,
-          provider: options?.provider || 'openai',
-          model: options?.model || 'gpt-4o-mini',
-          max_tokens: options?.max_tokens || 4000,
-          temperature: options?.temperature || 0.7,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Emergent API error: ${response.status} ${response.statusText}`);
+      switch (provider) {
+        case 'groq':
+          return await this.callGroqAPI(messages, options);
+        case 'huggingface':
+          return await this.callHuggingFaceAPI(messages, options);
+        case 'gemini':
+          return await this.callGeminiAPI(messages, options);
+        default:
+          throw new Error(`Unsupported provider: ${provider}`);
       }
-
-      const data = await response.json();
-      return data.content || data.message || 'No response received';
     } catch (error) {
-      console.error('Emergent API call failed:', error);
+      console.error(`${provider} API call failed:`, error);
+      // Fallback to next available provider
+      if (provider === 'groq' && this.huggingFaceApiKey) {
+        return await this.callHuggingFaceAPI(messages, options);
+      } else if (provider === 'huggingface' && this.geminiApiKey) {
+        return await this.callGeminiAPI(messages, options);
+      }
       throw error;
     }
+  }
+
+  private async callGroqAPI(messages: Array<{role: string; content: string}>, options?: any): Promise<string> {
+    if (!this.groqApiKey) {
+      throw new Error('Groq API key not configured');
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.groqApiKey}`,
+      },
+      body: JSON.stringify({
+        model: options?.model || 'llama-3.1-8b-instant',
+        messages,
+        temperature: options?.temperature || 0.7,
+        max_tokens: options?.max_tokens || 4000,
+        stream: false,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Groq API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0]?.message?.content || 'No response received';
+  }
+
+  private async callHuggingFaceAPI(messages: Array<{role: string; content: string}>, options?: any): Promise<string> {
+    if (!this.huggingFaceApiKey) {
+      throw new Error('Hugging Face API key not configured');
+    }
+
+    // Convert messages to a single prompt for Hugging Face
+    const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+
+    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-large', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.huggingFaceApiKey}`,
+      },
+      body: JSON.stringify({
+        inputs: prompt,
+        parameters: {
+          max_length: options?.max_tokens || 1000,
+          temperature: options?.temperature || 0.7,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Hugging Face API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data[0]?.generated_text || 'No response received';
+  }
+
+  private async callGeminiAPI(messages: Array<{role: string; content: string}>, options?: any): Promise<string> {
+    if (!this.geminiApiKey) {
+      throw new Error('Gemini API key not configured');
+    }
+
+    const { GoogleGenerativeAI } = await import('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(this.geminiApiKey);
+    const model = genAI.getGenerativeModel({ model: options?.model || 'gemini-pro' });
+
+    // Convert messages to Gemini format
+    const prompt = messages.map(m => m.content).join('\n');
+    
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
   }
 
   /**
