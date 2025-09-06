@@ -3,22 +3,9 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 
 async function createTestUser() {
-  // Read environment variables from .env.local
-  let uri;
-  try {
-    const envContent = fs.readFileSync('.env.local', 'utf8');
-    const mongoLine = envContent.split('\n').find(line => line.startsWith('MONGODB_URI='));
-    uri = mongoLine ? mongoLine.split('=')[1].replace(/"/g, '').trim() : null;
-    console.log('Parsed URI:', uri);
-  } catch (error) {
-    console.error('Could not read .env.local file:', error);
-    return;
-  }
-
-  if (!uri) {
-    console.error('MONGODB_URI not found');
-    return;
-  }
+  // Use the URI directly
+  const uri = "mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0";
+  console.log('Using URI:', uri);
 
   try {
     const client = new MongoClient(uri);
