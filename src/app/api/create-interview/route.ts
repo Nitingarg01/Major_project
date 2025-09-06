@@ -1,4 +1,5 @@
 import client from "@/lib/db";
+import { auth } from "@/app/auth";
 import { ObjectId } from "mongodb";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -178,8 +179,30 @@ function getDSAPoints(difficulty: string): number {
 
 export async function POST(request: NextRequest) {
     try {
+        // First, verify authentication using NextAuth
+        const session = await auth()
+        
+        if (!session?.user?.id) {
+            console.log("❌ Unauthorized access attempt to create-interview API")
+            return NextResponse.json(
+                { error: "Authentication required" },
+                { status: 401 }
+            );
+        }
+
+        console.log("✅ Authenticated user:", session.user.id)
+        
         const body = await request.json()
         const { id, jobDesc, skills, companyName, projectContext, workExDetails, jobTitle, experienceLevel, interviewType } = body
+
+        // Verify that the authenticated user matches the request
+        if (session.user.id !== id) {
+            console.log("❌ User ID mismatch:", session.user.id, "vs", id)
+            return NextResponse.json(
+                { error: "Access denied" },
+                { status: 403 }
+            );
+        }
 
         if (!jobDesc || !companyName || !skills || skills.length === 0) {
             return NextResponse.json(
@@ -210,7 +233,7 @@ export async function POST(request: NextRequest) {
 
         // Create interview first
         const interviewResult = await db.collection("interviews").insertOne(interviewData);
-        console.log('✅ Interview record created');
+        console.log('✅ Interview record created for user:', session.user.id);
 
         // Generate questions immediately (no background jobs!)
         const questions = await generateQuestionsImmediately(interviewData);
@@ -221,6 +244,7 @@ export async function POST(request: NextRequest) {
             answers: [],
             interviewId: interviewResult.insertedId.toString(),
             difficultyLevel: 'adaptive',
+            userId: session.user.id, // Add user ID for security
             metadata: {
                 generatedAt: new Date(),
                 difficultyLevel: 'adaptive',
@@ -248,7 +272,7 @@ export async function POST(request: NextRequest) {
             }
         );
 
-        console.log('🎉 One-click interview creation completed successfully!');
+        console.log('🎉 One-click interview creation completed successfully for user:', session.user.id);
 
         return NextResponse.json(
             { 
@@ -259,19 +283,25 @@ export async function POST(request: NextRequest) {
                 difficultyLevel: 'ADAPTIVE',
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
                 totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0),
-                service: 'emergent-llm'
+                service: 'emergent-llm',
+                userId: session.user.id // Include for verification
             },
             { status: 201 }
         );
 
     } catch (error) {
         console.error("❌ Error in interview creation:", error);
+        
+        // Don't expose internal errors that might compromise security
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        const isAuthError = errorMessage.includes('auth') || errorMessage.includes('session');
+        
         return NextResponse.json(
             {
-                error: "Failed to create interview",
-                details: error instanceof Error ? error.message : "Unknown error"
+                error: isAuthError ? "Authentication error" : "Failed to create interview",
+                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
             },
-            { status: 500 }
+            { status: isAuthError ? 401 : 500 }
         )
     }
 }
