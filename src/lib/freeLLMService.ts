@@ -5,6 +5,8 @@
  * Enhanced with HARD question generation capabilities
  */
 
+import { extractJSON } from './jsonExtractor';
+
 interface LLMRequest {
   messages: Array<{
     role: 'system' | 'user' | 'assistant';
