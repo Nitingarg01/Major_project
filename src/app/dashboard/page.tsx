@@ -79,8 +79,13 @@ export default function DashboardPage() {
   }, [status, hasInitialized, router])
 
   const fetchUserInterviews = async () => {
+    // Prevent multiple simultaneous calls
+    if (!loading) {
+      console.log('Already loaded or loading, skipping fetch...')
+      return
+    }
+
     try {
-      setLoading(true)
       console.log('Starting to fetch user interviews...')
       
       // Add timeout to prevent hanging requests
@@ -88,7 +93,7 @@ export default function DashboardPage() {
       const timeoutId = setTimeout(() => {
         console.log('Request timeout - aborting...')
         controller.abort()
-      }, 8000) // Reduced to 8 second timeout
+      }, 8000) // 8 second timeout
       
       console.log('Making API call to /api/user-interviews...')
       const response = await fetch('/api/user-interviews?limit=5', {
@@ -125,6 +130,7 @@ export default function DashboardPage() {
         toast.error('Request timeout. Please try again.')
       } else if (error.message.includes('401')) {
         console.error('Authentication error - redirecting to login')
+        setHasInitialized(false) // Reset initialization flag
         router.push('/login')
         return
       } else {
