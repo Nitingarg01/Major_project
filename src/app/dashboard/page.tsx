@@ -59,40 +59,61 @@ export default function DashboardPage() {
   const fetchUserInterviews = async () => {
     try {
       setLoading(true)
+      console.log('Starting to fetch user interviews...')
       
       // Add timeout to prevent hanging requests
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+      const timeoutId = setTimeout(() => {
+        console.log('Request timeout - aborting...')
+        controller.abort()
+      }, 8000) // Reduced to 8 second timeout
       
+      console.log('Making API call to /api/user-interviews...')
       const response = await fetch('/api/user-interviews?limit=5', {
         signal: controller.signal,
         headers: {
           'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json',
         }
       })
       
       clearTimeout(timeoutId)
+      console.log('API Response status:', response.status)
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        const errorText = await response.text()
+        console.error('API Error Response:', errorText)
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`)
       }
       
       const data = await response.json()
+      console.log('API Response data:', data)
 
       if (data.success) {
-        setInterviews(data.interviews)
-        setStats(data.stats)
+        setInterviews(data.interviews || [])
+        setStats(data.stats || { total: 0, completed: 0, inProgress: 0 })
+        console.log('Successfully loaded interviews:', data.interviews?.length || 0)
       } else {
+        console.error('API returned success: false', data.error)
         throw new Error(data.error || 'Failed to fetch data')
       }
     } catch (error) {
       console.error('Error fetching interviews:', error)
       if (error.name === 'AbortError') {
         toast.error('Request timeout. Please try again.')
+      } else if (error.message.includes('401')) {
+        console.error('Authentication error - redirecting to login')
+        router.push('/login')
+        return
       } else {
         toast.error('Failed to load interviews. Please refresh the page.')
       }
+      
+      // Set empty data to prevent infinite loading
+      setInterviews([])
+      setStats({ total: 0, completed: 0, inProgress: 0 })
     } finally {
+      console.log('Setting loading to false')
       setLoading(false)
     }
   }
