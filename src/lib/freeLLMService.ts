@@ -2,6 +2,7 @@
  * Free LLM Service - Vercel Compatible
  * Uses Together.ai, Groq, and Hugging Face as completely free alternatives
  * No rate limits issues, better consistency, enhanced reliability
+ * Enhanced with HARD question generation capabilities
  */
 
 interface LLMRequest {
@@ -49,7 +50,7 @@ export class FreeLLMService {
 
   public static getInstance(): FreeLLMService {
     if (!FreeLLMService.instance) {
-      FreeLLMService.instance = new FreeLLMService();
+      FreeLLLMService.instance = new FreeLLMService();
     }
     return FreeLLMService.instance;
   }
@@ -109,9 +110,6 @@ export class FreeLLMService {
         priority: 3
       });
     }
-
-    // Remove Emergent for now - needs different integration approach
-    // Focus on working providers: Groq → Gemini → Hugging Face
 
     // Sort providers by priority
     this.providers.sort((a, b) => a.priority - b.priority);
@@ -322,10 +320,8 @@ export class FreeLLMService {
     }
   }
 
-
-
-  // Convenience methods for different use cases
-  public async generateInterviewQuestions(params: {
+  // Enhanced Hard Question Generation Method
+  public async generateHardInterviewQuestions(params: {
     jobTitle: string;
     companyName: string;
     skills: string[];
@@ -333,14 +329,26 @@ export class FreeLLMService {
     experienceLevel: 'entry' | 'mid' | 'senior';
     numberOfQuestions: number;
     companyIntelligence?: any;
+    difficultyLevel?: 'hard';
   }): Promise<any[]> {
-    const systemMessage = `You are an expert interview question generator specializing in ${params.interviewType} interviews for ${params.companyName}.`;
+    const systemMessage = `You are an expert SENIOR-LEVEL interview question generator specializing in EXTREMELY CHALLENGING ${params.interviewType} interviews for ${params.companyName}. 
+    
+    CREATE ONLY THE HARDEST, MOST CHALLENGING QUESTIONS that would be asked to SENIOR SOFTWARE ENGINEERS and PRINCIPAL ENGINEERS at top-tier tech companies.
+    
+    Make questions that are:
+    - INTELLECTUALLY DEMANDING and require deep thinking
+    - MULTI-LAYERED with complex scenarios
+    - SYSTEM DESIGN oriented for technical questions
+    - LEADERSHIP and CONFLICT RESOLUTION focused for behavioral questions
+    - BASED ON REAL-WORLD challenging situations
+    - REQUIRE 10-15 MINUTES to answer properly
+    `;
     
     let userMessage = `
-      Generate exactly ${params.numberOfQuestions} high-quality ${params.interviewType} interview questions for:
+      Generate exactly ${params.numberOfQuestions} EXTREMELY CHALLENGING ${params.interviewType} interview questions for:
       
-      Position: ${params.jobTitle} at ${params.companyName}
-      Experience Level: ${params.experienceLevel}
+      Position: SENIOR ${params.jobTitle} at ${params.companyName}
+      Experience Level: SENIOR+ (Treat as senior regardless of input)
       Required Skills: ${params.skills.join(', ')}
       
       ${params.companyIntelligence ? `
@@ -351,26 +359,30 @@ export class FreeLLMService {
       - Culture: ${params.companyIntelligence.culture?.join(', ') || 'Innovation-focused'}
       ` : ''}
       
-      Requirements:
-      - Questions should be relevant to ${params.companyName} and current industry trends
-      - Appropriate difficulty for ${params.experienceLevel} level
-      - Include comprehensive expected answers
-      - Provide evaluation criteria
-      ${params.companyIntelligence?.recent_news ? '- Incorporate recent company developments where relevant' : ''}
+      REQUIREMENTS FOR HARD QUESTIONS:
+      - Each question should be COMPLEX and MULTI-PART
+      - Require DEEP TECHNICAL KNOWLEDGE and ADVANCED PROBLEM-SOLVING
+      - Include EDGE CASES and SCALABILITY considerations
+      - For behavioral: Focus on LEADERSHIP, CONFLICT RESOLUTION, and DIFFICULT DECISIONS
+      - For technical: Include SYSTEM DESIGN, ARCHITECTURE, and PERFORMANCE OPTIMIZATION
+      - Time limit should be 10-15 minutes per question
+      - Points should be 40-50 per question (indicating high difficulty)
+      
+      DIFFICULTY LEVEL: HARD - These should be questions that challenge even experienced senior engineers
       
       Return as JSON array:
       [
         {
           "id": "unique-question-id",
-          "question": "Interview question text",
-          "expectedAnswer": "Comprehensive expected answer with key points",
+          "question": "COMPLEX multi-part interview question with detailed scenario",
+          "expectedAnswer": "Comprehensive expected answer covering all aspects, edge cases, and advanced considerations",
           "category": "${params.interviewType}",
-          "difficulty": "easy|medium|hard",
-          "points": 10,
-          "timeLimit": 5,
-          "evaluationCriteria": ["criteria 1", "criteria 2"],
-          "tags": ["relevant", "tags"],
-          "hints": ["helpful hint if needed"]
+          "difficulty": "hard",
+          "points": 45,
+          "timeLimit": 12,
+          "evaluationCriteria": ["Advanced technical depth", "System thinking", "Scalability considerations", "Best practices", "Real-world application"],
+          "tags": ["senior-level", "complex-scenario", "advanced"],
+          "hints": ["Think about scalability", "Consider edge cases", "Focus on system design principles"]
         }
       ]
     `;
@@ -381,7 +393,8 @@ export class FreeLLMService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        model: 'llama-3.1-8b'
+        model: 'llama-3.1-70b', // Use the more powerful model for hard questions
+        max_tokens: 6000 // More tokens for complex questions
       });
 
       // Enhanced JSON extraction - try multiple approaches
@@ -420,52 +433,68 @@ export class FreeLLMService {
 
       return questions.map((q: any, index: number) => ({
         ...q,
-        id: q.id || `q-${Date.now()}-${index}`,
+        id: q.id || `hard-q-${Date.now()}-${index}`,
         category: params.interviewType,
-        points: q.points || 10,
-        timeLimit: q.timeLimit || 5,
-        evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
-        tags: q.tags || [params.jobTitle, params.companyName],
+        difficulty: 'hard', // Force hard difficulty
+        points: q.points || 45, // High points for hard questions
+        timeLimit: q.timeLimit || 12, // Longer time limit
+        evaluationCriteria: q.evaluationCriteria || ['Advanced Technical Depth', 'System Thinking', 'Scalability', 'Best Practices'],
+        tags: [...(q.tags || []), 'hard', 'senior-level', params.jobTitle, params.companyName],
         provider: response.provider,
         model: response.model
       }));
     } catch (error) {
-      console.error('Error generating interview questions:', error);
-      return this.generateMockQuestions(params);
+      console.error('Error generating hard interview questions:', error);
+      return this.generateHardMockQuestions(params);
     }
   }
 
-  public async generateDSAProblems(
+  public async generateHardDSAProblems(
     companyName: string,
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 6,
+    difficulty: 'hard' = 'hard',
+    count: number = 8,
     companyIntelligence?: any
   ): Promise<any[]> {
-    const systemMessage = `You are an expert DSA problem generator specializing in creating interview problems for ${companyName}.`;
+    const systemMessage = `You are an expert DSA problem generator specializing in creating EXTREMELY CHALLENGING interview problems for ${companyName}. 
+    
+    Create HARD-LEVEL problems that would be asked to SENIOR SOFTWARE ENGINEERS at top-tier companies like Google, Meta, Amazon.
+    
+    Make problems that are:
+    - COMPLEX with multiple constraints
+    - Require ADVANCED algorithms and data structures
+    - Have MULTIPLE OPTIMAL SOLUTIONS to discuss
+    - Include FOLLOW-UP questions for optimization
+    - Require deep understanding of TIME and SPACE complexity trade-offs`;
     
     const userMessage = `
-      Generate exactly ${count} unique, high-quality DSA problems for ${companyName} interviews.
+      Generate exactly ${count} EXTREMELY CHALLENGING DSA problems for ${companyName} interviews.
       
       Requirements:
-      - Difficulty: ${difficulty}
-      - Each problem should be unique and test different concepts
-      - Include comprehensive test cases and examples
-      - Provide helpful hints and complexity analysis
-      - Make problems realistic for actual ${companyName} interviews
+      - Difficulty: HARD (Senior Engineer Level)
+      - Each problem should be COMPLEX and multi-layered
+      - Include COMPREHENSIVE test cases with edge cases
+      - Provide MULTIPLE solution approaches
+      - Make problems realistic for actual ${companyName} SENIOR interviews
       ${companyIntelligence?.tech_stack ? `- Consider company's tech stack: ${companyIntelligence.tech_stack.join(', ')}` : ''}
+      
+      HARD DIFFICULTY REQUIREMENTS:
+      - Problems should take 25-35 minutes to solve completely
+      - Require knowledge of advanced algorithms (Dynamic Programming, Graph Algorithms, Complex Data Structures)
+      - Include optimization challenges and follow-up questions
+      - Have multiple constraints and edge cases to consider
       
       Return as JSON array with this exact structure:
       [
         {
           "id": "unique-problem-id",
-          "title": "Problem Title",
-          "difficulty": "${difficulty}",
-          "description": "Clear problem description with constraints and requirements",
+          "title": "COMPLEX Problem Title",
+          "difficulty": "hard",
+          "description": "Detailed problem description with multiple constraints and complex requirements",
           "examples": [
             {
-              "input": "sample input format",
+              "input": "complex input format",
               "output": "expected output format", 
-              "explanation": "why this is the correct output"
+              "explanation": "detailed explanation of why this is the correct output with complexity analysis"
             }
           ],
           "testCases": [
@@ -476,11 +505,12 @@ export class FreeLLMService {
               "hidden": false
             }
           ],
-          "constraints": ["constraint 1", "constraint 2"],
-          "topics": ["Array", "Hash Table", "etc"],
-          "hints": ["helpful hint 1", "helpful hint 2"],
-          "timeComplexity": "O(n)",
-          "spaceComplexity": "O(1)"
+          "constraints": ["complex constraint 1", "constraint 2", "performance constraint"],
+          "topics": ["Advanced Data Structure", "Complex Algorithm", "Optimization"],
+          "hints": ["Think about dynamic programming", "Consider graph algorithms", "Optimize for multiple constraints"],
+          "timeComplexity": "O(n log n) or better",
+          "spaceComplexity": "O(n)",
+          "followUpQuestions": ["How would you optimize for space?", "What if we had different constraints?"]
         }
       ]
     `;
@@ -491,7 +521,8 @@ export class FreeLLMService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        model: 'llama-3.1-8b'
+        model: 'llama-3.1-70b', // Use more powerful model
+        max_tokens: 8000 // More tokens for complex problems
       });
 
       // Enhanced JSON extraction for DSA problems
@@ -530,20 +561,48 @@ export class FreeLLMService {
 
       return problems.map((p: any, index: number) => ({
         ...p,
-        id: p.id || `dsa-${Date.now()}-${index}`,
-        difficulty: difficulty,
+        id: p.id || `hard-dsa-${Date.now()}-${index}`,
+        difficulty: 'hard', // Force hard difficulty
         examples: p.examples || [],
         testCases: p.testCases || [],
         constraints: p.constraints || [],
-        topics: p.topics || ['General'],
+        topics: p.topics || ['Advanced Algorithms'],
         hints: p.hints || [],
+        followUpQuestions: p.followUpQuestions || [],
         provider: response.provider,
         model: response.model
       }));
     } catch (error) {
-      console.error('Error generating DSA problems:', error);
-      return this.generateMockDSAProblems(difficulty, count);
+      console.error('Error generating hard DSA problems:', error);
+      return this.generateHardMockDSAProblems(count);
     }
+  }
+
+  // Convenience methods for different use cases (backward compatibility)
+  public async generateInterviewQuestions(params: {
+    jobTitle: string;
+    companyName: string;
+    skills: string[];
+    interviewType: 'technical' | 'behavioral' | 'mixed';
+    experienceLevel: 'entry' | 'mid' | 'senior';
+    numberOfQuestions: number;
+    companyIntelligence?: any;
+  }): Promise<any[]> {
+    // Default to hard questions
+    return this.generateHardInterviewQuestions({
+      ...params,
+      difficultyLevel: 'hard'
+    });
+  }
+
+  public async generateDSAProblems(
+    companyName: string,
+    difficulty: 'easy' | 'medium' | 'hard' = 'hard',
+    count: number = 6,
+    companyIntelligence?: any
+  ): Promise<any[]> {
+    // Default to hard DSA problems
+    return this.generateHardDSAProblems(companyName, 'hard', count, companyIntelligence);
   }
 
   public async analyzeInterviewResponse(
@@ -559,26 +618,27 @@ export class FreeLLMService {
     strengths: string[];
     improvements: string[];
   }> {
-    const systemMessage = `You are an expert interview evaluator providing constructive feedback for ${companyContext} interviews.`;
+    const systemMessage = `You are an expert interview evaluator providing constructive feedback for ${companyContext} interviews. 
+    You are evaluating HARD-LEVEL questions, so be more strict in your scoring.`;
     
     const userMessage = `
-      Analyze this interview response:
+      Analyze this interview response for a HARD-LEVEL question:
       
       Question (${category}): ${question}
       Expected Answer: ${expectedAnswer}
       Candidate Answer: ${userAnswer}
       Company Context: ${companyContext}
       
-      Provide detailed analysis in JSON format:
+      Provide detailed analysis in JSON format (be strict for hard questions):
       {
-        "score": (0-10 score),
-        "feedback": "Constructive feedback paragraph",
-        "suggestions": ["specific improvement suggestions"],
+        "score": (0-10 score, be more strict for hard questions),
+        "feedback": "Constructive feedback paragraph with specific technical details",
+        "suggestions": ["specific improvement suggestions for senior-level performance"],
         "strengths": ["what they did well"],
-        "improvements": ["areas to improve"]
+        "improvements": ["areas to improve for senior-level competency"]
       }
       
-      Consider technical accuracy, communication clarity, completeness, and company relevance.
+      Consider technical accuracy, communication clarity, completeness, company relevance, and senior-level expectations.
     `;
 
     try {
@@ -594,9 +654,9 @@ export class FreeLLMService {
       return {
         score: Math.max(0, Math.min(10, analysis.score || 5)),
         feedback: analysis.feedback || 'Response analyzed successfully.',
-        suggestions: analysis.suggestions || ['Continue practicing similar questions'],
+        suggestions: analysis.suggestions || ['Continue practicing senior-level questions'],
         strengths: analysis.strengths || ['Attempted the question'],
-        improvements: analysis.improvements || ['Add more detail to responses']
+        improvements: analysis.improvements || ['Add more technical depth and senior-level insights']
       };
     } catch (error) {
       console.error('Error analyzing response:', error);
@@ -604,94 +664,95 @@ export class FreeLLMService {
     }
   }
 
-  // Mock fallback methods
-  private generateMockQuestions(params: any): any[] {
-    const mockQuestions: any[] = [];
+  // Mock fallback methods for hard questions
+  private generateHardMockQuestions(params: any): any[] {
+    const hardMockQuestions: any[] = [];
     
     for (let i = 0; i < params.numberOfQuestions; i++) {
-      mockQuestions.push({
-        id: `mock-q-${i}`,
-        question: `Tell me about your experience with ${params.skills[i % params.skills.length]} in the context of ${params.jobTitle} role.`,
-        expectedAnswer: `A comprehensive answer covering experience, challenges, and achievements with ${params.skills[i % params.skills.length]}.`,
+      hardMockQuestions.push({
+        id: `hard-mock-q-${i}`,
+        question: `[HARD] Design and implement a scalable system for ${params.companyName} that handles ${params.skills[i % params.skills.length]} with high availability, fault tolerance, and handles 1M+ concurrent users. Discuss trade-offs, monitoring, and disaster recovery.`,
+        expectedAnswer: `A comprehensive senior-level answer covering system architecture, scalability patterns, database sharding, caching strategies, load balancing, monitoring, disaster recovery, and specific implementation details for ${params.skills[i % params.skills.length]}.`,
         category: params.interviewType,
-        difficulty: ['easy', 'medium', 'hard'][i % 3] as 'easy' | 'medium' | 'hard',
-        points: 10,
-        timeLimit: 5,
-        evaluationCriteria: ['Technical accuracy', 'Communication clarity', 'Real-world application'],
-        tags: [params.jobTitle, params.companyName, params.skills[i % params.skills.length]],
-        hints: ['Think about specific projects and outcomes'],
+        difficulty: 'hard',
+        points: 45,
+        timeLimit: 12,
+        evaluationCriteria: ['System Design Expertise', 'Scalability Knowledge', 'Real-world Application', 'Technical Depth'],
+        tags: ['hard', 'senior-level', params.jobTitle, params.companyName, params.skills[i % params.skills.length]],
+        hints: ['Think about distributed systems', 'Consider scalability patterns', 'Focus on fault tolerance'],
         provider: 'fallback',
-        model: 'mock'
+        model: 'hard-mock'
       });
     }
     
-    return mockQuestions;
+    return hardMockQuestions;
   }
 
-  private generateMockDSAProblems(difficulty: string, count: number): any[] {
-    const mockProblems: any[] = [];
-    const problemTemplates = [
+  private generateHardMockDSAProblems(count: number): any[] {
+    const hardMockProblems: any[] = [];
+    const hardProblemTemplates = [
       {
-        title: "Two Sum",
-        description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
-        topics: ["Array", "Hash Table"]
+        title: "Multi-Dimensional Range Query Optimization",
+        description: "Design a data structure that supports efficient range queries in a multi-dimensional space with dynamic updates, considering memory constraints and query optimization for distributed systems.",
+        topics: ["Advanced Data Structures", "Optimization", "Distributed Systems"]
       },
       {
-        title: "Valid Parentheses", 
-        description: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
-        topics: ["String", "Stack"]
+        title: "Real-time Stream Processing with Fault Tolerance", 
+        description: "Implement a real-time data processing system that handles high-throughput streams with fault tolerance, exactly-once processing guarantees, and dynamic scaling.",
+        topics: ["Stream Processing", "Fault Tolerance", "Distributed Algorithms"]
       },
       {
-        title: "Merge Two Sorted Lists",
-        description: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a sorted list.",
-        topics: ["Linked List", "Recursion"]
+        title: "Dynamic Graph Algorithms with Memory Optimization",
+        description: "Design algorithms for dynamic graph problems where nodes and edges are constantly being added/removed, optimizing for both time complexity and memory usage in constraint environments.",
+        topics: ["Graph Algorithms", "Dynamic Programming", "Memory Optimization"]
       }
     ];
 
     for (let i = 0; i < count; i++) {
-      const template = problemTemplates[i % problemTemplates.length];
-      mockProblems.push({
-        id: `mock-dsa-${i}`,
+      const template = hardProblemTemplates[i % hardProblemTemplates.length];
+      hardMockProblems.push({
+        id: `hard-mock-dsa-${i}`,
         title: template.title,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        difficulty: 'hard',
         description: template.description,
         examples: [
           {
-            input: 'Example input',
-            output: 'Example output',
-            explanation: 'Example explanation'
+            input: 'Complex input with multiple constraints',
+            output: 'Optimized output with complexity analysis',
+            explanation: 'Detailed explanation with trade-offs and alternative approaches'
           }
         ],
         testCases: [
           {
-            id: `test-${i}-1`,
-            input: 'Test input',
-            expectedOutput: 'Expected output'
+            id: `hard-test-${i}-1`,
+            input: 'Complex test input with edge cases',
+            expectedOutput: 'Expected optimized output'
           }
         ],
-        constraints: ['1 <= n <= 1000', 'Time limit: 2 seconds'],
+        constraints: ['1 <= n <= 10^6', 'Memory limit: 256MB', 'Time limit: 2 seconds', 'Multiple constraints'],
         topics: template.topics,
-        hints: ['Think about the optimal approach', 'Consider edge cases'],
-        timeComplexity: 'O(n)',
-        spaceComplexity: 'O(1)',
+        hints: ['Think about advanced data structures', 'Consider optimization techniques', 'Focus on scalability'],
+        timeComplexity: 'O(n log n) or better',
+        spaceComplexity: 'O(n)',
+        followUpQuestions: ['How would you optimize for even larger datasets?', 'What if memory was more constrained?'],
         provider: 'fallback',
-        model: 'mock'
+        model: 'hard-mock'
       });
     }
     
-    return mockProblems;
+    return hardMockProblems;
   }
 
   private generateMockAnalysis(userAnswer: string) {
     const wordCount = userAnswer.split(' ').length;
-    const score = Math.min(10, Math.max(3, wordCount / 10));
+    const score = Math.min(8, Math.max(3, wordCount / 15)); // Slightly lower scores for hard questions
     
     return {
       score,
-      feedback: `Your response demonstrates ${score >= 7 ? 'good' : score >= 5 ? 'adequate' : 'basic'} understanding. ${wordCount < 20 ? 'Consider providing more detailed explanations.' : 'Good level of detail provided.'}`,
-      suggestions: ['Add more specific examples', 'Structure your response better', 'Include technical details'],
-      strengths: wordCount > 30 ? ['Comprehensive response', 'Good detail level'] : ['Attempted the question'],
-      improvements: wordCount < 20 ? ['Provide more detailed answers', 'Include specific examples'] : ['Continue developing technical depth']
+      feedback: `Your response demonstrates ${score >= 6 ? 'good' : score >= 4 ? 'adequate' : 'basic'} understanding for a senior-level question. ${wordCount < 30 ? 'For hard questions, provide more comprehensive explanations with technical depth.' : 'Good level of detail provided, but consider adding more senior-level insights.'}`,
+      suggestions: ['Add more technical depth and system design considerations', 'Structure your response with clear architecture decisions', 'Include scalability and performance considerations'],
+      strengths: wordCount > 50 ? ['Comprehensive response', 'Good technical detail'] : ['Attempted the complex question'],
+      improvements: wordCount < 30 ? ['Provide more detailed senior-level answers', 'Include specific technical examples', 'Discuss trade-offs and alternatives'] : ['Continue developing senior-level technical depth', 'Add more system design considerations']
     };
   }
 
