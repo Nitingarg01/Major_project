@@ -182,8 +182,8 @@ export default function DashboardPage() {
     })
   }
 
-  // Show loading wrapper only when session is loading or we're fetching data
-  if (status === 'loading' || (loading && !hasInitialized)) {
+  // Show loading wrapper only when we're actually loading data or waiting for initial authentication
+  if ((status === 'loading' && !hasInitialized) || (loading && hasInitialized && interviews.length === 0)) {
     return (
       <LoadingWrapper 
         isLoading={true}
