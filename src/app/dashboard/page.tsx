@@ -20,7 +20,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { useLoading } from '@/components/ClientNavbar'
+import LoadingWrapper from '@/components/LoadingWrapper'
 
 interface Interview {
   _id: string
@@ -44,17 +44,9 @@ export default function DashboardPage() {
   const [interviews, setInterviews] = useState<Interview[]>([])
   const [stats, setStats] = useState<DashboardStats>({ total: 0, completed: 0, inProgress: 0 })
   const [loading, setLoading] = useState(true)
-  const { setIsLoading } = useLoading()
-
-  // Set loading state immediately when component mounts
-  React.useEffect(() => {
-    setIsLoading(true)
-    setLoading(true)
-  }, [setIsLoading])
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      setIsLoading(false) // Clear loading state before redirect
       router.push('/login')
       return
     }
@@ -62,13 +54,7 @@ export default function DashboardPage() {
     if (status === 'authenticated') {
       fetchUserInterviews()
     }
-  }, [status, router, setIsLoading])
-
-  // Update global loading state
-  useEffect(() => {
-    setIsLoading(loading)
-    return () => setIsLoading(false) // Cleanup on unmount
-  }, [loading, setIsLoading])
+  }, [status, router])
 
   const fetchUserInterviews = async () => {
     try {
@@ -147,204 +133,205 @@ export default function DashboardPage() {
     })
   }
 
+  // Show loading wrapper during loading or session loading
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto mb-6"></div>
-          <div className="space-y-2">
-            <p className="text-lg font-medium text-gray-700">Loading your dashboard...</p>
-            <p className="text-sm text-gray-500">Please wait while we fetch your data</p>
-          </div>
-        </div>
-      </div>
+      <LoadingWrapper 
+        isLoading={true}
+        loadingMessage="Loading your dashboard..."
+        loadingSubMessage="Please wait while we fetch your data"
+      >
+        <div />
+      </LoadingWrapper>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome back, <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{session?.user?.name}</span>!
-          </h1>
-          <p className="text-xl text-gray-600">Ready to ace your next interview?</p>
-        </div>
+    <LoadingWrapper isLoading={false}>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Welcome Header */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Welcome back, <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{session?.user?.name}</span>!
+            </h1>
+            <p className="text-xl text-gray-600">Ready to ace your next interview?</p>
+          </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-6 h-6 text-blue-600" />
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Interviews</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Interviews</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Completed</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-yellow-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">In Progress</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.inProgress}</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+          {/* Quick Actions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Link href="/create">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <Plus className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">New Interview</h3>
+                <p className="text-gray-600 text-sm">Create and practice with AI-powered questions</p>
+                <div className="flex items-center mt-3 text-blue-600 group-hover:text-blue-700">
+                  <span className="text-sm font-medium">Get Started</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
+            </Link>
+
+            <Link href="/resume-analyzer">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
+                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Resume Analyzer</h3>
+                <p className="text-gray-600 text-sm">Get AI feedback on your resume</p>
+                <div className="flex items-center mt-3 text-green-600 group-hover:text-green-700">
+                  <span className="text-sm font-medium">Analyze Now</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </div>
               </div>
-            </div>
+            </Link>
+
+            <Link href="/performance">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Performance & Feedback</h3>
+                <p className="text-gray-600 text-sm">View your interview analytics and get personalized feedback</p>
+                <div className="flex items-center mt-3 text-purple-600 group-hover:text-purple-700">
+                  <span className="text-sm font-medium">View Stats & Feedback</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </div>
+              </div>
+            </Link>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Clock className="w-6 h-6 text-yellow-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">In Progress</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.inProgress}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Link href="/create">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <Plus className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">New Interview</h3>
-              <p className="text-gray-600 text-sm">Create and practice with AI-powered questions</p>
-              <div className="flex items-center mt-3 text-blue-600 group-hover:text-blue-700">
-                <span className="text-sm font-medium">Get Started</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/resume-analyzer">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
-              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <FileText className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Resume Analyzer</h3>
-              <p className="text-gray-600 text-sm">Get AI feedback on your resume</p>
-              <div className="flex items-center mt-3 text-green-600 group-hover:text-green-700">
-                <span className="text-sm font-medium">Analyze Now</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/performance">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Performance & Feedback</h3>
-              <p className="text-gray-600 text-sm">View your interview analytics and get personalized feedback</p>
-              <div className="flex items-center mt-3 text-purple-600 group-hover:text-purple-700">
-                <span className="text-sm font-medium">View Stats & Feedback</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Recent Interviews */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Recent Interviews</h2>
-              <Link href="/interview">
-                <Button variant="outline" size="sm">
-                  View All
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="p-6">
-            {interviews.length === 0 ? (
-              <div className="text-center py-12">
-                <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No interviews yet</h3>
-                <p className="text-gray-600 mb-6">Start your interview preparation journey by creating your first mock interview</p>
-                <Link href="/create">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Your First Interview
+          {/* Recent Interviews */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-gray-900">Recent Interviews</h2>
+                <Link href="/interview">
+                  <Button variant="outline" size="sm">
+                    View All
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
               </div>
-            ) : (
-              <div className="space-y-4">
-                {interviews.map((interview) => (
-                  <div
-                    key={interview._id}
-                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                        <Briefcase className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{interview.jobTitle}</h3>
-                        <p className="text-sm text-gray-600">{interview.companyName}</p>
-                        <div className="flex items-center space-x-3 mt-1">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(interview.status)}`}>
-                            {getStatusIcon(interview.status)}
-                            <span className="ml-1 capitalize">{interview.status}</span>
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            <Calendar className="w-3 h-3 inline mr-1" />
-                            {formatDate(interview.createdAt)}
-                          </span>
-                          <span className="text-xs text-gray-500 capitalize">
-                            {interview.interviewType} • {interview.experienceLevel}
-                          </span>
+            </div>
+
+            <div className="p-6">
+              {interviews.length === 0 ? (
+                <div className="text-center py-12">
+                  <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No interviews yet</h3>
+                  <p className="text-gray-600 mb-6">Start your interview preparation journey by creating your first mock interview</p>
+                  <Link href="/create">
+                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create Your First Interview
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {interviews.map((interview) => (
+                    <div
+                      key={interview._id}
+                      className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                          <Briefcase className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{interview.jobTitle}</h3>
+                          <p className="text-sm text-gray-600">{interview.companyName}</p>
+                          <div className="flex items-center space-x-3 mt-1">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(interview.status)}`}>
+                              {getStatusIcon(interview.status)}
+                              <span className="ml-1 capitalize">{interview.status}</span>
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              <Calendar className="w-3 h-3 inline mr-1" />
+                              {formatDate(interview.createdAt)}
+                            </span>
+                            <span className="text-xs text-gray-500 capitalize">
+                              {interview.interviewType} • {interview.experienceLevel}
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <div className="flex items-center space-x-2">
+                        {interview.status === 'ready' && (
+                          <Link href={`/interview/${interview._id}`}>
+                            <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                              <PlayCircle className="w-4 h-4 mr-2" />
+                              Start
+                            </Button>
+                          </Link>
+                        )}
+                        {interview.status === 'completed' && (
+                          <Link href={`/interview/${interview._id}/feedback`}>
+                            <Button size="sm" variant="outline">
+                              <BarChart3 className="w-4 h-4 mr-2" />
+                              View Results
+                            </Button>
+                          </Link>
+                        )}
+                        {interview.status === 'in-progress' && (
+                          <Link href={`/interview/${interview._id}/perform`}>
+                            <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                              <PlayCircle className="w-4 h-4 mr-2" />
+                              Continue
+                            </Button>
+                          </Link>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      {interview.status === 'ready' && (
-                        <Link href={`/interview/${interview._id}`}>
-                          <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                            <PlayCircle className="w-4 h-4 mr-2" />
-                            Start
-                          </Button>
-                        </Link>
-                      )}
-                      {interview.status === 'completed' && (
-                        <Link href={`/interview/${interview._id}/feedback`}>
-                          <Button size="sm" variant="outline">
-                            <BarChart3 className="w-4 h-4 mr-2" />
-                            View Results
-                          </Button>
-                        </Link>
-                      )}
-                      {interview.status === 'in-progress' && (
-                        <Link href={`/interview/${interview._id}/perform`}>
-                          <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                            <PlayCircle className="w-4 h-4 mr-2" />
-                            Continue
-                          </Button>
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </LoadingWrapper>
   )
 }
