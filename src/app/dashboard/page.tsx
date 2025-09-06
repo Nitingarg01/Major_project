@@ -176,6 +176,40 @@ export default function DashboardPage() {
     }
   }
 
+  const deleteInterview = async (interviewId: string) => {
+    if (!confirm('Are you sure you want to delete this interview? This action cannot be undone.')) {
+      return
+    }
+
+    setDeletingId(interviewId)
+    
+    try {
+      const response = await fetch('/api/delete-interview', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ interviewId }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        // Remove from local state
+        setInterviews(prev => prev.filter(interview => interview._id !== interviewId))
+        setStats(prev => ({ ...prev, total: prev.total - 1 }))
+        toast.success('Interview deleted successfully')
+      } else {
+        throw new Error(data.error || 'Failed to delete interview')
+      }
+    } catch (error) {
+      console.error('Error deleting interview:', error)
+      toast.error('Failed to delete interview. Please try again.')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
