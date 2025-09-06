@@ -14,27 +14,33 @@ function getQuestionCountForType(interviewType: string): number {
   }
 }
 
-// Import AI model for immediate question generation
+// Import FreeLLMService for immediate question generation with Groq
 async function generateQuestionsImmediately(interviewData: any) {
     try {
-        const { aiInterviewModel } = await import('@/lib/aimodel')
+        const FreeLLMService = await import('@/lib/freeLLMService');
+        const EnhancedCompanyIntelligenceService = await import('@/lib/enhancedCompanyIntelligence');
         
-        let resumeContent = '';
-        if (interviewData.projectContext?.length > 0 || interviewData.workExDetails?.length > 0) {
-            resumeContent = `Projects: ${interviewData.projectContext?.join(', ') || 'None'}\nWork Experience: ${interviewData.workExDetails?.join(', ') || 'None'}`;
-        }
+        const freeLLMService = FreeLLMService.default.getInstance();
+        const companyIntelligence = EnhancedCompanyIntelligenceService.default.getInstance();
+        
+        console.log('🚀 Generating questions with Groq AI...');
+        
+        // Get enhanced company intelligence
+        const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
+            interviewData.companyName,
+            interviewData.jobTitle || 'Software Engineer'
+        );
 
-        console.log('🤖 Generating questions with AI...');
+        console.log('📊 Company intelligence gathered for', interviewData.companyName);
         
-        const questions = await aiInterviewModel.generateInterviewQuestions({
+        const questions = await freeLLMService.generateInterviewQuestions({
             jobTitle: interviewData.jobTitle || 'Software Engineer',
             companyName: interviewData.companyName,
             skills: interviewData.skills || [],
-            jobDescription: interviewData.jobDesc || '',
-            experienceLevel: interviewData.experienceLevel || 'mid',
             interviewType: interviewData.interviewType || 'mixed',
-            resumeContent: resumeContent || undefined,
-            numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed')
+            experienceLevel: interviewData.experienceLevel || 'mid',
+            numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed'),
+            companyIntelligence: enhancedCompanyData?.company_data
         });
 
         // Convert to the format expected by the database
@@ -43,10 +49,12 @@ async function generateQuestionsImmediately(interviewData: any) {
             expectedAnswer: q.expectedAnswer,
             difficulty: q.difficulty,
             category: q.category,
-            points: q.points
+            points: q.points,
+            provider: q.provider || 'groq',
+            model: q.model || 'llama-3.1-8b'
         }));
 
-        console.log('✅ Questions generated successfully');
+        console.log(`✅ ${formattedQuestions.length} questions generated successfully with Groq`);
         return formattedQuestions;
         
     } catch (error) {
