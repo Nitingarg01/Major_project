@@ -30,17 +30,17 @@ const navItems = [
   }
 ]
 
-const Navbar =  () => {
-  const {data:session,update,status} = useSession();
-  // const session = await auth()
-  // console.log(session)
+const Navbar = () => {
+  const {data: session, update, status} = useSession();
   const pathname = usePathname();
 
   useEffect(() => {
-    // Run your refresh logic here
-    update()
-    console.log("Path changed → refresh logic runs");
-  }, [pathname]);
+    // Only update session if we're authenticated and on certain paths
+    if (status === 'authenticated') {
+      update()
+      console.log("Session updated for authenticated user");
+    }
+  }, [pathname, status, update]);
 
 
   return (
