@@ -241,7 +241,7 @@ export class EnhancedRoundManager {
       const text = response.text();
 
       try {
-        const analysis = JSON.parse(text.replace(/```json\n?|\n?```/g, ''));
+        const analysis = extractJSON(text);
         return {
           score: Math.max(0, Math.min(10, analysis.score || 5)),
           feedback: analysis.feedback || 'Analysis completed successfully.',
