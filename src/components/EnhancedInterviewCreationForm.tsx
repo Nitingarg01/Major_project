@@ -212,11 +212,27 @@ const EnhancedInterviewCreationForm = () => {
 
     setLoading(true)
     try {
+      // Filter out React components (icons) from roundConfigs to make them serializable
+      const serializableRoundConfigs = AVAILABLE_ROUNDS
+        .filter(round => data.selectedRounds.includes(round.id))
+        .map(round => ({
+          id: round.id,
+          name: round.name,
+          type: round.type,
+          description: round.description,
+          duration: round.duration,
+          questionCount: round.questionCount,
+          color: round.color,
+          difficulty: round.difficulty,
+          skills: round.skills
+          // Exclude 'icon' property as it contains React components
+        }))
+
       // Add the enhanced data to the interview creation
       const enhancedData = {
         ...data,
         companyIntelligence: companyData,
-        roundConfigs: AVAILABLE_ROUNDS.filter(round => data.selectedRounds.includes(round.id))
+        roundConfigs: serializableRoundConfigs
       }
 
       const response = await createInterview(enhancedData, [], [])
@@ -224,7 +240,7 @@ const EnhancedInterviewCreationForm = () => {
       router.push('/')
     } catch (error) {
       console.error('Interview creation error:', error)
-      toast.error("❌ Interview Creation Failed!")
+      toast.error(`❌ Interview Creation Failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setLoading(false)
     }
