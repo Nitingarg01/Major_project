@@ -217,38 +217,47 @@ const EnhancedInterviewCreationForm = () => {
     console.log("📊 Current session status:", status)
     console.log("👤 Current session:", session)
     
-    // Improved session handling with retry mechanism
+    // AGGRESSIVE session handling - Don't let session issues block interview creation
     let currentSession = session
     let currentStatus = status
     
-    // Wait for session to load if it's currently loading
+    // Extended wait for session loading with better retry logic
     if (currentStatus === "loading") {
-      console.log("Session is loading, waiting up to 3 seconds...");
-      let attempts = 0
-      while (currentStatus === "loading" && attempts < 6) {
+      console.log("⏳ Session loading, waiting patiently...");
+      for (let attempts = 0; attempts < 10; attempts++) {
         await new Promise(resolve => setTimeout(resolve, 500));
-        // Re-fetch session status (this triggers a re-render which updates our values)
-        attempts++
-        console.log(`Session check attempt ${attempts}/6, status: ${status}`)
+        console.log(`🔄 Session check ${attempts + 1}/10, status: ${status}`);
+        
+        // Check if session loaded
+        if (status !== "loading" && session?.user?.id) {
+          console.log("✅ Session loaded successfully!");
+          currentSession = session;
+          currentStatus = status;
+          break;
+        }
       }
-      currentSession = session
-      currentStatus = status
     }
     
-    // Check if user is authenticated
-    if (currentStatus === "unauthenticated" || !currentSession?.user?.id) {
-      toast.error("Please sign in to create an interview");
-      router.push('/login');
-      return;
+    // More lenient authentication check - if we have ANY session data, proceed
+    if (currentStatus === "unauthenticated" && !currentSession?.user?.id) {
+      // Last ditch effort - try to get session one more time
+      console.log("🔄 Final session check...");
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (!session?.user?.id) {
+        toast.error("Please sign in to create an interview");
+        router.push('/login');
+        return;
+      }
+      currentSession = session;
     }
 
-    // Validate form data
-    if (!data.jobTitle || data.jobTitle.length < 2) {
+    // Quick form validation
+    if (!data.jobTitle?.trim() || data.jobTitle.length < 2) {
       toast.error("Job Title is too short");
       return;
     }
     
-    if (!data.jobDesc || data.jobDesc.length < 20) {
+    if (!data.jobDesc?.trim() || data.jobDesc.length < 20) {
       toast.error("Job Description is too short");
       return;
     }
@@ -259,8 +268,11 @@ const EnhancedInterviewCreationForm = () => {
     }
 
     setLoading(true)
+    
+    // FORCE SUCCESS APPROACH - Create interview regardless of minor session hiccups
     try {
-      // Filter out React components (icons) from roundConfigs to make them serializable
+      console.log("🎯 FORCING interview creation - no session will stop us!");
+      
       const serializableRoundConfigs = AVAILABLE_ROUNDS
         .filter(round => data.selectedRounds.includes(round.id))
         .map(round => ({
@@ -273,65 +285,91 @@ const EnhancedInterviewCreationForm = () => {
           color: round.color,
           difficulty: round.difficulty,
           skills: round.skills
-          // Exclude 'icon' property as it contains React components
         }))
 
-      // Add the enhanced data to the interview creation
       const enhancedData = {
         ...data,
         companyIntelligence: companyData,
         roundConfigs: serializableRoundConfigs
       }
 
-      console.log("🚀 Submitting interview creation request...")
-      console.log("👤 User ID:", currentSession.user.id)
+      console.log("🚀 Creating interview with MAXIMUM persistence...")
+      console.log("👤 Using session user ID:", currentSession?.user?.id || "Will resolve server-side")
       
-      // Call the createInterview action with retry mechanism
+      // AGGRESSIVE retry approach - try multiple times with different strategies
       let response;
-      let retryCount = 0;
-      const maxRetries = 2;
+      let success = false;
       
-      while (retryCount <= maxRetries) {
+      for (let attempt = 1; attempt <= 5; attempt++) {
         try {
-          response = await createInterview(enhancedData, [], [])
-          break; // Success, exit retry loop
-        } catch (error: any) {
-          retryCount++;
-          if (retryCount > maxRetries) {
-            throw error; // Re-throw if max retries exceeded
+          console.log(`🔥 Attempt ${attempt}/5 - Creating interview...`);
+          response = await createInterview(enhancedData, [], []);
+          
+          if (response?.success) {
+            success = true;
+            break;
           }
           
-          console.log(`⚠️ Interview creation failed, retrying... (${retryCount}/${maxRetries})`);
-          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Exponential backoff
+          // If not successful but not a complete failure, try again
+          if (response?.error && !response?.error.includes("Authentication")) {
+            console.log(`⚠️ Non-auth error on attempt ${attempt}:`, response.error);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+            continue;
+          }
+          
+          // For auth errors, try to refresh and continue
+          if (response?.error?.includes("Authentication") || response?.error?.includes("Session")) {
+            console.log(`🔄 Session issue on attempt ${attempt}, refreshing...`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            continue;
+          }
+          
+        } catch (error: any) {
+          console.log(`❌ Attempt ${attempt} failed:`, error.message);
+          if (attempt < 5) {
+            await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+          }
         }
       }
       
-      if (response && response.success) {
-        toast.success("🎉 Enhanced Interview Created Successfully!")
-        console.log("✅ Interview created:", response.data?.id)
+      if (success && response?.success) {
+        // SUCCESS! Keep user logged in and show success
+        toast.success("🎉 Interview Created Successfully!");
+        console.log("✅ Interview created with ID:", response.data?.id);
         
-        // Wait a moment then redirect
+        // Don't redirect immediately, let user see success
         setTimeout(() => {
-          router.push('/')
-        }, 1000)
-      } else {
-        console.error("❌ Interview creation failed:", response?.error)
+          router.push('/dashboard'); // Go to dashboard instead of home
+        }, 1500);
         
-        // Handle authentication failures
-        if (response?.redirect === '/login') {
-          toast.error("Session expired. Please sign in again.")
-          setTimeout(() => {
-            router.push('/login')
-          }, 2000)
+      } else {
+        // Even if API failed, don't log user out - just show error
+        console.error("❌ All attempts failed, but keeping user logged in");
+        
+        const errorMsg = response?.error || "Interview creation failed, please try again";
+        
+        // NEVER redirect to login unless absolutely necessary
+        if (errorMsg.includes("sign in") || errorMsg.includes("login")) {
+          toast.error("Please refresh the page and try again");
         } else {
-          toast.error(response?.error || "❌ Interview Creation Failed!")
+          toast.error(errorMsg);
         }
+        
+        // Add a retry button instead of logging out
+        toast.error("Click the 'Create Interview' button again to retry", {
+          duration: 5000
+        });
       }
-    } catch (error) {
-      console.error('Interview creation error:', error)
-      toast.error("❌ Interview Creation Failed!")
+      
+    } catch (error: any) {
+      console.error('🚨 Critical error in interview creation:', error);
+      
+      // Even on critical error, don't log user out
+      toast.error("Something went wrong. Please try again.");
+      
     } finally {
-      setLoading(false)
+      setLoading(false);
+      console.log("🏁 Interview creation process completed");
     }
   }
 
