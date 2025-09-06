@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { extractJSON } from './jsonExtractor'
 
 // Types for interview questions and analysis
 export interface InterviewQuestion {
