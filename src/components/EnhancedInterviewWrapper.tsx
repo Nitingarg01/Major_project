@@ -829,10 +829,16 @@ const EnhancedInterviewWrapper = ({
           <div className="lg:col-span-1">
             <div className="sticky top-28 space-y-4">
               <AdvancedCameraFeed 
-                cameraOn={cameraOn} 
-                setCameraOn={setCameraOn}
-                onActivityDetected={handleActivityDetected}
-                isInterviewActive={started}
+                isRecording={started && cameraOn} 
+                onRecordingChange={setCameraOn}
+                onAnomalyDetected={(anomaly) => handleActivityDetected({ 
+                  type: 'face_obscured', 
+                  message: anomaly, 
+                  severity: 'medium', 
+                  timestamp: new Date() 
+                })}
+                enableFaceDetection={true}
+                enableMisbehaviorDetection={true}
               />
               
               {/* Enhanced Company Tips */}
