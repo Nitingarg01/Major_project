@@ -46,8 +46,15 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const { setIsLoading } = useLoading()
 
+  // Set loading state immediately when component mounts
+  React.useEffect(() => {
+    setIsLoading(true)
+    setLoading(true)
+  }, [setIsLoading])
+
   useEffect(() => {
     if (status === 'unauthenticated') {
+      setIsLoading(false) // Clear loading state before redirect
       router.push('/login')
       return
     }
@@ -55,7 +62,7 @@ export default function DashboardPage() {
     if (status === 'authenticated') {
       fetchUserInterviews()
     }
-  }, [status, router])
+  }, [status, router, setIsLoading])
 
   // Update global loading state
   useEffect(() => {
