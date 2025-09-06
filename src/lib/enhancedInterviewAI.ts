@@ -80,14 +80,18 @@ interface InterviewRoundConfig {
 
 export class EnhancedInterviewAI {
   private static instance: EnhancedInterviewAI;
-  private emergentApiKey: string;
-  private baseUrl = 'https://integrations.emergentagent.com/api/v1/llm/chat';
+  private groqApiKey: string;
+  private huggingFaceApiKey: string;
+  private geminiApiKey: string;
   private companyCache = new Map<string, CompanyResearchData>();
 
   private constructor() {
-    this.emergentApiKey = process.env.EMERGENT_LLM_KEY || process.env.NEXT_PUBLIC_EMERGENT_LLM_KEY || '';
-    if (!this.emergentApiKey) {
-      console.warn('Emergent LLM key not found - some features may be limited');
+    this.groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
+    this.huggingFaceApiKey = process.env.HUGGINGFACE_API_KEY || process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY || '';
+    this.geminiApiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+    
+    if (!this.groqApiKey && !this.huggingFaceApiKey && !this.geminiApiKey) {
+      console.warn('No AI provider keys found - some features may be limited');
     }
   }
 
