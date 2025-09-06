@@ -46,14 +46,14 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
     }
   }, [pathname, status, update]);
 
-  // Minimal navbar for loading states
+  // Minimal navbar for loading states - ultra clean design
   if (minimal) {
     return (
-      <nav className='w-full border-b border-gray-200 bg-white/95 backdrop-blur-sm px-4 py-3'>
+      <nav className='w-full border-b border-gray-100 bg-white px-6 py-4'>
         <div className='flex justify-center items-center'>
-          <Link className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent' href='/'>
+          <div className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
             AI Interview App
-          </Link>
+          </div>
         </div>
       </nav>
     );
