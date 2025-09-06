@@ -12,6 +12,7 @@ interface IntroModalProps {
   interviewType?: string
   estimatedDuration?: number
   rounds?: InterviewRound[]
+  companyIntelligence?: any
 }
 
 const IntroModal = ({ 
