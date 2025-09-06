@@ -600,23 +600,107 @@ export class EnhancedInterviewAI {
   private generateFallbackDSAProblems(difficulty: string, count: number): DSAProblem[] {
     const problems: DSAProblem[] = [];
     const templates = [
-      { title: 'Two Sum', topics: ['Array', 'Hash Table'] },
-      { title: 'Valid Parentheses', topics: ['String', 'Stack'] },
-      { title: 'Merge Intervals', topics: ['Array', 'Sorting'] }
+      {
+        title: 'Two Sum Problem',
+        topics: ['Array', 'Hash Table'],
+        description: 'Given an array of integers and a target sum, find two numbers that add up to the target.',
+        examples: [
+          { input: 'nums = [2,7,11,15], target = 9', output: '[0,1]', explanation: 'nums[0] + nums[1] = 2 + 7 = 9' }
+        ],
+        testCases: [
+          { id: 'test1', input: 'nums = [2,7,11,15], target = 9', expectedOutput: '[0,1]' },
+          { id: 'test2', input: 'nums = [3,2,4], target = 6', expectedOutput: '[1,2]' }
+        ],
+        constraints: ['2 ≤ nums.length ≤ 10^4', '-10^9 ≤ nums[i] ≤ 10^9'],
+        hints: ['Use a hash map to store complements', 'For each number x, look for target - x']
+      },
+      {
+        title: 'Valid Parentheses',
+        topics: ['String', 'Stack'],
+        description: 'Determine if a string of parentheses is valid. Open brackets must be closed by the same type in correct order.',
+        examples: [
+          { input: 's = "()"', output: 'true', explanation: 'The parentheses are properly matched' },
+          { input: 's = "([)]"', output: 'false', explanation: 'Brackets are not properly nested' }
+        ],
+        testCases: [
+          { id: 'test1', input: 's = "()"', expectedOutput: 'true' },
+          { id: 'test2', input: 's = "()[]{}"', expectedOutput: 'true' },
+          { id: 'test3', input: 's = "(]"', expectedOutput: 'false' }
+        ],
+        constraints: ['1 ≤ s.length ≤ 10^4', 's consists of parentheses only'],
+        hints: ['Use a stack to track opening brackets', 'Match each closing bracket with the most recent opening']
+      },
+      {
+        title: 'Binary Tree Level Order Traversal',
+        topics: ['Tree', 'BFS', 'Queue'],
+        description: 'Given a binary tree, return the level order traversal of its nodes\' values (left to right, level by level).',
+        examples: [
+          { input: 'root = [3,9,20,null,null,15,7]', output: '[[3],[9,20],[15,7]]', explanation: 'Level 1: [3], Level 2: [9,20], Level 3: [15,7]' }
+        ],
+        testCases: [
+          { id: 'test1', input: 'root = [3,9,20,null,null,15,7]', expectedOutput: '[[3],[9,20],[15,7]]' },
+          { id: 'test2', input: 'root = [1]', expectedOutput: '[[1]]' }
+        ],
+        constraints: ['Number of nodes ≤ 2000', '-1000 ≤ Node.val ≤ 1000'],
+        hints: ['Use BFS with a queue', 'Process nodes level by level', 'Track level boundaries']
+      },
+      {
+        title: 'Maximum Subarray Sum',
+        topics: ['Array', 'Dynamic Programming'],
+        description: 'Find the contiguous subarray with the largest sum and return its sum.',
+        examples: [
+          { input: 'nums = [-2,1,-3,4,-1,2,1,-5,4]', output: '6', explanation: 'Subarray [4,-1,2,1] has the largest sum 6' }
+        ],
+        testCases: [
+          { id: 'test1', input: 'nums = [-2,1,-3,4,-1,2,1,-5,4]', expectedOutput: '6' },
+          { id: 'test2', input: 'nums = [1]', expectedOutput: '1' }
+        ],
+        constraints: ['1 ≤ nums.length ≤ 10^5', '-10^4 ≤ nums[i] ≤ 10^4'],
+        hints: ['Use Kadane\'s algorithm', 'Keep track of current and maximum sum', 'Reset current sum when it becomes negative']
+      },
+      {
+        title: 'Merge Intervals',
+        topics: ['Array', 'Sorting'],
+        description: 'Given intervals, merge all overlapping intervals and return non-overlapping intervals.',
+        examples: [
+          { input: 'intervals = [[1,3],[2,6],[8,10],[15,18]]', output: '[[1,6],[8,10],[15,18]]', explanation: '[1,3] and [2,6] overlap, so merge to [1,6]' }
+        ],
+        testCases: [
+          { id: 'test1', input: 'intervals = [[1,3],[2,6],[8,10],[15,18]]', expectedOutput: '[[1,6],[8,10],[15,18]]' },
+          { id: 'test2', input: 'intervals = [[1,4],[4,5]]', expectedOutput: '[[1,5]]' }
+        ],
+        constraints: ['1 ≤ intervals.length ≤ 10^4', 'intervals[i].length == 2'],
+        hints: ['Sort intervals by start time', 'Iterate and merge overlapping intervals', 'Two intervals overlap if start2 ≤ end1']
+      },
+      {
+        title: 'Longest Palindromic Substring',
+        topics: ['String', 'Dynamic Programming'],
+        description: 'Given a string, find the longest palindromic substring.',
+        examples: [
+          { input: 's = "babad"', output: '"bab"', explanation: '"aba" is also a valid answer' },
+          { input: 's = "cbbd"', output: '"bb"', explanation: 'The longest palindrome is "bb"' }
+        ],
+        testCases: [
+          { id: 'test1', input: 's = "babad"', expectedOutput: '"bab"' },
+          { id: 'test2', input: 's = "cbbd"', expectedOutput: '"bb"' }
+        ],
+        constraints: ['1 ≤ s.length ≤ 1000', 's consists of digits and letters'],
+        hints: ['Expand around centers', 'Check both odd and even length palindromes', 'Use dynamic programming for optimization']
+      }
     ];
 
     for (let i = 0; i < count; i++) {
       const template = templates[i % templates.length];
       problems.push({
-        id: `fallback-dsa-${i}`,
+        id: `fallback-dsa-${Date.now()}-${i}`,
         title: template.title,
         difficulty: difficulty as any,
-        description: `Solve this ${difficulty} level problem: ${template.title}`,
-        examples: [{ input: 'Example input', output: 'Example output', explanation: 'Example explanation' }],
-        testCases: [{ id: `test-${i}`, input: 'Test input', expectedOutput: 'Expected output' }],
-        constraints: ['Standard constraints apply'],
+        description: template.description,
+        examples: template.examples,
+        testCases: template.testCases,
+        constraints: template.constraints,
         topics: template.topics,
-        hints: ['Think about the optimal approach'],
+        hints: template.hints,
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)'
       });
