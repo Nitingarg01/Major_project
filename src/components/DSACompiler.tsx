@@ -78,7 +78,7 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
     
     public static void main(String[] args) {
         // Test your solution
-        // System.out.println(solution(${problem.examples[0]?.input || 'new int[]{1,2,3}'}));
+        // System.out.println(solution(${problem?.examples?.[0]?.input || 'new int[]{1,2,3}'}));
     }
 }`,
     
