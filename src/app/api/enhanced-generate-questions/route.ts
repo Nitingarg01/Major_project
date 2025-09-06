@@ -190,28 +190,31 @@ export async function POST(request: NextRequest) {
       { upsert: true }
     );
 
-    // Update interview status
+    // Update interview status with enhanced metadata
     await db.collection('interviews').updateOne(
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
           status: 'ready',
           questionMetadata: questionDoc.metadata,
+          companyIntelligence: questionDoc.companyIntelligence,
           updatedAt: new Date()
         } 
       }
     );
 
-    console.log(`✅ Generated ${allQuestions.length} questions successfully`);
+    console.log(`✅ Generated ${allQuestions.length} enhanced questions using Groq API`);
 
     return NextResponse.json({
-      message: 'Enhanced questions generated successfully with Emergent AI',
+      message: 'Enhanced questions generated successfully with Groq AI',
       questionsCount: allQuestions.length,
       questions: allQuestions,
       metadata: questionDoc.metadata,
+      companyIntelligence: questionDoc.companyIntelligence,
       breakdown: {
         categories: getCategoryBreakdown(allQuestions),
-        difficulties: getDifficultyBreakdown(allQuestions)
+        difficulties: getDifficultyBreakdown(allQuestions),
+        providers: getProviderBreakdown(allQuestions)
       }
     });
 
