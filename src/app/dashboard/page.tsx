@@ -199,29 +199,19 @@ export default function DashboardPage() {
             </div>
           </Link>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-              <TrendingUp className="w-6 h-6 text-white" />
+          <Link href="/performance">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Performance & Feedback</h3>
+              <p className="text-gray-600 text-sm">View your interview analytics and get personalized feedback</p>
+              <div className="flex items-center mt-3 text-purple-600 group-hover:text-purple-700">
+                <span className="text-sm font-medium">View Stats & Feedback</span>
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </div>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Performance</h3>
-            <p className="text-gray-600 text-sm">View your interview analytics</p>
-            <div className="flex items-center mt-3 text-purple-600 group-hover:text-purple-700">
-              <span className="text-sm font-medium">View Stats</span>
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
-            <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-              <BookOpen className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Study Guide</h3>
-            <p className="text-gray-600 text-sm">Access interview preparation resources</p>
-            <div className="flex items-center mt-3 text-orange-600 group-hover:text-orange-700">
-              <span className="text-sm font-medium">Learn More</span>
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </div>
-          </div>
+          </Link>
         </div>
 
         {/* Recent Interviews */}
