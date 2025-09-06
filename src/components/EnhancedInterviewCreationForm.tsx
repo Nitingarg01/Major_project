@@ -236,8 +236,13 @@ const EnhancedInterviewCreationForm = () => {
       }
 
       const response = await createInterview(enhancedData, [], [])
-      toast.success("🎉 Enhanced Interview Created Successfully!")
-      router.push('/')
+      
+      if (response.success) {
+        toast.success("🎉 Enhanced Interview Created Successfully!")
+        router.push('/')
+      } else {
+        throw new Error(response.error || "Failed to create interview")
+      }
     } catch (error) {
       console.error('Interview creation error:', error)
       toast.error(`❌ Interview Creation Failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
