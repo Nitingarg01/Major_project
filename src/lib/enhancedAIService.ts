@@ -102,7 +102,7 @@ export class EnhancedAIService {
       const text = response.text();
 
       try {
-        const questions = JSON.parse(text.replace(/```json\n?|\n?```/g, ''));
+        const questions = extractJSON(text);
         return this.validateAndEnhanceQuestions(questions, params);
       } catch (parseError) {
         console.error('Error parsing AI response:', parseError);
