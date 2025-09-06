@@ -179,13 +179,35 @@ function getDSAPoints(difficulty: string): number {
 
 export async function POST(request: NextRequest) {
     try {
-        // First, verify authentication using NextAuth
-        const session = await auth()
+        // Enhanced authentication with retry mechanism
+        let session;
+        let authAttempts = 0;
+        const maxAuthAttempts = 3;
+        
+        while (authAttempts < maxAuthAttempts) {
+            try {
+                session = await auth()
+                if (session?.user?.id) {
+                    break; // Valid session found
+                }
+                authAttempts++;
+                if (authAttempts < maxAuthAttempts) {
+                    console.log(`⚠️ Session validation attempt ${authAttempts}/${maxAuthAttempts} failed, retrying...`);
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before retry
+                }
+            } catch (authError) {
+                console.error("❌ Auth error:", authError);
+                authAttempts++;
+                if (authAttempts < maxAuthAttempts) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+        }
         
         if (!session?.user?.id) {
-            console.log("❌ Unauthorized access attempt to create-interview API")
+            console.log("❌ Authentication failed after", maxAuthAttempts, "attempts")
             return NextResponse.json(
-                { error: "Authentication required" },
+                { error: "Session expired. Please sign in again." },
                 { status: 401 }
             );
         }
@@ -195,8 +217,11 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const { id, jobDesc, skills, companyName, projectContext, workExDetails, jobTitle, experienceLevel, interviewType } = body
 
-        // Verify that the authenticated user matches the request
-        if (session.user.id !== id) {
+        // More flexible user ID validation - use session user ID if no ID provided
+        const userId = id || session.user.id;
+        
+        // Verify that the authenticated user matches the request (but be more lenient)
+        if (id && session.user.id !== id) {
             console.log("❌ User ID mismatch:", session.user.id, "vs", id)
             return NextResponse.json(
                 { error: "Access denied" },
