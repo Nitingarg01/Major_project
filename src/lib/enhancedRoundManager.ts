@@ -336,7 +336,7 @@ export class EnhancedRoundManager {
       const text = response.text();
 
       try {
-        const reportData = JSON.parse(text.replace(/```json\n?|\n?```/g, ''));
+        const reportData = extractJSON(text);
         
         const report: FinalInterviewReport = {
           sessionId: session.sessionId,
