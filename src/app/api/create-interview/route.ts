@@ -188,7 +188,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.log('🔥 Creating HARD interview with one-click generation...');
+        console.log('🚀 Creating interview with reliable question generation...');
 
         const dbClient = client;
         const db = dbClient.db();
@@ -201,19 +201,19 @@ export async function POST(request: NextRequest) {
             companyName,
             projectContext: projectContext ?? [],
             workExDetails: workExDetails ?? [],
-            experienceLevel: experienceLevel ?? 'senior', // Default to senior for hard questions
+            experienceLevel: experienceLevel ?? 'mid',
             interviewType: interviewType ?? 'mixed',
-            difficultyLevel: 'hard', // Mark as hard interview
+            difficultyLevel: 'adaptive', // Adaptive difficulty based on experience
             createdAt: new Date(),
             status: 'generating'
         };
 
         // Create interview first
         const interviewResult = await db.collection("interviews").insertOne(interviewData);
-        console.log('✅ HARD Interview record created');
+        console.log('✅ Interview record created');
 
-        // Generate HARD questions immediately (no background jobs!)
-        const questions = await generateHardQuestionsImmediately(interviewData);
+        // Generate questions immediately (no background jobs!)
+        const questions = await generateQuestionsImmediately(interviewData);
         
         // Store questions in database
         const questionsResult = await db.collection("questions").insertOne({
