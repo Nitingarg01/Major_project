@@ -291,7 +291,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                     return (
                       <div
                         key={index}
-                        ref={el => suggestionRefs.current[index] = el}
+                        ref={(el) => { suggestionRefs.current[index] = el }}
                         onClick={() => handleSelect(companyName)}
                         className={`px-4 py-3 cursor-pointer rounded-lg transition-all ${
                           index === selectedIndex ? 'bg-blue-50 border-2 border-blue-200' : 'hover:bg-gray-50'
