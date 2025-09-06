@@ -379,7 +379,7 @@ const NewInterviewWrapper = ({
         return (
           <AptitudeQuiz
             questions={currentRoundQuestions || []}
-            onComplete={handleRoundComplete}
+            onComplete={(results) => handleRoundComplete(results, results.timeSpent || 0)}
             timeLimit={currentRoundConfig.duration}
           />
         )
