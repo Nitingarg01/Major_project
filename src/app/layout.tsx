@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import ClientNavbar from "@/components/ClientNavbar";
 import { Toaster } from "@/components/ui/sonner"
 import Footer from "@/components/Footer";
 import MobileNavigator from "@/components/MobileNavigator";
@@ -41,7 +41,7 @@ const session = await auth()
         <SessionProvider session={session}>
         
        <div className="w-full">
-        <Navbar />
+        <ClientNavbar />
 
       </div>
       <MobileNavigator/>
