@@ -423,65 +423,93 @@ export class EnhancedInterviewAI {
   ): Promise<DSAProblem[]> {
     const companyData = await this.researchCompany(companyName);
     
-    const systemMessage = `You are an expert DSA interviewer. Generate high-quality coding problems for ${companyName} interviews.`;
+    const systemMessage = `You are an expert DSA interviewer specializing in creating diverse, company-relevant coding problems. Generate problems that test different algorithmic concepts and data structures.`;
     
     const userMessage = `
-      Generate exactly ${count} unique DSA problems for ${companyName}:
+      Generate exactly ${count} unique and varied DSA problems for ${companyName}:
       
       Requirements:
       - Difficulty: ${difficulty}
       - Company: ${companyName} (${companyData.industry} industry)
+      - Each problem should test DIFFERENT algorithmic concepts
+      - Include variety: arrays, trees, graphs, dynamic programming, strings, etc.
       - Problems should reflect real-world scenarios from ${companyData.industry}
-      - Include comprehensive test cases
-      - Provide helpful hints
+      - Include comprehensive test cases (at least 3-4 per problem)
+      - Provide progressive hints
+      
+      Ensure variety across these categories:
+      1. Array/String manipulation (Two Sum, Sliding Window, etc.)
+      2. Tree/Graph problems (DFS, BFS, Tree traversal)
+      3. Dynamic Programming (Fibonacci, Coin Change, etc.)
+      4. System Design related (Rate Limiter, Cache, etc.)
+      5. String algorithms (Pattern matching, parsing)
       
       Return as JSON array:
       [
         {
-          "id": "unique-problem-id",
-          "title": "Problem Title",
+          "id": "unique-problem-id-${Date.now()}",
+          "title": "Descriptive Problem Title",
           "difficulty": "${difficulty}",
-          "description": "Clear problem description with context relevant to ${companyData.industry}",
+          "description": "Clear, detailed problem description with context relevant to ${companyData.industry}. Include what the function should do, input/output format, and any special conditions.",
           "examples": [
             {
-              "input": "sample input format",
-              "output": "expected output format",
-              "explanation": "detailed explanation"
+              "input": "Clear example input",
+              "output": "Expected output",
+              "explanation": "Step-by-step explanation of how we get the output"
+            },
+            {
+              "input": "Second example input",
+              "output": "Expected output for second example",
+              "explanation": "Explanation for the second example"
             }
           ],
           "testCases": [
             {
               "id": "test-1",
-              "input": "test input",
+              "input": "test input matching examples",
               "expectedOutput": "expected result",
               "hidden": false
+            },
+            {
+              "id": "test-2",
+              "input": "edge case test",
+              "expectedOutput": "expected result for edge case",
+              "hidden": false
+            },
+            {
+              "id": "test-3",
+              "input": "complex test case",
+              "expectedOutput": "expected result for complex case",
+              "hidden": true
             }
           ],
-          "constraints": ["constraint 1", "constraint 2"],
-          "topics": ["Array", "Hash Table", "etc"],
-          "hints": ["helpful hint 1", "helpful hint 2"],
-          "timeComplexity": "O(n)",
-          "spaceComplexity": "O(1)"
+          "constraints": ["Specific constraint 1", "Specific constraint 2", "Performance constraint"],
+          "topics": ["Primary topic", "Secondary topic"],
+          "hints": ["Initial gentle hint", "More specific hint", "Almost giving away hint"],
+          "timeComplexity": "Expected optimal time complexity",
+          "spaceComplexity": "Expected space complexity"
         }
       ]
+      
+      Make each problem unique and interesting, avoiding generic LeetCode copies. Focus on practical scenarios that ${companyName} engineers might encounter.
     `;
 
     try {
       const response = await this.callAIProvider([
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
-      ], { provider: 'groq', model: 'llama-3.1-8b-instant' });
+      ], { provider: 'groq', model: 'llama-3.1-8b-instant', temperature: 0.8, max_tokens: 6000 });
 
       const problems = JSON.parse(response.replace(/```json\n?|\n?```/g, ''));
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `dsa-${Date.now()}-${index}`,
         difficulty,
-        examples: p.examples || [],
-        testCases: p.testCases || [],
-        constraints: p.constraints || [],
-        topics: p.topics || ['Array'],
-        hints: p.hints || []
+        examples: Array.isArray(p.examples) ? p.examples : [],
+        testCases: Array.isArray(p.testCases) ? p.testCases : [],
+        constraints: Array.isArray(p.constraints) ? p.constraints : [],
+        topics: Array.isArray(p.topics) ? p.topics : ['Array'],
+        hints: Array.isArray(p.hints) ? p.hints : []
       }));
     } catch (error) {
       console.error('Error generating DSA problems:', error);
