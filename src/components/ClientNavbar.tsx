@@ -18,8 +18,15 @@ const ClientNavbar = () => {
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
   
-  // Determine if we should show minimal navbar based on loading state
-  const shouldShowMinimal = isLoading && pathname === '/dashboard';
+  // Show minimal navbar during any loading state on dashboard or protected routes
+  const shouldShowMinimal = isLoading && (
+    pathname === '/dashboard' || 
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/interview') ||
+    pathname.startsWith('/create') ||
+    pathname.startsWith('/resume-analyzer') ||
+    pathname.startsWith('/performance')
+  );
 
   return (
     <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
