@@ -102,6 +102,70 @@ export class EnhancedInterviewAI {
     return EnhancedInterviewAI.instance;
   }
 
+  /**
+   * Robust JSON extraction from AI model responses
+   * Handles various response formats including descriptive text before JSON
+   */
+  private extractJSON(response: string): any {
+    try {
+      // First try: Direct JSON parse (in case response is already clean JSON)
+      return JSON.parse(response);
+    } catch (error) {
+      try {
+        // Remove markdown code blocks
+        let cleaned = response.replace(/```json\n?|\n?```/g, '');
+        
+        // Try parsing after markdown removal
+        return JSON.parse(cleaned);
+      } catch (error) {
+        try {
+          // Look for JSON object patterns - find first { or [ and last } or ]
+          const jsonObjectMatch = response.match(/\{[\s\S]*\}/);
+          const jsonArrayMatch = response.match(/\[[\s\S]*\]/);
+          
+          let jsonString = '';
+          if (jsonObjectMatch && jsonArrayMatch) {
+            // Choose the longer match (more likely to be complete)
+            jsonString = jsonObjectMatch[0].length > jsonArrayMatch[0].length 
+              ? jsonObjectMatch[0] 
+              : jsonArrayMatch[0];
+          } else if (jsonObjectMatch) {
+            jsonString = jsonObjectMatch[0];
+          } else if (jsonArrayMatch) {
+            jsonString = jsonArrayMatch[0];
+          } else {
+            throw new Error('No JSON pattern found');
+          }
+          
+          return JSON.parse(jsonString);
+        } catch (error) {
+          try {
+            // Last resort: Find lines that look like JSON and extract them
+            const lines = response.split('\n');
+            const jsonLines = lines.filter(line => 
+              line.trim().startsWith('{') || 
+              line.trim().startsWith('[') || 
+              line.trim().includes('"') ||
+              line.trim().includes('}') ||
+              line.trim().includes(']')
+            );
+            
+            const jsonString = jsonLines.join('\n').trim();
+            if (jsonString) {
+              return JSON.parse(jsonString);
+            }
+            
+            throw new Error('Could not extract valid JSON');
+          } catch (finalError) {
+            console.error('Failed to extract JSON from response:', response);
+            console.error('Final extraction error:', finalError);
+            throw new Error(`JSON extraction failed: ${finalError instanceof Error ? finalError.message : 'Unknown error'}`);
+          }
+        }
+      }
+    }
+  }
+
   private async callAIProvider(messages: Array<{role: string; content: string}>, options?: {
     provider?: 'groq' | 'huggingface' | 'gemini';
     model?: string;
