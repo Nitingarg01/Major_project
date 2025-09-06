@@ -122,10 +122,19 @@ const EnhancedInterviewCreationForm = () => {
   const { data: session, status } = useSession()
   const [loading, setLoading] = useState(false)
   
-  // Debug session status
+  // Debug session status - Enhanced logging
   React.useEffect(() => {
-    console.log("Session status:", status)
-    console.log("Session data:", session)
+    console.log("🔍 Session status changed:", status)
+    console.log("🔍 Session data:", session)
+    console.log("🔍 User ID available:", !!session?.user?.id)
+    console.log("🔍 User email:", session?.user?.email)
+    if (status === "authenticated" && session?.user) {
+      console.log("✅ User is authenticated:", session.user.id)
+    } else if (status === "unauthenticated") {
+      console.log("❌ User is not authenticated")
+    } else if (status === "loading") {
+      console.log("⏳ Session is loading...")
+    }
   }, [status, session])
   const [uploading, setUploading] = useState(false)
   const [fileName, setFileName] = useState('')
