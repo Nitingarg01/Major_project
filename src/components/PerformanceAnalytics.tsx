@@ -35,11 +35,12 @@ const PerformanceAnalytics = ({
   skills 
 }: PerformanceAnalyticsProps) => {
   // Calculate scores by category
-  const categoryScores = {
+  const categoryScores: {[key: string]: number} = {
     technical: 0,
     behavioral: 0,
     aptitude: 0,
-    dsa: 0
+    dsa: 0,
+    mixed: 0
   };
 
   rounds.forEach(round => {
