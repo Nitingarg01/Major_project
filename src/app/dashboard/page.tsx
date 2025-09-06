@@ -46,15 +46,29 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('Auth status changed:', status)
+    console.log('Session:', session)
+    
+    if (status === 'loading') {
+      console.log('Session still loading...')
+      return
+    }
+    
     if (status === 'unauthenticated') {
+      console.log('User not authenticated, redirecting to login')
       router.push('/login')
       return
     }
 
-    if (status === 'authenticated') {
+    if (status === 'authenticated' && session?.user?.id) {
+      console.log('User authenticated, fetching interviews...')
       fetchUserInterviews()
+    } else if (status === 'authenticated' && !session?.user?.id) {
+      console.error('Authenticated but no user ID found')
+      toast.error('Authentication error. Please try logging in again.')
+      router.push('/login')
     }
-  }, [status, router])
+  }, [status, session?.user?.id, router])
 
   const fetchUserInterviews = async () => {
     try {
