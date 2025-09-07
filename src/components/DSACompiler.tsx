@@ -1,4 +1,3 @@
-'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
@@ -6,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Play, Square, Check, X, Clock, Code, TestTube, Lightbulb, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
+import ImprovedJudge0Service from '@/lib/improvedJudge0Service'
 
 interface TestCase {
   id: string
