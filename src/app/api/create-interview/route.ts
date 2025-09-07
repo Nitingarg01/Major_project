@@ -85,7 +85,7 @@ async function generateQuestionsImmediately(interviewData: any) {
                 }))
             ];
         } else if (interviewData.interviewType === 'dsa') {
-            const dsaProblems = await emergentLLMService.generateDSAProblems(
+            const dsaProblems = await aiService.generateDSAProblems(
                 interviewData.companyName,
                 getDSADifficulty(interviewData.experienceLevel),
                 8
