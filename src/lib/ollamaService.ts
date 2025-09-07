@@ -100,55 +100,220 @@ export class OllamaService {
   }
 
   private initializeCompanyDatabase() {
-    // Popular tech companies with their specific data
+    // Comprehensive company database with enhanced intelligence
     const companies = [
+      // Big Tech (FAANG+)
       {
         name: 'Google',
         industry: 'Technology',
-        techStack: ['Go', 'Python', 'Java', 'C++', 'Kubernetes', 'TensorFlow'],
-        culture: ['Innovation', 'Data-driven', 'Collaboration', 'Think big'],
-        interviewStyle: 'Technical depth, system design, behavioral',
-        commonQuestions: ['Design a search engine', 'Scale to billions of users']
+        techStack: ['Go', 'Python', 'Java', 'C++', 'Kubernetes', 'TensorFlow', 'BigQuery', 'Spanner'],
+        culture: ['Innovation', 'Data-driven', 'Collaboration', 'Think big', 'Focus on user'],
+        interviewStyle: 'Technical depth, system design, behavioral, Googleyness',
+        commonQuestions: ['Design a search engine', 'Scale to billions of users', 'MapReduce concepts']
       },
       {
         name: 'Meta',
         industry: 'Social Media',
-        techStack: ['React', 'PHP', 'Python', 'GraphQL', 'PyTorch'],
-        culture: ['Move fast', 'Be bold', 'Focus on impact', 'Be open'],
-        interviewStyle: 'Product sense, technical execution, leadership',
-        commonQuestions: ['Design Facebook feed', 'How would you improve Instagram?']
+        techStack: ['React', 'PHP', 'Python', 'GraphQL', 'PyTorch', 'Hack', 'React Native'],
+        culture: ['Move fast', 'Be bold', 'Focus on impact', 'Be open', 'Build social value'],
+        interviewStyle: 'Product sense, technical execution, leadership, culture fit',
+        commonQuestions: ['Design Facebook feed', 'How would you improve Instagram?', 'Handle fake news']
       },
       {
         name: 'Amazon',
         industry: 'E-commerce/Cloud',
-        techStack: ['Java', 'Python', 'AWS', 'DynamoDB', 'Lambda'],
-        culture: ['Customer obsession', 'Ownership', 'Invent and simplify', 'Bias for action'],
-        interviewStyle: 'Leadership principles, technical problems, system design',
-        commonQuestions: ['Design Amazon marketplace', 'Tell me about a time you failed']
+        techStack: ['Java', 'Python', 'AWS', 'DynamoDB', 'Lambda', 'S3', 'EC2', 'Kinesis'],
+        culture: ['Customer obsession', 'Ownership', 'Invent and simplify', 'Bias for action', 'Dive deep'],
+        interviewStyle: 'Leadership principles, technical problems, system design, behavioral',
+        commonQuestions: ['Design Amazon marketplace', 'Tell me about a time you failed', 'Scale AWS services']
       },
       {
         name: 'Microsoft',
         industry: 'Technology',
-        techStack: ['C#', 'TypeScript', 'Azure', 'PowerShell', '.NET'],
-        culture: ['Respect', 'Integrity', 'Accountability', 'Inclusive'],
-        interviewStyle: 'Technical skills, problem-solving, collaboration',
-        commonQuestions: ['Design Office 365', 'How do you handle conflict?']
+        techStack: ['C#', 'TypeScript', 'Azure', 'PowerShell', '.NET', 'Teams', 'Office 365'],
+        culture: ['Respect', 'Integrity', 'Accountability', 'Inclusive', 'Growth mindset'],
+        interviewStyle: 'Technical skills, problem-solving, collaboration, growth mindset',
+        commonQuestions: ['Design Office 365', 'How do you handle conflict?', 'Azure architecture']
       },
       {
         name: 'Apple',
         industry: 'Consumer Electronics',
-        techStack: ['Swift', 'Objective-C', 'iOS', 'macOS', 'Metal'],
-        culture: ['Innovation', 'Excellence', 'Privacy', 'Simplicity'],
-        interviewStyle: 'Product focus, technical excellence, attention to detail',
-        commonQuestions: ['Design iPhone feature', 'Optimize for performance']
+        techStack: ['Swift', 'Objective-C', 'iOS', 'macOS', 'Metal', 'Core Data', 'Xcode'],
+        culture: ['Innovation', 'Excellence', 'Privacy', 'Simplicity', 'Think different'],
+        interviewStyle: 'Product focus, technical excellence, attention to detail, design thinking',
+        commonQuestions: ['Design iPhone feature', 'Optimize for performance', 'Privacy considerations']
       },
       {
         name: 'Netflix',
         industry: 'Streaming/Entertainment',
-        techStack: ['Java', 'Python', 'React', 'AWS', 'Microservices'],
-        culture: ['Freedom and responsibility', 'High performance', 'Candor'],
-        interviewStyle: 'Culture fit, technical depth, real-world scenarios',
-        commonQuestions: ['Design video streaming', 'Handle service failures']
+        techStack: ['Java', 'Python', 'React', 'AWS', 'Microservices', 'Kafka', 'Cassandra'],
+        culture: ['Freedom and responsibility', 'High performance', 'Candor', 'Innovation'],
+        interviewStyle: 'Culture fit, technical depth, real-world scenarios, keeper test',
+        commonQuestions: ['Design video streaming', 'Handle service failures', 'Content recommendation']
+      },
+
+      // AI & ML Companies
+      {
+        name: 'OpenAI',
+        industry: 'AI & Machine Learning',
+        techStack: ['Python', 'PyTorch', 'Kubernetes', 'React', 'PostgreSQL', 'Redis'],
+        culture: ['AI safety', 'Beneficial AGI', 'Transparency', 'Collaboration', 'Research excellence'],
+        interviewStyle: 'Technical depth, AI/ML knowledge, ethics, research thinking',
+        commonQuestions: ['Design language model', 'AI safety considerations', 'Scale ML training']
+      },
+      {
+        name: 'Anthropic',
+        industry: 'AI & Machine Learning',
+        techStack: ['Python', 'PyTorch', 'JAX', 'React', 'Kubernetes', 'GCP'],
+        culture: ['AI safety', 'Constitutional AI', 'Research rigor', 'Responsible development'],
+        interviewStyle: 'Research background, AI alignment, technical depth, safety focus',
+        commonQuestions: ['Constitutional AI principles', 'RLHF implementation', 'AI safety research']
+      },
+      {
+        name: 'Hugging Face',
+        industry: 'AI & Machine Learning',
+        techStack: ['Python', 'PyTorch', 'Transformers', 'React', 'FastAPI', 'Docker'],
+        culture: ['Open source', 'Democratizing AI', 'Community', 'Collaboration'],
+        interviewStyle: 'Open source contributions, ML expertise, community building',
+        commonQuestions: ['Model optimization', 'Transformer architecture', 'Open source strategy']
+      },
+
+      // High-Growth Tech
+      {
+        name: 'Tesla',
+        industry: 'Automotive & Energy',
+        techStack: ['Python', 'C++', 'React', 'PostgreSQL', 'Docker', 'Kubernetes', 'ROS'],
+        culture: ['Innovation', 'Sustainability', 'First principles', 'Move fast', 'Excellence'],
+        interviewStyle: 'Technical excellence, innovation, problem-solving, mission alignment',
+        commonQuestions: ['Autonomous driving algorithms', 'Battery optimization', 'Manufacturing efficiency']
+      },
+      {
+        name: 'SpaceX',
+        industry: 'Aerospace',
+        techStack: ['C++', 'Python', 'Linux', 'Docker', 'React', 'PostgreSQL'],
+        culture: ['Mars mission', 'Innovation', 'First principles', 'Rapid iteration', 'Excellence'],
+        interviewStyle: 'Technical depth, problem-solving, mission passion, innovation',
+        commonQuestions: ['Rocket trajectory', 'Fault tolerance', 'Real-time systems']
+      },
+      {
+        name: 'Uber',
+        industry: 'Transportation',
+        techStack: ['Go', 'Python', 'React', 'Kafka', 'Cassandra', 'MySQL', 'Kubernetes'],
+        culture: ['Move fast', 'Customer obsession', 'Innovation', 'Global scale'],
+        interviewStyle: 'System design, scalability, product sense, cultural fit',
+        commonQuestions: ['Design ride matching', 'Surge pricing algorithm', 'Global scaling']
+      },
+      {
+        name: 'Airbnb',
+        industry: 'Travel & Hospitality',
+        techStack: ['Ruby', 'React', 'Python', 'Kafka', 'Druid', 'MySQL', 'Kubernetes'],
+        culture: ['Belong anywhere', 'Champion mission', 'Be a host', 'Embrace diversity'],
+        interviewStyle: 'Product thinking, cultural values, technical depth, design sense',
+        commonQuestions: ['Design booking system', 'Trust and safety', 'Internationalization']
+      },
+
+      // Enterprise & Cloud
+      {
+        name: 'Salesforce',
+        industry: 'CRM & Enterprise',
+        techStack: ['Java', 'JavaScript', 'Apex', 'Lightning', 'Heroku', 'PostgreSQL'],
+        culture: ['Customer success', 'Innovation', 'Equality', 'Sustainability', 'Ohana'],
+        interviewStyle: 'Customer focus, technical skills, cultural values, business acumen',
+        commonQuestions: ['Design CRM system', 'Multi-tenancy', 'Customer success metrics']
+      },
+      {
+        name: 'Oracle',
+        industry: 'Enterprise Software',
+        techStack: ['Java', 'SQL', 'PL/SQL', 'JavaScript', 'Oracle Cloud', 'Kubernetes'],
+        culture: ['Excellence', 'Innovation', 'Integrity', 'Customer success'],
+        interviewStyle: 'Technical depth, database expertise, enterprise solutions',
+        commonQuestions: ['Database optimization', 'Enterprise architecture', 'Cloud migration']
+      },
+      {
+        name: 'Snowflake',
+        industry: 'Data & Analytics',
+        techStack: ['Java', 'Scala', 'Python', 'React', 'Kubernetes', 'AWS', 'Azure'],
+        culture: ['Data-driven', 'Innovation', 'Customer obsession', 'Excellence'],
+        interviewStyle: 'Data architecture, cloud expertise, technical depth, product thinking',
+        commonQuestions: ['Data warehouse design', 'Query optimization', 'Cloud data platform']
+      },
+
+      // Fintech
+      {
+        name: 'Stripe',
+        industry: 'Fintech',
+        techStack: ['Ruby', 'Scala', 'React', 'PostgreSQL', 'Kafka', 'Kubernetes'],
+        culture: ['User obsession', 'Rigor', 'Transparency', 'Global scale'],
+        interviewStyle: 'System design, financial systems, product thinking, attention to detail',
+        commonQuestions: ['Payment processing', 'Financial compliance', 'Global payments']
+      },
+      {
+        name: 'Square',
+        industry: 'Fintech',
+        techStack: ['Java', 'Kotlin', 'React', 'MySQL', 'Kafka', 'Kubernetes'],
+        culture: ['Customer obsession', 'Simplicity', 'Innovation', 'Inclusion'],
+        interviewStyle: 'Product focus, financial systems, technical depth, design thinking',
+        commonQuestions: ['Point of sale system', 'Payment security', 'Small business tools']
+      },
+      {
+        name: 'Robinhood',
+        industry: 'Fintech',
+        techStack: ['Python', 'Django', 'React', 'PostgreSQL', 'Kafka', 'Kubernetes'],
+        culture: ['Democratize finance', 'Customer first', 'Innovation', 'Transparency'],
+        interviewStyle: 'Financial markets, system reliability, product thinking, ethics',
+        commonQuestions: ['Trading system design', 'Risk management', 'Market data processing']
+      },
+
+      // Developer Tools & Productivity
+      {
+        name: 'GitHub',
+        industry: 'Developer Tools',
+        techStack: ['Ruby', 'Go', 'TypeScript', 'React', 'MySQL', 'Redis'],
+        culture: ['Open source', 'Developer happiness', 'Collaboration', 'Innovation'],
+        interviewStyle: 'Open source experience, developer empathy, technical depth',
+        commonQuestions: ['Version control systems', 'Developer workflows', 'Code collaboration']
+      },
+      {
+        name: 'GitLab',
+        industry: 'Developer Tools',
+        techStack: ['Ruby', 'Go', 'Vue.js', 'PostgreSQL', 'Redis', 'Kubernetes'],
+        culture: ['Transparency', 'Remote-first', 'Collaboration', 'Iteration', 'Results'],
+        interviewStyle: 'DevOps expertise, remote collaboration, product thinking',
+        commonQuestions: ['CI/CD pipelines', 'DevOps workflows', 'Remote team collaboration']
+      },
+      {
+        name: 'Atlassian',
+        industry: 'Software Development',
+        techStack: ['Java', 'React', 'Node.js', 'MySQL', 'AWS', 'Kubernetes'],
+        culture: ['Open work', 'Build with heart', 'Don\'t #@!% the customer', 'Play as a team'],
+        interviewStyle: 'Team collaboration, product thinking, technical skills, cultural values',
+        commonQuestions: ['Team productivity tools', 'Agile workflows', 'Developer experience']
+      },
+
+      // Communication & Collaboration
+      {
+        name: 'Slack',
+        industry: 'Communication',
+        techStack: ['PHP', 'JavaScript', 'React', 'MySQL', 'Redis', 'Kafka'],
+        culture: ['Customer obsession', 'Craftsmanship', 'Empathy', 'Playfulness', 'Thriving'],
+        interviewStyle: 'Product thinking, user experience, technical depth, team collaboration',
+        commonQuestions: ['Real-time messaging', 'Team collaboration', 'Enterprise security']
+      },
+      {
+        name: 'Zoom',
+        industry: 'Video Communication',
+        techStack: ['C++', 'JavaScript', 'React', 'MySQL', 'WebRTC', 'Kubernetes'],
+        culture: ['Customer happiness', 'Innovation', 'Team collaboration', 'Global reach'],
+        interviewStyle: 'Video technology, scalability, user experience, reliability',
+        commonQuestions: ['Video streaming optimization', 'Real-time communication', 'Global infrastructure']
+      },
+      {
+        name: 'Discord',
+        industry: 'Gaming & Communication',
+        techStack: ['JavaScript', 'Python', 'React', 'Cassandra', 'Redis', 'Kubernetes'],
+        culture: ['Gaming community', 'User happiness', 'Innovation', 'Inclusive'],
+        interviewStyle: 'Gaming knowledge, community building, technical depth, product passion',
+        commonQuestions: ['Real-time chat systems', 'Gaming community features', 'Voice communication']
       }
     ];
 
