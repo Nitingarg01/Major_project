@@ -116,7 +116,7 @@ const calculateUserStats = (interviews: any[], performanceAnalyses: any[]) => {
   }
   
   return {
-    averageScore: scores.length > 0 ? Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length) : 0,
+    averageScore: scores.length > 0 ? Math.round(scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length) : 0,
     bestScore: scores.length > 0 ? Math.max(...scores) : 0,
     recentScore: scores.length > 0 ? scores[0] : 0,
     totalResponses,
