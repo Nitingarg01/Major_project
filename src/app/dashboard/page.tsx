@@ -22,6 +22,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import LoadingWrapper from '@/components/LoadingWrapper'
+import OllamaDashboard from '@/components/OllamaDashboard'
 
 interface Interview {
   _id: string
