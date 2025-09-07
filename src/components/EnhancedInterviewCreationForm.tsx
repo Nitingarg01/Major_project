@@ -215,43 +215,20 @@ const EnhancedInterviewCreationForm = () => {
   const onSubmit = async (data: z.infer<typeof schema>) => {
     console.log("🚀 onSubmit called with data:", data)
     console.log("📊 Current session status:", status)
-    console.log("👤 Current session:", session)
     
-    // AGGRESSIVE session handling - Don't let session issues block interview creation
-    let currentSession = session
-    let currentStatus = status
-    
-    // Extended wait for session loading with better retry logic
-    if (currentStatus === "loading") {
-      console.log("⏳ Session loading, waiting patiently...");
-      for (let attempts = 0; attempts < 10; attempts++) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        console.log(`🔄 Session check ${attempts + 1}/10, status: ${status}`);
-        
-        // Check if session loaded
-        if (status !== "loading" && session?.user?.id) {
-          console.log("✅ Session loaded successfully!");
-          currentSession = session;
-          currentStatus = status;
-          break;
-        }
-      }
+    // Simple session check
+    if (status === "loading") {
+      toast.info("Loading session, please wait...");
+      return;
     }
     
-    // More lenient authentication check - if we have ANY session data, proceed
-    if (currentStatus === "unauthenticated" && !currentSession?.user?.id) {
-      // Last ditch effort - try to get session one more time
-      console.log("🔄 Final session check...");
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      if (!session?.user?.id) {
-        toast.error("Please sign in to create an interview");
-        router.push('/login');
-        return;
-      }
-      currentSession = session;
+    if (status === "unauthenticated") {
+      toast.error("Please sign in to create an interview");
+      router.push('/login');
+      return;
     }
 
-    // Quick form validation
+    // Form validation
     if (!data.jobTitle?.trim() || data.jobTitle.length < 2) {
       toast.error("Job Title is too short");
       return;
@@ -269,9 +246,8 @@ const EnhancedInterviewCreationForm = () => {
 
     setLoading(true)
     
-    // FORCE SUCCESS APPROACH - Create interview regardless of minor session hiccups
     try {
-      console.log("🎯 FORCING interview creation - no session will stop us!");
+      console.log("🎯 Creating interview...");
       
       const serializableRoundConfigs = AVAILABLE_ROUNDS
         .filter(round => data.selectedRounds.includes(round.id))
@@ -293,83 +269,26 @@ const EnhancedInterviewCreationForm = () => {
         roundConfigs: serializableRoundConfigs
       }
 
-      console.log("🚀 Creating interview with MAXIMUM persistence...")
-      console.log("👤 Using session user ID:", currentSession?.user?.id || "Will resolve server-side")
+      console.log("🚀 Calling createInterview...");
+      const response = await createInterview(enhancedData, [], []);
       
-      // AGGRESSIVE retry approach - try multiple times with different strategies
-      let response;
-      let success = false;
-      
-      for (let attempt = 1; attempt <= 5; attempt++) {
-        try {
-          console.log(`🔥 Attempt ${attempt}/5 - Creating interview...`);
-          response = await createInterview(enhancedData, [], []);
-          
-          if (response?.success) {
-            success = true;
-            break;
-          }
-          
-          // If not successful but not a complete failure, try again
-          if (response?.error && !response?.error.includes("Authentication")) {
-            console.log(`⚠️ Non-auth error on attempt ${attempt}:`, response.error);
-            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
-            continue;
-          }
-          
-          // For auth errors, try to refresh and continue
-          if (response?.error?.includes("Authentication") || response?.error?.includes("Session")) {
-            console.log(`🔄 Session issue on attempt ${attempt}, refreshing...`);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            continue;
-          }
-          
-        } catch (error: any) {
-          console.log(`❌ Attempt ${attempt} failed:`, error.message);
-          if (attempt < 5) {
-            await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
-          }
-        }
-      }
-      
-      if (success && response?.success) {
-        // SUCCESS! Keep user logged in and show success
+      if (response?.success) {
         toast.success("🎉 Interview Created Successfully!");
         console.log("✅ Interview created with ID:", response.data?.id);
         
-        // Don't redirect immediately, let user see success
         setTimeout(() => {
-          router.push('/dashboard'); // Go to dashboard instead of home
+          router.push('/dashboard');
         }, 1500);
-        
       } else {
-        // Even if API failed, don't log user out - just show error
-        console.error("❌ All attempts failed, but keeping user logged in");
-        
-        const errorMsg = response?.error || "Interview creation failed, please try again";
-        
-        // NEVER redirect to login unless absolutely necessary
-        if (errorMsg.includes("sign in") || errorMsg.includes("login")) {
-          toast.error("Please refresh the page and try again");
-        } else {
-          toast.error(errorMsg);
-        }
-        
-        // Add a retry button instead of logging out
-        toast.error("Click the 'Create Interview' button again to retry", {
-          duration: 5000
-        });
+        const errorMsg = response?.error || "Interview creation failed";
+        toast.error(errorMsg);
       }
       
     } catch (error: any) {
-      console.error('🚨 Critical error in interview creation:', error);
-      
-      // Even on critical error, don't log user out
+      console.error('🚨 Error in interview creation:', error);
       toast.error("Something went wrong. Please try again.");
-      
     } finally {
       setLoading(false);
-      console.log("🏁 Interview creation process completed");
     }
   }
 
