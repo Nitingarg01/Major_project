@@ -28,6 +28,7 @@ import {
 // Services
 import { createInterview, parsingResume } from "@/app/create/actions"
 import EnhancedInterviewAI from '@/lib/enhancedInterviewAI'
+import OllamaCompanySearch from '@/components/OllamaCompanySearch'
 import { useSession } from "next-auth/react"
 
 const schema = z.object({
