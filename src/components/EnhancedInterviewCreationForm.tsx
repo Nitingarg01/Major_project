@@ -423,7 +423,7 @@ const EnhancedInterviewCreationForm = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Company Name */}
+                  {/* Company Name with Ollama Search */}
                   <FormField
                     control={form.control}
                     name="companyName"
@@ -434,22 +434,15 @@ const EnhancedInterviewCreationForm = () => {
                           Company Name<span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
-                          <div className="relative">
-                            <Input 
-                              placeholder="e.g., Google, Microsoft, Tesla" 
-                              {...field}
-                              className="pr-12"
-                            />
-                            {companyResearching && (
-                              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                                <motion.div
-                                  animate={{ rotate: 360 }}
-                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                  className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full"
-                                />
-                              </div>
-                            )}
-                          </div>
+                          <OllamaCompanySearch
+                            initialValue={field.value}
+                            onCompanySelect={(company) => {
+                              field.onChange(company);
+                              form.setValue("companyName", company);
+                            }}
+                            placeholder="Search for a company (e.g., Google, Meta, Amazon)..."
+                            className="w-full"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
