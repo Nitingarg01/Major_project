@@ -326,18 +326,41 @@ export class OllamaService {
     const suggestions: string[] = [];
     const queryLower = query.toLowerCase();
     
+    // First, find exact and prefix matches
     for (const [key, company] of this.companyDatabase) {
-      if (company.name.toLowerCase().includes(queryLower) || key.includes(queryLower)) {
+      if (company.name.toLowerCase() === queryLower) {
+        suggestions.unshift(company.name); // Exact match goes first
+      } else if (company.name.toLowerCase().startsWith(queryLower)) {
         suggestions.push(company.name);
       }
     }
     
-    // Add some generic suggestions if no matches
+    // Then find partial matches
+    for (const [key, company] of this.companyDatabase) {
+      if (company.name.toLowerCase().includes(queryLower) && 
+          !suggestions.includes(company.name)) {
+        suggestions.push(company.name);
+      }
+    }
+    
+    // Also search by industry
+    for (const [key, company] of this.companyDatabase) {
+      if (company.industry.toLowerCase().includes(queryLower) && 
+          !suggestions.includes(company.name)) {
+        suggestions.push(company.name);
+      }
+    }
+    
+    // If no matches found, return popular trending companies
     if (suggestions.length === 0 && query.length > 0) {
-      const commonCompanies = ['Google', 'Meta', 'Amazon', 'Microsoft', 'Apple', 'Netflix', 'Uber', 'Airbnb'];
-      return commonCompanies.filter(name => 
+      const trendingCompanies = [
+        'OpenAI', 'Anthropic', 'Google', 'Meta', 'Amazon', 'Microsoft', 
+        'Apple', 'Tesla', 'SpaceX', 'Netflix', 'Uber', 'Airbnb', 
+        'Stripe', 'GitHub', 'Slack', 'Zoom'
+      ];
+      return trendingCompanies.filter(name => 
         name.toLowerCase().includes(queryLower)
-      );
+      ).slice(0, 8);
     }
     
     return suggestions.slice(0, 10); // Limit to 10 suggestions
