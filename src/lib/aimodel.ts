@@ -25,7 +25,7 @@ export interface QuestionGenerationParams {
   skills: string[]
   jobDescription: string
   experienceLevel: 'entry' | 'mid' | 'senior'
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed'
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design'
   resumeContent?: string
   numberOfQuestions?: number
 }
