@@ -282,7 +282,7 @@ async function getUserHistoricalPerformance(db: any, userId: string, companyName
       improvementTrend,
       bestScore: scores.length > 0 ? Math.max(...scores) : 0,
       averageScore: scores.length > 0 ? 
-        Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length) : 0
+        Math.round(scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length) : 0
     };
   } catch (error) {
     console.error('Error getting historical performance:', error);
