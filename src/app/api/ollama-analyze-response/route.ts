@@ -74,8 +74,8 @@ export async function POST(request: NextRequest) {
       { id: interviewId },
       {
         $push: {
-          responses: responseData
-        },
+          'responses': responseData
+        } as any,
         $set: {
           lastUpdated: new Date()
         }
