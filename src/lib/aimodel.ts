@@ -7,7 +7,7 @@ export interface InterviewQuestion {
   question: string
   expectedAnswer: string
   difficulty: 'easy' | 'medium' | 'hard'
-  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa'
+  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design'
   points: number
 }
 
