@@ -73,6 +73,9 @@ class AIInterviewModel {
       case 'mixed':
         prompt = this.generateMixedPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions)
         break
+      case 'system_design':
+        prompt = this.generateSystemDesignPrompt(jobTitle, companyName, skills, experienceLevel, numberOfQuestions)
+        break
     }
 
     try {
