@@ -254,8 +254,8 @@ const analyzeResponseTiming = (responses: any[]) => {
   }
   
   return {
-    averageTime: Math.round(timings.reduce((sum, time) => sum + time, 0) / timings.length),
-    totalTime: timings.reduce((sum, time) => sum + time, 0),
+    averageTime: Math.round(timings.reduce((sum: number, time: number) => sum + time, 0) / timings.length),
+    totalTime: timings.reduce((sum: number, time: number) => sum + time, 0),
     fastestResponse: Math.min(...timings),
     slowestResponse: Math.max(...timings)
   };
