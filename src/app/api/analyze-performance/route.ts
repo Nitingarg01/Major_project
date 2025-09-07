@@ -71,9 +71,9 @@ export async function POST(request: NextRequest) {
       .map((r: any) => r.analysis?.score || 0)
       .filter((score: number) => score > 0);
 
-    const categoryScores = this.calculateCategoryScores(questions, responses);
-    const timingAnalysis = this.analyzeResponseTiming(responses);
-    const progressTracking = await this.getProgressTracking(db, interview.userId, interview.companyName);
+    const categoryScores = calculateCategoryScores(questions, responses);
+    const timingAnalysis = analyzeResponseTiming(responses);
+    const progressTracking = await getProgressTracking(db, interview.userId, interview.companyName);
 
     // Create comprehensive performance report
     const enhancedPerformance = {
