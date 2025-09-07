@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Calculate additional metrics
     const totalQuestions = questions.length;
-    const answeredQuestions = answers.filter(answer => answer.trim().length > 0).length;
+    const answeredQuestions = answers.filter((answer: any) => answer.trim().length > 0).length;
     const completionRate = (answeredQuestions / totalQuestions) * 100;
     
     // Calculate average response analysis scores
