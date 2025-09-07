@@ -345,7 +345,7 @@ export class OllamaService {
     
     // Also search by industry
     for (const [key, company] of this.companyDatabase) {
-      if (company.industry.toLowerCase().includes(queryLower) && 
+      if (company.industry && company.industry.toLowerCase().includes(queryLower) && 
           !suggestions.includes(company.name)) {
         suggestions.push(company.name);
       }
