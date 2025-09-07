@@ -467,6 +467,9 @@ Focus on constructive feedback that helps the candidate improve while highlighti
 
   // Public method to generate content
   async generateContent(prompt: string): Promise<any> {
+    if (!this.model) {
+      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY')
+    }
     try {
       const result = await this.model.generateContent(prompt)
       return result
