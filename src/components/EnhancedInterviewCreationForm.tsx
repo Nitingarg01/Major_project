@@ -216,10 +216,10 @@ const EnhancedInterviewCreationForm = () => {
     console.log("🚀 onSubmit called with data:", data)
     console.log("📊 Current session status:", status)
     
-    // Simple session check
+    // Session check: do not block on transient loading; backend will validate auth
     if (status === "loading") {
-      toast.info("Loading session, please wait...");
-      return;
+      toast.info("Checking session... proceeding");
+      // continue without early return
     }
     
     if (status === "unauthenticated") {

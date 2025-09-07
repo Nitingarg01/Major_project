@@ -2,6 +2,7 @@
 
 import { auth } from "../auth"
 import axios from 'axios'
+import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -59,33 +60,57 @@ export const createInterview = async (data: formD, projectContext: string[], wor
 
     console.log("📤 Sending request to API:", baseURL + '/api/create-interview');
     
-    // Make API call with timeout
-    const res = await axios.post(`${baseURL}/api/create-interview`, requestData, {
+    // Absolute URL required in server action; forward cookies for auth
+    const cookieHeader = cookies()
+      .getAll()
+      .map((c) => `${c.name}=${c.value}`)
+      .join('; ')
+
+    const fetchRes = await fetch(`${baseURL}/api/create-interview`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        cookie: cookieHeader,
       },
-      timeout: 60000, // 1 minute timeout
-    });
-    
-    if (res.status >= 400) {
-      console.log("❌ API error:", res.status, res.data);
-      return { 
-        success: false, 
-        error: res.data?.error || `Server error: ${res.status}`
-      };
+      body: JSON.stringify(requestData),
+      cache: 'no-store',
+    })
+
+    if (!fetchRes.ok) {
+      const errJson = await fetchRes.json().catch(() => ({}))
+      console.log("❌ API error:", fetchRes.status, errJson)
+      return {
+        success: false,
+        error: errJson?.error || `Server error: ${fetchRes.status}`,
+      }
+    }
+    // Robust body parsing (avoid "<!DOCTYPE" HTML redirect errors)
+    let resData: any = null
+    try {
+      resData = await fetchRes.clone().json()
+    } catch (_err) {
+      const raw = await fetchRes.text()
+      const msg = fetchRes.ok
+        ? 'Unexpected non-JSON response from server'
+        : `Server error ${fetchRes.status}`
+      return {
+        success: false,
+        error: resData?.error || msg,
+      }
     }
     
-    console.log('🎉 SUCCESS! Interview created:', res.data?.id);
+    console.log('🎉 SUCCESS! Interview created:', resData?.id);
     
     // Revalidate paths
     revalidatePath('/dashboard');
     revalidatePath('/');
     
-    return { 
-      success: true, 
-      data: res.data,
-      message: "Interview created successfully!"
-    };
+    return {
+      success: true,
+      data: resData,
+      message: "Interview created successfully!",
+    }
 
   } catch (error: any) {
     console.error('🚨 Interview creation failed:', error);

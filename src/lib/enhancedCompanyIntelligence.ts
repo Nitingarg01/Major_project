@@ -7,6 +7,7 @@
 
 import axios from 'axios';
 import FreeLLMService from './freeLLMService';
+import { safeExtractJSON } from './jsonExtractor';
 
 interface CompanyData {
   name: string;
@@ -476,7 +477,7 @@ export class EnhancedCompanyIntelligenceService {
         model: 'llama-3.1-8b'
       });
 
-      const headlines = JSON.parse(response.content);
+      const headlines = safeExtractJSON<string[]>(response.content, []);
       return Array.isArray(headlines) ? headlines : [];
     } catch (error) {
       console.error('AI news generation failed:', error);
@@ -507,7 +508,7 @@ export class EnhancedCompanyIntelligenceService {
         model: 'llama-3.1-8b'
       });
 
-      const posts = JSON.parse(response.content);
+      const posts = safeExtractJSON<any[]>(response.content, []);
       return Array.isArray(posts) ? posts.map((post: any) => ({
         title: post.title || 'Company Update',
         summary: post.summary || 'Recent company developments',
@@ -576,7 +577,7 @@ export class EnhancedCompanyIntelligenceService {
         model: 'llama-3.1-8b'
       });
 
-      const insights = JSON.parse(response.content);
+      const insights = safeExtractJSON<any>(response.content, this.getDefaultInsights(companyData, jobTitle));
       return insights;
     } catch (error) {
       console.error('Error generating enhanced insights:', error);

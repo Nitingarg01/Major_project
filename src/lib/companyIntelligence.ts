@@ -466,11 +466,13 @@ export class CompanyIntelligenceService {
 
   private async fetchRecentNews(companyName: string): Promise<string[]> {
     try {
-      // Use API Ninja for company news - with better error handling
+      // Make external API optional; default to fallback to avoid hard dependency
+      const useApiNinja = process.env.USE_API_NINJA === 'true';
       const apiKey = process.env.API_NINJA_API_KEY;
-      
-      if (!apiKey) {
-        console.warn('API_NINJA_API_KEY not found, using fallback news');
+
+      if (!useApiNinja || !apiKey) {
+        if (!useApiNinja) console.warn('USE_API_NINJA not enabled, using fallback news');
+        else console.warn('API_NINJA_API_KEY not found, using fallback news');
         return this.getFallbackNews(companyName);
       }
 
