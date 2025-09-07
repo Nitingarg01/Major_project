@@ -24,7 +24,7 @@ async function generateQuestionsImmediately(interviewData: any) {
         const aiService = ReliableAIService.default.getInstance();
         const companyIntelligence = EnhancedCompanyIntelligenceService.default.getInstance();
         
-        console.log('🚀 Generating questions with Emergent LLM Service...');
+        console.log('🚀 Generating questions with Reliable AI Service...');
         
         // Get enhanced company intelligence
         const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
@@ -39,7 +39,7 @@ async function generateQuestionsImmediately(interviewData: any) {
         // Generate questions based on interview type
         if (interviewData.interviewType === 'mixed') {
             // Technical Questions
-            const technicalQuestions = await emergentLLMService.generateInterviewQuestions({
+            const technicalQuestions = await aiService.generateInterviewQuestions({
                 jobTitle: interviewData.jobTitle || 'Software Engineer',
                 companyName: interviewData.companyName,
                 skills: interviewData.skills || [],
@@ -50,7 +50,7 @@ async function generateQuestionsImmediately(interviewData: any) {
             });
 
             // Behavioral Questions
-            const behavioralQuestions = await emergentLLMService.generateInterviewQuestions({
+            const behavioralQuestions = await aiService.generateInterviewQuestions({
                 jobTitle: interviewData.jobTitle || 'Software Engineer',
                 companyName: interviewData.companyName,
                 skills: interviewData.skills || [],
@@ -61,7 +61,7 @@ async function generateQuestionsImmediately(interviewData: any) {
             });
 
             // DSA Problems
-            const dsaProblems = await emergentLLMService.generateDSAProblems(
+            const dsaProblems = await aiService.generateDSAProblems(
                 interviewData.companyName,
                 getDSADifficulty(interviewData.experienceLevel),
                 6
