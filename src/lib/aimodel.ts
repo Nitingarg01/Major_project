@@ -44,6 +44,9 @@ class AIInterviewModel {
   }
 
   async generateInterviewQuestions(params: QuestionGenerationParams): Promise<InterviewQuestion[]> {
+    if (!this.model) {
+      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY')
+    }
     const { 
       jobTitle, 
       companyName, 
