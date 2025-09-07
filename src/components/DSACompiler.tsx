@@ -158,6 +158,7 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
   const [timeLeft, setTimeLeft] = useState(timeLimit * 60)
   const [showHints, setShowHints] = useState(false)
   const [currentHint, setCurrentHint] = useState(0)
+  const [judge0Service] = useState(() => ImprovedJudge0Service.getInstance())
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
