@@ -156,8 +156,8 @@ const analyzeSkillsAcrossInterviews = (performanceAnalyses: any[]) => {
   });
   
   // Count frequency and get top items
-  const strengthCounts = this.countFrequency(allStrengths);
-  const improvementCounts = this.countFrequency(allImprovements);
+  const strengthCounts = countFrequency(allStrengths);
+  const improvementCounts = countFrequency(allImprovements);
   
   return {
     strengths: Object.keys(strengthCounts)
