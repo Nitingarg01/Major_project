@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
         categoryBreakdown: categoryScores,
         responseMetrics: {
           averageScore: responseScores.length > 0 
-            ? Math.round(responseScores.reduce((sum, score) => sum + score, 0) / responseScores.length * 10) / 10 
+            ? Math.round(responseScores.reduce((sum: number, score: number) => sum + score, 0) / responseScores.length * 10) / 10 
             : 0,
           highestScore: responseScores.length > 0 ? Math.max(...responseScores) : 0,
           lowestScore: responseScores.length > 0 ? Math.min(...responseScores) : 0,
