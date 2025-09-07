@@ -345,6 +345,11 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          {/* Ollama Service Status */}
+          <div className="mb-8">
+            <OllamaDashboard />
+          </div>
+
           {/* Recent Interviews */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
