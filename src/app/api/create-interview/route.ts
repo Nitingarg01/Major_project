@@ -216,39 +216,6 @@ export async function POST(request: NextRequest) {
         const userId = session.user.id;
         
         console.log("🛡️ Using authenticated user ID:", userId);
-        console.log("📝 Request user ID (ignored for security):", id);
-
-        if (!jobDesc || !companyName || !skills || skills.length === 0) {
-            return NextResponse.json(
-                { error: "Missing required fields" },
-                { status: 400 }
-            );
-        }
-
-        console.log('🚀 Creating interview with BULLETPROOF session handling...');
-
-        const dbClient = client;
-        const db = dbClient.db();
-
-        const interviewData = {
-            userId: userId, // ALWAYS use session user ID
-            jobDesc,
-            skills,
-            jobTitle,
-            companyName,
-            projectContext: projectContext ?? [],
-            workExDetails: workExDetails ?? [],
-            experienceLevel: experienceLevel ?? 'mid',
-            interviewType: interviewType ?? 'mixed',
-            selectedRounds: selectedRounds ?? ['technical', 'behavioral'],
-            estimatedDuration: estimatedDuration ?? 60,
-            difficultyPreference: difficultyPreference ?? 'adaptive',
-            companyIntelligence: companyIntelligence,
-            roundConfigs: roundConfigs,
-            difficultyLevel: 'adaptive',
-            createdAt: new Date(),
-            status: 'generating'
-        };
 
         if (!jobDesc || !companyName || !skills || skills.length === 0) {
             return NextResponse.json(
@@ -263,7 +230,7 @@ export async function POST(request: NextRequest) {
         const db = dbClient.db();
 
         const interviewData = {
-            userId: userId, // Use the resolved userId
+            userId: userId,
             jobDesc,
             skills,
             jobTitle,
@@ -272,7 +239,11 @@ export async function POST(request: NextRequest) {
             workExDetails: workExDetails ?? [],
             experienceLevel: experienceLevel ?? 'mid',
             interviewType: interviewType ?? 'mixed',
-            difficultyLevel: 'adaptive', // Adaptive difficulty based on experience
+            selectedRounds: selectedRounds ?? ['technical', 'behavioral'],
+            estimatedDuration: estimatedDuration ?? 60,
+            difficultyPreference: difficultyPreference ?? 'adaptive',
+            companyIntelligence: companyIntelligence,
+            roundConfigs: roundConfigs,
             createdAt: new Date(),
             status: 'generating'
         };
@@ -281,7 +252,7 @@ export async function POST(request: NextRequest) {
         const interviewResult = await db.collection("interviews").insertOne(interviewData);
         console.log('✅ Interview record created for user:', session.user.id);
 
-        // Generate questions immediately (no background jobs!)
+        // Generate questions immediately
         const questions = await generateQuestionsImmediately(interviewData);
         
         // Store questions in database
@@ -289,14 +260,12 @@ export async function POST(request: NextRequest) {
             questions: questions,
             answers: [],
             interviewId: interviewResult.insertedId.toString(),
-            difficultyLevel: 'adaptive',
-            userId: session.user.id, // Add user ID for security
+            userId: session.user.id,
             metadata: {
                 generatedAt: new Date(),
-                difficultyLevel: 'adaptive',
-                questionType: 'emergent-llm',
+                questionType: 'reliable-ai',
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
-                service: 'emergent-llm'
+                service: 'reliable-ai'
             }
         });
 
@@ -307,10 +276,8 @@ export async function POST(request: NextRequest) {
                 $set: {
                     questions: questionsResult.insertedId,
                     status: 'ready',
-                    difficultyLevel: 'adaptive',
                     questionStats: {
                         totalQuestions: questions.length,
-                        averageDifficulty: 'adaptive',
                         averageTimeLimit: questions.reduce((sum, q) => sum + (q.timeLimit || 8), 0) / questions.length,
                         totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0)
                     }
@@ -318,7 +285,7 @@ export async function POST(request: NextRequest) {
             }
         );
 
-        console.log('🎉 One-click interview creation completed successfully for user:', session.user.id);
+        console.log('🎉 Interview creation completed successfully for user:', session.user.id);
 
         return NextResponse.json(
             { 
@@ -326,11 +293,10 @@ export async function POST(request: NextRequest) {
                 id: interviewResult.insertedId,
                 status: 'ready',
                 questionsCount: questions.length,
-                difficultyLevel: 'ADAPTIVE',
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
                 totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0),
-                service: 'emergent-llm',
-                userId: session.user.id // Include for verification
+                service: 'reliable-ai',
+                userId: session.user.id
             },
             { status: 201 }
         );
