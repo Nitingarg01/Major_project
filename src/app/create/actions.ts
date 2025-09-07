@@ -12,7 +12,7 @@ type formD = {
   companyName: string,
   jobTitle: string,
   experienceLevel: 'entry' | 'mid' | 'senior',
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed',
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design',
   selectedRounds?: string[],
   estimatedDuration?: number,
   difficultyPreference?: 'adaptive' | 'fixed',
