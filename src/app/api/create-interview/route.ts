@@ -179,68 +179,20 @@ function getDSAPoints(difficulty: string): number {
 
 export async function POST(request: NextRequest) {
     try {
-        console.log("🎯 CREATE INTERVIEW API - Starting with MAXIMUM session tolerance");
+        console.log("🎯 CREATE INTERVIEW API - Starting");
         
-        // SUPER AGGRESSIVE session validation - try everything possible
-        let session;
-        let authAttempts = 0;
-        const maxAuthAttempts = 5; // Increased attempts
+        // Simple session validation
+        const session = await auth();
         
-        while (authAttempts < maxAuthAttempts) {
-            try {
-                console.log(`🔄 Session validation attempt ${authAttempts + 1}/${maxAuthAttempts}`);
-                session = await auth();
-                
-                if (session?.user?.id) {
-                    console.log("✅ Valid session found:", session.user.id);
-                    break; // Valid session found
-                }
-                
-                // If no session but we're not at max attempts, try again
-                authAttempts++;
-                if (authAttempts < maxAuthAttempts) {
-                    console.log(`⚠️ No session found, retrying in ${500 * authAttempts}ms...`);
-                    await new Promise(resolve => setTimeout(resolve, 500 * authAttempts));
-                }
-                
-            } catch (authError) {
-                console.error("❌ Auth attempt error:", authError);
-                authAttempts++;
-                if (authAttempts < maxAuthAttempts) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }
-        }
-        
-        // FINAL CHECK - Be more lenient about what constitutes a valid session
         if (!session?.user?.id) {
-            console.log("❌ No valid session after", maxAuthAttempts, "attempts");
-            
-            // Instead of immediately failing, try one more approach
-            console.log("🔄 Final session recovery attempt...");
-            try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                session = await auth();
-                
-                if (session?.user?.id) {
-                    console.log("🎉 Session recovered on final attempt!");
-                } else {
-                    console.log("❌ Final session recovery failed");
-                    return NextResponse.json(
-                        { error: "Session expired. Please sign in again." },
-                        { status: 401 }
-                    );
-                }
-            } catch (finalError) {
-                console.error("❌ Final session recovery error:", finalError);
-                return NextResponse.json(
-                    { error: "Session expired. Please sign in again." },
-                    { status: 401 }
-                );
-            }
+            console.log("❌ No valid session found");
+            return NextResponse.json(
+                { error: "Please sign in to create an interview." },
+                { status: 401 }
+            );
         }
 
-        console.log("✅ AUTHENTICATED USER CONFIRMED:", session.user.id);
+        console.log("✅ AUTHENTICATED USER:", session.user.id);
         
         const body = await request.json();
         const { 
