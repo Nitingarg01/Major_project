@@ -31,8 +31,8 @@ export interface QuestionGenerationParams {
 }
 
 class AIInterviewModel {
-  private genAI: GoogleGenerativeAI
-  private model: any
+  private genAI: GoogleGenerativeAI | null = null
+  private model: any = null
 
   constructor() {
     if (!process.env.GEMINI_API_KEY) {
