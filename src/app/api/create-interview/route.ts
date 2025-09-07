@@ -106,7 +106,7 @@ async function generateQuestionsImmediately(interviewData: any) {
             }));
         } else {
             // Single type interview (technical, behavioral, or aptitude)
-            const questions = await emergentLLMService.generateInterviewQuestions({
+            const questions = await aiService.generateInterviewQuestions({
                 jobTitle: interviewData.jobTitle || 'Software Engineer',
                 companyName: interviewData.companyName,
                 skills: interviewData.skills || [],
