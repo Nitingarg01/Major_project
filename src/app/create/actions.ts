@@ -61,8 +61,8 @@ export const createInterview = async (data: formD, projectContext: string[], wor
     console.log("📤 Sending request to API:", baseURL + '/api/create-interview');
     
     // Absolute URL required in server action; forward cookies for auth
-    const cookieHeader = cookies()
-      .getAll()
+    const cookieStore = await cookies();
+    const cookieHeader = Array.from(cookieStore.getAll())
       .map((c) => `${c.name}=${c.value}`)
       .join('; ')
 
