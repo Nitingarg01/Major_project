@@ -36,7 +36,8 @@ class AIInterviewModel {
 
   constructor() {
     if (!process.env.GEMINI_API_KEY) {
-      throw new Error('GEMINI_API_KEY is not configured')
+      console.warn('GEMINI_API_KEY is not configured - Gemini features will be disabled')
+      return
     }
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
