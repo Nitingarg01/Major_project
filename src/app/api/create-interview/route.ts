@@ -15,13 +15,13 @@ function getQuestionCountForType(interviewType: string): number {
   }
 }
 
-// Import EmergentLLMService for reliable question generation
+// Import ReliableAIService for robust question generation
 async function generateQuestionsImmediately(interviewData: any) {
     try {
-        const EmergentLLMService = await import('@/lib/emergentLLMService');
+        const ReliableAIService = await import('@/lib/reliableAIService');
         const EnhancedCompanyIntelligenceService = await import('@/lib/enhancedCompanyIntelligence');
         
-        const emergentLLMService = EmergentLLMService.default.getInstance();
+        const aiService = ReliableAIService.default.getInstance();
         const companyIntelligence = EnhancedCompanyIntelligenceService.default.getInstance();
         
         console.log('🚀 Generating questions with Emergent LLM Service...');
