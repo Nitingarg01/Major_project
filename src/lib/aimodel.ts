@@ -346,6 +346,9 @@ Ensure questions are progressive, realistic, and thoroughly test the candidate's
     jobTitle: string,
     skills: string[]
   ): Promise<any> {
+    if (!this.model) {
+      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY')
+    }
     const prompt = `You are an expert interview assessor. Analyze this interview performance for a ${jobTitle} position requiring skills: ${skills.join(', ')}.
 
 Questions and Answers Analysis:
