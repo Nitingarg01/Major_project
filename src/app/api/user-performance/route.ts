@@ -35,19 +35,19 @@ export async function GET(request: NextRequest) {
     console.log(`📈 Found ${interviews.length} interviews and ${performanceAnalyses.length} performance analyses`);
 
     // Calculate comprehensive statistics
-    const stats = this.calculateUserStats(interviews, performanceAnalyses);
+    const stats = calculateUserStats(interviews, performanceAnalyses);
     
     // Get recent feedback from performance analyses
-    const recentFeedback = this.getRecentFeedback(performanceAnalyses);
+    const recentFeedback = getRecentFeedback(performanceAnalyses);
     
     // Analyze strengths and improvement areas
-    const skillAnalysis = this.analyzeSkillsAcrossInterviews(performanceAnalyses);
+    const skillAnalysis = analyzeSkillsAcrossInterviews(performanceAnalyses);
     
     // Get performance trends over time
-    const performanceTrend = this.calculatePerformanceTrend(performanceAnalyses);
+    const performanceTrend = calculatePerformanceTrend(performanceAnalyses);
     
     // Company-wise performance breakdown
-    const companyPerformance = this.getCompanyPerformanceBreakdown(performanceAnalyses);
+    const companyPerformance = getCompanyPerformanceBreakdown(performanceAnalyses);
 
     const dashboardData = {
       totalInterviews: interviews.length,
