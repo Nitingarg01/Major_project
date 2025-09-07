@@ -110,8 +110,8 @@ const calculateUserStats = (interviews: any[], performanceAnalyses: any[]) => {
   if (scores.length >= 2) {
     const recentScores = scores.slice(0, 3);
     const earlierScores = scores.slice(-3);
-    const recentAvg = recentScores.reduce((sum, score) => sum + score, 0) / recentScores.length;
-    const earlierAvg = earlierScores.reduce((sum, score) => sum + score, 0) / earlierScores.length;
+    const recentAvg = recentScores.reduce((sum: number, score: number) => sum + score, 0) / recentScores.length;
+    const earlierAvg = earlierScores.reduce((sum: number, score: number) => sum + score, 0) / earlierScores.length;
     improvementRate = Math.round(((recentAvg - earlierAvg) / earlierAvg) * 100);
   }
   
