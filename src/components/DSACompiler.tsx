@@ -258,23 +258,49 @@ int main() {
     }
 
     setIsRunning(true)
-    toast.loading('Running your code...')
+    toast.loading('Running your code against test cases...')
 
     try {
-      // Mock code execution with test cases
-      const results = await mockExecuteCode(code, language, problem.testCases || [])
-      setTestResults(results)
+      // Use real Judge0 service for code execution
+      const executionResult = await judge0Service.executeCode(code, language, problem.testCases || [])
       
-      const passedCount = results.filter(r => r.passed).length
-      const totalCount = results.length
+      if (!executionResult.success && executionResult.compilationError) {
+        toast.error('Compilation Error: ' + executionResult.compilationError)
+        setTestResults([])
+        return
+      }
+
+      if (!executionResult.success && executionResult.runtimeError) {
+        toast.error('Runtime Error: ' + executionResult.runtimeError)
+        setTestResults([])
+        return
+      }
+
+      setTestResults(executionResult.results)
+      
+      const passedCount = executionResult.totalPassed
+      const totalCount = executionResult.totalTests
       
       if (passedCount === totalCount) {
         toast.success(`✅ All ${totalCount} test cases passed!`)
-      } else {
+      } else if (passedCount > 0) {
         toast.warning(`⚠️ ${passedCount}/${totalCount} test cases passed`)
+      } else {
+        toast.error(`❌ 0/${totalCount} test cases passed`)
       }
-    } catch (error) {
-      toast.error('Error running code: ' + error)
+    } catch (error: any) {
+      console.error('Code execution error:', error)
+      toast.error('Error running code: ' + error.message)
+      
+      // Fallback to mock execution if Judge0 fails
+      try {
+        const fallbackResult = await judge0Service.executeCodeFallback(code, language, problem.testCases || [])
+        setTestResults(fallbackResult.results)
+        toast.warning('Using fallback execution (Judge0 unavailable)')
+      } catch (fallbackError) {
+        console.error('Fallback execution also failed:', fallbackError)
+        setTestResults([])
+      }
     } finally {
       setIsRunning(false)
     }
