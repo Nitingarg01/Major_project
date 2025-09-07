@@ -77,8 +77,8 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       {
         $push: {
-          responses: responseData
-        },
+          'responses': responseData
+        } as any,
         $set: {
           lastUpdated: new Date(),
           status: 'in-progress' // Update status to show interview is ongoing
