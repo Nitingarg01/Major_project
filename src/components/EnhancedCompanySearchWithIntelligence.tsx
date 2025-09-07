@@ -211,7 +211,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
         if (showTrending) {
           const selected = currentSuggestions[selectedIndex]
           if (selected) {
-            handleSelect(typeof selected === 'string' ? selected : selected)
+            handleSelect(typeof selected === 'string' ? selected : (selected as any).name || String(selected))
           }
         } else {
           const selected = suggestions[selectedIndex]
