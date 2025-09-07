@@ -445,6 +445,19 @@ Focus on constructive feedback that helps the candidate improve while highlighti
     }
   }
 
+  private getSystemDesignFocus(experienceLevel: string): string {
+    switch (experienceLevel) {
+      case 'entry':
+        return '- Basic system components and simple architectures\n- Database basics and simple scaling\n- Understanding of common patterns';
+      case 'mid':
+        return '- Intermediate system design with trade-offs\n- Caching strategies and database optimization\n- API design and microservices basics';
+      case 'senior':
+        return '- Complex distributed systems design\n- Advanced scaling and performance optimization\n- Leadership in architectural decisions';
+      default:
+        return '- Core system design principles\n- Scalability and reliability concepts\n- Practical architectural trade-offs';
+    }
+  }
+
   // Public method to generate content
   async generateContent(prompt: string): Promise<any> {
     try {
