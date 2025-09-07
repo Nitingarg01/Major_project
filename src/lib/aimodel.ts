@@ -240,6 +240,42 @@ Return ONLY a JSON array with this exact structure:
 ]`
   }
 
+  private generateSystemDesignPrompt(jobTitle: string, companyName: string, skills: string[], experienceLevel: string, numberOfQuestions: number = 8): string {
+    return `Generate ${numberOfQuestions} system design interview questions for a ${experienceLevel} level ${jobTitle} at ${companyName}.
+
+Skills context: ${skills.join(', ')}
+
+Include questions on:
+1. Scalable System Architecture
+2. Database Design and Selection
+3. Load Balancing and Caching
+4. Microservices vs Monolith
+5. API Design and Rate Limiting
+6. Real-time Systems and Message Queues
+7. Cloud Infrastructure and DevOps
+8. Security and Performance Optimization
+
+Questions should:
+- Be realistic system design scenarios relevant to ${companyName}
+- Test architectural thinking and trade-off analysis
+- Include scalability, reliability, and performance considerations
+- Be appropriate for ${experienceLevel} level candidates
+
+For ${experienceLevel} level:
+${this.getSystemDesignFocus(experienceLevel)}
+
+Return ONLY a JSON array with this exact structure:
+[
+  {
+    "question": "System design problem with context and requirements",
+    "expectedAnswer": "Key architectural components, design decisions, and trade-offs to discuss",
+    "difficulty": "easy|medium|hard"
+  }
+]
+
+Focus on practical scenarios that test system thinking and architectural decision-making skills.`
+  }
+
   private generateMixedPrompt(jobTitle: string, companyName: string, skills: string[], jobDescription: string, experienceLevel: string, resumeContent?: string, numberOfQuestions: number = 12): string {
     const technicalCount = Math.ceil(numberOfQuestions * 0.4);
     const behavioralCount = Math.ceil(numberOfQuestions * 0.3);
