@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
       order: index + 1,
       generatedAt: new Date(),
       provider: 'ollama',
-      model: 'llama3.1:8b',
+      model: 'phi3:mini', // Optimized for speed
       companyRelevance: question.companyRelevance || 8
     }));
 
