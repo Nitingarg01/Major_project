@@ -1,12 +1,10 @@
 /**
- * Enhanced Company Intelligence Service - OPTIMIZED VERSION
- * Fetches real-time company information, recent news, and posts
- * Uses free APIs for company data and recent updates
- * PERFORMANCE OPTIMIZED: Parallel API calls and circuit breaker patterns
+ * Enhanced Company Intelligence Service - OLLAMA OPTIMIZED VERSION
+ * Uses Ollama as primary AI service for company intelligence
+ * Removed News API and external API dependencies
  */
 
-import axios from 'axios';
-import FreeLLMService from './freeLLMService';
+import { OllamaService } from './ollamaService';
 import { safeExtractJSON } from './jsonExtractor';
 
 interface CompanyData {
@@ -69,12 +67,12 @@ interface EnhancedCompanyIntelligence {
 
 export class EnhancedCompanyIntelligenceService {
   private static instance: EnhancedCompanyIntelligenceService;
-  private llmService: FreeLLMService;
+  private ollamaService: OllamaService;
   private cache: Map<string, { data: EnhancedCompanyIntelligence; timestamp: number }> = new Map();
   private cacheExpiry = 3600000; // 1 hour
 
   private constructor() {
-    this.llmService = FreeLLMService.getInstance();
+    this.ollamaService = OllamaService.getInstance();
   }
 
   public static getInstance(): EnhancedCompanyIntelligenceService {
@@ -100,48 +98,25 @@ export class EnhancedCompanyIntelligenceService {
 
       console.log(`🔍 Fetching enhanced intelligence for ${companyName}...`);
 
-      // ✅ PERFORMANCE OPTIMIZATION: Parallel API calls instead of sequential
-      const [companyData, recentNews, recentPosts] = await Promise.allSettled([
-        this.fetchCompanyDataWithTimeout(companyName),
-        this.fetchRecentNewsWithTimeout(companyName),
-        this.fetchRecentPostsWithTimeout(companyName)
-      ]);
-
-      // Extract results or use fallbacks
-      const finalCompanyData = companyData.status === 'fulfilled' 
-        ? companyData.value 
-        : this.getDefaultCompanyData(companyName);
-        
-      const finalRecentNews = recentNews.status === 'fulfilled' 
-        ? recentNews.value 
-        : [`${companyName} continues innovation in technology sector`];
-        
-      const finalRecentPosts = recentPosts.status === 'fulfilled' 
-        ? recentPosts.value 
-        : [];
-
-      // Generate AI-enhanced insights with timeout
-      const enhancedInsights = await this.generateEnhancedInsightsWithTimeout(
-        finalCompanyData, 
-        finalRecentNews, 
-        finalRecentPosts,
+      // Get predefined company data first (fastest)
+      const companyData = this.fetchFromPredefinedData(companyName);
+      
+      // Generate AI-enhanced insights using Ollama
+      const enhancedInsights = await this.generateEnhancedInsightsWithOllama(
+        companyData, 
         jobTitle
       );
 
       // Combine all data
       const intelligence: EnhancedCompanyIntelligence = {
-        company_data: {
-          ...finalCompanyData,
-          recent_news: finalRecentNews,
-          recent_posts: finalRecentPosts
-        },
+        company_data: companyData,
         ...enhancedInsights
       };
 
       // Cache the result
       this.cache.set(cacheKey, { data: intelligence, timestamp: Date.now() });
       
-      console.log(`✅ Enhanced intelligence generated for ${companyName} (optimized)`);
+      console.log(`✅ Enhanced intelligence generated for ${companyName} (Ollama powered)`);
       return intelligence;
 
     } catch (error) {
@@ -150,159 +125,80 @@ export class EnhancedCompanyIntelligenceService {
     }
   }
 
-  // ✅ PERFORMANCE OPTIMIZATION: Added timeout wrapper for company data
-  private async fetchCompanyDataWithTimeout(companyName: string): Promise<CompanyData> {
-    return new Promise(async (resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error('Company data fetch timeout'));
-      }, 2000); // Reduced from 5000ms to 2000ms
-
-      try {
-        const result = await this.fetchCompanyData(companyName);
-        clearTimeout(timeout);
-        resolve(result);
-      } catch (error) {
-        clearTimeout(timeout);
-        reject(error);
-      }
-    });
-  }
-
-  // ✅ PERFORMANCE OPTIMIZATION: Added timeout wrapper for news
-  private async fetchRecentNewsWithTimeout(companyName: string): Promise<string[]> {
-    return new Promise(async (resolve, reject) => {
-      const timeout = setTimeout(() => {
-        resolve([`${companyName} continues innovation in technology sector`]); // Fallback instead of reject
-      }, 2000); // Reduced timeout
-
-      try {
-        const result = await this.fetchRecentNews(companyName);
-        clearTimeout(timeout);
-        resolve(result);
-      } catch (error) {
-        clearTimeout(timeout);
-        resolve([`${companyName} recent developments and innovations`]); // Fallback instead of reject
-      }
-    });
-  }
-
-  // ✅ PERFORMANCE OPTIMIZATION: Added timeout wrapper for posts
-  private async fetchRecentPostsWithTimeout(companyName: string): Promise<Array<{
-    title: string;
-    summary: string;
-    date: string;
-    source: string;
-    url?: string;
-  }>> {
-    return new Promise(async (resolve, reject) => {
-      const timeout = setTimeout(() => {
-        resolve([]); // Fallback instead of reject
-      }, 2000); // Reduced timeout
-
-      try {
-        const result = await this.fetchRecentPosts(companyName);
-        clearTimeout(timeout);
-        resolve(result);
-      } catch (error) {
-        clearTimeout(timeout);
-        resolve([]); // Fallback instead of reject
-      }
-    });
-  }
-
-  // ✅ PERFORMANCE OPTIMIZATION: Added timeout for AI insights generation
-  private async generateEnhancedInsightsWithTimeout(
+  private async generateEnhancedInsightsWithOllama(
     companyData: CompanyData,
-    recentNews: string[],
-    recentPosts: any[],
     jobTitle: string
   ): Promise<Omit<EnhancedCompanyIntelligence, 'company_data'>> {
-    return new Promise(async (resolve, reject) => {
-      const timeout = setTimeout(() => {
-        resolve(this.getDefaultInsights(companyData, jobTitle)); // Fallback
-      }, 3000); // 3 second timeout for AI generation
-
-      try {
-        const result = await this.generateEnhancedInsights(companyData, recentNews, recentPosts, jobTitle);
-        clearTimeout(timeout);
-        resolve(result);
-      } catch (error) {
-        clearTimeout(timeout);
-        resolve(this.getDefaultInsights(companyData, jobTitle)); // Fallback
-      }
-    });
-  }
-
-  private async fetchCompanyData(companyName: string): Promise<CompanyData> {
     try {
-      // ✅ CIRCUIT BREAKER: Try predefined data first (fastest)
-      const predefinedData = this.fetchFromPredefinedData(companyName);
-      if (predefinedData) {
-        return predefinedData;
-      }
-
-      // ✅ CIRCUIT BREAKER: Skip external APIs if predefined data is sufficient
-      // Only try external APIs for unknown companies
-      const sources = [
-        () => this.fetchFromClearbitWithCircuitBreaker(companyName),
-        () => this.fetchFromOpenCorporatesWithCircuitBreaker(companyName)
-      ];
-
-      for (const source of sources) {
-        try {
-          const data = await source();
-          if (data) return data;
-        } catch (error) {
-          console.log('External API failed, continuing with fallback...');
-          continue;
+      const systemPrompt = `You are an expert interview preparation consultant specializing in company analysis and interview strategy.`;
+      
+      const userPrompt = `
+        Analyze this company for interview preparation:
+        
+        Company: ${companyData.name}
+        Industry: ${companyData.industry}
+        Job Title: ${jobTitle}
+        Tech Stack: ${companyData.tech_stack.join(', ')}
+        Culture: ${companyData.culture.join(', ')}
+        
+        Generate comprehensive interview insights in JSON format:
+        {
+          "market_position": "string describing market position",
+          "competitors": ["competitor1", "competitor2", "competitor3"],
+          "business_model": "description of business model",
+          "recent_developments": [
+            {
+              "title": "AI Innovation Initiative",
+              "summary": "Company investing in AI technology", 
+              "impact": "Strengthens technical capabilities",
+              "date": "2024-01-01"
+            }
+          ],
+          "interview_insights": {
+            "average_rounds": 4,
+            "time_per_round": 60,
+            "key_skills": ["skill1", "skill2"],
+            "cultural_questions": ["question1", "question2"],
+            "technical_focus": ["focus1", "focus2"]
+          },
+          "question_suggestions": {
+            "technical": ["tech question 1", "tech question 2"],
+            "behavioral": ["behavioral question 1", "behavioral question 2"],
+            "company_specific": ["company question 1", "company question 2"]
+          }
         }
+      `;
+
+      // Try Ollama first
+      try {
+        const health = await this.ollamaService.healthCheck();
+        if (health.ollamaAvailable && health.modelLoaded) {
+          const response = await fetch('http://localhost:11434/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'llama3.1:8b',
+              prompt: `${systemPrompt}\n\n${userPrompt}`,
+              stream: false,
+              options: { temperature: 0.7, num_predict: 3000 }
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const insights = safeExtractJSON<any>(data.response, this.getDefaultInsights(companyData, jobTitle));
+            return insights;
+          }
+        }
+      } catch (error) {
+        console.log('Ollama failed, using default insights');
       }
 
-      // Fallback to default data
-      return this.getDefaultCompanyData(companyName);
-
+      return this.getDefaultInsights(companyData, jobTitle);
     } catch (error) {
-      console.error('Error fetching company data:', error);
-      return this.getDefaultCompanyData(companyName);
+      console.error('Error generating enhanced insights:', error);
+      return this.getDefaultInsights(companyData, jobTitle);
     }
-  }
-
-  // ✅ CIRCUIT BREAKER: Clearbit with faster timeout
-  private async fetchFromClearbitWithCircuitBreaker(companyName: string): Promise<CompanyData | null> {
-    try {
-      const domain = this.guessDomain(companyName);
-      const response = await axios.get(`https://company.clearbit.com/v1/domains/find?name=${domain}`, {
-        timeout: 1500 // Reduced from 5000ms
-      });
-
-      if (response.data) {
-        return this.formatClearbitData(response.data, companyName);
-      }
-    } catch (error) {
-      console.log('Clearbit API failed');
-    }
-    return null;
-  }
-
-  // ✅ CIRCUIT BREAKER: OpenCorporates with faster timeout
-  private async fetchFromOpenCorporatesWithCircuitBreaker(companyName: string): Promise<CompanyData | null> {
-    try {
-      const response = await axios.get(`https://api.opencorporates.com/v0.4/companies/search`, {
-        params: {
-          q: companyName,
-          format: 'json',
-          limit: 1
-        },
-        timeout: 1500 // Reduced from 5000ms
-      });
-
-      if (response.data?.results?.companies?.[0]) {
-        return this.formatOpenCorporatesData(response.data.results.companies[0], companyName);
-      }
-    } catch (error) {
-      console.log('OpenCorporates API failed');
-    }
-    return null;
   }
 
   private fetchFromPredefinedData(companyName: string): CompanyData {
@@ -383,6 +279,25 @@ export class EnhancedCompanyIntelligenceService {
           mid: '$185K - $290K',
           senior: '$290K - $480K'
         }
+      },
+      'openai': {
+        name: 'OpenAI',
+        industry: 'AI & Machine Learning',
+        description: 'AI research and deployment company focused on beneficial artificial general intelligence',
+        tech_stack: ['Python', 'PyTorch', 'Kubernetes', 'React', 'PostgreSQL', 'Redis'],
+        culture: ['AI safety', 'Beneficial AGI', 'Transparency', 'Collaboration', 'Research excellence'],
+        values: ['Ensuring AGI benefits all humanity', 'Responsible AI development'],
+        size: 'medium',
+        locations: ['San Francisco, CA', 'New York, NY'],
+        website: 'https://openai.com',
+        founded: '2015',
+        difficulty: 'hard',
+        work_environment: 'hybrid',
+        salary_ranges: {
+          entry: '$150K - $200K',
+          mid: '$200K - $350K',
+          senior: '$350K - $500K'
+        }
       }
     };
 
@@ -400,7 +315,7 @@ export class EnhancedCompanyIntelligenceService {
       founded: '2010',
       difficulty: 'medium',
       interview_process: ['Phone Screen', 'Technical Interview', 'Onsite', 'Final Round'],
-      recent_news: [],
+      recent_news: [`${companyName} continues innovation in technology sector`],
       recent_posts: [],
       focus_areas: ['Technical Skills', 'Problem Solving', 'Communication'],
       preparation_tips: ['Research the company', 'Practice coding problems', 'Prepare behavioral examples'],
@@ -414,175 +329,6 @@ export class EnhancedCompanyIntelligenceService {
       },
       ...baseData
     } as CompanyData;
-  }
-
-  private async fetchRecentNews(companyName: string): Promise<string[]> {
-    try {
-      // ✅ CIRCUIT BREAKER: Try AI generation first (more reliable)
-      try {
-        const aiNews = await this.generateNewsWithAI(companyName);
-        if (aiNews && aiNews.length > 0) return aiNews;
-      } catch (error) {
-        console.log('AI news generation failed, trying API...');
-      }
-
-      // Try news API as backup
-      const apiNews = await this.fetchNewsFromAPI(companyName);
-      if (apiNews && apiNews.length > 0) return apiNews;
-
-      return [`${companyName} continues innovation in technology sector`];
-    } catch (error) {
-      console.error('Error fetching recent news:', error);
-      return [`${companyName} recent developments and growth initiatives`];
-    }
-  }
-
-  private async fetchNewsFromAPI(companyName: string): Promise<string[]> {
-    try {
-      const apiKey = process.env.NEWS_API_KEY || process.env.NEXT_PUBLIC_NEWS_API_KEY;
-      if (!apiKey) throw new Error('No news API key');
-
-      const response = await axios.get('https://newsapi.org/v2/everything', {
-        params: {
-          q: `${companyName} technology`,
-          sortBy: 'publishedAt',
-          pageSize: 3,
-          apiKey: apiKey
-        },
-        timeout: 1500 // Reduced timeout
-      });
-
-      if (response.data?.articles) {
-        return response.data.articles.map((article: any) => article.title);
-      }
-    } catch (error) {
-      console.log('News API failed');
-    }
-    throw new Error('News API failed');
-  }
-
-  private async generateNewsWithAI(companyName: string): Promise<string[]> {
-    try {
-      const response = await this.llmService.callLLM({
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a business news analyst. Generate realistic, current news headlines for technology companies.'
-          },
-          {
-            role: 'user',
-            content: `Generate 3 realistic recent news headlines for ${companyName} focusing on technology, business developments, and innovation. Return as JSON array of strings.`
-          }
-        ],
-        model: 'llama-3.1-8b'
-      });
-
-      const headlines = safeExtractJSON<string[]>(response.content, []);
-      return Array.isArray(headlines) ? headlines : [];
-    } catch (error) {
-      console.error('AI news generation failed:', error);
-      throw error;
-    }
-  }
-
-  private async fetchRecentPosts(companyName: string): Promise<Array<{
-    title: string;
-    summary: string;
-    date: string;
-    source: string;
-    url?: string;
-  }>> {
-    try {
-      // Generate AI-based recent posts/updates
-      const response = await this.llmService.callLLM({
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a company communications specialist. Generate realistic company blog posts, updates, and announcements.'
-          },
-          {
-            role: 'user',
-            content: `Generate 2-3 recent company posts/updates for ${companyName} that would be relevant for interview preparation. Include technology updates, culture initiatives, or product launches. Return as JSON array with title, summary, date, and source fields.`
-          }
-        ],
-        model: 'llama-3.1-8b'
-      });
-
-      const posts = safeExtractJSON<any[]>(response.content, []);
-      return Array.isArray(posts) ? posts.map((post: any) => ({
-        title: post.title || 'Company Update',
-        summary: post.summary || 'Recent company developments',
-        date: post.date || new Date().toISOString().split('T')[0],
-        source: post.source || 'Company Blog',
-        url: post.url
-      })) : [];
-    } catch (error) {
-      console.error('Error generating recent posts:', error);
-      return [];
-    }
-  }
-
-  private async generateEnhancedInsights(
-    companyData: CompanyData,
-    recentNews: string[],
-    recentPosts: any[],
-    jobTitle: string
-  ): Promise<Omit<EnhancedCompanyIntelligence, 'company_data'>> {
-    try {
-      const systemMessage = `You are an expert interview preparation consultant specializing in company analysis and interview strategy.`;
-      
-      const userMessage = `
-        Analyze this company for interview preparation:
-        
-        Company: ${companyData.name}
-        Industry: ${companyData.industry}
-        Job Title: ${jobTitle}
-        Tech Stack: ${companyData.tech_stack.join(', ')}
-        Culture: ${companyData.culture.join(', ')}
-        Recent News: ${recentNews.join('; ')}
-        
-        Generate comprehensive interview insights in JSON format:
-        {
-          "market_position": "string describing market position",
-          "competitors": ["competitor1", "competitor2", "competitor3"],
-          "business_model": "description of business model",
-          "recent_developments": [
-            {
-              "title": "development title",
-              "summary": "development summary", 
-              "impact": "impact on company",
-              "date": "2024-01-01"
-            }
-          ],
-          "interview_insights": {
-            "average_rounds": 4,
-            "time_per_round": 60,
-            "key_skills": ["skill1", "skill2"],
-            "cultural_questions": ["question1", "question2"],
-            "technical_focus": ["focus1", "focus2"]
-          },
-          "question_suggestions": {
-            "technical": ["tech question 1", "tech question 2"],
-            "behavioral": ["behavioral question 1", "behavioral question 2"],
-            "company_specific": ["company question 1", "company question 2"]
-          }
-        }
-      `;
-
-      const response = await this.llmService.callLLM({
-        messages: [
-          { role: 'system', content: systemMessage },
-          { role: 'user', content: userMessage }
-        ],
-        model: 'llama-3.1-8b'
-      });
-
-      const insights = safeExtractJSON<any>(response.content, this.getDefaultInsights(companyData, jobTitle));
-      return insights;
-    } catch (error) {
-      console.error('Error generating enhanced insights:', error);
-      return this.getDefaultInsights(companyData, jobTitle);
-    }
   }
 
   private getDefaultInsights(companyData: CompanyData, jobTitle: string): Omit<EnhancedCompanyIntelligence, 'company_data'> {
@@ -629,128 +375,14 @@ export class EnhancedCompanyIntelligenceService {
     };
   }
 
-  private getDefaultCompanyData(companyName: string): CompanyData {
-    return {
-      name: companyName,
-      industry: 'Technology',
-      description: 'Technology company focused on innovation and growth',
-      tech_stack: ['JavaScript', 'Python', 'React', 'Node.js'],
-      culture: ['Innovation', 'Collaboration', 'Excellence'],
-      values: ['Customer focus', 'Quality', 'Growth'],
-      size: 'medium',
-      locations: ['San Francisco, CA'],
-      website: `https://www.${companyName.toLowerCase()}.com`,
-      founded: '2010',
-      difficulty: 'medium',
-      interview_process: ['Phone Screen', 'Technical Interview', 'Onsite', 'Final Round'],
-      recent_news: [],
-      recent_posts: [],
-      focus_areas: ['Technical Skills', 'Problem Solving', 'Communication'],
-      preparation_tips: ['Research the company', 'Practice coding problems'],
-      work_environment: 'hybrid',
-      benefits: ['Health insurance', 'Stock options'],
-      growth_opportunities: ['Career advancement', 'Learning programs'],
-      salary_ranges: {
-        entry: '$90K - $130K',
-        mid: '$130K - $180K',
-        senior: '$180K - $250K'
-      }
-    };
-  }
-
   private getFallbackIntelligence(companyName: string, jobTitle: string): EnhancedCompanyIntelligence {
-    const companyData = this.getDefaultCompanyData(companyName);
+    const companyData = this.fetchFromPredefinedData(companyName);
     const insights = this.getDefaultInsights(companyData, jobTitle);
     
     return {
       company_data: companyData,
       ...insights
     };
-  }
-
-  // Helper methods
-  private guessDomain(companyName: string): string {
-    const normalized = companyName.toLowerCase().replace(/\s+/g, '');
-    const commonDomains: { [key: string]: string } = {
-      'google': 'google.com',
-      'microsoft': 'microsoft.com',
-      'amazon': 'amazon.com',
-      'meta': 'meta.com',
-      'facebook': 'meta.com',
-      'apple': 'apple.com',
-      'netflix': 'netflix.com',
-      'tesla': 'tesla.com',
-      'uber': 'uber.com',
-      'airbnb': 'airbnb.com'
-    };
-    
-    return commonDomains[normalized] || `${normalized}.com`;
-  }
-
-  private formatClearbitData(data: any, companyName: string): CompanyData {
-    return {
-      name: data.name || companyName,
-      industry: data.category?.industry || 'Technology',
-      description: data.description || 'Technology company',
-      tech_stack: data.tech || ['JavaScript', 'Python'],
-      culture: ['Innovation', 'Growth'],
-      values: ['Excellence', 'Customer focus'],
-      size: data.metrics?.employees ? this.getCompanySize(data.metrics.employees) : 'medium',
-      locations: data.geo?.city ? [`${data.geo.city}, ${data.geo.country}`] : ['Remote'],
-      website: data.domain || '',
-      founded: data.foundedYear?.toString() || 'Unknown',
-      difficulty: 'medium',
-      interview_process: ['Phone Screen', 'Technical Interview', 'Final Round'],
-      recent_news: [],
-      recent_posts: [],
-      focus_areas: ['Technical Skills', 'Problem Solving'],
-      preparation_tips: ['Research the company', 'Practice technical skills'],
-      work_environment: 'hybrid',
-      benefits: ['Health insurance', 'Stock options'],
-      growth_opportunities: ['Career development'],
-      salary_ranges: {
-        entry: '$90K - $130K',
-        mid: '$130K - $180K',
-        senior: '$180K - $250K'
-      }
-    };
-  }
-
-  private formatOpenCorporatesData(data: any, companyName: string): CompanyData {
-    const company = data.company;
-    return {
-      name: company.name || companyName,
-      industry: 'Technology',
-      description: 'Technology company',
-      tech_stack: ['JavaScript', 'Python'],
-      culture: ['Innovation'],
-      values: ['Excellence'],
-      size: 'medium',
-      locations: [company.jurisdiction_code || 'Unknown'],
-      website: '',
-      founded: company.incorporation_date || 'Unknown',
-      difficulty: 'medium',
-      interview_process: ['Phone Screen', 'Technical Interview'],
-      recent_news: [],
-      recent_posts: [],
-      focus_areas: ['Technical Skills'],
-      preparation_tips: ['Research the company'],
-      work_environment: 'hybrid',
-      benefits: ['Health insurance'],
-      growth_opportunities: ['Career development'],
-      salary_ranges: {
-        entry: '$90K - $130K',
-        mid: '$130K - $180K',
-        senior: '$180K - $250K'
-      }
-    };
-  }
-
-  private getCompanySize(employees: number): string {
-    if (employees < 50) return 'startup';
-    if (employees < 500) return 'small';
-    if (employees < 5000) return 'medium';
-    return 'large';
   }
 
   // Public method to clear cache
