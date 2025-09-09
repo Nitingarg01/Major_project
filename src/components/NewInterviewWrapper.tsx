@@ -135,8 +135,9 @@ const NewInterviewWrapper = ({
   const [completedRounds, setCompletedRounds] = useState<Set<string>>(new Set())
   const [roundProgress, setRoundProgress] = useState<{[roundId: string]: number}>({})
 
-  // Initialize AI service
+  // Initialize AI services
   const aiService = useMemo(() => EnhancedInterviewAI.getInstance(), [])
+  const ollamaService = useMemo(() => OllamaService.getInstance(), [])
 
   // Configure rounds based on user selection
   useEffect(() => {
