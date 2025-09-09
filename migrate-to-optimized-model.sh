@@ -20,12 +20,14 @@ echo "📋 Current models:"
 ollama list
 
 echo ""
-echo "🗑️ Removing old slow model (optional)..."
-read -p "Remove llama3.1:8b to save space? (y/n): " -n 1 -r
+echo "🗑️ Removing old slow models (optional)..."
+read -p "Remove any old models to save space? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "Removing llama3.1:8b..."
+    echo "Removing old models..."
     ollama rm llama3.1:8b 2>/dev/null || echo "Model not found or already removed"
+    ollama rm llama3:8b 2>/dev/null || echo "Model not found or already removed"
+    ollama rm llama2:7b 2>/dev/null || echo "Model not found or already removed"
 fi
 
 echo ""
@@ -98,4 +100,4 @@ else
 fi
 
 echo "🎉 Your RecruiterAI is now optimized for speed!"
-echo "Expected performance: 3x faster question generation"
+echo "Expected performance: 3x faster question generation with Phi-3-Mini"

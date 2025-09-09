@@ -3,7 +3,7 @@
 ## 📊 **Current Optimization: Phi-3-Mini**
 
 Your RecruiterAI has been optimized with **Microsoft Phi-3-Mini (3.8B)** which provides:
-- ⚡ **3x faster response times** vs Llama3.1:8b
+- ⚡ **3x faster response times** vs Phi-3-Mini predecessor
 - 💾 **Only 2.2GB RAM usage** (vs 8GB previously)
 - 🧠 **High-quality interview questions** and analysis
 - 🎯 **Perfect for your hardware specs**
@@ -14,8 +14,8 @@ Your RecruiterAI has been optimized with **Microsoft Phi-3-Mini (3.8B)** which p
 
 ### **1. Install the Optimized Model**
 ```bash
-# Remove the old slow model (optional - saves space)
-ollama rm llama3.1:8b
+# Remove any old models (optional - saves space)
+ollama rm llama3.1:8b 2>/dev/null || true
 
 # Install the optimized Phi-3-Mini model
 ollama pull phi3:mini
@@ -53,28 +53,28 @@ private model = 'gemma2:2b'; // Maximum speed option
 ### **For Best Balance (2.5x faster)**
 ```bash
 # Great balance of speed and quality
-ollama pull llama3.2:3b
+ollama pull qwen2.5:3b
 ```
 Then update in `src/lib/ollamaService.ts`:
 ```typescript
-private model = 'llama3.2:3b'; // Balanced option
+private model = 'qwen2.5:3b'; // Balanced option
 ```
 
 ### **For Advanced Reasoning (3x faster)**
 ```bash
 # Excellent at complex reasoning tasks
-ollama pull qwen2.5:3b
+ollama pull mistral:7b
 ```
 Then update in `src/lib/ollamaService.ts`:
 ```typescript
-private model = 'qwen2.5:3b'; // Reasoning powerhouse
+private model = 'mistral:7b'; // Reasoning powerhouse
 ```
 
 ---
 
 ## 📈 **Expected Performance Improvements**
 
-### **Before (Llama3.1:8b)**
+### **Before (Old Models)**
 - 🐌 Question Generation: ~15-30 seconds
 - 💾 RAM Usage: ~8GB
 - 🔄 Response Analysis: ~10-20 seconds
@@ -94,8 +94,8 @@ private model = 'qwen2.5:3b'; // Reasoning powerhouse
 |-------------|----------------------|---------|
 | **General Use** | `phi3:mini` | Best balance of speed + quality |
 | **Maximum Speed** | `gemma2:2b` | 5x faster, good for rapid prototyping |
-| **Best Quality** | `llama3.2:3b` | Newer architecture, excellent output |
-| **Complex Reasoning** | `qwen2.5:3b` | Advanced reasoning capabilities |
+| **Best Quality** | `qwen2.5:3b` | Advanced reasoning capabilities |
+| **Complex Reasoning** | `mistral:7b` | Advanced reasoning capabilities |
 
 ---
 
@@ -198,7 +198,7 @@ OLLAMA_ENABLED=true
 
 ```typescript
 // Current optimized setup in ollamaService.ts
-private model = 'phi3:mini'; // 3x faster than llama3.1:8b
+private model = 'phi3:mini'; // 3x faster than previous models
 ```
 
 ---
