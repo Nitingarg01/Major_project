@@ -198,12 +198,22 @@ const NewInterviewWrapper = ({
               );
               questionsResult[round.type] = dsaProblems
             } else if (round.type === 'aptitude') {
-              // Generate aptitude questions
-              const aptitudeQuestions = await aiService.generateAptitudeQuestions(
-                ['verbal', 'numerical', 'logical', 'spatial'],
-                experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
-                round.questionCount
-              );
+              // Generate aptitude questions - fallback for now
+              const aptitudeQuestions = [
+                {
+                  id: `aptitude-1-${Date.now()}`,
+                  question: `Aptitude Question 1: If a car travels 60 miles per hour for 2 hours, how far does it travel?`,
+                  expectedAnswer: '120 miles',
+                  category: 'aptitude',
+                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                  points: 10,
+                  timeLimit: 5,
+                  evaluationCriteria: ['Mathematical accuracy', 'Problem-solving approach'],
+                  tags: ['aptitude', 'mathematics'],
+                  hints: ['Use the formula: Distance = Speed × Time'],
+                  companyRelevance: 5
+                }
+              ];
               questionsResult[round.type] = aptitudeQuestions
             } else {
               // Generate regular interview questions
