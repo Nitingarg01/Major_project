@@ -1,51 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
 import OllamaService from '@/lib/ollamaService';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🦙 Ollama Overall Performance Analysis API called');
+    console.log('📊 Ollama Overall Performance Analysis API called');
     
     const body = await request.json();
-    const { interviewId } = body;
+    const { questions, answers, jobTitle, companyName, skills } = body;
 
-    if (!interviewId) {
+    if (!questions || !answers || !jobTitle || !companyName) {
       return NextResponse.json(
-        { error: 'Interview ID is required' },
+        { error: 'Missing required fields: questions, answers, jobTitle, companyName' },
         { status: 400 }
       );
     }
 
-    // Connect to database
-    const db = await connectDB();
-    const interviewsCollection = db.collection('interviews');
-
-    // Get complete interview data
-    const interview = await interviewsCollection.findOne({ id: interviewId });
-    
-    if (!interview) {
-      return NextResponse.json(
-        { error: 'Interview not found' },
-        { status: 404 }
-      );
-    }
-
-    // Check if we have questions and responses
-    if (!interview.questions || interview.questions.length === 0) {
-      return NextResponse.json(
-        { error: 'No questions found for this interview' },
-        { status: 400 }
-      );
-    }
-
-    if (!interview.responses || interview.responses.length === 0) {
-      return NextResponse.json(
-        { error: 'No responses found for this interview' },
-        { status: 400 }
-      );
-    }
-
-    console.log('🚀 Analyzing overall performance with Ollama...');
+    console.log(`🎯 Analyzing overall performance for ${jobTitle} at ${companyName}...`);
     
     // Initialize Ollama service
     const ollamaService = OllamaService.getInstance();
@@ -56,153 +26,70 @@ export async function POST(request: NextRequest) {
       throw new Error('Ollama service is not available');
     }
 
-    // Prepare data for analysis
-    const questions = interview.questions;
-    const responses = interview.responses;
-    
-    // Map responses to questions
-    const answers = questions.map((question: any) => {
-      const response = responses.find((r: any) => r.questionId === question.id);
-      return response ? response.userAnswer : '';
-    });
-
     // Analyze overall performance
     const performanceAnalysis = await ollamaService.analyzeOverallPerformance(
       questions,
       answers,
-      interview.jobTitle,
-      interview.companyName,
-      interview.skills || []
+      jobTitle,
+      companyName,
+      skills || []
     );
 
-    // Calculate additional metrics
-    const totalQuestions = questions.length;
-    const answeredQuestions = answers.filter((answer: any) => answer.trim().length > 0).length;
-    const completionRate = (answeredQuestions / totalQuestions) * 100;
-    
-    // Calculate average response analysis scores
-    const analysisScores = responses
-      .filter((r: any) => r.analysis && r.analysis.score)
-      .map((r: any) => r.analysis.score);
-    
-    const averageScore = analysisScores.length > 0 
-      ? analysisScores.reduce((sum: number, score: number) => sum + score, 0) / analysisScores.length
-      : performanceAnalysis.overallScore;
-
-    // Enhanced performance data
-    const enhancedAnalysis = {
-      ...performanceAnalysis,
-      interviewMetrics: {
-        totalQuestions,
-        answeredQuestions,
-        completionRate: Math.round(completionRate),
-        averageResponseScore: Math.round(averageScore * 10) / 10,
-        companyName: interview.companyName,
-        jobTitle: interview.jobTitle,
-        interviewType: interview.interviewType,
-        experienceLevel: interview.experienceLevel
-      },
-      generatedAt: new Date(),
-      provider: 'ollama',
-      model: 'llama3.1:8b',
-      companySpecific: true
+    const responseData = {
+      success: true,
+      performanceAnalysis,
+      metadata: {
+        provider: 'ollama',
+        model: 'phi3:mini', // Optimized model
+        timestamp: new Date().toISOString(),
+        analysisType: 'comprehensive',
+        companySpecific: true,
+        questionsAnalyzed: questions.length,
+        answersAnalyzed: answers.length
+      }
     };
 
-    // Update interview with performance analysis
-    await interviewsCollection.updateOne(
-      { id: interviewId },
-      {
-        $set: {
-          performanceAnalysis: enhancedAnalysis,
-          analyzed: true,
-          lastUpdated: new Date()
-        }
-      }
-    );
+    console.log(`✅ Overall performance analysis completed with score: ${performanceAnalysis.overallScore}/10`);
 
-    console.log(`✅ Overall performance analyzed using Ollama - Score: ${performanceAnalysis.overallScore}/10`);
-
-    return NextResponse.json({
-      success: true,
-      analysis: enhancedAnalysis,
-      provider: 'ollama',
-      model: 'llama3.1:8b',
-      companySpecific: true,
-      message: 'Overall performance analyzed with company-specific insights'
-    });
+    return NextResponse.json(responseData);
 
   } catch (error: any) {
     console.error('❌ Error in Ollama overall performance analysis:', error);
     
-    return NextResponse.json(
-      {
-        error: 'Failed to analyze overall performance with Ollama',
-        details: error.message,
-        fallback: 'Consider using the fallback analysis endpoint'
+    // Fallback analysis
+    const avgAnswerLength = answers.reduce((sum: number, ans: string) => sum + ans.length, 0) / answers.length;
+    const fallbackAnalysis = {
+      overallScore: Math.min(10, Math.max(3, avgAnswerLength / 100)),
+      parameterScores: {
+        "Technical Knowledge": 6,
+        "Problem Solving": 5,
+        "Communication Skills": 6,
+        "Company Culture Fit": 5,
+        "Practical Application": 5
       },
-      { status: 500 }
-    );
-  }
-}
-
-// GET endpoint for performance history
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const interviewId = searchParams.get('interviewId');
-
-    if (!interviewId) {
-      return NextResponse.json(
-        { error: 'Interview ID is required' },
-        { status: 400 }
-      );
-    }
-
-    // Connect to database
-    const db = await connectDB();
-    const interviewsCollection = db.collection('interviews');
-
-    // Get interview performance analysis
-    const interview = await interviewsCollection.findOne(
-      { id: interviewId },
-      { 
-        projection: { 
-          performanceAnalysis: 1, 
-          companyName: 1, 
-          jobTitle: 1,
-          interviewType: 1,
-          analyzed: 1
-        } 
-      }
-    );
-    
-    if (!interview) {
-      return NextResponse.json(
-        { error: 'Interview not found' },
-        { status: 404 }
-      );
-    }
-
-    if (!interview.analyzed || !interview.performanceAnalysis) {
-      return NextResponse.json(
-        { error: 'Performance analysis not yet completed for this interview' },
-        { status: 404 }
-      );
-    }
+      overallVerdict: `Performance analysis completed with basic evaluation for ${companyName} ${jobTitle} position.`,
+      adviceForImprovement: questions.slice(0, 3).map((q: any, i: number) => ({
+        question: q.question || `Question ${i + 1}`,
+        advice: `For ${companyName}, focus on their specific technical challenges and company values.`
+      })),
+      strengths: ["Completed all questions", "Showed engagement", "Professional approach"],
+      improvements: [`Study ${companyName}'s technology stack`, "Practice company-specific scenarios", "Improve technical communication"],
+      recommendations: [`Research ${companyName}'s recent projects`, "Practice with their interview style", "Study industry best practices"]
+    };
 
     return NextResponse.json({
-      success: true,
-      analysis: interview.performanceAnalysis,
-      companyName: interview.companyName,
-      jobTitle: interview.jobTitle,
-      interviewType: interview.interviewType
-    });
-
-  } catch (error: any) {
-    console.error('❌ Error getting performance analysis:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch performance analysis' },
-      { status: 500 }
-    );
+      success: false,
+      performanceAnalysis: fallbackAnalysis,
+      error: 'Ollama analysis failed, using fallback',
+      details: error.message,
+      metadata: {
+        provider: 'ollama_fallback',
+        model: 'phi3:mini',
+        timestamp: new Date().toISOString(),
+        analysisType: 'fallback',
+        questionsAnalyzed: questions.length,
+        answersAnalyzed: answers.length
+      }
+    }, { status: 206 }); // 206 Partial Content
   }
 }

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString(),
       model: 'phi3:mini', // Optimized for Ryzen 3 + 12GB RAM
       optimization: 'Speed + Quality optimized for CPU inference',
-      performance: '3x faster than llama3.1:8b',
+      performance: '3x faster than previous models',
       memoryUsage: '~2.2GB (vs 8GB previously)',
       features: {
         questionGeneration: true,
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       advantages: [
         'CPU-optimized inference',
         'Company-specific questions',
-        '3x faster than previous model',
+        '3x faster than previous models',
         'Reduced memory usage',
         'No rate limits',
         'Enhanced privacy',
