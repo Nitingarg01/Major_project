@@ -190,8 +190,8 @@ const NewInterviewWrapper = ({
           
           try {
             if (round.type === 'dsa') {
-              // Generate DSA problems specifically
-              const dsaProblems = await aiService.generateDSAProblems(
+              // Generate DSA problems specifically using OllamaService
+              const dsaProblems = await ollamaService.generateDSAProblems(
                 companyName,
                 experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
                 round.questionCount
