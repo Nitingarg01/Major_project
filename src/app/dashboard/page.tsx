@@ -332,12 +332,12 @@ export default function DashboardPage() {
               </div>
             </Link>
 
-            <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl shadow-sm p-6 text-white cursor-pointer group">
+            <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl shadow-sm p-6 text-white cursor-pointer group" onClick={() => router.push('/dashboard#phi3-service')}>
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <div className="w-6 h-6 text-white">🦙</div>
+                <div className="w-6 h-6 text-white">🚀</div>
               </div>
-              <h3 className="text-lg font-semibold mb-2">Ollama AI Service</h3>
-              <p className="text-white/90 text-sm">Offline AI processing with enhanced company-specific questions</p>
+              <h3 className="text-lg font-semibold mb-2">Phi-3-Mini AI Service</h3>
+              <p className="text-white/90 text-sm">Optimized offline AI processing - 3x faster with enhanced company-specific questions</p>
               <div className="flex items-center mt-3 text-white group-hover:text-green-100">
                 <span className="text-sm font-medium">View Service Status</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
