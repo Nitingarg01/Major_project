@@ -56,8 +56,10 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Error in Ollama overall performance analysis:', error);
     
-    // Fallback analysis
-    const avgAnswerLength = (answers as string[]).reduce((sum: number, ans: string) => sum + ans.length, 0) / (answers as string[]).length;
+    // Fallback analysis - ensure answers is defined and is array
+    const avgAnswerLength = (answers && Array.isArray(answers) && answers.length > 0) 
+      ? answers.reduce((sum: number, ans: string) => sum + (ans || '').length, 0) / answers.length
+      : 50; // Default if no answers provided
     const fallbackAnalysis = {
       overallScore: Math.min(10, Math.max(3, avgAnswerLength / 100)),
       parameterScores: {
