@@ -786,50 +786,209 @@ Return ONLY valid JSON:
     const problems: DSAProblem[] = [];
     const companyData = this.companyDatabase.get(companyName.toLowerCase());
     
+    // Enhanced problem templates based on real interview questions
     const problemTemplates = [
       {
-        title: `${companyName} Data Processing`,
-        description: `Solve a data processing problem typical at ${companyName} involving their ${companyData?.techStack?.[0] || 'main technology'} stack.`,
-        topics: ['Array', 'Hash Table']
-      },
-      {
-        title: `${companyName} System Optimization`,
-        description: `Optimize a system component commonly used at ${companyName} for better performance.`,
-        topics: ['Dynamic Programming', 'Optimization']
-      }
-    ];
-
-    for (let i = 0; i < count; i++) {
-      const template = problemTemplates[i % problemTemplates.length];
-      problems.push({
-        id: `fallback-dsa-${i}`,
-        title: template.title,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
-        description: template.description,
+        title: 'Two Sum',
+        description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.',
         examples: [
           {
-            input: 'Example input',
-            output: 'Example output',
-            explanation: `Explanation relevant to ${companyName}'s context`
+            input: 'nums = [2,7,11,15], target = 9',
+            output: '[0,1]',
+            explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].'
+          },
+          {
+            input: 'nums = [3,2,4], target = 6',
+            output: '[1,2]',
+            explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].'
           }
         ],
         testCases: [
+          { id: 'test1', input: '[2,7,11,15]\n9', expectedOutput: '[0,1]' },
+          { id: 'test2', input: '[3,2,4]\n6', expectedOutput: '[1,2]' },
+          { id: 'test3', input: '[3,3]\n6', expectedOutput: '[0,1]' }
+        ],
+        constraints: ['2 <= nums.length <= 10^4', '-10^9 <= nums[i] <= 10^9', '-10^9 <= target <= 10^9', 'Only one valid answer exists.'],
+        topics: ['Array', 'Hash Table'],
+        hints: ['Use a hash table to store complements', 'The complement of nums[i] is target - nums[i]'],
+        timeComplexity: 'O(n)',
+        spaceComplexity: 'O(n)'
+      },
+      {
+        title: 'Valid Parentheses',
+        description: 'Given a string s containing just the characters "(", ")", "{", "}", "[" and "]", determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets and in the correct order.',
+        examples: [
           {
-            id: `test-${i}-1`,
-            input: 'Test input',
-            expectedOutput: 'Expected output'
+            input: 's = "()"',
+            output: 'true',
+            explanation: 'The string contains valid parentheses.'
+          },
+          {
+            input: 's = "()[]{}"',
+            output: 'true',
+            explanation: 'All brackets are properly matched.'
+          },
+          {
+            input: 's = "(]"',
+            output: 'false',
+            explanation: 'Brackets are not properly matched.'
           }
         ],
-        constraints: ['1 <= n <= 1000', 'Time limit: 2 seconds'],
-        topics: template.topics,
-        hints: [`Consider ${companyName}'s typical data patterns`],
+        testCases: [
+          { id: 'test1', input: '()', expectedOutput: 'true' },
+          { id: 'test2', input: '()[]{})("', expectedOutput: 'true' },
+          { id: 'test3', input: '(]', expectedOutput: 'false' },
+          { id: 'test4', input: '([)]', expectedOutput: 'false' }
+        ],
+        constraints: ['1 <= s.length <= 10^4', 's consists of parentheses only "(", ")", "{", "}", "[", "]".'],
+        topics: ['String', 'Stack'],
+        hints: ['Use a stack to keep track of opening brackets', 'When you encounter a closing bracket, check if it matches the most recent opening bracket'],
         timeComplexity: 'O(n)',
-        spaceComplexity: 'O(1)',
-        companySpecific: true
+        spaceComplexity: 'O(n)'
+      },
+      {
+        title: 'Merge Two Sorted Lists',
+        description: 'You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a sorted manner and return the head of the merged linked list.',
+        examples: [
+          {
+            input: 'list1 = [1,2,4], list2 = [1,3,4]',
+            output: '[1,1,2,3,4,4]',
+            explanation: 'Merge the two sorted lists into one sorted list.'
+          }
+        ],
+        testCases: [
+          { id: 'test1', input: '[1,2,4]\n[1,3,4]', expectedOutput: '[1,1,2,3,4,4]' },
+          { id: 'test2', input: '[]\n[]', expectedOutput: '[]' },
+          { id: 'test3', input: '[]\n[0]', expectedOutput: '[0]' }
+        ],
+        constraints: ['The number of nodes in both lists is in the range [0, 50]', '-100 <= Node.val <= 100', 'Both list1 and list2 are sorted in non-decreasing order.'],
+        topics: ['Linked List', 'Recursion'],
+        hints: ['Use a dummy node to simplify the merging process', 'Compare the values of the current nodes from both lists'],
+        timeComplexity: 'O(n + m)',
+        spaceComplexity: 'O(1)'
+      },
+      {
+        title: 'Maximum Subarray',
+        description: 'Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.',
+        examples: [
+          {
+            input: 'nums = [-2,1,-3,4,-1,2,1,-5,4]',
+            output: '6',
+            explanation: 'The subarray [4,-1,2,1] has the largest sum = 6.'
+          }
+        ],
+        testCases: [
+          { id: 'test1', input: '[-2,1,-3,4,-1,2,1,-5,4]', expectedOutput: '6' },
+          { id: 'test2', input: '[1]', expectedOutput: '1' },
+          { id: 'test3', input: '[5,4,-1,7,8]', expectedOutput: '23' }
+        ],
+        constraints: ['1 <= nums.length <= 10^5', '-10^4 <= nums[i] <= 10^4'],
+        topics: ['Array', 'Dynamic Programming', 'Divide and Conquer'],
+        hints: ['Try using Kadane\'s algorithm', 'Keep track of the maximum sum ending at the current position'],
+        timeComplexity: 'O(n)',
+        spaceComplexity: 'O(1)'
+      },
+      {
+        title: 'Binary Tree Inorder Traversal',
+        description: 'Given the root of a binary tree, return the inorder traversal of its nodes\' values.',
+        examples: [
+          {
+            input: 'root = [1,null,2,3]',
+            output: '[1,3,2]',
+            explanation: 'Inorder traversal visits left subtree, root, then right subtree.'
+          }
+        ],
+        testCases: [
+          { id: 'test1', input: '[1,null,2,3]', expectedOutput: '[1,3,2]' },
+          { id: 'test2', input: '[]', expectedOutput: '[]' },
+          { id: 'test3', input: '[1]', expectedOutput: '[1]' }
+        ],
+        constraints: ['The number of nodes in the tree is in the range [0, 100]', '-100 <= Node.val <= 100'],
+        topics: ['Tree', 'Depth-First Search', 'Binary Tree'],
+        hints: ['Use recursion or stack-based iterative approach', 'In inorder traversal: left -> root -> right'],
+        timeComplexity: 'O(n)',
+        spaceComplexity: 'O(n)'
+      },
+      {
+        title: 'Group Anagrams',
+        description: 'Given an array of strings strs, group the anagrams together. You can return the answer in any order.',
+        examples: [
+          {
+            input: 'strs = ["eat","tea","tan","ate","nat","bat"]',
+            output: '[["bat"],["nat","tan"],["ate","eat","tea"]]',
+            explanation: 'Group strings that are anagrams of each other.'
+          }
+        ],
+        testCases: [
+          { id: 'test1', input: '["eat","tea","tan","ate","nat","bat"]', expectedOutput: '[["bat"],["nat","tan"],["ate","eat","tea"]]' },
+          { id: 'test2', input: '[""]', expectedOutput: '[[""]]' },
+          { id: 'test3', input: '["a"]', expectedOutput: '[["a"]]' }
+        ],
+        constraints: ['1 <= strs.length <= 10^4', '0 <= strs[i].length <= 100', 'strs[i] consists of lowercase English letters.'],
+        topics: ['Array', 'Hash Table', 'String', 'Sorting'],
+        hints: ['Use sorted strings as keys in a hash map', 'All anagrams will have the same sorted representation'],
+        timeComplexity: 'O(N * K log K)',
+        spaceComplexity: 'O(N * K)'
+      }
+    ];
+
+    // Adjust difficulty-specific problems
+    let relevantProblems = problemTemplates;
+    if (difficulty === 'easy') {
+      relevantProblems = problemTemplates.slice(0, 3); // Two Sum, Valid Parentheses, Merge Lists
+    } else if (difficulty === 'hard') {
+      relevantProblems = problemTemplates.slice(3); // More complex problems
+    }
+
+    for (let i = 0; i < Math.min(count, relevantProblems.length); i++) {
+      const template = relevantProblems[i % relevantProblems.length];
+      
+      // Add company context to make it more relevant
+      let contextualDescription = template.description;
+      if (companyData) {
+        contextualDescription += `\n\nThis problem is commonly asked at ${companyName} and relates to their work with ${companyData.techStack?.slice(0, 2).join(' and ')}.`;
+      }
+      
+      problems.push({
+        id: `${companyName.toLowerCase()}-dsa-${i}-${Date.now()}`,
+        title: `${template.title}${companyData ? ` (${companyName} Style)` : ''}`,
+        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        description: contextualDescription,
+        examples: template.examples,
+        testCases: template.testCases,
+        constraints: template.constraints,
+        topics: template.topics,
+        hints: template.hints,
+        timeComplexity: template.timeComplexity,
+        spaceComplexity: template.spaceComplexity,
+        companySpecific: true,
+        provider: 'fallback',
+        model: 'built-in'
+      });
+    }
+
+    // If we need more problems than templates, cycle through them
+    while (problems.length < count) {
+      const template = relevantProblems[problems.length % relevantProblems.length];
+      problems.push({
+        id: `${companyName.toLowerCase()}-dsa-${problems.length}-${Date.now()}`,
+        title: `${template.title} (Variant ${Math.floor(problems.length / relevantProblems.length) + 1})`,
+        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        description: template.description + ` This is a variation commonly used in ${companyName} interviews.`,
+        examples: template.examples,
+        testCases: template.testCases,
+        constraints: template.constraints,
+        topics: template.topics,
+        hints: template.hints,
+        timeComplexity: template.timeComplexity,
+        spaceComplexity: template.spaceComplexity,
+        companySpecific: true,
+        provider: 'fallback',
+        model: 'built-in'
       });
     }
     
-    return problems;
+    return problems.slice(0, count);
   }
 
   private generateFallbackAnalysis(userAnswer: string, companyContext: string) {
