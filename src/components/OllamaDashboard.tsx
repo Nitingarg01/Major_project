@@ -273,7 +273,7 @@ const OllamaDashboard: React.FC<OllamaDashboardProps> = ({ className = "" }) => 
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="w-5 h-5 mr-2 text-green-500" />
-              Migration Benefits
+              Phi-3-Mini Benefits
             </CardTitle>
           </CardHeader>
           <CardContent>
