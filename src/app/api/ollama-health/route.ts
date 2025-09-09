@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       companyRelevance: testQuestions[0]?.companyRelevance || 0,
       responseTime: new Date().toISOString(),
       provider: 'ollama',
-      model: 'llama3.1:8b'
+      model: 'phi3:mini' // Optimized model
     };
 
     console.log('✅ Ollama test completed successfully');
