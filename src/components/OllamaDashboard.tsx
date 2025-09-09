@@ -250,7 +250,7 @@ const OllamaDashboard: React.FC<OllamaDashboardProps> = ({ className = "" }) => 
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">LLaMA 3.1 Model</span>
+                <span className="text-sm font-medium text-gray-600">Phi-3-Mini Model</span>
                 <div className="flex items-center">
                   {getStatusIcon(healthStatus?.modelLoaded || false)}
                   <span className="ml-2 text-sm">
