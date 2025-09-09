@@ -2,11 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import OllamaService from '@/lib/ollamaService';
 
 export async function POST(request: NextRequest) {
+  // Define variables outside try block for access in catch
+  let questions: any[] = [];
+  let answers: string[] = [];
+  let jobTitle: string = '';
+  let companyName: string = '';
+  let skills: string[] = [];
+
   try {
     console.log('📊 Ollama Overall Performance Analysis API called');
     
     const body = await request.json();
-    const { questions, answers, jobTitle, companyName, skills } = body;
+    ({ questions, answers, jobTitle, companyName, skills } = body);
 
     if (!questions || !answers || !jobTitle || !companyName) {
       return NextResponse.json(
