@@ -280,11 +280,15 @@ const OllamaDashboard: React.FC<OllamaDashboardProps> = ({ className = "" }) => 
             <div className="space-y-3">
               <div className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm">Removed Groq dependency</span>
+                <span className="text-sm">3x faster than Llama3.1:8b</span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm">Removed Emergent LLM dependency</span>
+                <span className="text-sm">Optimized for CPU inference</span>
+              </div>
+              <div className="flex items-center">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                <span className="text-sm">Reduced memory usage (2.2GB)</span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
