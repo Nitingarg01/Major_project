@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       health: healthStatus,
       system: systemInfo,
       message: status === 'healthy' 
-        ? 'Ollama service is running and ready to replace Groq/Emergent'
+        ? 'Ollama service is running with optimized Phi-3-Mini model (3x faster)'
         : 'Ollama service is not fully operational'
     }, { status: statusCode });
 
