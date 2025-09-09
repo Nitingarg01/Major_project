@@ -3,7 +3,7 @@
  * Uses Ollama as primary AI service, removed Emergent/Groq dependencies
  */
 
-import { OllamaService } from './ollamaService';
+import OllamaService from './ollamaService';
 import { extractJSON } from './jsonExtractor';
 
 interface InterviewQuestion {
