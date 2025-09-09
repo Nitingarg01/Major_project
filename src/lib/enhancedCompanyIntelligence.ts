@@ -4,7 +4,7 @@
  * Removed News API and external API dependencies
  */
 
-import { OllamaService } from './ollamaService';
+import OllamaService from './ollamaService';
 import { safeExtractJSON } from './jsonExtractor';
 
 interface CompanyData {
