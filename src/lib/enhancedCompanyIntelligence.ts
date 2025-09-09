@@ -1,6 +1,6 @@
 /**
- * Enhanced Company Intelligence Service - OLLAMA OPTIMIZED VERSION
- * Uses Ollama as primary AI service for company intelligence
+ * Enhanced Company Intelligence Service - PHI-3-MINI OPTIMIZED VERSION
+ * Uses Phi-3-Mini model via Ollama as primary AI service for company intelligence
  * Removed News API and external API dependencies
  */
 
@@ -96,13 +96,13 @@ export class EnhancedCompanyIntelligenceService {
         return cached.data;
       }
 
-      console.log(`🔍 Fetching enhanced intelligence for ${companyName}...`);
+      console.log(`🔍 Fetching enhanced intelligence for ${companyName} using Phi-3-Mini...`);
 
       // Get predefined company data first (fastest)
       const companyData = this.fetchFromPredefinedData(companyName);
       
-      // Generate AI-enhanced insights using Ollama
-      const enhancedInsights = await this.generateEnhancedInsightsWithOllama(
+      // Generate AI-enhanced insights using Phi-3-Mini via Ollama
+      const enhancedInsights = await this.generateEnhancedInsightsWithPhi3Mini(
         companyData, 
         jobTitle
       );
@@ -116,7 +116,7 @@ export class EnhancedCompanyIntelligenceService {
       // Cache the result
       this.cache.set(cacheKey, { data: intelligence, timestamp: Date.now() });
       
-      console.log(`✅ Enhanced intelligence generated for ${companyName} (Ollama powered)`);
+      console.log(`✅ Enhanced intelligence generated for ${companyName} (Phi-3-Mini powered)`);
       return intelligence;
 
     } catch (error) {
@@ -125,7 +125,7 @@ export class EnhancedCompanyIntelligenceService {
     }
   }
 
-  private async generateEnhancedInsightsWithOllama(
+  private async generateEnhancedInsightsWithPhi3Mini(
     companyData: CompanyData,
     jobTitle: string
   ): Promise<Omit<EnhancedCompanyIntelligence, 'company_data'>> {
@@ -169,7 +169,7 @@ export class EnhancedCompanyIntelligenceService {
         }
       `;
 
-      // Try Ollama first
+      // Try Phi-3-Mini via Ollama first
       try {
         const health = await this.ollamaService.healthCheck();
         if (health.ollamaAvailable && health.modelLoaded) {
@@ -177,7 +177,7 @@ export class EnhancedCompanyIntelligenceService {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              model: 'llama3.1:8b',
+              model: 'phi3:mini',
               prompt: `${systemPrompt}\n\n${userPrompt}`,
               stream: false,
               options: { temperature: 0.7, num_predict: 3000 }
@@ -191,7 +191,7 @@ export class EnhancedCompanyIntelligenceService {
           }
         }
       } catch (error) {
-        console.log('Ollama failed, using default insights');
+        console.log('Phi-3-Mini failed, using default insights');
       }
 
       return this.getDefaultInsights(companyData, jobTitle);

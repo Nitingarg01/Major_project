@@ -1,6 +1,6 @@
 /**
- * Enhanced Interview AI Service - OLLAMA OPTIMIZED VERSION
- * Uses Ollama as primary AI service, removed Groq dependencies
+ * Enhanced Interview AI Service - PHI-3-MINI OPTIMIZED VERSION
+ * Uses Phi-3-Mini model via Ollama as primary AI service
  */
 
 import OllamaService from './ollamaService';
@@ -49,7 +49,7 @@ export class EnhancedInterviewAI {
 
   private constructor() {
     this.ollamaService = OllamaService.getInstance();
-    console.log('🤖 EnhancedInterviewAI initialized with Ollama');
+    console.log('🤖 EnhancedInterviewAI initialized with Phi-3-Mini via Ollama');
   }
 
   public static getInstance(): EnhancedInterviewAI {
@@ -60,7 +60,7 @@ export class EnhancedInterviewAI {
   }
 
   /**
-   * Research company information using Ollama AI
+   * Research company information using Phi-3-Mini AI
    */
   public async researchCompany(companyName: string): Promise<CompanyResearchData> {
     // Check cache first
@@ -70,7 +70,7 @@ export class EnhancedInterviewAI {
     }
 
     try {
-      // Use Ollama to research company
+      // Use Ollama with Phi-3-Mini to research company
       const health = await this.ollamaService.healthCheck();
       
       if (health.ollamaAvailable && health.modelLoaded) {
@@ -105,7 +105,7 @@ export class EnhancedInterviewAI {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              model: 'llama3.1:8b',
+              model: 'phi3:mini',
               prompt: `${systemMessage}\n\n${userMessage}`,
               stream: false,
               options: { temperature: 0.7, num_predict: 2000 }
@@ -134,7 +134,7 @@ export class EnhancedInterviewAI {
             return enhancedData;
           }
         } catch (error) {
-          console.log('Ollama research failed, using fallback');
+          console.log('Phi-3-Mini research failed, using fallback');
         }
       }
 
@@ -196,7 +196,7 @@ export class EnhancedInterviewAI {
   }
 
   /**
-   * Generate comprehensive interview questions using Ollama
+   * Generate comprehensive interview questions using Phi-3-Mini via Ollama
    */
   public async generateInterviewQuestions(params: {
     companyName: string;
@@ -206,7 +206,7 @@ export class EnhancedInterviewAI {
     rounds: InterviewRoundConfig[];
   }): Promise<{[roundType: string]: InterviewQuestion[]}> {
     try {
-      // Use Ollama service for question generation
+      // Use Ollama service for question generation (now using Phi-3-Mini)
       const questions = await this.ollamaService.generateInterviewQuestions({
         jobTitle: params.jobTitle,
         companyName: params.companyName,
