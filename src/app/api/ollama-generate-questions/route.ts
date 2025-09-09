@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
       success: true,
       questions: questionsWithMetadata,
       provider: 'ollama',
-      model: 'llama3.1:8b',
+      model: 'phi3:mini', // Optimized for speed
       companySpecific: true,
       message: `Generated ${questionsWithMetadata.length} company-specific questions`
     });
