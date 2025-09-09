@@ -75,6 +75,7 @@ export default function DashboardPage() {
       console.log('User authenticated, fetching interviews...')
       setHasInitialized(true)
       fetchUserInterviews()
+      checkServiceStatus()
     } else if (status === 'authenticated' && !session?.user?.id) {
       console.error('Authenticated but no user ID found')
       toast.error('Authentication error. Please try logging in again.')
