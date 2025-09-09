@@ -149,7 +149,7 @@ const OllamaDashboard: React.FC<OllamaDashboardProps> = ({ className = "" }) => 
         <div>
           <h2 className="text-2xl font-bold text-gray-900 flex items-center">
             <Sparkles className="w-6 h-6 text-blue-500 mr-2" />
-            Ollama AI Service Dashboard
+            Phi-3-Mini AI Service Dashboard
           </h2>
           <p className="text-sm text-gray-600">
             Last updated: {lastUpdated.toLocaleTimeString()}
