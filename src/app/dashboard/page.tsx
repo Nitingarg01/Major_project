@@ -345,8 +345,8 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Ollama Service Status */}
-          <div className="mb-8">
+          {/* Phi-3-Mini Service Status */}
+          <div className="mb-8" id="phi3-service">
             <OllamaDashboard />
           </div>
 
