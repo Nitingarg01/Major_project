@@ -82,7 +82,7 @@ interface CompanyData {
 export class OllamaService {
   private static instance: OllamaService;
   private baseUrl = 'http://localhost:11434';
-  private model = 'llama3.1:8b';
+  private model = 'phi3:mini'; // Optimized for Ryzen 3 + 12GB RAM - 3x faster than llama3.1:8b
   
   // Company database for enhanced question generation
   private companyDatabase: Map<string, CompanyData> = new Map();
