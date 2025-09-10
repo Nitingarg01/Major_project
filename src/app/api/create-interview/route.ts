@@ -58,24 +58,38 @@ async function generateQuestionsImmediately(interviewData: any) {
         return allQuestions;
         
     } catch (error) {
-        console.error('❌ Error generating questions:', error);
-        // Return some default questions as fallback
+        console.error('❌ Error generating questions with Smart AI:', error);
+        // Return some default Smart AI enhanced questions as fallback
         return [
             {
-                question: "Tell me about your experience with software development and how you approach solving complex technical problems.",
-                expectedAnswer: "A comprehensive answer covering technical experience, problem-solving methodology, examples of complex problems solved, and lessons learned from challenging projects.",
+                id: 'smart-fallback-1',
+                question: "Tell me about your experience with software development and how you approach solving complex technical problems using modern frameworks and tools.",
+                expectedAnswer: "A comprehensive answer covering technical expertise, problem-solving methodology, specific examples of complex problems solved, modern development practices, and lessons learned from challenging projects. Should demonstrate deep technical understanding and practical application.",
                 difficulty: "medium",
                 category: "technical",
                 points: 15,
-                timeLimit: 8
+                timeLimit: 8,
+                provider: 'fallback',
+                model: 'smart-ai-fallback',
+                evaluationCriteria: ['Technical Depth', 'Problem Solving', 'Modern Practices', 'Communication'],
+                tags: ['technical', 'problem-solving', 'modern-development'],
+                hints: ['Think about specific frameworks and tools', 'Include real-world examples'],
+                companyRelevance: 7
             },
             {
-                question: "Describe a situation where you had to work with a difficult team member. How did you handle it and what was the outcome?",
-                expectedAnswer: "Should demonstrate interpersonal skills, conflict resolution, communication strategies, and professional growth from the experience.",
+                id: 'smart-fallback-2',
+                question: "Describe a challenging situation where you had to collaborate with a difficult team member while working on a high-priority project. How did you handle the interpersonal dynamics and ensure project success?",
+                expectedAnswer: "Should demonstrate advanced interpersonal skills, conflict resolution strategies, leadership qualities, effective communication under pressure, and ability to maintain project momentum while addressing team dynamics professionally.",
                 difficulty: "medium", 
                 category: "behavioral",
                 points: 12,
-                timeLimit: 6
+                timeLimit: 6,
+                provider: 'fallback',
+                model: 'smart-ai-fallback',
+                evaluationCriteria: ['Leadership', 'Communication', 'Conflict Resolution', 'Team Collaboration'],
+                tags: ['behavioral', 'teamwork', 'leadership', 'communication'],
+                hints: ['Focus on your role in resolution', 'Highlight project outcomes'],
+                companyRelevance: 8
             }
         ];
     }
