@@ -301,7 +301,7 @@ const Createform = () => {
                                     {/* Skill Suggestions */}
                                     {showSkillSuggestions && (
                                         <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-sm text-gray-600 mb-3">Popular skills by category (more skills = harder questions):</p>
+                                            <p className="text-sm text-gray-600 mb-3">Popular skills by category (more skills = better Smart AI questions):</p>
                                             <div className="space-y-3">
                                                 {Object.entries(skillCategories).map(([category, skills]) => (
                                                     <div key={category}>
