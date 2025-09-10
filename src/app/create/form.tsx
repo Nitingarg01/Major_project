@@ -225,9 +225,9 @@ const Createform = () => {
                                     </FormLabel>
                                     <FormControl>
                                         <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-3 bg-white">
-                                            <option value="entry">Entry Level (0-2 years) - Gets HARD questions anyway</option>
-                                            <option value="mid">Mid Level (2-5 years) - HARD questions</option>
-                                            <option value="senior">Senior Level (5+ years) - EXTRA HARD questions</option>
+                                            <option value="entry">Entry Level (0-2 years) - Smart AI optimized</option>
+                                            <option value="mid">Mid Level (2-5 years) - Smart AI enhanced</option>
+                                            <option value="senior">Senior Level (5+ years) - Advanced Smart AI</option>
                                         </select>
                                     </FormControl>
                                     <FormMessage />
