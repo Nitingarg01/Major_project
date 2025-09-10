@@ -404,7 +404,7 @@ const Createform = () => {
                                                     {uploading ? (
                                                         <div className="flex items-center gap-2 justify-center">
                                                             <LoaderFive />
-                                                            Extracting skills for HARD questions...
+                                                            Extracting skills with Smart AI...
                                                         </div>
                                                     ) : (
                                                         <div>
