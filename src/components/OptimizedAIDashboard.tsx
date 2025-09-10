@@ -199,7 +199,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
               <Award className="w-8 h-8 text-green-600 mr-3" />
               <div>
                 <h3 className="font-semibold text-gray-900">🚀 Performance Breakthrough!</h3>
-                <p className="text-sm text-gray-600">Optimized AI is 10x faster than Ollama phi3:mini</p>
+                <p className="text-sm text-gray-600">Smart AI is 10x faster than Ollama Phi3 Mini</p>
               </div>
             </div>
             <Badge className="bg-green-100 text-green-800 border-green-300">
