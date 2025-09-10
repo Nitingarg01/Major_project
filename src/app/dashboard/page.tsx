@@ -22,7 +22,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import LoadingWrapper from '@/components/LoadingWrapper'
-import OllamaDashboard from '@/components/OllamaDashboard'
+import SmartAIDashboard from '@/components/SmartAIDashboard'
 
 interface Interview {
   _id: string
@@ -75,7 +75,6 @@ export default function DashboardPage() {
       console.log('User authenticated, fetching interviews...')
       setHasInitialized(true)
       fetchUserInterviews()
-      // checkServiceStatus() // Removed undefined function call
     } else if (status === 'authenticated' && !session?.user?.id) {
       console.error('Authenticated but no user ID found')
       toast.error('Authentication error. Please try logging in again.')
@@ -334,12 +333,12 @@ export default function DashboardPage() {
               </div>
             </Link>
 
-            <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl shadow-sm p-6 text-white cursor-pointer group" onClick={() => router.push('/dashboard#phi3-service')}>
+            <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl shadow-sm p-6 text-white cursor-pointer group" onClick={() => router.push('/dashboard#smart-ai-service')}>
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <div className="w-6 h-6 text-white">🚀</div>
+                <div className="w-6 h-6 text-white">🧠</div>
               </div>
-              <h3 className="text-lg font-semibold mb-2">Phi-3-Mini AI Service</h3>
-              <p className="text-white/90 text-sm">Optimized offline AI processing - 3x faster with enhanced company-specific questions</p>
+              <h3 className="text-lg font-semibold mb-2">Smart AI Service</h3>
+              <p className="text-white/90 text-sm">Powered by Emergent + Gemini - 10x faster AI processing with intelligent task routing</p>
               <div className="flex items-center mt-3 text-white group-hover:text-green-100">
                 <span className="text-sm font-medium">View Service Status</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
@@ -347,9 +346,9 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Phi-3-Mini Service Status */}
-          <div className="mb-8" id="phi3-service">
-            <OllamaDashboard />
+          {/* Smart AI Service Status */}
+          <div className="mb-8" id="smart-ai-service">
+            <SmartAIDashboard />
           </div>
 
           {/* Recent Interviews */}
