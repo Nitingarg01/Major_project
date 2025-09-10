@@ -440,7 +440,7 @@ const Createform = () => {
                         <Button 
                             variant="default" 
                             type="submit" 
-                            className="w-full md:w-auto px-12 py-4 text-lg bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700" 
+                            className="w-full md:w-auto px-12 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
                             disabled={loading || uploading}
                         >
                             {loading ? (
