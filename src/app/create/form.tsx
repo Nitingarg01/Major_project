@@ -88,7 +88,7 @@ const Createform = () => {
         setLoading(true)
         try {
             const response = await createInterview(data, projectContext, workExDetails)
-            toast.success("🎉 Interview Created Successfully with HARD Questions!")
+            toast.success("🎉 Interview Created Successfully with Smart AI!")
             router.push('/dashboard')
         } catch (error) {
             console.error('Interview creation error:', error)
