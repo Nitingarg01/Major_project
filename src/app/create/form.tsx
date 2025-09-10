@@ -388,7 +388,7 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="flex items-center gap-2 font-semibold">
                                         <FileText className="w-5 h-5 text-green-600" />
-                                        Upload Resume (Auto-fill skills & details for HARD questions)
+                                        Upload Resume (Auto-fill skills & details with Smart AI)
                                     </FormLabel>
                                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
                                         <div className="flex flex-col items-center gap-4">
