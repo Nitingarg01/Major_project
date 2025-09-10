@@ -446,12 +446,12 @@ const Createform = () => {
                             {loading ? (
                                 <span className="flex items-center gap-2">
                                     <LoaderFive />
-                                    Creating HARD Interview...
+                                    Creating Smart AI Interview...
                                 </span>
                             ) : (
                                 <span className="flex items-center gap-2">
                                     <Sparkles className="w-5 h-5" />
-                                    Create HARD AI Interview
+                                    Create Smart AI Interview
                                 </span>
                             )}
                         </Button>
