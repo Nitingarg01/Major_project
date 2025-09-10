@@ -15,122 +15,46 @@ function getQuestionCountForType(interviewType: string): number {
   }
 }
 
-// Import ReliableAIService for robust question generation
+// Import SmartAI for intelligent question generation
 async function generateQuestionsImmediately(interviewData: any) {
     try {
-        const ReliableAIService = await import('@/lib/reliableAIService');
-        const EnhancedCompanyIntelligenceService = await import('@/lib/enhancedCompanyIntelligence');
+        const SmartAIService = await import('@/lib/smartAIService');
+        const smartAI = SmartAIService.default.getInstance();
         
-        const aiService = ReliableAIService.default.getInstance();
-        const companyIntelligence = EnhancedCompanyIntelligenceService.default.getInstance();
+        console.log('🧠 Generating questions with Smart AI Service (Emergent + Gemini)...');
         
-        console.log('🚀 Generating questions with Reliable AI Service...');
-        
-        // Get enhanced company intelligence
-        const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
-            interviewData.companyName,
-            interviewData.jobTitle || 'Software Engineer'
-        );
+        // Generate questions using Smart AI routing
+        const questionResponse = await smartAI.generateQuestions({
+            jobTitle: interviewData.jobTitle || 'Software Engineer',
+            companyName: interviewData.companyName,
+            skills: interviewData.skills || [],
+            interviewType: interviewData.interviewType || 'mixed',
+            experienceLevel: interviewData.experienceLevel || 'mid',
+            numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed'),
+            companyIntelligence: null // Enhanced later
+        });
 
-        console.log('📊 Company intelligence gathered for', interviewData.companyName);
-        
-        let allQuestions: any[] = [];
-        
-        // Generate questions based on interview type
-        if (interviewData.interviewType === 'mixed') {
-            // Technical Questions
-            const technicalQuestions = await aiService.generateInterviewQuestions({
-                jobTitle: interviewData.jobTitle || 'Software Engineer',
-                companyName: interviewData.companyName,
-                skills: interviewData.skills || [],
-                interviewType: 'technical',
-                experienceLevel: interviewData.experienceLevel || 'mid',
-                numberOfQuestions: 8,
-                companyIntelligence: enhancedCompanyData?.company_data
-            });
-
-            // Behavioral Questions
-            const behavioralQuestions = await aiService.generateInterviewQuestions({
-                jobTitle: interviewData.jobTitle || 'Software Engineer',
-                companyName: interviewData.companyName,
-                skills: interviewData.skills || [],
-                interviewType: 'behavioral',
-                experienceLevel: interviewData.experienceLevel || 'mid',
-                numberOfQuestions: 6,
-                companyIntelligence: enhancedCompanyData?.company_data
-            });
-
-            // DSA Problems
-            const dsaProblems = await aiService.generateDSAProblems(
-                interviewData.companyName,
-                getDSADifficulty(interviewData.experienceLevel),
-                6
-            );
-
-            allQuestions = [
-                ...technicalQuestions,
-                ...behavioralQuestions,
-                ...dsaProblems.map(p => ({
-                    question: p.title,
-                    expectedAnswer: p.description,
-                    difficulty: p.difficulty,
-                    category: 'dsa',
-                    points: getDSAPoints(p.difficulty),
-                    timeLimit: 30,
-                    provider: 'emergent',
-                    model: 'gpt-4o-mini',
-                    evaluationCriteria: ['Problem Solving', 'Code Quality', 'Algorithm Understanding'],
-                    tags: ['dsa', 'coding', interviewData.companyName],
-                    problemData: p
-                }))
-            ];
-        } else if (interviewData.interviewType === 'dsa') {
-            const dsaProblems = await aiService.generateDSAProblems(
-                interviewData.companyName,
-                getDSADifficulty(interviewData.experienceLevel),
-                8
-            );
-
-            allQuestions = dsaProblems.map(p => ({
-                question: p.title,
-                expectedAnswer: p.description,
-                difficulty: p.difficulty,
-                category: 'dsa',
-                points: getDSAPoints(p.difficulty),
-                timeLimit: 45,
-                provider: 'emergent',
-                model: 'gpt-4o-mini',
-                evaluationCriteria: ['Problem Solving', 'Code Quality', 'Algorithm Understanding'],
-                tags: ['dsa', 'coding', interviewData.companyName],
-                problemData: p
-            }));
-        } else {
-            // Single type interview (technical, behavioral, or aptitude)
-            const questions = await aiService.generateInterviewQuestions({
-                jobTitle: interviewData.jobTitle || 'Software Engineer',
-                companyName: interviewData.companyName,
-                skills: interviewData.skills || [],
-                interviewType: interviewData.interviewType as 'technical' | 'behavioral' | 'aptitude',
-                experienceLevel: interviewData.experienceLevel || 'mid',
-                numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'technical'),
-                companyIntelligence: enhancedCompanyData?.company_data
-            });
-
-            allQuestions = questions.map(q => ({
-                question: q.question,
-                expectedAnswer: q.expectedAnswer,
-                difficulty: q.difficulty,
-                category: q.category,
-                points: q.points || 15,
-                timeLimit: q.timeLimit || 8,
-                provider: 'emergent',
-                model: 'gpt-4o-mini',
-                evaluationCriteria: q.evaluationCriteria || ['Technical Knowledge', 'Communication'],
-                tags: q.tags || [interviewData.jobTitle, interviewData.companyName]
-            }));
+        if (!questionResponse.success) {
+            throw new Error('Smart AI question generation failed');
         }
 
-        console.log(`✅ ${allQuestions.length} questions generated successfully with Emergent LLM`);
+        const allQuestions = questionResponse.data.map((q: any) => ({
+            id: q.id,
+            question: q.question,
+            expectedAnswer: q.expectedAnswer,
+            difficulty: q.difficulty || 'medium',
+            category: q.category,
+            points: q.points || 15,
+            timeLimit: q.timeLimit || 8,
+            provider: questionResponse.provider,
+            model: questionResponse.model,
+            evaluationCriteria: q.evaluationCriteria || ['Technical Knowledge', 'Communication', 'Problem Solving'],
+            tags: q.tags || [interviewData.jobTitle, interviewData.companyName],
+            hints: q.hints || [],
+            companyRelevance: q.companyRelevance || 8
+        }));
+
+        console.log(`✅ ${allQuestions.length} questions generated successfully with ${questionResponse.provider} in ${questionResponse.processingTime}ms`);
         return allQuestions;
         
     } catch (error) {
