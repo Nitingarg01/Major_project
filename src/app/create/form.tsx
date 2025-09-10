@@ -136,13 +136,13 @@ const Createform = () => {
                 <div className="flex items-center justify-center gap-2 mb-4">
                     <Sparkles className="w-8 h-8 text-purple-500" />
                     <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
-                        Create HARD AI Interview
+                        Create Smart AI Interview
                     </h1>
                 </div>
                 <p className="text-gray-600">Configure your challenging mock interview session</p>
-                <div className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-400 p-4 mt-4 rounded">
-                    <p className="text-red-800 font-semibold">⚡ HARD Mode: Questions designed for senior-level challenges</p>
-                    <p className="text-red-700 text-sm">Get ready for complex scenarios and advanced technical questions!</p>
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-400 p-4 mt-4 rounded">
+                    <p className="text-blue-800 font-semibold">🧠 Smart AI: Powered by Emergent + Gemini for optimal performance</p>
+                    <p className="text-blue-700 text-sm">Get ready for intelligent questions generated 10x faster than before!</p>
                 </div>
             </div>
 
