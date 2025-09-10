@@ -130,6 +130,43 @@ export class ImprovedJudge0Service {
     throw new Error('Code execution timeout - submission took too long');
   }
 
+  private createExecutableCode(userCode: string, testCase: TestCase, language: string): string {
+    // Convert test case input like "nums = [2,7,11,15], target = 9" to executable code
+    if (language === 'python') {
+      // Extract the function name from user code
+      const functionMatch = userCode.match(/def\s+(\w+)\s*\(/);
+      const functionName = functionMatch ? functionMatch[1] : 'solution';
+      
+      // Parse the test case input to extract parameters
+      const inputParams = testCase.input.split(',').map(param => param.trim());
+      const paramValues: string[] = [];
+      
+      for (const param of inputParams) {
+        if (param.includes('=')) {
+          const value = param.split('=')[1].trim();
+          paramValues.push(value);
+        }
+      }
+      
+      // Create executable code that calls the function and prints result
+      const executableCode = `${userCode}
+
+# Test execution
+try:
+    ${inputParams.join(', ')}
+    result = ${functionName}(${paramValues.join(', ')})
+    print(str(result).replace(' ', ''))
+except Exception as e:
+    print(f"Error: {e}")
+`;
+      
+      return executableCode;
+    }
+    
+    // For other languages, return original code for now
+    return userCode;
+  }
+
   public async executeCode(
     sourceCode: string, 
     language: string, 
@@ -153,8 +190,12 @@ export class ImprovedJudge0Service {
       // Execute code for each test case
       for (const testCase of testCases) {
         try {
-          // Submit code with test case input
-          const token = await this.submitCode(sourceCode, languageId, testCase.input);
+          // Create executable code that calls the user's function with test inputs
+          const executableCode = this.createExecutableCode(sourceCode, testCase, language);
+          console.log('📝 Executable code created:', executableCode.substring(0, 200) + '...');
+          
+          // Submit executable code (no stdin needed as we embed the test case)
+          const token = await this.submitCode(executableCode, languageId, '');
           
           // Get execution result
           const submission = await this.getSubmissionResult(token);
@@ -169,6 +210,14 @@ export class ImprovedJudge0Service {
           const actualOutput = stdout.trim();
           const expectedOutput = testCase.expectedOutput.trim();
           const passed = isSuccess && actualOutput === expectedOutput;
+          
+          console.log(`🧪 Test case result:`, {
+            input: testCase.input,
+            expected: expectedOutput,
+            actual: actualOutput,
+            passed,
+            status: submission.status.description
+          });
           
           if (passed) {
             totalPassed++;
@@ -196,6 +245,7 @@ export class ImprovedJudge0Service {
           }
 
         } catch (error: any) {
+          console.error(`❌ Test case execution error:`, error);
           results.push({
             passed: false,
             input: testCase.input,
