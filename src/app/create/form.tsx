@@ -360,14 +360,14 @@ const Createform = () => {
                         name="interviewType"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-semibold">Interview Type<span className="text-red-500">*</span> (All are HARD mode)</FormLabel>
+                                <FormLabel className="font-semibold">Interview Type<span className="text-red-500">*</span> (All powered by Smart AI)</FormLabel>
                                 <FormControl>
                                     <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-3 bg-white">
-                                        <option value="mixed">🎯 Mixed HARD (Technical + Behavioral + Aptitude + DSA)</option>
-                                        <option value="technical">💻 Technical HARD Only</option>
-                                        <option value="behavioral">🤝 Behavioral HARD Only</option>
-                                        <option value="aptitude">🧠 Aptitude HARD Only</option>
-                                        <option value="dsa">⚡ DSA HARD (Data Structures & Algorithms)</option>
+                                        <option value="mixed">🧠 Mixed Smart AI (Technical + Behavioral + Aptitude + DSA)</option>
+                                        <option value="technical">💻 Technical Smart AI Only</option>
+                                        <option value="behavioral">🤝 Behavioral Smart AI Only</option>
+                                        <option value="aptitude">🎯 Aptitude Smart AI Only</option>
+                                        <option value="dsa">⚡ DSA Smart AI (Data Structures & Algorithms)</option>
                                     </select>
                                 </FormControl>
                                 <FormMessage />
