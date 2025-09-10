@@ -236,7 +236,7 @@ export async function POST(request: NextRequest) {
                 questionsCount: questions.length,
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
                 totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0),
-                service: 'reliable-ai',
+                service: 'smart-ai',
                 userId: session.user.id
             },
             { status: 201 }
