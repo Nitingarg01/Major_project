@@ -277,7 +277,7 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="font-semibold">
                                         Skills<span className="text-red-500">*</span>
-                                        <span className="text-sm text-gray-500 ml-2">({field.value.length}/15) - More skills = Harder questions</span>
+                                        <span className="text-sm text-gray-500 ml-2">({field.value.length}/15) - More skills = Better Smart AI questions</span>
                                     </FormLabel>
                                     
                                     <div className="flex gap-2">
