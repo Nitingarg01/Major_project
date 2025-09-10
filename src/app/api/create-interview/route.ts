@@ -201,9 +201,12 @@ export async function POST(request: NextRequest) {
             userId: session.user.id,
             metadata: {
                 generatedAt: new Date(),
-                questionType: 'reliable-ai',
+                questionType: 'smart-ai',
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
-                service: 'reliable-ai'
+                service: 'smart-ai',
+                provider: questions[0]?.provider || 'unknown',
+                model: questions[0]?.model || 'unknown',
+                processingMethod: 'intelligent-routing'
             }
         });
 
