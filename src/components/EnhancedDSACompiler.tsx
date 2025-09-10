@@ -440,15 +440,6 @@ int main() {
                   <Building className="w-3 h-3 mr-1" />
                   {companyName}
                 </Badge>
-                {problem.companies && problem.companies.length > 1 && (
-                  <div className="flex gap-1">
-                    {problem.companies.slice(0, 3).map(company => (
-                      <Badge key={company} variant="outline" className="text-xs">
-                        {company}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -478,7 +469,7 @@ int main() {
           </div>
         </div>
 
-        {/* Topics and Complexity */}
+        {/* Topics and Auto-save */}
         <div className="flex flex-wrap items-center gap-4 mb-4">
           <div className="flex flex-wrap gap-2">
             {problem.topics.map((topic, index) => (
@@ -488,43 +479,10 @@ int main() {
             ))}
           </div>
           
-          {(problem.timeComplexity || problem.spaceComplexity) && (
-            <div className="flex gap-2">
-              {problem.timeComplexity && (
-                <Badge variant="secondary" className="text-xs">
-                  Time: {problem.timeComplexity}
-                </Badge>
-              )}
-              {problem.spaceComplexity && (
-                <Badge variant="secondary" className="text-xs">
-                  Space: {problem.spaceComplexity}
-                </Badge>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Auto-save and Interactive Features */}
-        <div className="flex items-center justify-between mb-2">
           {autoSaveCount > 0 && (
             <div className="flex items-center gap-1 text-xs text-green-600">
               <Save className="w-3 h-3" />
               Auto-saved {autoSaveCount} times
-            </div>
-          )}
-          
-          {problem.interactiveFeatures && (
-            <div className="flex gap-2">
-              {problem.interactiveFeatures.hasVisualizer && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowVisualizer(!showVisualizer)}
-                >
-                  {showVisualizer ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  Visualizer
-                </Button>
-              )}
             </div>
           )}
         </div>
@@ -545,7 +503,7 @@ int main() {
                 <p className="text-gray-700 leading-relaxed">{problem.description}</p>
               </div>
 
-              {/* Examples with enhanced formatting */}
+              {/* Examples */}
               <div>
                 <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <Target className="w-4 h-4" />
