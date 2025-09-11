@@ -213,8 +213,8 @@ export async function POST(request: NextRequest) {
         const interviewResult = await db.collection("interviews").insertOne(interviewData);
         console.log('✅ Interview record created for user:', session.user.id);
 
-        // Generate questions immediately
-        const questions = await generateQuestionsImmediately(interviewData);
+        // Generate questions immediately with user preferences
+        const questions = await generateQuestionsImmediately(interviewData, userId);
         
         // Store questions in database
         const questionsResult = await db.collection("questions").insertOne({
