@@ -277,7 +277,7 @@ const NewInterviewWrapper = ({
     }
 
     initializeSession()
-  }, [roundConfigs, aiService, ollamaService, companyName, jobTitle, skills, experienceLevel, questions])
+  }, [roundConfigs, aiService, smartAIService, companyName, jobTitle, skills, experienceLevel, questions])
 
   // Handle interview start
   const handleStart = useCallback(() => {
