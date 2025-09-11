@@ -102,11 +102,17 @@ async function generateQuestionsImmediately(interviewData: any, userId: string) 
                 points: 20,
                 timeLimit: 25,
                 provider: 'preference-fallback',
-                model: 'smart-ai-fallback',
-                evaluationCriteria: ['Leadership', 'Communication', 'Conflict Resolution', 'Team Collaboration'],
-                tags: ['behavioral', 'teamwork', 'leadership', 'communication'],
-                hints: ['Focus on your role in resolution', 'Highlight project outcomes'],
-                companyRelevance: 8
+                model: 'enhanced-dsa-fallback',
+                evaluationCriteria: ['Algorithmic Thinking', 'Code Quality', 'Business Application', 'Communication'],
+                tags: ['dsa', 'algorithms', 'company-specific', interviewData.companyName],
+                hints: ['Think about real-world applications', 'Consider company scale'],
+                companyRelevance: 8,
+                uniquenessScore: 6,
+                companyContext: `Relevant to ${interviewData.companyName}'s technical challenges`,
+                preferences: {
+                    alignsWithUserPrefs: true,
+                    preferenceFactors: ['DSA focus', 'Company-unique problems', 'Real-world scenarios']
+                }
             }
         ];
     }
