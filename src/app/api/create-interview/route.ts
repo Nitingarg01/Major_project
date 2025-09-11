@@ -15,28 +15,38 @@ function getQuestionCountForType(interviewType: string): number {
   }
 }
 
-// Import SmartAI for intelligent question generation
-async function generateQuestionsImmediately(interviewData: any) {
+// Import Preference-Based Question Generator for enhanced user-customized questions
+async function generateQuestionsImmediately(interviewData: any, userId: string) {
     try {
-        const SmartAIService = await import('@/lib/smartAIService');
-        const smartAI = SmartAIService.default.getInstance();
+        const { preferenceBasedQuestionGenerator } = await import('@/lib/preferenceBasedQuestionGenerator');
+        const { userPreferencesService } = await import('@/lib/userPreferencesService');
         
-        console.log('🧠 Generating questions with Smart AI Service (Emergent + Gemini)...');
+        console.log('🎯 Generating preference-based questions with company-unique DSA problems...');
         
-        // Generate questions using Smart AI routing
-        const questionResponse = await smartAI.generateQuestions({
+        // Get user preferences
+        const userPreferences = await userPreferencesService.getUserPreferences(userId);
+        console.log('📊 User preferences loaded for question generation');
+        
+        // Generate questions using preference-based system
+        const questionResponse = await preferenceBasedQuestionGenerator.generatePreferenceBasedQuestions({
+            userPreferences,
             jobTitle: interviewData.jobTitle || 'Software Engineer',
             companyName: interviewData.companyName,
             skills: interviewData.skills || [],
             interviewType: interviewData.interviewType || 'mixed',
             experienceLevel: interviewData.experienceLevel || 'mid',
             numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed'),
-            companyIntelligence: null // Enhanced later
+            companyIntelligence: null,
+            forceUniqueGeneration: true
         });
 
         if (!questionResponse.success) {
-            throw new Error('Smart AI question generation failed');
+            throw new Error('Preference-based question generation failed');
         }
+
+        console.log(`✅ Generated ${questionResponse.questions.length} preference-aligned questions`);
+        console.log(`🔥 Company-unique DSA problems: ${questionResponse.metadata.uniqueDSAProblems}`);
+        console.log(`🎯 Preference alignment: ${questionResponse.metadata.preferenceAlignment}%`);
 
         const allQuestions = questionResponse.data.map((q: any) => ({
             id: q.id,
