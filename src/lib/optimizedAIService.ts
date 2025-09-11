@@ -229,7 +229,7 @@ export class OptimizedAIService {
     return suggestions.slice(0, 10);
   }
 
-  private async callEmergentAPI(request: EmergentLLMRequest): Promise<EmergentLLMResponse> {
+  public async callEmergentAPI(request: EmergentLLMRequest): Promise<EmergentLLMResponse> {
     if (!this.emergentApiKey) {
       throw new Error('Emergent API key not configured');
     }
