@@ -87,7 +87,8 @@ export class EmergentLLMService {
     
     console.log('🔥 EmergentLLMService initialized with keys:', {
       emergent: !!this.emergentApiKey,
-      gemini: !!this.geminiApiKey
+      gemini: !!this.geminiApiKey,
+      emergentIntegrationReady: emergentIntegration.isConfigured()
     });
   }
 
