@@ -85,6 +85,16 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
 {status === 'authenticated' && session?.user && (
         <NavigationMenu>
           <NavigationMenuList className='flex flex-row space-x-6 pr-2'>
+            <NavigationMenuItem>
+              <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                Dashboard
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/preferences" className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                ⚙️ Preferences
+              </Link>
+            </NavigationMenuItem>
             <NavigationMenuItem className='font-semibold'>
               <Tooltip>
                 <TooltipTrigger>
