@@ -6,6 +6,7 @@
 
 import { config } from 'dotenv';
 import { extractJSON } from './jsonExtractor';
+import { emergentIntegration } from './emergentIntegration';
 
 // Load environment variables
 if (typeof process !== 'undefined') {
