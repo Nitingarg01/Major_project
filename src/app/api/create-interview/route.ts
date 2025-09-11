@@ -224,10 +224,10 @@ export async function POST(request: NextRequest) {
             userId: session.user.id,
             metadata: {
                 generatedAt: new Date(),
-                questionType: 'smart-ai',
+                questionType: 'preference-based',
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
-                service: 'smart-ai',
-                provider: questions[0]?.provider || 'unknown',
+                service: 'preference-based-generator',
+                provider: questions[0]?.provider || 'preference-enhanced',
                 model: questions[0]?.model || 'unknown',
                 processingMethod: 'intelligent-routing'
             }
