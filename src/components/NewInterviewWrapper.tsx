@@ -137,7 +137,7 @@ const NewInterviewWrapper = ({
 
   // Initialize AI services
   const aiService = useMemo(() => EnhancedInterviewAI.getInstance(), [])
-  const ollamaService = useMemo(() => OllamaService.getInstance(), [])
+  const smartAIService = useMemo(() => SmartAIService.getInstance(), [])
 
   // Configure rounds based on user selection
   useEffect(() => {
