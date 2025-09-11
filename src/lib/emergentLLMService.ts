@@ -100,44 +100,34 @@ export class EmergentLLMService {
   }
 
   private async callEmergentAPI(request: EmergentLLMRequest): Promise<EmergentLLMResponse> {
-    if (!this.emergentApiKey) {
+    if (!emergentIntegration.isConfigured()) {
       throw new Error('Emergent API key not configured');
     }
 
     try {
-      console.log('🚀 Calling Emergent API with provider:', request.provider || 'openai');
+      console.log('🚀 Calling Emergent Integration with provider:', request.provider || 'openai');
       
-      const response = await fetch(this.baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.emergentApiKey}`,
-        },
-        body: JSON.stringify({
-          messages: request.messages,
-          provider: request.provider || 'openai',
-          model: request.model || 'gpt-4o-mini',
-          max_tokens: request.max_tokens || 4000,
-          temperature: request.temperature || 0.7,
-        }),
-      });
+      const response = await emergentIntegration.makeRequest(
+        request.messages,
+        'general', // task type for optimal routing
+        {
+          provider: request.provider,
+          model: request.model,
+          temperature: request.temperature,
+          max_tokens: request.max_tokens
+        }
+      );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Emergent API error: ${response.status} ${response.statusText} - ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('✅ Emergent API response received');
+      console.log('✅ Emergent Integration response received');
       
       return {
-        content: data.content || data.message || 'No response received',
-        provider: request.provider || 'openai',
-        model: request.model || 'gpt-4o-mini',
-        usage: data.usage
+        content: response.content,
+        provider: response.provider,
+        model: response.model,
+        usage: response.usage
       };
     } catch (error) {
-      console.error('❌ Emergent API call failed:', error);
+      console.error('❌ Emergent Integration call failed:', error);
       throw error;
     }
   }
