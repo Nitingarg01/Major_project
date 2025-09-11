@@ -1,52 +1,39 @@
 /**
- * Hybrid AI Service - Combines Ollama + Gemini for Reliability
- * Uses Ollama when available, falls back to Gemini for production reliability
+ * Hybrid AI Service - SMART AI OPTIMIZED VERSION
+ * Uses Smart AI service (Emergent + Gemini) replacing Ollama
  */
 
-import OllamaService from './ollamaService';
-import { aiInterviewModel } from './aimodel';
-import { extractJSON } from './jsonExtractor';
+import SmartAIService from './smartAIService';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface InterviewQuestion {
   id: string;
   question: string;
   expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
   difficulty: 'easy' | 'medium' | 'hard';
   points: number;
   timeLimit?: number;
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
-  companyRelevance: number;
-}
-
-interface ResponseAnalysis {
-  score: number;
-  feedback: string;
-  suggestions: string[];
-  strengths: string[];
-  improvements: string[];
-}
-
-interface QuestionGenerationParams {
-  jobTitle: string;
-  companyName: string;
-  skills: string[];
-  jobDescription?: string;
-  experienceLevel: 'entry' | 'mid' | 'senior';
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design';
-  resumeContent?: string;
-  numberOfQuestions?: number;
 }
 
 export class HybridAIService {
   private static instance: HybridAIService;
-  private ollamaService: OllamaService;
+  private smartAIService: SmartAIService;
+  private geminiAI: GoogleGenerativeAI | null = null;
 
   private constructor() {
-    this.ollamaService = OllamaService.getInstance();
-    console.log('🤖 HybridAIService initialized - Ollama + Gemini fallback');
+    this.smartAIService = SmartAIService.getInstance();
+    
+    // Initialize Gemini as backup
+    const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    if (geminiKey) {
+      this.geminiAI = new GoogleGenerativeAI(geminiKey);
+    }
+
+    console.log('🔥 HybridAIService initialized with Smart AI');
   }
 
   public static getInstance(): HybridAIService {
@@ -56,262 +43,191 @@ export class HybridAIService {
     return HybridAIService.instance;
   }
 
-  /**
-   * Generate interview questions using hybrid approach
-   */
-  public async generateInterviewQuestions(params: QuestionGenerationParams): Promise<InterviewQuestion[]> {
-    console.log('🎯 Generating questions using hybrid approach...');
-    
+  // Generate interview questions using Smart AI
+  public async generateInterviewQuestions(params: {
+    jobTitle: string;
+    companyName: string;
+    skills: string[];
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude';
+    experienceLevel: 'entry' | 'mid' | 'senior';
+    numberOfQuestions: number;
+  }): Promise<InterviewQuestion[]> {
     try {
-      // First, try Ollama for company-specific questions
-      const ollamaHealth = await this.ollamaService.healthCheck();
-      
-      if (ollamaHealth.ollamaAvailable && ollamaHealth.modelLoaded) {
-        console.log('✅ Using Ollama for company-specific question generation');
-        return await this.generateWithOllama(params);
-      } else {
-        console.log('⚠️ Ollama not available, using Gemini fallback');
-        return await this.generateWithGemini(params);
+      const result = await this.smartAIService.generateQuestions({
+        jobTitle: params.jobTitle,
+        companyName: params.companyName,
+        skills: params.skills,
+        interviewType: params.interviewType,
+        experienceLevel: params.experienceLevel,
+        numberOfQuestions: params.numberOfQuestions
+      });
+
+      if (result.success && Array.isArray(result.data)) {
+        return result.data;
       }
+
+      return this.generateFallbackQuestions(params);
     } catch (error) {
-      console.error('❌ Ollama generation failed, falling back to Gemini:', error);
-      return await this.generateWithGemini(params);
+      console.error('Error generating questions:', error);
+      return this.generateFallbackQuestions(params);
     }
   }
 
-  /**
-   * Analyze interview response using hybrid approach
-   */
-  public async analyzeResponse(
+  // Analyze interview response using Smart AI
+  public async analyzeInterviewResponse(
     question: string,
     userAnswer: string,
     expectedAnswer: string,
     category: string,
-    companyContext: string
-  ): Promise<ResponseAnalysis> {
-    console.log('🔍 Analyzing response using hybrid approach...');
-    
+    companyContext: string = 'Technology Company'
+  ): Promise<any> {
     try {
-      // Try Ollama first for company-specific analysis
-      const ollamaHealth = await this.ollamaService.healthCheck();
-      
-      if (ollamaHealth.ollamaAvailable && ollamaHealth.modelLoaded) {
-        console.log('✅ Using Ollama for company-specific response analysis');
-        return await this.ollamaService.analyzeInterviewResponse(
-          question, userAnswer, expectedAnswer, category, companyContext
-        );
-      } else {
-        console.log('⚠️ Ollama not available, using Gemini fallback');
-        return await this.analyzeWithGemini(question, userAnswer, expectedAnswer, category, companyContext);
+      const result = await this.smartAIService.analyzeResponse(
+        question,
+        userAnswer,
+        expectedAnswer,
+        category,
+        companyContext
+      );
+
+      if (result.success) {
+        return result.data;
       }
+
+      return this.generateFallbackAnalysis(userAnswer);
     } catch (error) {
-      console.error('❌ Ollama analysis failed, falling back to Gemini:', error);
-      return await this.analyzeWithGemini(question, userAnswer, expectedAnswer, category, companyContext);
+      console.error('Error analyzing response:', error);
+      return this.generateFallbackAnalysis(userAnswer);
     }
   }
 
-  /**
-   * Analyze overall interview performance
-   */
+  // Analyze overall performance using Smart AI
   public async analyzeOverallPerformance(
     questions: any[],
     answers: string[],
     jobTitle: string,
-    companyName: string,
     skills: string[]
   ): Promise<any> {
-    console.log('📊 Analyzing overall performance using hybrid approach...');
-    
     try {
-      const ollamaHealth = await this.ollamaService.healthCheck();
-      
-      if (ollamaHealth.ollamaAvailable && ollamaHealth.modelLoaded) {
-        console.log('✅ Using Ollama for company-specific performance analysis');
-        return await this.ollamaService.analyzeOverallPerformance(
-          questions, answers, jobTitle, companyName, skills
-        );
-      } else {
-        console.log('⚠️ Ollama not available, using Gemini fallback');
-        return await this.analyzePerformanceWithGemini(questions, answers, jobTitle, companyName, skills);
+      const result = await this.smartAIService.processRequest({
+        task: 'performance_analysis',
+        context: {
+          jobTitle,
+          skills
+        }
+      });
+
+      if (result.success) {
+        return result.data;
       }
+
+      return this.generateFallbackPerformanceAnalysis(questions, answers);
     } catch (error) {
-      console.error('❌ Ollama performance analysis failed, falling back to Gemini:', error);
-      return await this.analyzePerformanceWithGemini(questions, answers, jobTitle, companyName, skills);
+      console.error('Error analyzing performance:', error);
+      return this.generateFallbackPerformanceAnalysis(questions, answers);
     }
   }
 
-  /**
-   * Get company suggestions with enhanced intelligence
-   */
+  // Get company suggestions using Smart AI
   public getCompanySuggestions(query: string): string[] {
-    // Always use Ollama's enhanced company database for suggestions
-    return this.ollamaService.getCompanySuggestions(query);
+    const suggestions = ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple', 'Netflix', 'Tesla', 'Spotify'];
+    return suggestions.filter(company => 
+      company.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, 5);
   }
 
-  /**
-   * Get service health status
-   */
-  public async getServiceHealth(): Promise<{
-    ollama: any;
-    gemini: boolean;
+  // Health check for the service
+  public async getHealthStatus(): Promise<{
+    status: string;
+    services: any;
     primary: string;
     fallback: string;
   }> {
     try {
-      const ollamaHealth = await this.ollamaService.healthCheck();
-      const geminiHealth = !!process.env.GEMINI_API_KEY;
+      const smartAIHealth = await this.smartAIService.getHealthStatus();
       
       return {
-        ollama: ollamaHealth,
-        gemini: geminiHealth,
-        primary: ollamaHealth.ollamaAvailable ? 'ollama' : 'gemini',
-        fallback: ollamaHealth.ollamaAvailable ? 'gemini' : 'none'
+        status: 'healthy',
+        services: {
+          smartAI: smartAIHealth,
+        },
+        primary: smartAIHealth.emergentAvailable ? 'emergent' : (smartAIHealth.geminiAvailable ? 'gemini' : 'none'),
+        fallback: smartAIHealth.fallbackAvailable ? 'available' : 'limited'
       };
     } catch (error) {
       return {
-        ollama: { ollamaAvailable: false, modelLoaded: false, status: 'error' },
-        gemini: !!process.env.GEMINI_API_KEY,
-        primary: 'gemini',
+        status: 'error',
+        services: { smartAI: { emergentAvailable: false, geminiAvailable: false } },
+        primary: 'none',
         fallback: 'none'
       };
     }
   }
 
-  // Private methods for specific service implementations
-
-  private async generateWithOllama(params: QuestionGenerationParams): Promise<InterviewQuestion[]> {
-    const questions = await this.ollamaService.generateInterviewQuestions({
-      jobTitle: params.jobTitle,
-      companyName: params.companyName,
-      skills: params.skills,
-      interviewType: params.interviewType as any,
-      experienceLevel: params.experienceLevel,
-      numberOfQuestions: params.numberOfQuestions || 10
-    });
-
-    return questions.map((q: any) => ({
-      id: q.id || `hybrid-${Date.now()}-${Math.random()}`,
-      question: q.question,
-      expectedAnswer: q.expectedAnswer,
-      category: params.interviewType as any,
-      difficulty: q.difficulty || 'medium',
-      points: q.points || 10,
-      timeLimit: q.timeLimit || 5,
-      evaluationCriteria: q.evaluationCriteria || ['Technical accuracy', 'Communication', 'Problem solving'],
-      tags: q.tags || [params.companyName, params.jobTitle],
-      hints: q.hints || [],
-      companyRelevance: q.companyRelevance || 8
-    }));
-  }
-
-  private async generateWithGemini(params: QuestionGenerationParams): Promise<InterviewQuestion[]> {
-    console.log('🔄 Using Gemini for question generation...');
-    
-    const geminiQuestions = await aiInterviewModel.generateInterviewQuestions({
-      jobTitle: params.jobTitle,
-      companyName: params.companyName,
-      skills: params.skills,
-      jobDescription: params.jobDescription || '',
-      experienceLevel: params.experienceLevel,
-      interviewType: params.interviewType,
-      resumeContent: params.resumeContent,
-      numberOfQuestions: params.numberOfQuestions || 10
-    });
-
-    return geminiQuestions.map((q: any) => ({
-      id: q.id || `gemini-${Date.now()}-${Math.random()}`,
-      question: q.question,
-      expectedAnswer: q.expectedAnswer,
-      category: q.category || params.interviewType,
-      difficulty: q.difficulty || 'medium',
-      points: q.points || 10,
-      timeLimit: 5,
-      evaluationCriteria: ['Technical accuracy', 'Communication', 'Problem solving'],
-      tags: [params.companyName, params.jobTitle],
-      hints: [],
-      companyRelevance: 7 // Slightly lower than Ollama since it's less company-specific
-    }));
-  }
-
-  private async analyzeWithGemini(
-    question: string,
-    userAnswer: string,
-    expectedAnswer: string,
-    category: string,
-    companyContext: string
-  ): Promise<ResponseAnalysis> {
-    console.log('🔄 Using Gemini for response analysis...');
-    
-    const prompt = `You are an expert interviewer evaluating a candidate's response for ${companyContext}.
-
-Question: ${question}
-Category: ${category}
-Expected Answer: ${expectedAnswer}
-Candidate's Answer: ${userAnswer}
-
-Provide detailed analysis in JSON format:
-{
-  "score": (0-10 score),
-  "feedback": "detailed feedback considering ${companyContext}'s standards",
-  "suggestions": ["specific improvement suggestions for ${companyContext}"],
-  "strengths": ["what they did well"],
-  "improvements": ["areas to improve for ${companyContext}"]
-}`;
-
+  // Test the service with a sample question
+  public async testService(): Promise<any> {
     try {
-      const result = await aiInterviewModel.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-      const analysis = extractJSON(text);
-      
+      const result = await this.smartAIService.generateQuestions({
+        jobTitle: 'Software Engineer',
+        companyName: 'Google',
+        skills: ['JavaScript', 'React'],
+        interviewType: 'technical',
+        experienceLevel: 'mid',
+        numberOfQuestions: 1
+      });
+
       return {
-        score: Math.max(0, Math.min(10, analysis.score || 5)),
-        feedback: analysis.feedback || 'Response analyzed successfully.',
-        suggestions: analysis.suggestions || ['Continue practicing'],
-        strengths: analysis.strengths || ['Attempted the question'],
-        improvements: analysis.improvements || ['Add more technical details']
+        success: result.success,
+        provider: result.provider,
+        model: result.model,
+        sampleQuestion: result.data?.[0]?.question || 'No question generated'
       };
     } catch (error) {
-      console.error('Gemini analysis error:', error);
-      return this.generateFallbackAnalysis(userAnswer, companyContext);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
   }
 
-  private async analyzePerformanceWithGemini(
-    questions: any[],
-    answers: string[],
-    jobTitle: string,
-    companyName: string,
-    skills: string[]
-  ): Promise<any> {
-    console.log('🔄 Using Gemini for performance analysis...');
+  // Fallback methods
+  private generateFallbackQuestions(params: any): InterviewQuestion[] {
+    const questions: InterviewQuestion[] = [];
     
-    try {
-      return await aiInterviewModel.analyzeInterviewPerformance(
-        questions, answers, jobTitle, skills
-      );
-    } catch (error) {
-      console.error('Gemini performance analysis error:', error);
-      return this.generateFallbackPerformanceAnalysis(questions, answers, companyName);
+    for (let i = 0; i < params.numberOfQuestions; i++) {
+      questions.push({
+        id: `hybrid-fallback-${i}`,
+        question: `Tell me about your experience with ${params.skills[i % params.skills.length]} in a ${params.jobTitle} role.`,
+        expectedAnswer: 'A comprehensive answer covering experience and practical applications.',
+        category: params.interviewType as any,
+        difficulty: 'medium',
+        points: 10,
+        timeLimit: 5,
+        evaluationCriteria: ['Technical accuracy', 'Communication', 'Real-world application'],
+        tags: [params.jobTitle, params.companyName],
+        hints: ['Think about specific projects and outcomes']
+      });
     }
+    
+    return questions;
   }
 
-  private generateFallbackAnalysis(userAnswer: string, companyContext: string): ResponseAnalysis {
+  private generateFallbackAnalysis(userAnswer: string) {
     const wordCount = userAnswer.split(' ').length;
-    const score = Math.min(10, Math.max(3, wordCount / 15));
+    const score = Math.min(10, Math.max(3, wordCount / 10));
     
     return {
       score,
-      feedback: `Your response shows ${score >= 7 ? 'good' : score >= 5 ? 'adequate' : 'basic'} understanding. For ${companyContext} interviews, consider adding more specific technical details.`,
-      suggestions: [`Research ${companyContext}'s specific technologies`, 'Add more detailed explanations', 'Include real-world examples'],
-      strengths: wordCount > 30 ? ['Comprehensive response', 'Good engagement'] : ['Attempted the question'],
-      improvements: [`Study ${companyContext}'s requirements`, 'Practice company-specific scenarios', 'Improve technical depth']
+      feedback: `Your response demonstrates ${score >= 7 ? 'good' : 'basic'} understanding.`,
+      suggestions: ['Add more specific examples', 'Structure your response better'],
+      strengths: wordCount > 30 ? ['Comprehensive response'] : ['Attempted the question'],
+      improvements: wordCount < 20 ? ['Provide more detailed answers'] : ['Continue developing technical depth']
     };
   }
 
-  private generateFallbackPerformanceAnalysis(questions: any[], answers: string[], companyName: string) {
+  private generateFallbackPerformanceAnalysis(questions: any[], answers: string[]) {
     const avgWordCount = answers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / answers.length;
-    const score = Math.min(10, Math.max(4, avgWordCount / 20));
+    const score = Math.min(10, Math.max(4, avgWordCount / 15));
     
     return {
       overallScore: score,
@@ -319,20 +235,15 @@ Provide detailed analysis in JSON format:
         "Technical Knowledge": Math.min(10, score + 1),
         "Problem Solving": score,
         "Communication Skills": Math.min(10, score + 0.5),
-        "Company Culture Fit": Math.max(3, score - 0.5),
+        "Analytical Thinking": Math.max(3, score - 0.5),
         "Practical Application": score
       },
-      overallVerdict: `The candidate demonstrated ${score >= 7 ? 'strong' : score >= 5 ? 'adequate' : 'basic'} performance for ${companyName} interview standards.`,
-      adviceForImprovement: questions.slice(0, 3).map((q, i) => ({
-        question: q.question,
-        advice: `For ${companyName}, focus more on their specific technical challenges and company culture values.`
-      })),
-      strengths: ["Attempted all questions", "Showed problem-solving approach", "Professional communication"],
-      improvements: [`Study ${companyName}'s specific technologies`, "Practice company scenarios", "Improve technical depth"],
-      recommendations: [`Research ${companyName}'s recent projects`, "Practice with their tech stack", "Study their values"]
+      overallVerdict: `The candidate demonstrated ${score >= 7 ? 'strong' : score >= 5 ? 'adequate' : 'basic'} performance across the interview questions.`,
+      strengths: ["Attempted all questions", "Showed problem-solving approach", "Maintained professional communication"],
+      improvements: ["Provide more detailed technical explanations", "Include specific examples from experience", "Structure responses more clearly"],
+      recommendations: ["Practice more technical questions", "Work on communication skills", "Study company-specific technologies"]
     };
   }
 }
 
-export const hybridAIService = HybridAIService.getInstance();
 export default HybridAIService;

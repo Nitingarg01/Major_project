@@ -1,9 +1,9 @@
 /**
- * Enhanced Interview AI Service - PHI-3-MINI OPTIMIZED VERSION
- * Uses Phi-3-Mini model via Ollama as primary AI service
+ * Enhanced Interview AI Service - SMART AI OPTIMIZED VERSION
+ * Uses Smart AI service (Emergent + Gemini) replacing Ollama
  */
 
-import OllamaService from './ollamaService';
+import SmartAIService from './smartAIService';
 import { extractJSON } from './jsonExtractor';
 
 interface CompanyResearchData {
@@ -44,12 +44,12 @@ interface InterviewRoundConfig {
 
 export class EnhancedInterviewAI {
   private static instance: EnhancedInterviewAI;
-  private ollamaService: OllamaService;
+  private smartAIService: SmartAIService;
   private companyCache = new Map<string, CompanyResearchData>();
 
   private constructor() {
-    this.ollamaService = OllamaService.getInstance();
-    console.log('🤖 EnhancedInterviewAI initialized with Phi-3-Mini via Ollama');
+    this.smartAIService = SmartAIService.getInstance();
+    console.log('🤖 EnhancedInterviewAI initialized with Smart AI');
   }
 
   public static getInstance(): EnhancedInterviewAI {
@@ -60,7 +60,7 @@ export class EnhancedInterviewAI {
   }
 
   /**
-   * Research company information using Phi-3-Mini AI
+   * Research company information using Smart AI
    */
   public async researchCompany(companyName: string): Promise<CompanyResearchData> {
     // Check cache first
@@ -70,133 +70,75 @@ export class EnhancedInterviewAI {
     }
 
     try {
-      // Use Ollama with Phi-3-Mini to research company
-      const health = await this.ollamaService.healthCheck();
+      // Use Smart AI to research company
+      const result = await this.smartAIService.searchCompany(companyName);
       
-      if (health.ollamaAvailable && health.modelLoaded) {
-        const systemMessage = `You are a company research expert. Analyze the provided company and structure it into interview preparation data.`;
-        
-        const userMessage = `
-          Research ${companyName} and provide structured company information:
-          
-          Please provide detailed company information in this JSON format:
-          {
-            "name": "${companyName}",
-            "industry": "specific industry sector",
-            "size": "startup|small|medium|large|enterprise",
-            "techStack": ["technology1", "technology2", "etc"],
-            "interviewProcess": ["process step 1", "process step 2"],
-            "difficulty": "easy|medium|hard",
-            "focusAreas": ["focus area 1", "focus area 2"],
-            "preparationTips": ["tip 1", "tip 2", "tip 3"],
-            "commonQuestions": ["common question 1", "common question 2"]
-          }
-          
-          Make educated guesses based on:
-          - Company name and typical industry patterns
-          - Common tech stacks for companies in similar sectors
-          - Standard interview processes for tech companies
-          
-          Ensure all arrays have at least 3-5 relevant items.
-        `;
+      if (result.success && result.data) {
+        const enhancedData: CompanyResearchData = {
+          name: result.data.name || companyName,
+          industry: result.data.industry || 'Technology',
+          size: result.data.size || 'medium',
+          techStack: Array.isArray(result.data.techStack) ? result.data.techStack : ['JavaScript', 'React', 'Node.js'],
+          interviewProcess: ['Phone Screening', 'Technical Interview', 'System Design', 'Cultural Fit'],
+          difficulty: 'medium',
+          focusAreas: ['Problem Solving', 'System Design', 'Communication'],
+          preparationTips: [
+            'Practice coding problems on LeetCode',
+            'Review system design fundamentals', 
+            'Prepare behavioral questions with STAR method',
+            'Research the company and its products'
+          ],
+          commonQuestions: [
+            'Tell me about yourself',
+            'Why do you want to work here?',
+            'Describe a challenging project you worked on',
+            'How do you handle conflicts in a team?'
+          ]
+        };
 
-        try {
-          const response = await fetch('http://localhost:11434/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'phi3:mini',
-              prompt: `${systemMessage}\n\n${userMessage}`,
-              stream: false,
-              options: { temperature: 0.7, num_predict: 2000 }
-            })
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            const companyData = extractJSON(data.response);
-            
-            // Validate and enhance the data
-            const enhancedData: CompanyResearchData = {
-              name: companyData.name || companyName,
-              industry: companyData.industry || 'Technology',
-              size: companyData.size || 'medium',
-              techStack: Array.isArray(companyData.techStack) ? companyData.techStack : ['JavaScript', 'React', 'Node.js'],
-              interviewProcess: Array.isArray(companyData.interviewProcess) ? companyData.interviewProcess : ['Phone Screening', 'Technical Interview', 'System Design', 'Cultural Fit'],
-              difficulty: companyData.difficulty || 'medium',
-              focusAreas: Array.isArray(companyData.focusAreas) ? companyData.focusAreas : ['Problem Solving', 'System Design', 'Communication'],
-              preparationTips: Array.isArray(companyData.preparationTips) ? companyData.preparationTips : ['Practice coding problems', 'Understand system design basics', 'Research company values'],
-              commonQuestions: Array.isArray(companyData.commonQuestions) ? companyData.commonQuestions : ['Tell me about yourself', 'Why do you want to work here?', 'Describe a challenging project']
-            };
-
-            // Cache the result
-            this.companyCache.set(cacheKey, enhancedData);
-            return enhancedData;
-          }
-        } catch (error) {
-          console.log('Phi-3-Mini research failed, using fallback');
-        }
+        // Cache the result
+        this.companyCache.set(cacheKey, enhancedData);
+        return enhancedData;
       }
 
       // Return default company data as fallback
-      const fallbackData: CompanyResearchData = {
-        name: companyName,
-        industry: 'Technology',
-        size: 'medium',
-        techStack: ['JavaScript', 'React', 'Node.js', 'Python', 'SQL'],
-        interviewProcess: ['Phone Screening', 'Technical Interview', 'System Design', 'Final Round'],
-        difficulty: 'medium',
-        focusAreas: ['Problem Solving', 'Technical Skills', 'Communication', 'Cultural Fit'],
-        preparationTips: [
-          'Practice coding problems on LeetCode',
-          'Review system design fundamentals',
-          'Prepare behavioral questions with STAR method',
-          'Research the company and its products'
-        ],
-        commonQuestions: [
-          'Tell me about yourself',
-          'Why do you want to work here?',
-          'Describe a challenging project you worked on',
-          'How do you handle conflicts in a team?'
-        ]
-      };
-
-      this.companyCache.set(cacheKey, fallbackData);
-      return fallbackData;
+      return this.getFallbackCompanyData(companyName);
 
     } catch (error) {
       console.error('Error researching company:', error);
-      
-      // Return default company data as fallback
-      const fallbackData: CompanyResearchData = {
-        name: companyName,
-        industry: 'Technology',
-        size: 'medium',
-        techStack: ['JavaScript', 'React', 'Node.js', 'Python', 'SQL'],
-        interviewProcess: ['Phone Screening', 'Technical Interview', 'System Design', 'Final Round'],
-        difficulty: 'medium',
-        focusAreas: ['Problem Solving', 'Technical Skills', 'Communication', 'Cultural Fit'],
-        preparationTips: [
-          'Practice coding problems on LeetCode',
-          'Review system design fundamentals',
-          'Prepare behavioral questions with STAR method',
-          'Research the company and its products'
-        ],
-        commonQuestions: [
-          'Tell me about yourself',
-          'Why do you want to work here?',
-          'Describe a challenging project you worked on',
-          'How do you handle conflicts in a team?'
-        ]
-      };
-
-      this.companyCache.set(cacheKey, fallbackData);
-      return fallbackData;
+      return this.getFallbackCompanyData(companyName);
     }
   }
 
+  private getFallbackCompanyData(companyName: string): CompanyResearchData {
+    const fallbackData: CompanyResearchData = {
+      name: companyName,
+      industry: 'Technology',
+      size: 'medium',
+      techStack: ['JavaScript', 'React', 'Node.js', 'Python', 'SQL'],
+      interviewProcess: ['Phone Screening', 'Technical Interview', 'System Design', 'Final Round'],
+      difficulty: 'medium',
+      focusAreas: ['Problem Solving', 'Technical Skills', 'Communication', 'Cultural Fit'],
+      preparationTips: [
+        'Practice coding problems on LeetCode',
+        'Review system design fundamentals',
+        'Prepare behavioral questions with STAR method',
+        'Research the company and its products'
+      ],
+      commonQuestions: [
+        'Tell me about yourself',
+        'Why do you want to work here?',
+        'Describe a challenging project you worked on',
+        'How do you handle conflicts in a team?'
+      ]
+    };
+
+    this.companyCache.set(companyName.toLowerCase().trim(), fallbackData);
+    return fallbackData;
+  }
+
   /**
-   * Generate comprehensive interview questions using Phi-3-Mini via Ollama
+   * Generate comprehensive interview questions using Smart AI
    */
   public async generateInterviewQuestions(params: {
     companyName: string;
@@ -206,41 +148,47 @@ export class EnhancedInterviewAI {
     rounds: InterviewRoundConfig[];
   }): Promise<{[roundType: string]: InterviewQuestion[]}> {
     try {
-      // Use Ollama service for question generation (now using Phi-3-Mini)
-      const questions = await this.ollamaService.generateInterviewQuestions({
+      const totalQuestions = params.rounds.reduce((sum, round) => sum + (round.enabled ? round.questionCount : 0), 0);
+      
+      // Use Smart AI service for question generation
+      const result = await this.smartAIService.generateQuestions({
         jobTitle: params.jobTitle,
         companyName: params.companyName,
         skills: params.skills,
-        interviewType: 'technical', // Default to technical, can be made dynamic
+        interviewType: 'mixed', // Generate mixed questions
         experienceLevel: params.experienceLevel,
-        numberOfQuestions: params.rounds.reduce((sum, round) => sum + (round.enabled ? round.questionCount : 0), 0)
+        numberOfQuestions: totalQuestions
       });
 
-      // Group questions by round type
-      const questionsByRound: {[roundType: string]: InterviewQuestion[]} = {};
-      let questionIndex = 0;
+      if (result.success && Array.isArray(result.data)) {
+        // Group questions by round type
+        const questionsByRound: {[roundType: string]: InterviewQuestion[]} = {};
+        let questionIndex = 0;
 
-      for (const round of params.rounds) {
-        if (!round.enabled) continue;
+        for (const round of params.rounds) {
+          if (!round.enabled) continue;
 
-        questionsByRound[round.type] = questions.slice(questionIndex, questionIndex + round.questionCount).map((q: any) => ({
-          id: q.id || `${round.type}-${Date.now()}-${questionIndex}`,
-          question: q.question || `Sample ${round.type} question`,
-          expectedAnswer: q.expectedAnswer || 'Expected answer not provided',
-          category: round.type as any,
-          difficulty: q.difficulty || this.getDifficultyForLevel(params.experienceLevel),
-          points: q.points || 10,
-          timeLimit: q.timeLimit || Math.ceil(round.duration / round.questionCount),
-          evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
-          tags: q.tags || [params.jobTitle, params.companyName, round.type],
-          hints: q.hints || ['Take your time to think through the problem'],
-          companyRelevance: q.companyRelevance || 7
-        }));
+          questionsByRound[round.type] = result.data.slice(questionIndex, questionIndex + round.questionCount).map((q: any, i: number) => ({
+            id: q.id || `${round.type}-${Date.now()}-${questionIndex + i}`,
+            question: q.question || `Sample ${round.type} question`,
+            expectedAnswer: q.expectedAnswer || 'Expected answer not provided',
+            category: round.type as any,
+            difficulty: q.difficulty || this.getDifficultyForLevel(params.experienceLevel),
+            points: q.points || 10,
+            timeLimit: q.timeLimit || Math.ceil(round.duration / round.questionCount),
+            evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
+            tags: q.tags || [params.jobTitle, params.companyName, round.type],
+            hints: q.hints || ['Take your time to think through the problem'],
+            companyRelevance: q.companyRelevance || 7
+          }));
 
-        questionIndex += round.questionCount;
+          questionIndex += round.questionCount;
+        }
+
+        return questionsByRound;
       }
-
-      return questionsByRound;
+      
+      return this.generateFallbackQuestionsByRound(params);
     } catch (error) {
       console.error('Error generating interview questions:', error);
       return this.generateFallbackQuestionsByRound(params);
