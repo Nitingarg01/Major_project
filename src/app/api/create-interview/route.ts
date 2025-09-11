@@ -71,33 +71,37 @@ async function generateQuestionsImmediately(interviewData: any, userId: string) 
         return allQuestions;
         
     } catch (error) {
-        console.error('❌ Error generating questions with Smart AI:', error);
-        // Return some default Smart AI enhanced questions as fallback
+        console.error('❌ Error generating preference-based questions:', error);
+        // Return enhanced fallback questions
         return [
             {
-                id: 'smart-fallback-1',
-                question: "Tell me about your experience with software development and how you approach solving complex technical problems using modern frameworks and tools.",
-                expectedAnswer: "A comprehensive answer covering technical expertise, problem-solving methodology, specific examples of complex problems solved, modern development practices, and lessons learned from challenging projects. Should demonstrate deep technical understanding and practical application.",
+                id: 'preference-fallback-1',
+                question: `Tell me about your experience with software development and how you approach solving complex technical problems at ${interviewData.companyName || 'your target company'}.`,
+                expectedAnswer: "A comprehensive answer covering technical expertise, problem-solving methodology, specific examples relevant to the company, modern development practices, and practical application of skills.",
                 difficulty: "medium",
                 category: "technical",
                 points: 15,
                 timeLimit: 8,
-                provider: 'fallback',
-                model: 'smart-ai-fallback',
-                evaluationCriteria: ['Technical Depth', 'Problem Solving', 'Modern Practices', 'Communication'],
-                tags: ['technical', 'problem-solving', 'modern-development'],
-                hints: ['Think about specific frameworks and tools', 'Include real-world examples'],
-                companyRelevance: 7
+                provider: 'preference-fallback',
+                model: 'enhanced-fallback',
+                evaluationCriteria: ['Technical Depth', 'Problem Solving', 'Company Relevance', 'Communication'],
+                tags: ['technical', 'problem-solving', interviewData.companyName],
+                hints: ['Include company-specific examples', 'Discuss relevant technologies'],
+                companyRelevance: 7,
+                preferences: {
+                    alignsWithUserPrefs: true,
+                    preferenceFactors: ['Technical focus', 'Company-specific context']
+                }
             },
             {
-                id: 'smart-fallback-2',
-                question: "Describe a challenging situation where you had to collaborate with a difficult team member while working on a high-priority project. How did you handle the interpersonal dynamics and ensure project success?",
-                expectedAnswer: "Should demonstrate advanced interpersonal skills, conflict resolution strategies, leadership qualities, effective communication under pressure, and ability to maintain project momentum while addressing team dynamics professionally.",
+                id: 'preference-fallback-2',
+                question: `Describe a challenging DSA problem you've solved that would be relevant to ${interviewData.companyName || 'your target company'}'s technical challenges.`,
+                expectedAnswer: "Should demonstrate algorithmic thinking, problem-solving approach, code implementation skills, and understanding of how the solution applies to real-world business scenarios.",
                 difficulty: "medium", 
-                category: "behavioral",
-                points: 12,
-                timeLimit: 6,
-                provider: 'fallback',
+                category: "dsa",
+                points: 20,
+                timeLimit: 25,
+                provider: 'preference-fallback',
                 model: 'smart-ai-fallback',
                 evaluationCriteria: ['Leadership', 'Communication', 'Conflict Resolution', 'Team Collaboration'],
                 tags: ['behavioral', 'teamwork', 'leadership', 'communication'],
