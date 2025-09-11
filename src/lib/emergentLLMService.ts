@@ -499,18 +499,16 @@ export class EmergentLLMService {
     status: string;
   }> {
     const status = {
-      emergentAvailable: !!this.emergentApiKey,
+      emergentAvailable: emergentIntegration.isConfigured(),
       geminiAvailable: !!this.geminiApiKey,
       status: 'unknown'
     };
 
     if (status.emergentAvailable) {
       try {
-        await this.callEmergentAPI({
-          messages: [{ role: 'user', content: 'Test' }],
-          max_tokens: 10
-        });
-        status.status = 'emergent_ready';
+        const healthCheck = await emergentIntegration.healthCheck();
+        status.emergentAvailable = healthCheck.status === 'healthy';
+        status.status = status.emergentAvailable ? 'emergent_ready' : (status.geminiAvailable ? 'gemini_fallback' : 'no_service');
       } catch (error) {
         status.emergentAvailable = false;
         status.status = status.geminiAvailable ? 'gemini_fallback' : 'no_service';
