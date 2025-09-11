@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 
 // Services
 import EnhancedInterviewAI from '@/lib/enhancedInterviewAI'
-import OllamaService from '@/lib/ollamaService'
+import SmartAIService from '@/lib/smartAIService'
 import { Question, InterviewRound } from '@/types/interview'
 
 interface ActivityAlert {
