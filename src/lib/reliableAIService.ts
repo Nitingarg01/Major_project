@@ -1,9 +1,9 @@
 /**
- * Reliable AI Service - OLLAMA OPTIMIZED VERSION
- * Uses Ollama as primary AI service, removed Emergent/Groq dependencies
+ * Reliable AI Service - SMART AI OPTIMIZED VERSION
+ * Uses Smart AI service (Emergent + Gemini) replacing Ollama
  */
 
-import OllamaService from './ollamaService';
+import SmartAIService from './smartAIService';
 import { extractJSON } from './jsonExtractor';
 
 interface InterviewQuestion {
@@ -44,11 +44,11 @@ interface DSAProblem {
 
 export class ReliableAIService {
   private static instance: ReliableAIService;
-  private ollamaService: OllamaService;
+  private smartAIService: SmartAIService;
 
   private constructor() {
-    this.ollamaService = OllamaService.getInstance();
-    console.log('🔥 ReliableAIService initialized with Ollama');
+    this.smartAIService = SmartAIService.getInstance();
+    console.log('🔥 ReliableAIService initialized with Smart AI');
   }
 
   public static getInstance(): ReliableAIService {
@@ -58,7 +58,7 @@ export class ReliableAIService {
     return ReliableAIService.instance;
   }
 
-  // Generate interview questions using Ollama
+  // Generate interview questions using Smart AI
   public async generateInterviewQuestions(params: {
     jobTitle: string;
     companyName: string;
@@ -70,80 +70,91 @@ export class ReliableAIService {
   }): Promise<InterviewQuestion[]> {
     
     try {
-      const questions = await this.ollamaService.generateInterviewQuestions({
+      const result = await this.smartAIService.generateQuestions({
         jobTitle: params.jobTitle,
         companyName: params.companyName,
         skills: params.skills,
-        interviewType: params.interviewType as any,
+        interviewType: params.interviewType,
         experienceLevel: params.experienceLevel,
-        numberOfQuestions: params.numberOfQuestions
+        numberOfQuestions: params.numberOfQuestions,
+        companyIntelligence: params.companyIntelligence
       });
 
-      return questions.map((q: any, index: number) => ({
-        id: q.id || `q-${Date.now()}-${index}`,
-        question: q.question,
-        expectedAnswer: q.expectedAnswer,
-        category: params.interviewType as any,
-        difficulty: q.difficulty || 'medium',
-        points: q.points || 10,
-        timeLimit: q.timeLimit || 5,
-        evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity'],
-        tags: q.tags || [params.jobTitle, params.companyName],
-        hints: q.hints || []
-      }));
+      if (result.success && Array.isArray(result.data)) {
+        return result.data.map((q: any, index: number) => ({
+          id: q.id || `q-${Date.now()}-${index}`,
+          question: q.question,
+          expectedAnswer: q.expectedAnswer,
+          category: params.interviewType as any,
+          difficulty: q.difficulty || 'medium',
+          points: q.points || 10,
+          timeLimit: q.timeLimit || 5,
+          evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity'],
+          tags: q.tags || [params.jobTitle, params.companyName],
+          hints: q.hints || []
+        }));
+      }
+      
+      return this.generateFallbackQuestions(params);
     } catch (error) {
       console.error('❌ Error generating questions:', error);
       return this.generateFallbackQuestions(params);
     }
   }
 
-  // Generate DSA problems using Ollama
+  // Generate DSA problems using Smart AI
   public async generateDSAProblems(
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 6
   ): Promise<DSAProblem[]> {
     try {
-      const problems = await this.ollamaService.generateDSAProblems(companyName, difficulty, count);
-      
-      // Ensure problems is an array and properly formatted
-      if (!Array.isArray(problems)) {
-        console.error('DSA problems is not an array:', problems);
-        return this.generateFallbackDSAProblems(difficulty, count);
-      }
+      // Use Smart AI for DSA problem generation
+      const result = await this.smartAIService.processRequest({
+        task: 'question_generation',
+        context: {
+          companyName,
+          interviewType: 'dsa',
+          numberOfQuestions: count
+        }
+      });
 
-      return problems.map((p: any, index: number) => ({
-        id: p.id || `dsa-${Date.now()}-${index}`,
-        title: p.title || `Problem ${index + 1}`,
-        difficulty: difficulty,
-        description: p.description || 'Problem description',
-        examples: Array.isArray(p.examples) ? p.examples : [
-          {
-            input: 'Example input',
-            output: 'Example output',
-            explanation: 'Example explanation'
-          }
-        ],
-        testCases: Array.isArray(p.testCases) ? p.testCases : [
-          {
-            id: `test-${index}-1`,
-            input: 'Test input',
-            expectedOutput: 'Expected output'
-          }
-        ],
-        constraints: Array.isArray(p.constraints) ? p.constraints : ['1 <= n <= 1000'],
-        topics: Array.isArray(p.topics) ? p.topics : ['Array'],
-        hints: Array.isArray(p.hints) ? p.hints : ['Think about the optimal approach'],
-        timeComplexity: p.timeComplexity || 'O(n)',
-        spaceComplexity: p.spaceComplexity || 'O(1)'
-      }));
+      if (result.success && Array.isArray(result.data)) {
+        return result.data.map((p: any, index: number) => ({
+          id: p.id || `dsa-${Date.now()}-${index}`,
+          title: p.title || `Problem ${index + 1}`,
+          difficulty: difficulty,
+          description: p.description || 'Problem description',
+          examples: Array.isArray(p.examples) ? p.examples : [
+            {
+              input: 'Example input',
+              output: 'Example output',
+              explanation: 'Example explanation'
+            }
+          ],
+          testCases: Array.isArray(p.testCases) ? p.testCases : [
+            {
+              id: `test-${index}-1`,
+              input: 'Test input',
+              expectedOutput: 'Expected output'
+            }
+          ],
+          constraints: Array.isArray(p.constraints) ? p.constraints : ['1 <= n <= 1000'],
+          topics: Array.isArray(p.topics) ? p.topics : ['Array'],
+          hints: Array.isArray(p.hints) ? p.hints : ['Think about the optimal approach'],
+          timeComplexity: p.timeComplexity || 'O(n)',
+          spaceComplexity: p.spaceComplexity || 'O(1)'
+        }));
+      }
+      
+      return this.generateFallbackDSAProblems(difficulty, count);
     } catch (error) {
       console.error('❌ Error generating DSA problems:', error);
       return this.generateFallbackDSAProblems(difficulty, count);
     }
   }
 
-  // Analyze interview responses using Ollama
+  // Analyze interview responses using Smart AI
   public async analyzeInterviewResponse(
     question: string,
     userAnswer: string,
@@ -158,7 +169,7 @@ export class ReliableAIService {
     improvements: string[];
   }> {
     try {
-      const analysis = await this.ollamaService.analyzeInterviewResponse(
+      const result = await this.smartAIService.analyzeResponse(
         question,
         userAnswer,
         expectedAnswer,
@@ -166,13 +177,17 @@ export class ReliableAIService {
         companyContext
       );
 
-      return {
-        score: Math.max(0, Math.min(10, analysis.score || 5)),
-        feedback: analysis.feedback || 'Response analyzed successfully.',
-        suggestions: analysis.suggestions || ['Continue practicing'],
-        strengths: analysis.strengths || ['Attempted the question'],
-        improvements: analysis.improvements || ['Add more detail']
-      };
+      if (result.success && result.data) {
+        return {
+          score: Math.max(0, Math.min(10, result.data.score || 5)),
+          feedback: result.data.feedback || 'Response analyzed successfully.',
+          suggestions: result.data.suggestions || ['Continue practicing'],
+          strengths: result.data.strengths || ['Attempted the question'],
+          improvements: result.data.improvements || ['Add more detail']
+        };
+      }
+      
+      return this.generateFallbackAnalysis(userAnswer);
     } catch (error) {
       console.error('❌ Error analyzing response:', error);
       return this.generateFallbackAnalysis(userAnswer);
