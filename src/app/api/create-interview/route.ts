@@ -48,7 +48,7 @@ async function generateQuestionsImmediately(interviewData: any, userId: string) 
         console.log(`🔥 Company-unique DSA problems: ${questionResponse.metadata.uniqueDSAProblems}`);
         console.log(`🎯 Preference alignment: ${questionResponse.metadata.preferenceAlignment}%`);
 
-        const allQuestions = questionResponse.data.map((q: any) => ({
+        const allQuestions = questionResponse.questions.map((q: any) => ({
             id: q.id,
             question: q.question,
             expectedAnswer: q.expectedAnswer,
@@ -56,15 +56,18 @@ async function generateQuestionsImmediately(interviewData: any, userId: string) 
             category: q.category,
             points: q.points || 15,
             timeLimit: q.timeLimit || 8,
-            provider: questionResponse.provider,
-            model: questionResponse.model,
+            provider: q.metadata?.provider || 'preference-based',
+            model: q.metadata?.model || 'enhanced-ai',
             evaluationCriteria: q.evaluationCriteria || ['Technical Knowledge', 'Communication', 'Problem Solving'],
             tags: q.tags || [interviewData.jobTitle, interviewData.companyName],
             hints: q.hints || [],
-            companyRelevance: q.companyRelevance || 8
+            companyRelevance: q.companyRelevance || 8,
+            uniquenessScore: q.uniquenessScore,
+            companyContext: q.companyContext,
+            preferences: q.preferences
         }));
 
-        console.log(`✅ ${allQuestions.length} questions generated successfully with ${questionResponse.provider} in ${questionResponse.processingTime}ms`);
+        console.log(`✅ ${allQuestions.length} preference-based questions generated successfully in ${questionResponse.metadata.generationTime}ms`);
         return allQuestions;
         
     } catch (error) {
