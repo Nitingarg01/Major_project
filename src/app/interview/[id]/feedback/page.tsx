@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import CompanyIntelligenceService from '@/lib/companyIntelligence'
+import FeedbackLoader from '@/components/FeedbackLoader'
 
 interface PageProps {
   params: Promise<{ id: string }>
