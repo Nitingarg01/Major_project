@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
       }));
     } else {
       console.log(`🎯 Generating ${interview.interviewType} interview questions...`);
-      allQuestions = await emergentLLMService.generateInterviewQuestions({
+      allQuestions = await groqAIService.generateInterviewQuestions({
         jobTitle: interview.jobTitle,
         companyName: interview.companyName,
         skills: interview.skills || [],
