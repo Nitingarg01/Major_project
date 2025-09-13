@@ -290,7 +290,7 @@ function getDifficultyBreakdown(questions: any[]): { [key: string]: number } {
 function getProviderBreakdown(questions: any[]): { [key: string]: number } {
   const breakdown: { [key: string]: number } = {};
   questions.forEach(q => {
-    const provider = q.provider || 'emergent';
+    const provider = q.provider || 'groq';
     breakdown[provider] = (breakdown[provider] || 0) + 1;
   });
   return breakdown;
