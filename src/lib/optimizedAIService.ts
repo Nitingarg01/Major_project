@@ -270,7 +270,7 @@ export class OptimizedAIService {
     }
   }
 
-  private async callGeminiAPI(messages: any[]): Promise<EmergentLLMResponse> {
+  private async callGeminiAPI(messages: any[]): Promise<GroqResponse> {
     if (!this.geminiApiKey) {
       throw new Error('Gemini API key not configured');
     }
