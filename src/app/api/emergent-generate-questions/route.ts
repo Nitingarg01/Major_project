@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       console.log('🔄 Generating comprehensive mixed interview questions...');
       
       // Technical Questions (40%)
-      const technicalQuestions = await emergentLLMService.generateInterviewQuestions({
+      const technicalQuestions = await groqAIService.generateInterviewQuestions({
         jobTitle: interview.jobTitle,
         companyName: interview.companyName,
         skills: interview.skills || [],
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Behavioral Questions (30%)
-      const behavioralQuestions = await emergentLLMService.generateInterviewQuestions({
+      const behavioralQuestions = await groqAIService.generateInterviewQuestions({
         jobTitle: interview.jobTitle,
         companyName: interview.companyName,
         skills: interview.skills || [],
@@ -101,10 +101,11 @@ export async function POST(request: NextRequest) {
       });
 
       // DSA Problems (30%)
-      const dsaProblems = await emergentLLMService.generateDSAProblems(
+      const dsaProblems = await groqAIService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
-        6
+        6,
+        enhancedCompanyData?.company_data
       );
 
       allQuestions = [
