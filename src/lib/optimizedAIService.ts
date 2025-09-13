@@ -1,9 +1,10 @@
 /**
- * Optimized AI Service - Emergent LLM + Gemini Integration
- * Replaces Ollama with high-performance API-based solutions
+ * Optimized AI Service - Groq + Gemini Integration
+ * Replaces Emergent AI with high-performance Groq API-based solutions
  * Strategic API distribution for maximum performance
  */
 
+import Groq from 'groq-sdk';
 import { config } from 'dotenv';
 import { extractJSON } from './jsonExtractor';
 
