@@ -20,12 +20,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🔍 Analyzing ${category} response using Emergent LLM...`);
+    console.log(`🔍 Analyzing ${category} response using Groq AI...`);
 
-    const emergentLLMService = EmergentLLMService.getInstance();
+    const groqAIService = GroqAIService.getInstance();
     
     // Analyze the interview response
-    const analysis = await emergentLLMService.analyzeInterviewResponse(
+    const analysis = await groqAIService.analyzeInterviewResponse(
       question,
       userAnswer,
       expectedAnswer,
