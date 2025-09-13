@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
 
     // Calculate additional metrics
     const totalQuestions = questions.length;
-    const answeredQuestions = answers.filter(ans => ans && ans.trim().length > 0).length;
-    const averageAnswerLength = answers.reduce((sum, ans) => sum + (ans?.split(' ').length || 0), 0) / answers.length;
+    const answeredQuestions = answers.filter((ans: any) => ans && ans.trim().length > 0).length;
+    const averageAnswerLength = answers.reduce((sum: number, ans: any) => sum + (ans?.split(' ').length || 0), 0) / answers.length;
     
     const responseData = {
       success: true,
