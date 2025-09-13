@@ -71,14 +71,35 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
 
             const submitPromise = setAnswers(data.submitted, id)
 
-            await Promise.race([submitPromise, timeoutPromise])
+            const result = await Promise.race([submitPromise, timeoutPromise])
             
             toast.success("Answers submitted successfully!")
             
-            // Wait a moment then redirect to feedback
+            // Generate fast feedback immediately
+            try {
+                toast.info("⚡ Generating AI feedback...")
+                
+                const feedbackResponse = await fetch('/api/fast-feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ interviewId: id })
+                });
+                
+                if (feedbackResponse.ok) {
+                    const feedbackData = await feedbackResponse.json();
+                    toast.success(`✅ Feedback ready in ${feedbackData.performance?.processingTime || 0}ms!`);
+                } else {
+                    console.warn('Fast feedback generation failed, will use fallback');
+                }
+            } catch (feedbackError) {
+                console.warn('Fast feedback error:', feedbackError);
+                // Continue anyway, feedback page will handle it
+            }
+            
+            // Redirect to feedback immediately
             setTimeout(() => {
                 router.push(`/interview/${id}/feedback`)
-            }, 1500)
+            }, 1000)
             
         } catch (error: any) {
             console.error('Submission error:', error)
