@@ -41,21 +41,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🔍 Analyzing overall interview performance for ${interview.companyName} ${interview.jobTitle} using Groq AI...`);
+    console.log(`🔍 Analyzing overall interview performance for ${interview.companyName} ${interview.jobTitle} using Optimized Feedback Service...`);
 
-    const groqAIService = GroqAIService.getInstance();
+    // Use optimized feedback service for faster analysis
+    const { OptimizedFeedbackService } = await import('@/lib/optimizedFeedbackService');
+    const feedbackService = OptimizedFeedbackService.getInstance();
+    
     const questions = questionData.questions || [];
     const answers = questionData.answers || [];
 
     // Extract answer texts for analysis
     const answerTexts = answers.map((answerObj: any) => answerObj?.answer || '');
 
-    // Perform comprehensive analysis
-    const overallAnalysis = await groqAIService.analyzeOverallPerformance(
+    // Perform fast comprehensive analysis
+    const overallAnalysis = await feedbackService.generateFastOverallAnalysis(
       questions,
       answerTexts,
-      interview.jobTitle,
-      interview.skills || []
+      interview.companyName,
+      interview.jobTitle
     );
 
     // Calculate additional metrics
