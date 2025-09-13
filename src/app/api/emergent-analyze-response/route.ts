@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       analysis: analysis,
       metadata: {
         analyzedAt: new Date(),
-        service: 'emergent-llm',
+        service: 'groq-ai',
         questionCategory: category,
         wordCount: userAnswer.split(' ').length,
         responseLength: userAnswer.length
