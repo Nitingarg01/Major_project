@@ -64,43 +64,7 @@ const page = async ({ params }: PageProps) => {
   console.log(data,labels)
 
   if(!det || !det.extracted){
-    return (
-      <div className='flex flex-col gap-4 font-semibold text-2xl items-center justify-center min-h-[50vh] p-8'>
-        <div className='bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text text-center'>
-          <span>⚡ Generating Your AI-Powered Feedback...</span>
-        </div>
-        <div className="bg-white rounded-lg p-6 border border-gray-200 text-center max-w-md">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <span className='text-lg text-gray-600'>Using advanced Groq AI for instant analysis</span>
-          <div className='mt-4 text-sm text-gray-500'>
-            <p>✨ Analyzing your responses with lightning speed</p>
-            <p>⏱️ This should take less than 10 seconds</p>
-          </div>
-          <div className="flex gap-2 mt-4">
-            <Link href={`/interview/${id}/feedback`}>
-              <Button className="flex-1">
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Refresh Page
-              </Button>
-            </Link>
-            <Button 
-              variant="outline"
-              onClick={() => window.location.reload()}
-              className="flex-1"
-            >
-              Auto Refresh
-            </Button>
-          </div>
-          <script dangerouslySetInnerHTML={{
-            __html: `
-              setTimeout(() => {
-                window.location.reload();
-              }, 8000);
-            `
-          }} />
-        </div>
-      </div>
-    )
+    return <FeedbackLoader interviewId={id} />
   }
 
   // Calculate company-specific insights
