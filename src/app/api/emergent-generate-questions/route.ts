@@ -217,10 +217,10 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    console.log(`✅ Generated ${allQuestions.length} questions using Emergent LLM Service`);
+    console.log(`✅ Generated ${allQuestions.length} questions using Groq AI Service`);
 
     return NextResponse.json({
-      message: 'Questions generated successfully with Emergent LLM Service',
+      message: 'Questions generated successfully with Groq AI Service',
       questionsCount: allQuestions.length,
       questions: allQuestions,
       metadata: questionDoc.metadata,
