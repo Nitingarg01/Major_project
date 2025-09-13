@@ -55,47 +55,58 @@ async function generateQuestionsImmediately(interviewData: any, userId: string) 
         return allQuestions;
         
     } catch (error) {
-        console.error('❌ Error generating preference-based questions:', error);
+        console.error('❌ Error generating enhanced questions:', error);
         // Return enhanced fallback questions
         return [
             {
-                id: 'preference-fallback-1',
+                id: 'enhanced-fallback-1',
                 question: `Tell me about your experience with software development and how you approach solving complex technical problems at ${interviewData.companyName || 'your target company'}.`,
                 expectedAnswer: "A comprehensive answer covering technical expertise, problem-solving methodology, specific examples relevant to the company, modern development practices, and practical application of skills.",
                 difficulty: "medium",
                 category: "technical",
                 points: 15,
                 timeLimit: 8,
-                provider: 'preference-fallback',
-                model: 'enhanced-fallback',
+                provider: 'enhanced-fallback',
+                model: 'groq-fallback',
                 evaluationCriteria: ['Technical Depth', 'Problem Solving', 'Company Relevance', 'Communication'],
                 tags: ['technical', 'problem-solving', interviewData.companyName],
                 hints: ['Include company-specific examples', 'Discuss relevant technologies'],
-                companyRelevance: 7,
-                preferences: {
-                    alignsWithUserPrefs: true,
-                    preferenceFactors: ['Technical focus', 'Company-specific context']
-                }
+                companyRelevance: 7
             },
             {
-                id: 'preference-fallback-2',
-                question: `Describe a challenging DSA problem you've solved that would be relevant to ${interviewData.companyName || 'your target company'}'s technical challenges.`,
-                expectedAnswer: "Should demonstrate algorithmic thinking, problem-solving approach, code implementation skills, and understanding of how the solution applies to real-world business scenarios.",
+                id: 'enhanced-fallback-2',
+                question: `Solve this DSA problem: Two Sum Problem\n\nGiven an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.`,
+                expectedAnswer: "Should demonstrate algorithmic thinking, provide a working solution, and analyze time/space complexity.",
                 difficulty: "medium", 
                 category: "dsa",
-                points: 20,
-                timeLimit: 25,
-                provider: 'preference-fallback',
-                model: 'enhanced-dsa-fallback',
-                evaluationCriteria: ['Algorithmic Thinking', 'Code Quality', 'Business Application', 'Communication'],
-                tags: ['dsa', 'algorithms', 'company-specific', interviewData.companyName],
-                hints: ['Think about real-world applications', 'Consider company scale'],
+                points: 25,
+                timeLimit: 45,
+                provider: 'enhanced-fallback',
+                model: 'dsa-fallback',
+                evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases'],
+                tags: ['dsa', 'algorithms', 'array', interviewData.companyName],
+                hints: ['Consider using a hash map', 'Think about the time complexity'],
                 companyRelevance: 8,
-                uniquenessScore: 6,
-                companyContext: `Relevant to ${interviewData.companyName}'s technical challenges`,
-                preferences: {
-                    alignsWithUserPrefs: true,
-                    preferenceFactors: ['DSA focus', 'Company-unique problems', 'Real-world scenarios']
+                dsaProblem: {
+                    id: 'fallback-two-sum',
+                    title: 'Two Sum Problem',
+                    difficulty: 'medium',
+                    description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
+                    examples: [
+                        {
+                            input: 'nums = [2,7,11,15], target = 9',
+                            output: '[0,1]',
+                            explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].'
+                        }
+                    ],
+                    testCases: [
+                        { id: 'test1', input: 'nums = [2,7,11,15], target = 9', expectedOutput: '[0,1]' },
+                        { id: 'test2', input: 'nums = [3,2,4], target = 6', expectedOutput: '[1,2]' },
+                        { id: 'test3', input: 'nums = [3,3], target = 6', expectedOutput: '[0,1]' }
+                    ],
+                    constraints: ['2 <= nums.length <= 10^4', '-10^9 <= nums[i] <= 10^9'],
+                    topics: ['Array', 'Hash Table'],
+                    hints: ['Use a hash map to store numbers and their indices']
                 }
             }
         ];
