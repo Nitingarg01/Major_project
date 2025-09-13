@@ -49,8 +49,12 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Error in response analysis:', error);
     
+    // Get userAnswer from request body for fallback analysis
+    const body = await request.json();
+    const { userAnswer } = body;
+    
     // Fallback analysis
-    const wordCount = userAnswer.split(' ').length;
+    const wordCount = userAnswer?.split(' ').length || 0;
     const fallbackAnalysis = {
       score: Math.max(3, Math.min(8, wordCount / 15)),
       feedback: 'Analysis completed with fallback evaluation. For better insights, ensure API keys are configured.',
