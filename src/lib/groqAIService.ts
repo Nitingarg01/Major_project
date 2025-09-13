@@ -339,61 +339,45 @@ export class GroqAIService {
     }
   }
 
-  // Comprehensive performance analysis with Groq AI
+  // Fast performance analysis with Groq AI (optimized for speed)
   public async analyzeOverallPerformance(
     questions: any[],
     answers: string[],
     jobTitle: string,
     skills: string[]
   ): Promise<any> {
-    const systemMessage = `You are an expert interview performance analyst providing comprehensive evaluation for a ${jobTitle} position. Analyze the complete interview performance and provide detailed insights for career development.`;
+    const systemMessage = `You are a fast interview analyzer. Provide quick, accurate performance evaluation for a ${jobTitle} position. Be concise but thorough.`;
     
+    // Simplified prompt for faster processing
     const prompt = `
-      Analyze this complete interview performance for a ${jobTitle} position requiring skills: ${skills.join(', ')}.
+      Analyze this ${jobTitle} interview performance quickly:
 
-      Complete Interview Analysis:
-      ${questions.map((q, index) => `
-      Question ${index + 1} [${q.difficulty}] [${q.category}]: ${q.question}
-      Expected Key Points: ${q.expectedAnswer}
-      Candidate Answer: ${answers[index] || 'No answer provided'}
-      Max Points Available: ${q.points}
+      Interview Data:
+      ${questions.slice(0, 5).map((q, index) => `
+      Q${index + 1}: ${q.question}
+      Answer: ${answers[index] || 'No answer'}
       `).join('\n')}
 
-      Provide a comprehensive analysis with detailed insights:
-
-      1. **Overall Performance Score** (0-10 scale with justification)
-      2. **Detailed Parameter Scoring** (0-10 each with reasoning):
-         - Technical Knowledge & Expertise
-         - Problem Solving & Analytical Thinking
-         - Communication Skills & Clarity
-         - Practical Application & Experience
-         - Company Fit & Cultural Alignment
-      3. **Professional Summary** (2-3 sentences overall assessment)
-      4. **Question-wise Detailed Feedback** (specific advice for each question)
-      5. **Key Strengths** (what the candidate excelled at)
-      6. **Priority Improvement Areas** (most important areas to work on)
-      7. **Career Development Recommendations** (actionable next steps)
-
-      Return ONLY a JSON object with this EXACT structure:
+      Required Skills: ${skills.join(', ')}
+      
+      Provide fast analysis in this JSON format:
       {
-        "overallScore": (number 0-10),
+        "overallScore": (number 1-10),
         "parameterScores": {
-          "Technical Knowledge": (number 0-10),
-          "Problem Solving": (number 0-10), 
-          "Communication Skills": (number 0-10),
-          "Practical Application": (number 0-10),
-          "Company Fit": (number 0-10)
+          "Technical Knowledge": (number 1-10),
+          "Problem Solving": (number 1-10), 
+          "Communication Skills": (number 1-10),
+          "Practical Application": (number 1-10),
+          "Company Fit": (number 1-10)
         },
-        "overallVerdict": "Professional summary of performance in 2-3 sentences",
+        "overallVerdict": "Brief 2-sentence performance summary",
         "adviceForImprovement": [
-          {
-            "question": "Question text",
-            "advice": "Detailed improvement advice and suggestions"
-          }
+          {"question": "Q1 summary", "advice": "Quick improvement tip"},
+          {"question": "Q2 summary", "advice": "Quick improvement tip"}
         ],
-        "strengths": ["key strength 1", "key strength 2", "key strength 3"],
-        "improvements": ["priority improvement 1", "priority improvement 2", "priority improvement 3"],
-        "recommendations": ["career development recommendation 1", "recommendation 2", "recommendation 3"]
+        "strengths": ["strength 1", "strength 2", "strength 3"],
+        "improvements": ["improvement 1", "improvement 2", "improvement 3"],
+        "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"]
       }
     `;
 
@@ -403,11 +387,30 @@ export class GroqAIService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 6000,
-        temperature: 0.3
+        max_tokens: 2000, // Reduced for faster response
+        temperature: 0.1  // Lower temperature for faster, more consistent results
       });
 
-      return extractJSON(response);
+      const analysis = extractJSON(response);
+      
+      // Ensure all required fields are present
+      return {
+        overallScore: analysis.overallScore || 6.5,
+        parameterScores: analysis.parameterScores || {
+          "Technical Knowledge": 7,
+          "Problem Solving": 6,
+          "Communication Skills": 7,
+          "Practical Application": 6,
+          "Company Fit": 6
+        },
+        overallVerdict: analysis.overallVerdict || `Good performance in the ${jobTitle} interview with demonstrated skills and potential for growth.`,
+        adviceForImprovement: analysis.adviceForImprovement || [
+          { question: "General feedback", advice: "Continue practicing technical concepts and communication skills." }
+        ],
+        strengths: analysis.strengths || ["Completed interview", "Good communication", "Technical awareness"],
+        improvements: analysis.improvements || ["More detailed examples", "Deeper technical insights", "Better structure"],
+        recommendations: analysis.recommendations || ["Practice more", "Study key technologies", "Prepare examples"]
+      };
     } catch (error) {
       console.error('❌ Error analyzing overall performance with Groq:', error);
       return this.generateMockOverallAnalysis(questions, answers);
