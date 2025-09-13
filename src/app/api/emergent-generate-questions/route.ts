@@ -140,8 +140,8 @@ export async function POST(request: NextRequest) {
         difficulty: p.difficulty,
         points: getDSAPoints(p.difficulty),
         problemData: p,
-        provider: 'emergent',
-        model: 'gpt-4o-mini'
+        provider: 'groq',
+        model: 'llama-3.3-70b-versatile'
       }));
     } else {
       console.log(`🎯 Generating ${interview.interviewType} interview questions...`);
