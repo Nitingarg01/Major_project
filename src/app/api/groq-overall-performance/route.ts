@@ -137,10 +137,10 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    console.log(`✅ Overall performance analysis completed using Groq AI - Score: ${averageScore.toFixed(1)}/10`);
+    console.log(`✅ Overall performance analysis completed using Optimized Feedback Service - Score: ${averageScore.toFixed(1)}/10`);
 
     return NextResponse.json({
-      message: 'Overall performance analysis completed successfully with Groq AI Service',
+      message: 'Overall performance analysis completed successfully with Optimized Feedback Service',
       analysis: performanceReport,
       summary: {
         score: `${averageScore.toFixed(1)}/10`,
