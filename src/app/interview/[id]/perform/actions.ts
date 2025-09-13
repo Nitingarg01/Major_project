@@ -32,22 +32,43 @@ export const getQuestions = async (interviewId:string)=>{
 
 export const setAnswers = async (data:Record<string, string>[],id:string)=>{
     try {
+        console.log('📝 Saving answers and generating feedback...');
+        
+        // Save answers first
         const response = await axios.post(`${baseURL}/api/setanswers`,{
             data:data,
             id:id
         })
 
-        // Generate insights immediately instead of using background jobs
+        // Generate insights immediately with enhanced error handling
         try {
-            await generateInsightsDirectly(id);
-            console.log('✅ Insights generated successfully');
+            console.log('🚀 Starting fast feedback generation...');
+            const insights = await generateInsightsDirectly(id);
+            console.log('✅ Fast feedback generated successfully:', {
+                score: insights.overallScore,
+                provider: insights.metadata?.aiProvider,
+                processingTime: insights.metadata?.processingTime + 'ms'
+            });
+            
+            return {
+                ...response.data,
+                feedbackGenerated: true,
+                insights: insights,
+                processingTime: insights.metadata?.processingTime
+            };
         } catch (error) {
             console.error('❌ Error generating insights:', error);
+            
+            // Still return success for answer saving, feedback can be regenerated
+            return {
+                ...response.data,
+                feedbackGenerated: false,
+                error: 'Feedback generation failed but answers were saved'
+            };
         }
-
-        return response.data
     } catch (error:any) {
-        console.log(error.message)
+        console.error('❌ Error in setAnswers:', error);
+        throw new Error(`Failed to save answers: ${error.message}`);
     }
 }
 
