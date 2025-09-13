@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { hybridAIService } from '@/lib/hybridAIService';
+import { HybridAIService } from '@/lib/hybridAIService';
 
 export async function POST(request: NextRequest) {
   try {
