@@ -635,27 +635,27 @@ Return ONLY valid JSON:
 
   // Health check method
   public async healthCheck(): Promise<{
-    emergentAvailable: boolean;
+    groqAvailable: boolean;
     geminiAvailable: boolean;
     status: string;
     companyDatabaseSize: number;
   }> {
     const status = {
-      emergentAvailable: !!this.emergentApiKey,
+      groqAvailable: !!this.groqApiKey,
       geminiAvailable: !!this.geminiApiKey,
       status: 'unknown',
       companyDatabaseSize: this.companyDatabase.size
     };
 
-    if (status.emergentAvailable) {
+    if (status.groqAvailable) {
       try {
-        await this.callEmergentAPI({
+        await this.callGroqAPI({
           messages: [{ role: 'user', content: 'Health check' }],
           max_tokens: 10
         });
-        status.status = 'emergent_ready';
+        status.status = 'groq_ready';
       } catch (error) {
-        status.emergentAvailable = false;
+        status.groqAvailable = false;
         status.status = status.geminiAvailable ? 'gemini_fallback' : 'no_service';
       }
     } else {
