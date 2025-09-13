@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error analyzing overall performance with Groq AI:', error);
+    console.error('Error analyzing overall performance with Optimized Feedback Service:', error);
     return NextResponse.json(
       { error: 'Failed to analyze performance: ' + error },
       { status: 500 }
