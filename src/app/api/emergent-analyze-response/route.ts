@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import EmergentLLMService from '@/lib/emergentLLMService';
+import GroqAIService from '@/lib/groqAIService';
 
 export async function POST(request: NextRequest) {
   try {
