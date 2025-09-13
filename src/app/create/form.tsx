@@ -141,8 +141,8 @@ const Createform = () => {
                 </div>
                 <p className="text-gray-600">Configure your challenging mock interview session</p>
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-400 p-4 mt-4 rounded">
-                    <p className="text-blue-800 font-semibold">🧠 Smart AI: Powered by Emergent + Gemini for optimal performance</p>
-                    <p className="text-blue-700 text-sm">Get ready for intelligent questions generated 10x faster than before!</p>
+                    <p className="text-blue-800 font-semibold">🧠 Smart AI: Powered by Groq + Gemini for optimal performance</p>
+                    <p className="text-blue-700 text-sm">Get ready for intelligent questions generated with enhanced DSA capabilities!</p>
                 </div>
             </div>
 
