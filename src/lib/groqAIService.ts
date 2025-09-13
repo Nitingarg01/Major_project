@@ -190,7 +190,7 @@ export class GroqAIService {
     count: number = 6,
     companyIntelligence?: any
   ): Promise<DSAProblem[]> {
-    const systemMessage = `You are an expert DSA problem generator creating challenging and realistic coding interview problems for ${companyName}. Generate problems that are commonly asked in actual technical interviews.`;
+    const systemMessage = `You are an expert DSA problem generator creating challenging and realistic coding interview problems for ${companyName}. Generate problems with comprehensive test cases that work with code execution systems.`;
     
     const userMessage = `
       Generate exactly ${count} unique DSA problems for ${companyName} technical interviews.
@@ -202,14 +202,14 @@ export class GroqAIService {
       - Known Interview Style: ${companyIntelligence.focus_areas?.join(', ') || 'Comprehensive technical assessment'}
       ` : ''}
       
-      Requirements:
+      CRITICAL REQUIREMENTS:
       - Difficulty Level: ${difficulty}
-      - Each problem should test different algorithmic concepts
-      - Include comprehensive test cases with edge cases
-      - Provide helpful hints for candidates
-      - Make problems realistic for ${companyName} interviews
+      - Each problem MUST have at least 5 test cases
+      - Test cases must be in executable format (e.g., "nums = [1,2,3], target = 4")
+      - Include edge cases and boundary conditions
+      - Expected outputs must be exact (e.g., "[0,1]" not "[0, 1]")
+      - Problems should be realistic for ${companyName} interviews
       - Include time and space complexity analysis
-      - Problems should be solvable within interview time constraints
       
       Return ONLY a valid JSON array with this EXACT structure:
       [
