@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error analyzing response with Emergent LLM:', error);
+    console.error('Error analyzing response with Groq AI:', error);
     return NextResponse.json(
       { 
         error: 'Failed to analyze response: ' + error,
