@@ -18,7 +18,8 @@ export async function POST(request: NextRequest) {
     console.log(`🔍 Searching for companies matching: "${query}"`);
 
     // Get enhanced company suggestions from hybrid AI service
-    const suggestions = hybridAIService.getCompanySuggestions(query);
+    const hybridService = HybridAIService.getInstance();
+    const suggestions = hybridService.getCompanySuggestions(query);
     
     // Enhance suggestions with additional intelligence
     const enhancedSuggestions = suggestions.slice(0, limit).map(company => ({
