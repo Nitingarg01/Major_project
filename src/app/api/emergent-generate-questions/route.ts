@@ -173,8 +173,8 @@ export async function POST(request: NextRequest) {
         tags: q.tags || [],
         hints: q.hints || [],
         problemData: q.problemData || null,
-        provider: q.provider || 'emergent',
-        model: q.model || 'gpt-4o-mini'
+        provider: q.provider || 'groq',
+        model: q.model || 'llama-3.3-70b-versatile'
       })),
       companyIntelligence: enhancedCompanyData ? {
         industry: enhancedCompanyData.company_data.industry,
