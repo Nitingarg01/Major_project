@@ -290,7 +290,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <Link href="/create">
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
@@ -332,32 +332,6 @@ export default function DashboardPage() {
                 </div>
               </div>
             </Link>
-
-            <Link href="/preferences">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer group">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <div className="w-6 h-6 text-white">⚙️</div>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Interview Preferences</h3>
-                <p className="text-gray-600 text-sm">Customize question types, DSA problems, and AI generation settings</p>
-                <div className="flex items-center mt-3 text-purple-600 group-hover:text-purple-700">
-                  <span className="text-sm font-medium">Configure Preferences</span>
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </Link>
-
-            <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl shadow-sm p-6 text-white cursor-pointer group" onClick={() => router.push('/dashboard#smart-ai-service')}>
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <div className="w-6 h-6 text-white">🧠</div>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Preference-Based AI</h3>
-              <p className="text-white/90 text-sm">Company-unique DSA problems with user preferences - Enhanced question generation</p>
-              <div className="flex items-center mt-3 text-white group-hover:text-green-100">
-                <span className="text-sm font-medium">View AI Features</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </div>
-            </div>
           </div>
 
           {/* Smart AI Service Status */}
