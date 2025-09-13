@@ -449,13 +449,12 @@ Return ONLY a valid JSON array:
 ]`;
 
     try {
-      const response = await this.callEmergentAPI({
+      const response = await this.callGroqAPI({
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'openai',
-        model: 'gpt-4o-mini',
+        model: this.groqModel,
         max_tokens: 8000,
         temperature: 0.7
       });
@@ -476,8 +475,8 @@ Return ONLY a valid JSON array:
         topics: p.topics || ['General'],
         hints: p.hints || [],
         companySpecific: true,
-        provider: 'emergent-openai',
-        model: 'gpt-4o-mini'
+        provider: 'groq',
+        model: this.groqModel
       }));
     } catch (error) {
       console.error('❌ Error generating DSA problems:', error);
