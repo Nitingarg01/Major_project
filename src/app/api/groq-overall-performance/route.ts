@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
         score: `${averageScore.toFixed(1)}/10`,
         percentage: `${percentageScore.toFixed(1)}%`,
         questionsAnalyzed: totalQuestions,
-        provider: 'groq-ai-service'
+        provider: 'optimized-feedback-service'
       }
     });
 
