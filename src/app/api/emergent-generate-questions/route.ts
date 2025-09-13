@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
       } : null,
       metadata: {
         generatedAt: new Date(),
-        aiService: 'emergent-llm-service',
+        aiService: 'groq-ai-service',
         totalQuestions: allQuestions.length,
         categoryBreakdown: getCategoryBreakdown(allQuestions),
         difficultyBreakdown: getDifficultyBreakdown(allQuestions),
