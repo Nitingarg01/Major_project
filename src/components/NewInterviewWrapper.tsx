@@ -190,32 +190,27 @@ const NewInterviewWrapper = ({
           
           try {
             if (round.type === 'dsa') {
-              // Generate DSA problems using SmartAIService
+              // Generate DSA problems using SmartAIService with correct task type
+              console.log(`🧮 Generating ${round.questionCount} DSA problems for ${companyName}...`);
+              
               const result = await smartAIService.processRequest({
-                task: 'question_generation',
+                task: 'dsa_generation',
                 context: {
                   companyName,
-                  interviewType: 'dsa',
-                  numberOfQuestions: round.questionCount,
+                  jobTitle,
+                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                  count: round.questionCount,
                   experienceLevel
                 }
               });
               
-              if (result.success && Array.isArray(result.data)) {
+              if (result.success && Array.isArray(result.data) && result.data.length > 0) {
                 questionsResult[round.type] = result.data;
+                console.log(`✅ Generated ${result.data.length} DSA problems successfully`);
               } else {
-                // Fallback DSA problems
-                questionsResult[round.type] = Array.from({ length: round.questionCount }, (_, i) => ({
-                  id: `dsa-fallback-${i}`,
-                  title: `DSA Problem ${i + 1}`,
-                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
-                  description: 'Solve this algorithmic problem.',
-                  examples: [{ input: 'Sample input', output: 'Sample output' }],
-                  testCases: [{ id: `test-${i}`, input: 'Test input', expectedOutput: 'Expected output' }],
-                  constraints: ['1 <= n <= 1000'],
-                  topics: ['Array'],
-                  hints: ['Think about the optimal approach']
-                }));
+                console.log('⚠️ DSA generation failed, using enhanced fallback problems');
+                // Enhanced fallback DSA problems with proper format
+                questionsResult[round.type] = generateEnhancedFallbackDSA(companyName, experienceLevel, round.questionCount);
               }
             } else if (round.type === 'aptitude') {
               // Generate aptitude questions - fallback for now
