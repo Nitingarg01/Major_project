@@ -28,10 +28,39 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
   useEffect(() => {
     const startCamera = async () => {
       try {
+        // Stop any existing stream first
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+          streamRef.current = null;
+        }
+        
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         streamRef.current = stream;
+        
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          
+          // Handle video play with proper error handling
+          try {
+            await videoRef.current.play();
+          } catch (playError: any) {
+            // Handle AbortError specifically
+            if (playError.name === 'AbortError') {
+              console.warn('Video play was interrupted, retrying...');
+              // Wait a bit and try again
+              setTimeout(async () => {
+                if (videoRef.current && streamRef.current) {
+                  try {
+                    await videoRef.current.play();
+                  } catch (retryError) {
+                    console.error('Video play retry failed:', retryError);
+                  }
+                }
+              }, 100);
+            } else {
+              console.error('Video play failed:', playError);
+            }
+          }
         }
       } catch (err) {
         console.error("Camera access error:", err);

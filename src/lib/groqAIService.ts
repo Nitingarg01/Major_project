@@ -69,6 +69,7 @@ export class GroqAIService {
     
     this.groq = new Groq({
       apiKey: groqApiKey,
+      dangerouslyAllowBrowser: true
     });
     
     console.log('🔥 GroqAIService initialized with llama-3.3-70b-versatile model');

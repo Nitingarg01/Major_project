@@ -106,6 +106,12 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
   useEffect(() => {
     const startCamera = async () => {
       try {
+        // Stop any existing stream first
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+          streamRef.current = null;
+        }
+        
         const stream = await navigator.mediaDevices.getUserMedia({ 
           video: { 
             width: 640, 
@@ -114,10 +120,46 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
           } 
         });
         streamRef.current = stream;
+        
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          
+          // Handle video play with proper error handling
+          try {
+            await videoRef.current.play();
+            setIsMonitoring(true);
+          } catch (playError: any) {
+            // Handle AbortError specifically
+            if (playError.name === 'AbortError') {
+              console.warn('Video play was interrupted, retrying...');
+              // Wait a bit and try again
+              setTimeout(async () => {
+                if (videoRef.current && streamRef.current) {
+                  try {
+                    await videoRef.current.play();
+                    setIsMonitoring(true);
+                  } catch (retryError) {
+                    console.error('Video play retry failed:', retryError);
+                    addActivityAlert({
+                      type: 'no_face',
+                      message: 'Video playback failed. Please refresh the page.',
+                      severity: 'high',
+                      timestamp: new Date()
+                    });
+                  }
+                }
+              }, 100);
+            } else {
+              console.error('Video play failed:', playError);
+              addActivityAlert({
+                type: 'no_face',
+                message: 'Video playback failed. Please check your browser settings.',
+                severity: 'high',
+                timestamp: new Date()
+              });
+            }
+          }
         }
-        setIsMonitoring(true);
       } catch (err) {
         console.error("Camera access error:", err);
         addActivityAlert({

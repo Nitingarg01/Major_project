@@ -87,6 +87,7 @@ export class EnhancedGroqAIService {
     
     this.groq = new Groq({
       apiKey: groqApiKey,
+      dangerouslyAllowBrowser: true
     });
     
     this.initializeCompanyProfiles();

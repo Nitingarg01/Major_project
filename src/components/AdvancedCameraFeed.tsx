@@ -76,13 +76,43 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
     try {
       setCameraError(null);
       
+      // Stop any existing stream first
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+      
       const stream = await navigator.mediaDevices.getUserMedia(getCameraConstraints());
       streamRef.current = stream;
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        setIsInitialized(true);
+        
+        // Handle video play with proper error handling
+        try {
+          await videoRef.current.play();
+          setIsInitialized(true);
+        } catch (playError: any) {
+          // Handle AbortError specifically
+          if (playError.name === 'AbortError') {
+            console.warn('Video play was interrupted, retrying...');
+            // Wait a bit and try again
+            setTimeout(async () => {
+              if (videoRef.current && streamRef.current) {
+                try {
+                  await videoRef.current.play();
+                  setIsInitialized(true);
+                } catch (retryError) {
+                  console.error('Video play retry failed:', retryError);
+                  setCameraError('Video playback failed. Please refresh the page.');
+                }
+              }
+            }, 100);
+          } else {
+            console.error('Video play failed:', playError);
+            setCameraError('Video playback failed. Please check your browser settings.');
+          }
+        }
       }
     } catch (error: any) {
       console.error('Camera initialization failed:', error);

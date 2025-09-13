@@ -75,10 +75,12 @@ const page = async ({ params }: PageProps) => {
             <p>Our AI is analyzing your interview performance</p>
             <p>This usually takes 30-60 seconds</p>
           </div>
-          <Button onClick={() => window.location.reload()} className="mt-4">
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Refresh Page
-          </Button>
+          <Link href={`/interview/${id}/feedback`}>
+            <Button className="mt-4">
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Refresh Page
+            </Button>
+          </Link>
         </div>
       </div>
     )
@@ -277,7 +279,7 @@ const page = async ({ params }: PageProps) => {
           <TabsContent value="preparation" className="mt-6">
             <CompanyPreparationDashboard 
               companyInsights={companyInsights}
-              onStartNewInterview={() => window.location.href = '/create'}
+              onStartNewInterview={() => {}}
               onViewDetailedFeedback={() => {}}
             />
           </TabsContent>

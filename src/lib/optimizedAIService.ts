@@ -103,6 +103,7 @@ export class OptimizedAIService {
     if (this.groqApiKey) {
       this.groq = new Groq({
         apiKey: this.groqApiKey,
+        dangerouslyAllowBrowser: true
       });
     }
     
