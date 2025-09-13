@@ -4,7 +4,7 @@
  * Features: Interactive challenges, real-time compilation, company-specific patterns
  */
 
-import { emergentIntegration } from './emergentIntegration';
+import GroqAIService from './groqAIService';
 import { extractJSON } from './jsonExtractor';
 
 export interface DSAProblem {
