@@ -183,7 +183,7 @@ export class GroqAIService {
     }
   }
 
-  // Generate DSA problems with Groq AI
+  // Generate DSA problems with Groq AI (Enhanced version available)
   public async generateDSAProblems(
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
