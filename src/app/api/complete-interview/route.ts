@@ -56,16 +56,18 @@ export async function POST(request: NextRequest) {
       return response?.userAnswer || 'No answer provided';
     });
 
-    // Generate comprehensive performance analysis
-    const performanceAnalysis = await hybridAIService.analyzeOverallPerformance(
+    // Generate comprehensive performance analysis using Groq AI
+    console.log('🧠 Starting Groq AI performance analysis...');
+    const groqService = GroqAIService.getInstance();
+    
+    const performanceAnalysis = await groqService.analyzeOverallPerformance(
       questions,
       answers,
       interview.jobTitle,
-      interview.companyName,
       interview.skills || []
     );
 
-    console.log(`✅ Performance analyzed - Overall Score: ${performanceAnalysis.overallScore}/10`);
+    console.log(`✅ Performance analyzed with Groq AI - Overall Score: ${performanceAnalysis.overallScore}/10`);
 
     // Calculate detailed metrics
     const responseScores = responses
