@@ -125,10 +125,11 @@ export async function POST(request: NextRequest) {
       ];
     } else if (interview.interviewType === 'dsa') {
       console.log('💻 Generating DSA-focused interview questions...');
-      const dsaProblems = await emergentLLMService.generateDSAProblems(
+      const dsaProblems = await groqAIService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
-        8
+        8,
+        enhancedCompanyData?.company_data
       );
 
       allQuestions = dsaProblems.map(p => ({
