@@ -114,10 +114,11 @@ export async function POST(request: NextRequest) {
       },
       metadata: {
         analyzedAt: new Date(),
-        aiService: 'groq-ai-service',
-        analysisProvider: 'groq-llama-3.3-70b',
+        aiService: 'optimized-feedback-service',
+        analysisProvider: 'groq-llama-3.1-70b',
         detailedAnalysis: true,
-        model: 'llama-3.3-70b-versatile'
+        model: 'llama-3.1-70b-versatile',
+        optimizedAnalysis: true
       }
     };
 
