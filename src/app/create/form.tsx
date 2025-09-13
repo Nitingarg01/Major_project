@@ -363,11 +363,11 @@ const Createform = () => {
                                 <FormLabel className="font-semibold">Interview Type<span className="text-red-500">*</span> (All powered by Smart AI)</FormLabel>
                                 <FormControl>
                                     <select {...field} className="w-full border border-gray-300 rounded-md px-3 py-3 bg-white">
-                                        <option value="mixed">🧠 Mixed Smart AI (Technical + Behavioral + Aptitude + DSA)</option>
-                                        <option value="technical">💻 Technical Smart AI Only</option>
-                                        <option value="behavioral">🤝 Behavioral Smart AI Only</option>
-                                        <option value="aptitude">🎯 Aptitude Smart AI Only</option>
-                                        <option value="dsa">⚡ DSA Smart AI (Data Structures & Algorithms)</option>
+                                        <option value="mixed">🧠 Mixed Interview (Technical + Behavioral + DSA + Aptitude)</option>
+                                        <option value="technical">💻 Technical Interview Only</option>
+                                        <option value="behavioral">🤝 Behavioral Interview Only</option>
+                                        <option value="aptitude">🎯 Aptitude Test Only</option>
+                                        <option value="dsa">⚡ DSA Interview (Data Structures & Algorithms)</option>
                                     </select>
                                 </FormControl>
                                 <FormMessage />
