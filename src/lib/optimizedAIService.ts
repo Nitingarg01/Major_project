@@ -13,18 +13,17 @@ if (typeof process !== 'undefined') {
   config();
 }
 
-interface EmergentLLMRequest {
+interface GroqRequest {
   messages: Array<{
     role: 'system' | 'user' | 'assistant';
     content: string;
   }>;
-  provider?: 'openai' | 'anthropic' | 'gemini';
   model?: string;
   max_tokens?: number;
   temperature?: number;
 }
 
-interface EmergentLLMResponse {
+interface GroqResponse {
   content: string;
   provider: string;
   model: string;
