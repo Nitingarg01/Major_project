@@ -233,7 +233,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error generating questions with Emergent LLM:', error);
+    console.error('Error generating questions with Groq AI:', error);
     return NextResponse.json(
       { error: 'Failed to generate questions: ' + error },
       { status: 500 }
