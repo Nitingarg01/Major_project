@@ -2,7 +2,6 @@
 import client from "@/lib/db";
 import axios from "axios";
 import { ObjectId } from "mongodb";
-import { aiInterviewModel } from "@/lib/aimodel";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
