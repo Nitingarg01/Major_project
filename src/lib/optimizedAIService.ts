@@ -84,24 +84,31 @@ interface CompanyData {
 
 export class OptimizedAIService {
   private static instance: OptimizedAIService;
-  private emergentApiKey: string;
+  private groq: Groq;
+  private groqApiKey: string;
   private geminiApiKey: string;
-  private emergentBaseUrl = 'https://integrations.emergentagent.com/api/v1/llm/chat';
+  private groqModel = 'llama-3.3-70b-versatile';
   
   // Company database for enhanced question generation
   private companyDatabase: Map<string, CompanyData> = new Map();
 
   private constructor() {
-    this.emergentApiKey = process.env.EMERGENT_LLM_KEY || process.env.NEXT_PUBLIC_EMERGENT_LLM_KEY || '';
+    this.groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
     this.geminiApiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
     
-    if (!this.emergentApiKey && !this.geminiApiKey) {
+    if (!this.groqApiKey && !this.geminiApiKey) {
       console.error('❌ No AI API keys configured');
+    }
+
+    if (this.groqApiKey) {
+      this.groq = new Groq({
+        apiKey: this.groqApiKey,
+      });
     }
     
     this.initializeCompanyDatabase();
-    console.log('🚀 OptimizedAIService initialized with keys:', {
-      emergent: !!this.emergentApiKey,
+    console.log('🚀 OptimizedAIService initialized:', {
+      groq: !!this.groqApiKey,
       gemini: !!this.geminiApiKey
     });
   }
