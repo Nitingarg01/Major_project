@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
         completionStats,
         historicalComparison: historicalPerformance
       },
-      aiProvider: 'hybrid',
+      aiProvider: 'groq',
       companySpecific: true,
       feedbackSummary: generateFeedbackSummary(performanceAnalysis, categoryScores)
     };
