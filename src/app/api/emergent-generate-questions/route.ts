@@ -59,9 +59,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log(`🚀 Generating questions for ${interview.companyName} ${interview.jobTitle} using Emergent LLM...`);
+    console.log(`🚀 Generating questions for ${interview.companyName} ${interview.jobTitle} using Groq AI...`);
 
-    const emergentLLMService = EmergentLLMService.getInstance();
+    const groqAIService = GroqAIService.getInstance();
     const companyIntelligence = EnhancedCompanyIntelligenceService.getInstance();
     
     // Get enhanced company intelligence
