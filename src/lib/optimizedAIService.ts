@@ -534,13 +534,12 @@ Consider:
 - Company-specific best practices`;
 
     try {
-      const response = await this.callEmergentAPI({
+      const response = await this.callGroqAPI({
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'anthropic',
-        model: 'claude-3-5-sonnet-20241022',
+        model: this.groqModel,
         max_tokens: 3000,
         temperature: 0.5
       });
