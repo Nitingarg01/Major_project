@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { hybridAIService } from '@/lib/hybridAIService';
+import GroqAIService from '@/lib/groqAIService';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 
