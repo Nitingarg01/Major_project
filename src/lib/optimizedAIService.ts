@@ -236,45 +236,36 @@ export class OptimizedAIService {
     return suggestions.slice(0, 10);
   }
 
-  public async callEmergentAPI(request: EmergentLLMRequest): Promise<EmergentLLMResponse> {
-    if (!this.emergentApiKey) {
-      throw new Error('Emergent API key not configured');
+  public async callGroqAPI(request: GroqRequest): Promise<GroqResponse> {
+    if (!this.groqApiKey) {
+      throw new Error('Groq API key not configured');
     }
 
     try {
-      console.log('🚀 Calling Emergent API with provider:', request.provider || 'openai');
+      console.log('🚀 Calling Groq API with model:', request.model || this.groqModel);
       
-      const response = await fetch(this.emergentBaseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.emergentApiKey}`,
-        },
-        body: JSON.stringify({
-          messages: request.messages,
-          provider: request.provider || 'openai',
-          model: request.model || 'gpt-4o-mini',
-          max_tokens: request.max_tokens || 4000,
-          temperature: request.temperature || 0.7,
-        }),
+      const chatCompletion = await this.groq.chat.completions.create({
+        messages: request.messages as any,
+        model: request.model || this.groqModel,
+        max_tokens: request.max_tokens || 4000,
+        temperature: request.temperature || 0.7,
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Emergent API error: ${response.status} ${response.statusText} - ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('✅ Emergent API response received');
+      const content = chatCompletion.choices[0]?.message?.content || '';
+      console.log('✅ Groq API response received');
       
       return {
-        content: data.content || data.message || 'No response received',
-        provider: request.provider || 'openai',
-        model: request.model || 'gpt-4o-mini',
-        usage: data.usage
+        content: content,
+        provider: 'groq',
+        model: request.model || this.groqModel,
+        usage: chatCompletion.usage ? {
+          prompt_tokens: chatCompletion.usage.prompt_tokens,
+          completion_tokens: chatCompletion.usage.completion_tokens,
+          total_tokens: chatCompletion.usage.total_tokens
+        } : undefined
       };
     } catch (error) {
-      console.error('❌ Emergent API call failed:', error);
+      console.error('❌ Groq API call failed:', error);
       throw error;
     }
   }
