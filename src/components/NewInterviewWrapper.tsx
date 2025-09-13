@@ -53,6 +53,105 @@ interface NewInterviewWrapperProps {
   userSelectedRounds?: string[]; // Array of round types user selected during creation
 }
 
+// Enhanced fallback DSA problems generator
+const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: string, count: number) => {
+  const difficultyLevel = experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium';
+  
+  const dsaTemplates = [
+    {
+      title: "Two Sum",
+      description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+      examples: [
+        { input: "nums = [2,7,11,15], target = 9", output: "[0,1]", explanation: "Because nums[0] + nums[1] == 9" }
+      ],
+      testCases: [
+        { id: "test1", input: "[2,7,11,15]\n9", expectedOutput: "[0,1]" },
+        { id: "test2", input: "[3,2,4]\n6", expectedOutput: "[1,2]" },
+        { id: "test3", input: "[3,3]\n6", expectedOutput: "[0,1]" }
+      ],
+      constraints: ["2 ≤ nums.length ≤ 10⁴", "-10⁹ ≤ nums[i] ≤ 10⁹", "Only one valid answer exists"],
+      topics: ["Array", "Hash Table", "Two Pointers"]
+    },
+    {
+      title: "Valid Parentheses",
+      description: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+      examples: [
+        { input: 's = "()"', output: "true", explanation: "Valid parentheses structure" }
+      ],
+      testCases: [
+        { id: "test1", input: "()", expectedOutput: "true" },
+        { id: "test2", input: "()[]{}", expectedOutput: "true" },
+        { id: "test3", input: "(]", expectedOutput: "false" }
+      ],
+      constraints: ["1 ≤ s.length ≤ 10⁴", "s consists of parentheses only"],
+      topics: ["String", "Stack"]
+    },
+    {
+      title: "Merge Two Sorted Lists",
+      description: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list.",
+      examples: [
+        { input: "list1 = [1,2,4], list2 = [1,3,4]", output: "[1,1,2,3,4,4]", explanation: "Merged sorted lists" }
+      ],
+      testCases: [
+        { id: "test1", input: "[1,2,4]\n[1,3,4]", expectedOutput: "[1,1,2,3,4,4]" },
+        { id: "test2", input: "[]\n[]", expectedOutput: "[]" },
+        { id: "test3", input: "[]\n[0]", expectedOutput: "[0]" }
+      ],
+      constraints: ["0 ≤ list length ≤ 50", "-100 ≤ Node.val ≤ 100"],
+      topics: ["Linked List", "Recursion"]
+    },
+    {
+      title: "Maximum Subarray",
+      description: "Given an integer array nums, find the subarray with the largest sum, and return its sum.",
+      examples: [
+        { input: "nums = [-2,1,-3,4,-1,2,1,-5,4]", output: "6", explanation: "Subarray [4,-1,2,1] has sum 6" }
+      ],
+      testCases: [
+        { id: "test1", input: "[-2,1,-3,4,-1,2,1,-5,4]", expectedOutput: "6" },
+        { id: "test2", input: "[1]", expectedOutput: "1" },
+        { id: "test3", input: "[5,4,-1,7,8]", expectedOutput: "23" }
+      ],
+      constraints: ["1 ≤ nums.length ≤ 10⁵", "-10⁴ ≤ nums[i] ≤ 10⁴"],
+      topics: ["Array", "Dynamic Programming", "Kadane's Algorithm"]
+    },
+    {
+      title: "Binary Tree Inorder Traversal",
+      description: "Given the root of a binary tree, return the inorder traversal of its nodes' values.",
+      examples: [
+        { input: "root = [1,null,2,3]", output: "[1,3,2]", explanation: "Inorder traversal: left, root, right" }
+      ],
+      testCases: [
+        { id: "test1", input: "[1,null,2,3]", expectedOutput: "[1,3,2]" },
+        { id: "test2", input: "[]", expectedOutput: "[]" },
+        { id: "test3", input: "[1]", expectedOutput: "[1]" }
+      ],
+      constraints: ["0 ≤ number of nodes ≤ 100", "-100 ≤ Node.val ≤ 100"],
+      topics: ["Tree", "Stack", "Binary Tree", "DFS"]
+    }
+  ];
+
+  return dsaTemplates.slice(0, count).map((template, index) => ({
+    id: `enhanced-dsa-${companyName.toLowerCase().replace(/\s+/g, '-')}-${index}-${Date.now()}`,
+    title: `${template.title} - ${companyName} Challenge`,
+    difficulty: difficultyLevel,
+    description: `${template.description}\n\n💡 This problem is commonly asked at ${companyName} for ${experienceLevel} level positions.`,
+    examples: template.examples,
+    testCases: template.testCases,
+    constraints: template.constraints,
+    topics: template.topics,
+    hints: [
+      `Think about the optimal approach for this ${template.topics[0].toLowerCase()} problem`,
+      `Consider time and space complexity requirements at ${companyName}`,
+      "Write clean, readable code that follows best practices"
+    ],
+    timeComplexity: template.topics.includes('Array') ? 'O(n)' : 'O(n log n)',
+    spaceComplexity: 'O(1) to O(n)',
+    companyContext: `Popular problem type at ${companyName}`,
+    provider: 'enhanced-fallback',
+    generated: new Date().toISOString()
+  }));
+};
+
 const DEFAULT_ROUND_CONFIGS: InterviewRoundConfig[] = [
   {
     id: 'technical',
