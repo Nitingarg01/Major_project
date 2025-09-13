@@ -356,13 +356,12 @@ Return ONLY a valid JSON array:
 ]`;
 
     try {
-      const response = await this.callEmergentAPI({
+      const response = await this.callGroqAPI({
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'openai',
-        model: 'gpt-4o-mini',
+        model: this.groqModel,
         max_tokens: 6000,
         temperature: 0.8
       });
@@ -382,8 +381,8 @@ Return ONLY a valid JSON array:
         evaluationCriteria: q.evaluationCriteria || ['Technical accuracy', 'Company relevance', 'Communication'],
         tags: [...(q.tags || []), params.companyName, params.jobTitle],
         companyRelevance: q.companyRelevance || 8,
-        provider: 'emergent-openai',
-        model: 'gpt-4o-mini'
+        provider: 'groq',
+        model: this.groqModel
       }));
     } catch (error) {
       console.error('❌ Error generating interview questions:', error);
