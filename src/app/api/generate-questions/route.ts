@@ -1,189 +1,300 @@
+/**
+ * Enhanced Question Generation API
+ * Uses Enhanced Groq AI Service with company-specific intelligence
+ * Replaced legacy Emergent AI with optimized Groq integration
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import OptimizedAIService from '@/lib/optimizedAIService';
+import EnhancedGroqAIService from '@/lib/enhancedGroqAIService';
+import { getServerSession } from 'next-auth';
+import { connectToDatabase } from '@/lib/db';
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    console.log('🚀 Question Generation API called (now using Optimized AI)');
+    console.log('🚀 Enhanced Question Generation API called');
     
-    const body = await request.json();
-    const { interviewId, regenerate = false } = body;
+    const session = await getServerSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!interviewId) {
+    const body = await req.json();
+    const {
+      jobTitle,
+      companyName,
+      skills = [],
+      interviewType = 'technical',
+      experienceLevel = 'mid',
+      numberOfQuestions = 10,
+      companyIntelligence
+    } = body;
+
+    // Validate required fields
+    if (!jobTitle || !companyName) {
       return NextResponse.json(
-        { error: 'Interview ID is required' },
+        { error: 'Job title and company name are required' },
         { status: 400 }
       );
     }
 
-    // Connect to database
-    const db = await connectDB();
-    const interviewsCollection = db.collection('interviews');
+    // Initialize Enhanced Groq AI Service
+    const aiService = EnhancedGroqAIService.getInstance();
 
-    // Get interview details
-    const interview = await interviewsCollection.findOne({ id: interviewId });
-    
-    if (!interview) {
-      return NextResponse.json(
-        { error: 'Interview not found' },
-        { status: 404 }
-      );
-    }
+    console.log(`📊 Generating ${numberOfQuestions} ${interviewType} questions for ${jobTitle} at ${companyName}`);
+    console.log(`🎯 Experience Level: ${experienceLevel}, Skills: ${skills.join(', ')}`);
 
-    // Check if questions already exist and regenerate is false
-    if (interview.questions && interview.questions.length > 0 && !regenerate) {
-      console.log('✅ Returning existing questions');
+    let allQuestions = [];
+
+    try {
+      if (interviewType === 'mixed') {
+        // Generate mixed questions with intelligent distribution
+        const technicalCount = Math.ceil(numberOfQuestions * 0.4);
+        const behavioralCount = Math.ceil(numberOfQuestions * 0.3);
+        const dsaCount = Math.ceil(numberOfQuestions * 0.2);
+        const aptitudeCount = numberOfQuestions - technicalCount - behavioralCount - dsaCount;
+
+        console.log(`📈 Mixed interview distribution: Technical(${technicalCount}), Behavioral(${behavioralCount}), DSA(${dsaCount}), Aptitude(${aptitudeCount})`);
+
+        // Generate technical questions
+        if (technicalCount > 0) {
+          const technicalQuestions = await aiService.generateInterviewQuestions({
+            jobTitle,
+            companyName,
+            skills,
+            interviewType: 'technical',
+            experienceLevel,
+            numberOfQuestions: technicalCount,
+            companyIntelligence
+          });
+          allQuestions.push(...technicalQuestions.map(q => ({ ...q, category: 'technical' })));
+        }
+
+        // Generate behavioral questions
+        if (behavioralCount > 0) {
+          const behavioralQuestions = await aiService.generateInterviewQuestions({
+            jobTitle,
+            companyName,
+            skills,
+            interviewType: 'behavioral',
+            experienceLevel,
+            numberOfQuestions: behavioralCount,
+            companyIntelligence
+          });
+          allQuestions.push(...behavioralQuestions.map(q => ({ ...q, category: 'behavioral' })));
+        }
+
+        // Generate DSA problems
+        if (dsaCount > 0) {
+          const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
+            companyName,
+            experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+            dsaCount,
+            jobTitle
+          );
+          
+          // Convert DSA problems to question format
+          const dsaQuestions = dsaProblems.map(problem => ({
+            id: problem.id,
+            question: `DSA Problem: ${problem.title}\n\n${problem.description}\n\nExamples:\n${problem.examples.map(ex => `Input: ${ex.input}\nOutput: ${ex.output}\nExplanation: ${ex.explanation || 'See problem description'}`).join('\n\n')}`,
+            expectedAnswer: `Algorithm approach, time/space complexity analysis, and implementation strategy. ${problem.hints ? 'Hints: ' + problem.hints.join(', ') : ''}`,
+            category: 'dsa',
+            difficulty: problem.difficulty,
+            points: problem.difficulty === 'easy' ? 8 : problem.difficulty === 'hard' ? 15 : 12,
+            timeLimit: problem.difficulty === 'easy' ? 20 : problem.difficulty === 'hard' ? 45 : 30,
+            evaluationCriteria: ['Algorithm correctness', 'Complexity analysis', 'Code quality', 'Edge case handling'],
+            tags: [...(problem.topics || []), companyName, 'DSA'],
+            hints: problem.hints || [],
+            companyRelevance: 9
+          }));
+          
+          allQuestions.push(...dsaQuestions);
+        }
+
+        // Generate aptitude questions if needed
+        if (aptitudeCount > 0) {
+          const aptitudeQuestions = await aiService.generateInterviewQuestions({
+            jobTitle,
+            companyName,
+            skills,
+            interviewType: 'aptitude',
+            experienceLevel,
+            numberOfQuestions: aptitudeCount,
+            companyIntelligence
+          });
+          allQuestions.push(...aptitudeQuestions.map(q => ({ ...q, category: 'aptitude' })));
+        }
+
+      } else if (interviewType === 'dsa') {
+        // Generate pure DSA problems
+        console.log(`🧮 Generating ${numberOfQuestions} company-specific DSA problems`);
+        
+        const difficulty = experienceLevel === 'entry' ? 'easy' : 
+                          experienceLevel === 'senior' ? 'hard' : 'medium';
+        
+        const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
+          companyName,
+          difficulty,
+          numberOfQuestions,
+          jobTitle
+        );
+        
+        // Convert to question format
+        allQuestions = dsaProblems.map(problem => ({
+          id: problem.id,
+          question: `${problem.title}\n\n${problem.description}\n\n` +
+                   `Examples:\n${problem.examples.map(ex => 
+                     `Input: ${ex.input}\nOutput: ${ex.output}${ex.explanation ? '\nExplanation: ' + ex.explanation : ''}`
+                   ).join('\n\n')}\n\n` +
+                   `Constraints:\n${problem.constraints.join('\n')}\n\n` +
+                   `Topics: ${problem.topics.join(', ')}` +
+                   (problem.companyContext ? `\n\nCompany Context: ${problem.companyContext}` : ''),
+          expectedAnswer: `Provide algorithm approach, complexity analysis, and implementation. ` +
+                        `Expected time complexity: ${problem.timeComplexity || 'Optimal'}, ` +
+                        `space complexity: ${problem.spaceComplexity || 'Efficient'}.` +
+                        (problem.hints ? ` Hints: ${problem.hints.join(', ')}` : ''),
+          category: 'dsa',
+          difficulty: problem.difficulty,
+          points: problem.difficulty === 'easy' ? 8 : problem.difficulty === 'hard' ? 15 : 12,
+          timeLimit: problem.difficulty === 'easy' ? 20 : problem.difficulty === 'hard' ? 45 : 30,
+          evaluationCriteria: ['Algorithm correctness', 'Complexity analysis', 'Implementation quality', 'Edge case handling'],
+          tags: [...(problem.topics || []), companyName, 'DSA', jobTitle],
+          hints: problem.hints || [],
+          companyRelevance: 9,
+          dsaProblem: problem // Include full DSA problem data
+        }));
+        
+      } else {
+        // Generate single type questions  
+        console.log(`📝 Generating ${numberOfQuestions} ${interviewType} questions`);
+        
+        allQuestions = await aiService.generateInterviewQuestions({
+          jobTitle,
+          companyName,
+          skills,
+          interviewType: interviewType as any,
+          experienceLevel,
+          numberOfQuestions,
+          companyIntelligence
+        });
+      }
+
+      // Shuffle questions for variety
+      allQuestions = allQuestions.sort(() => Math.random() - 0.5);
+
+      console.log(`✅ Successfully generated ${allQuestions.length} questions`);
+      console.log(`📊 Question distribution:`, {
+        technical: allQuestions.filter(q => q.category === 'technical').length,
+        behavioral: allQuestions.filter(q => q.category === 'behavioral').length,
+        dsa: allQuestions.filter(q => q.category === 'dsa').length,
+        aptitude: allQuestions.filter(q => q.category === 'aptitude').length,
+        system_design: allQuestions.filter(q => q.category === 'system_design').length
+      });
+
+      // Store interview session in database
+      try {
+        const { db } = await connectToDatabase();
+        const interviewData = {
+          userId: session.user?.email || session.user?.name,
+          jobTitle,
+          companyName,
+          skills,
+          interviewType,
+          experienceLevel,
+          questions: allQuestions,
+          createdAt: new Date(),
+          status: 'generated',
+          aiProvider: 'enhanced-groq',
+          totalQuestions: allQuestions.length
+        };
+
+        await db.collection('interview_sessions').insertOne(interviewData);
+        console.log('💾 Interview session stored in database');
+      } catch (dbError) {
+        console.error('⚠️ Database storage failed:', dbError);
+        // Continue anyway - question generation succeeded
+      }
+
       return NextResponse.json({
         success: true,
-        questions: interview.questions,
-        message: 'Questions already exist',
-        provider: 'cached'
-      });
-    }
-
-    console.log('⚡ Generating new questions with Optimized AI (10x faster than Ollama)...');
-    
-    // Initialize Optimized AI service
-    const aiService = OptimizedAIService.getInstance();
-    
-    // Check if AI service is available
-    const healthCheck = await aiService.healthCheck();
-    if (!healthCheck.groqAvailable && !healthCheck.geminiAvailable) {
-      throw new Error('AI service is not available - check API keys');
-    }
-
-    let allQuestions: any[] = [];
-
-    // Generate different types of questions based on interview type
-    if (interview.interviewType === 'mixed' || interview.interviewType === 'technical') {
-      console.log('⚡ Generating technical questions with OpenAI GPT-4o-mini...');
-      const technicalQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle,
-        companyName: interview.companyName,
-        skills: interview.skills || [],
-        interviewType: 'technical',
-        experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: Math.ceil(interview.numberOfQuestions * 0.6)
-      });
-      allQuestions.push(...technicalQuestions);
-    }
-
-    if (interview.interviewType === 'mixed' || interview.interviewType === 'behavioral') {
-      console.log('🧠 Generating behavioral questions with OpenAI GPT-4o-mini...');
-      const behavioralQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle,
-        companyName: interview.companyName,
-        skills: interview.skills || [],
-        interviewType: 'behavioral',
-        experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: Math.ceil(interview.numberOfQuestions * 0.4)
-      });
-      allQuestions.push(...behavioralQuestions);
-    }
-
-    if (interview.interviewType === 'system_design') {
-      console.log('🏗️ Generating system design questions...');
-      const systemQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle,
-        companyName: interview.companyName,
-        skills: interview.skills || [],
-        interviewType: 'system_design',
-        experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: interview.numberOfQuestions
-      });
-      allQuestions.push(...systemQuestions);
-    }
-
-    if (interview.interviewType === 'aptitude') {
-      console.log('🧮 Generating aptitude questions...');
-      const aptitudeQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle,
-        companyName: interview.companyName,
-        skills: interview.skills || [],
-        interviewType: 'aptitude',
-        experienceLevel: interview.experienceLevel || 'mid',
-        numberOfQuestions: interview.numberOfQuestions
-      });
-      allQuestions.push(...aptitudeQuestions);
-    }
-
-    // Generate DSA problems if requested
-    if (interview.includeDSA) {
-      console.log('💻 Generating DSA problems...');
-      const dsaProblems = await aiService.generateDSAProblems(
-        interview.companyName,
-        interview.difficulty || 'medium',
-        Math.min(6, Math.floor(interview.numberOfQuestions * 0.3))
-      );
-      
-      // Convert DSA problems to question format
-      const dsaQuestions = dsaProblems.map(problem => ({
-        id: problem.id,
-        question: `Coding Problem: ${problem.title}\n\n${problem.description}`,
-        expectedAnswer: `Implement an efficient solution with ${problem.timeComplexity} time complexity.`,
-        category: 'dsa',
-        difficulty: problem.difficulty,
-        points: 15,
-        timeLimit: 25,
-        evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases'],
-        tags: [...problem.topics, interview.companyName],
-        hints: problem.hints,
-        dsaProblem: problem
-      }));
-      
-      allQuestions.push(...dsaQuestions);
-    }
-
-    // Ensure we don't exceed the requested number of questions
-    if (allQuestions.length > interview.numberOfQuestions) {
-      allQuestions = allQuestions.slice(0, interview.numberOfQuestions);
-    }
-
-    // Add metadata
-    const questionsWithMetadata = allQuestions.map((question, index) => ({
-      ...question,
-      order: index + 1,
-      generatedAt: new Date(),
-      provider: question.provider || 'optimized-ai',
-      model: question.model || 'gpt-4o-mini',
-      companyRelevance: question.companyRelevance || 8
-    }));
-
-    // Update interview with questions
-    await interviewsCollection.updateOne(
-      { id: interviewId },
-      {
-        $set: {
-          questions: questionsWithMetadata,
-          questionsGenerated: true,
-          lastUpdated: new Date(),
-          questionProvider: 'optimized-ai'
+        questions: allQuestions,
+        metadata: {
+          totalQuestions: allQuestions.length,
+          aiProvider: 'enhanced-groq',
+          companyName,
+          jobTitle,
+          interviewType,
+          experienceLevel,
+          generatedAt: new Date().toISOString(),
+          distribution: {
+            technical: allQuestions.filter(q => q.category === 'technical').length,
+            behavioral: allQuestions.filter(q => q.category === 'behavioral').length,
+            dsa: allQuestions.filter(q => q.category === 'dsa').length,
+            aptitude: allQuestions.filter(q => q.category === 'aptitude').length,
+            system_design: allQuestions.filter(q => q.category === 'system_design').length
+          }
         }
-      }
-    );
+      });
 
-    console.log(`✅ Generated ${questionsWithMetadata.length} questions using Optimized AI`);
+    } catch (aiError) {
+      console.error('❌ AI Service Error:', aiError);
+      
+      // Fallback to basic questions
+      const fallbackQuestions = Array.from({ length: numberOfQuestions }, (_, i) => ({
+        id: `fallback-${i}`,
+        question: `Tell me about your experience with ${skills[i % skills.length] || 'relevant technologies'} in a ${jobTitle} role at ${companyName}.`,
+        expectedAnswer: 'A comprehensive answer covering technical experience, specific projects, and problem-solving approach.',
+        category: interviewType,
+        difficulty: 'medium' as const,
+        points: 10,
+        timeLimit: 5,
+        evaluationCriteria: ['Technical knowledge', 'Communication clarity', 'Practical experience'],
+        tags: [companyName, jobTitle, interviewType],
+        hints: ['Think about specific projects you\'ve worked on'],
+        companyRelevance: 6
+      }));
 
-    return NextResponse.json({
-      success: true,
-      questions: questionsWithMetadata,
-      provider: 'optimized-ai',
-      model: 'emergent-openai-gpt-4o-mini',
-      companySpecific: true,
-      performanceImprovement: '10x faster than Ollama',
-      message: `Generated ${questionsWithMetadata.length} company-specific questions`
-    });
+      return NextResponse.json({
+        success: true,
+        questions: fallbackQuestions,
+        metadata: {
+          totalQuestions: fallbackQuestions.length,
+          aiProvider: 'fallback',
+          companyName,
+          jobTitle,
+          interviewType,
+          experienceLevel,
+          generatedAt: new Date().toISOString(),
+          note: 'Generated using fallback due to AI service unavailability'
+        }
+      });
+    }
 
-  } catch (error: any) {
-    console.error('❌ Error in question generation:', error);
+  } catch (error) {
+    console.error('❌ Enhanced Question Generation API Error:', error);
     
     return NextResponse.json(
-      {
-        error: 'Failed to generate questions',
-        details: error.message,
-        suggestion: 'Check API keys configuration'
+      { 
+        error: 'Failed to generate questions', 
+        details: error instanceof Error ? error.message : 'Unknown error',
+        aiProvider: 'enhanced-groq'
       },
       { status: 500 }
     );
   }
+}
+
+export async function GET() {
+  return NextResponse.json({
+    message: 'Enhanced Question Generation API',
+    aiProvider: 'enhanced-groq',
+    supportedTypes: ['technical', 'behavioral', 'mixed', 'dsa', 'aptitude', 'system_design'],
+    features: [
+      'Company-specific question generation',
+      'Enhanced prompt engineering',
+      'Intelligent question distribution',
+      'DSA problems with company context',
+      'Experience level optimization',
+      'Real-world scenario integration'
+    ]
+  });
 }
