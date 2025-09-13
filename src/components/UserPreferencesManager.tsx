@@ -12,7 +12,6 @@ import { UserInterviewPreferences } from '@/types/userPreferences';
 import { 
   Settings, 
   Brain, 
-  Code2, 
   Users, 
   Building2, 
   Zap,
@@ -21,8 +20,7 @@ import {
   RefreshCw,
   Save,
   AlertCircle,
-  CheckCircle,
-  Sparkles
+  CheckCircle
 } from 'lucide-react';
 
 interface UserPreferencesManagerProps {
@@ -316,107 +314,6 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
           ))}
           <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
             💡 Total should be around 100%. Adjusting one category will automatically adjust others.
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* DSA Preferences - The Special Feature! */}
-      <Card className="border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Code2 className="w-5 h-5 text-blue-600" />
-            DSA Preferences
-            <Badge className="bg-blue-100 text-blue-700">
-              <Sparkles className="w-3 h-3 mr-1" />
-              Company-Unique Problems
-            </Badge>
-          </CardTitle>
-          <CardDescription>
-            Configure Data Structures & Algorithms question generation with company-specific unique problems
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="companySpecificFocus">Company-Unique Problems</Label>
-                <Switch
-                  id="companySpecificFocus"
-                  checked={preferences.dsaPreferences.companySpecificFocus}
-                  onCheckedChange={(checked) => updatePreference('dsaPreferences.companySpecificFocus', checked)}
-                />
-              </div>
-              <p className="text-xs text-gray-600">Generate unique DSA problems specific to each company's business challenges</p>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="realWorldScenarios">Real-World Scenarios</Label>
-                <Switch
-                  id="realWorldScenarios"
-                  checked={preferences.dsaPreferences.realWorldScenarios}
-                  onCheckedChange={(checked) => updatePreference('dsaPreferences.realWorldScenarios', checked)}
-                />
-              </div>
-              <p className="text-xs text-gray-600">Include practical business applications in DSA problems</p>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="difficultyProgression">Difficulty Progression</Label>
-                <Switch
-                  id="difficultyProgression"
-                  checked={preferences.dsaPreferences.difficultyProgression}
-                  onCheckedChange={(checked) => updatePreference('dsaPreferences.difficultyProgression', checked)}
-                />
-              </div>
-              <p className="text-xs text-gray-600">Start with easier problems and gradually increase difficulty</p>
-            </div>
-
-            <div className="space-y-3">
-              <Label htmlFor="interviewStyle">Interview Style Preference</Label>
-              <select
-                id="interviewStyle"
-                value={preferences.dsaPreferences.interviewStylePreference}
-                onChange={(e) => updatePreference('dsaPreferences.interviewStylePreference', e.target.value)}
-                className="w-full p-2 border rounded-md"
-              >
-                <option value="company_specific">Company Specific</option>
-                <option value="google">Google Style</option>
-                <option value="meta">Meta Style</option>
-                <option value="amazon">Amazon Style</option>
-                <option value="microsoft">Microsoft Style</option>
-                <option value="generic">Generic</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <Label>Preferred DSA Topics</Label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-              {[
-                'arrays', 'strings', 'linked_lists', 'trees', 'graphs', 
-                'dynamic_programming', 'sorting', 'searching', 'hashing', 
-                'recursion', 'backtracking', 'greedy', 'math', 'geometry'
-              ].map((topic) => (
-                <label key={topic} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={preferences.dsaPreferences.preferredTopics.includes(topic)}
-                    onChange={(e) => {
-                      const current = preferences.dsaPreferences.preferredTopics;
-                      if (e.target.checked) {
-                        updatePreference('dsaPreferences.preferredTopics', [...current, topic]);
-                      } else {
-                        updatePreference('dsaPreferences.preferredTopics', current.filter(t => t !== topic));
-                      }
-                    }}
-                    className="rounded"
-                  />
-                  <span className="text-xs capitalize">{topic.replace('_', ' ')}</span>
-                </label>
-              ))}
-            </div>
           </div>
         </CardContent>
       </Card>
