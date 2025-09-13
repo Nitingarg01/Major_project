@@ -15,59 +15,43 @@ function getQuestionCountForType(interviewType: string): number {
   }
 }
 
-// Import Preference-Based Question Generator for enhanced user-customized questions
+// Use Interview Service Manager for enhanced question generation
 async function generateQuestionsImmediately(interviewData: any, userId: string) {
     try {
-        const { preferenceBasedQuestionGenerator } = await import('@/lib/preferenceBasedQuestionGenerator');
-        const { userPreferencesService } = await import('@/lib/userPreferencesService');
+        const { interviewServiceManager } = await import('@/lib/interviewServiceManager');
         
-        console.log('🎯 Generating preference-based questions with company-unique DSA problems...');
+        console.log('🎯 Generating enhanced questions with improved DSA problems...');
         
-        // Get user preferences
-        const userPreferences = await userPreferencesService.getUserPreferences(userId);
-        console.log('📊 User preferences loaded for question generation');
-        
-        // Generate questions using preference-based system
-        const questionResponse = await preferenceBasedQuestionGenerator.generatePreferenceBasedQuestions({
-            userPreferences,
+        // Generate questions using the enhanced service manager
+        const questions = await interviewServiceManager.generateInterviewQuestions({
             jobTitle: interviewData.jobTitle || 'Software Engineer',
             companyName: interviewData.companyName,
             skills: interviewData.skills || [],
             interviewType: interviewData.interviewType || 'mixed',
             experienceLevel: interviewData.experienceLevel || 'mid',
-            numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed'),
-            companyIntelligence: null,
-            forceUniqueGeneration: true
+            numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed')
         });
 
-        if (!questionResponse.success) {
-            throw new Error('Preference-based question generation failed');
-        }
+        console.log(`✅ Generated ${questions.length} enhanced questions`);
 
-        console.log(`✅ Generated ${questionResponse.questions.length} preference-aligned questions`);
-        console.log(`🔥 Company-unique DSA problems: ${questionResponse.metadata.uniqueDSAProblems}`);
-        console.log(`🎯 Preference alignment: ${questionResponse.metadata.preferenceAlignment}%`);
-
-        const allQuestions = questionResponse.questions.map((q: any) => ({
+        const allQuestions = questions.map((q: any) => ({
             id: q.id,
             question: q.question,
             expectedAnswer: q.expectedAnswer,
             difficulty: q.difficulty || 'medium',
             category: q.category,
             points: q.points || 15,
-            timeLimit: q.timeLimit || 8,
-            provider: q.metadata?.provider || 'preference-based',
-            model: q.metadata?.model || 'enhanced-ai',
+            timeLimit: q.timeLimit || (q.category === 'dsa' ? 45 : 8),
+            provider: q.provider || 'interview-service-manager',
+            model: q.model || 'enhanced-groq',
             evaluationCriteria: q.evaluationCriteria || ['Technical Knowledge', 'Communication', 'Problem Solving'],
             tags: q.tags || [interviewData.jobTitle, interviewData.companyName],
             hints: q.hints || [],
             companyRelevance: q.companyRelevance || 8,
-            uniquenessScore: q.uniquenessScore,
-            companyContext: q.companyContext,
-            preferences: q.preferences
+            dsaProblem: q.dsaProblem || null // Include DSA problem data if present
         }));
 
-        console.log(`✅ ${allQuestions.length} preference-based questions generated successfully in ${questionResponse.metadata.generationTime}ms`);
+        console.log(`✅ ${allQuestions.length} enhanced questions generated successfully`);
         return allQuestions;
         
     } catch (error) {
