@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
-import EmergentLLMService from '@/lib/emergentLLMService';
+import GroqAIService from '@/lib/groqAIService';
 import EnhancedCompanyIntelligenceService from '@/lib/enhancedCompanyIntelligence';
 
 // Helper function to validate ObjectId
