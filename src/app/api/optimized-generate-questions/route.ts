@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     
     // Check if AI service is available
     const healthCheck = await aiService.healthCheck();
-    if (!healthCheck.emergentAvailable && !healthCheck.geminiAvailable) {
+    if (!healthCheck.groqAvailable && !healthCheck.geminiAvailable) {
       throw new Error('AI service is not available - check API keys');
     }
 
