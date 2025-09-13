@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
         response: responses.find((r: any) => r.questionId === q.id)
       })),
       createdAt: new Date(),
-      aiProvider: 'hybrid'
+      aiProvider: 'groq'
     };
 
     // Update or insert performance analysis
