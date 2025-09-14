@@ -74,20 +74,64 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get questions and answers
+    // Get questions and answers with better error handling
     const questionsDoc = await db.collection("questions").findOne({
       interviewId: interviewId
     });
 
-    if (!questionsDoc || !questionsDoc.answers || questionsDoc.answers.length === 0) {
+    console.log('📄 Questions document found:', {
+      exists: !!questionsDoc,
+      hasAnswers: !!questionsDoc?.answers,
+      answersLength: questionsDoc?.answers?.length || 0,
+      answersType: typeof questionsDoc?.answers,
+      sampleAnswer: questionsDoc?.answers?.[0]
+    });
+
+    if (!questionsDoc) {
+      console.error('❌ No questions document found for interviewId:', interviewId);
       return NextResponse.json(
-        { error: 'No answers found for analysis' },
+        { error: 'Interview questions not found' },
+        { status: 404 }
+      );
+    }
+
+    if (!questionsDoc.answers || questionsDoc.answers.length === 0) {
+      console.error('❌ No answers found in questions document:', {
+        interviewId,
+        hasAnswers: !!questionsDoc.answers,
+        answersLength: questionsDoc.answers?.length || 0,
+        questionsDoc: Object.keys(questionsDoc)
+      });
+      return NextResponse.json(
+        { error: 'No answers found for analysis', debug: { interviewId, documentKeys: Object.keys(questionsDoc) } },
         { status: 404 }
       );
     }
 
     const questions = questionsDoc.questions || [];
-    const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided');
+    
+    // Handle different answer formats - both new format (objects with answer property) and direct strings
+    let answers: string[] = [];
+    
+    if (Array.isArray(questionsDoc.answers)) {
+      answers = questionsDoc.answers.map((ans: any) => {
+        if (typeof ans === 'string') {
+          return ans || 'No answer provided';
+        } else if (ans && typeof ans === 'object' && ans.answer) {
+          return ans.answer || 'No answer provided';
+        } else {
+          return 'No answer provided';
+        }
+      });
+    } else {
+      console.error('❌ Answers is not an array:', typeof questionsDoc.answers);
+      return NextResponse.json(
+        { error: 'Invalid answers format' },
+        { status: 400 }
+      );
+    }
+
+    console.log(`🧠 Processing ${questions.length} questions and ${answers.length} answers`);
 
     console.log(`🧠 Analyzing ${questions.length} questions...`);
 
