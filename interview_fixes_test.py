@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 class InterviewFixesTester:
-    def __init__(self, base_url="http://localhost:3000"):
+    def __init__(self, base_url="http://localhost:3001"):
         self.base_url = base_url
         self.session = requests.Session()
         self.tests_run = 0
