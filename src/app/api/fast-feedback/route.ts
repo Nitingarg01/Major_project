@@ -95,6 +95,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if this is a DSA interview and handle accordingly
+    const isDSAInterview = interview.jobTitle?.toLowerCase().includes('dsa') || 
+                          questionsDoc.questions?.some((q: any) => q.category === 'dsa' || q.dsaProblem);
+
+    console.log('🔍 Interview type analysis:', {
+      isDSAInterview,
+      jobTitle: interview.jobTitle,
+      questionCategories: questionsDoc.questions?.map((q: any) => q.category) || []
+    });
+
     // Check if answers exist in any format
     const hasValidAnswers = questionsDoc.answers && 
       (Array.isArray(questionsDoc.answers) && questionsDoc.answers.length > 0) ||
