@@ -276,7 +276,7 @@ function getTimeLimitForCategory(category: string): number {
         'dsa': 45
     };
     
-    return timeLimit[category as keyof typeof timeLimit] || 5;
+    return timelimits[category as keyof typeof timelimits] || 5;
 }
 
 function getDSADifficultyForLevel(experienceLevel: string): 'easy' | 'medium' | 'hard' {
