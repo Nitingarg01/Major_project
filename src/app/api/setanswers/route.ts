@@ -68,9 +68,10 @@ export async function POST(request: NextRequest) {
             { interviewId: id },
             {
                 $set: {
-                    answers: data,
+                    answers: transformedAnswers,
                     completedAt: new Date(),
-                    answersCount: data.length
+                    answersCount: transformedAnswers.length,
+                    lastUpdated: new Date()
                 }
             },
             { returnDocument: 'after' }
