@@ -133,8 +133,6 @@ export async function POST(request: NextRequest) {
 
     console.log(`🧠 Processing ${questions.length} questions and ${answers.length} answers`);
 
-    console.log(`🧠 Analyzing ${questions.length} questions...`);
-
     // Try Groq AI first, fallback to mock analysis if API key not available
     let insights;
     try {
