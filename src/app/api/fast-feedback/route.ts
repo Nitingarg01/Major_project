@@ -170,7 +170,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Final validation - ensure we have meaningful answers
+    const meaningfulAnswers = answers.filter(answer => 
+      answer && 
+      answer.trim() !== '' && 
+      answer !== 'No answer provided' && 
+      answer.trim().length > 0
+    );
+    
     console.log(`🧠 Processing ${questions.length} questions and ${answers.length} answers`);
+    console.log(`✅ Meaningful answers found: ${meaningfulAnswers.length}/${answers.length}`);
+    
+    if (meaningfulAnswers.length === 0) {
+      console.warn('⚠️ No meaningful answers found, but proceeding with analysis');
+    }
 
     // Try Groq AI first, fallback to mock analysis if API key not available
     let insights;
