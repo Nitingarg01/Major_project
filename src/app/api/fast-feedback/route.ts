@@ -95,11 +95,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!questionsDoc.answers || questionsDoc.answers.length === 0) {
+    // Check if answers exist in any format
+    const hasValidAnswers = questionsDoc.answers && 
+      (Array.isArray(questionsDoc.answers) && questionsDoc.answers.length > 0) ||
+      (typeof questionsDoc.answers === 'object' && Object.keys(questionsDoc.answers).length > 0);
+
+    if (!hasValidAnswers) {
       console.error('❌ No answers found in questions document:', {
         interviewId,
         hasAnswers: !!questionsDoc.answers,
-        answersLength: questionsDoc.answers?.length || 0,
+        answersLength: Array.isArray(questionsDoc.answers) ? questionsDoc.answers.length : 0,
+        answersType: typeof questionsDoc.answers,
+        answersKeys: questionsDoc.answers && typeof questionsDoc.answers === 'object' ? Object.keys(questionsDoc.answers) : [],
         questionsDoc: Object.keys(questionsDoc)
       });
       return NextResponse.json(
