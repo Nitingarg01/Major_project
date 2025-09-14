@@ -27,6 +27,41 @@ export async function POST(request: NextRequest) {
         const db = client.db()
 
         console.log(`📝 Saving ${data.length} answers for interview ${id}`)
+        console.log('📄 Answer data format:', {
+            isArray: Array.isArray(data),
+            length: data.length,
+            firstAnswer: data[0],
+            answerKeys: data[0] ? Object.keys(data[0]) : []
+        })
+
+        // Transform data to ensure consistent format
+        const transformedAnswers = data.map((item, index) => {
+            if (typeof item === 'object' && item.answer) {
+                return {
+                    questionIndex: index,
+                    answer: item.answer,
+                    timestamp: new Date()
+                }
+            } else if (typeof item === 'string') {
+                return {
+                    questionIndex: index,
+                    answer: item,
+                    timestamp: new Date()
+                }
+            } else {
+                console.warn(`⚠️ Unexpected answer format at index ${index}:`, item)
+                return {
+                    questionIndex: index,
+                    answer: item?.answer || 'No answer provided',
+                    timestamp: new Date()
+                }
+            }
+        })
+
+        console.log('✅ Transformed answers:', {
+            count: transformedAnswers.length,
+            sampleTransformed: transformedAnswers[0]
+        })
 
         // Update questions with answers
         const quesBank = await db.collection("questions").findOneAndUpdate(
