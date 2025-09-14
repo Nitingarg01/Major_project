@@ -189,54 +189,63 @@ export async function POST(request: NextRequest) {
     // Handle different answer formats - both new format (objects with answer property) and direct strings
     let answers: string[] = [];
     
-    console.log('🔍 Processing answers:', {
-      answersType: typeof questionsDoc.answers,
-      isArray: Array.isArray(questionsDoc.answers),
-      length: Array.isArray(questionsDoc.answers) ? questionsDoc.answers.length : 'N/A',
-      sampleAnswer: Array.isArray(questionsDoc.answers) ? questionsDoc.answers[0] : questionsDoc.answers
-    });
-    
-    if (Array.isArray(questionsDoc.answers)) {
-      answers = questionsDoc.answers.map((ans: any, index: number) => {
-        let extractedAnswer = '';
-        
-        if (typeof ans === 'string') {
-          extractedAnswer = ans || 'No answer provided';
-        } else if (ans && typeof ans === 'object' && ans.answer) {
-          extractedAnswer = ans.answer || 'No answer provided';
-        } else if (ans && typeof ans === 'object') {
-          // Handle other object formats
-          extractedAnswer = ans.text || ans.response || ans.content || 'No answer provided';
-        } else {
-          extractedAnswer = 'No answer provided';
-        }
-        
-        console.log(`📝 Answer ${index}:`, {
-          originalType: typeof ans,
-          originalValue: ans,
-          extractedAnswer: extractedAnswer.substring(0, 100) + (extractedAnswer.length > 100 ? '...' : '')
-        });
-        
-        return extractedAnswer;
+    // Use DSA answers if available, otherwise use regular answers
+    if (isDSAInterview && dsaAnswers.length > 0) {
+      console.log('🔍 Processing DSA answers:', {
+        dsaAnswersCount: dsaAnswers.length,
+        sampleAnswer: dsaAnswers[0]?.substring(0, 100) + '...'
       });
-    } else if (questionsDoc.answers && typeof questionsDoc.answers === 'object') {
-      // Handle object format (not array)
-      const answersObj = questionsDoc.answers;
-      answers = Object.values(answersObj).map((ans: any) => {
-        if (typeof ans === 'string') {
-          return ans || 'No answer provided';
-        } else if (ans && typeof ans === 'object' && ans.answer) {
-          return ans.answer || 'No answer provided';
-        } else {
-          return 'No answer provided';
-        }
-      });
+      answers = dsaAnswers;
     } else {
-      console.error('❌ Answers is not an array or object:', typeof questionsDoc.answers);
-      return NextResponse.json(
-        { error: 'Invalid answers format', debug: { answersType: typeof questionsDoc.answers } },
-        { status: 400 }
-      );
+      console.log('🔍 Processing regular answers:', {
+        answersType: typeof questionsDoc.answers,
+        isArray: Array.isArray(questionsDoc.answers),
+        length: Array.isArray(questionsDoc.answers) ? questionsDoc.answers.length : 'N/A',
+        sampleAnswer: Array.isArray(questionsDoc.answers) ? questionsDoc.answers[0] : questionsDoc.answers
+      });
+      
+      if (Array.isArray(questionsDoc.answers)) {
+        answers = questionsDoc.answers.map((ans: any, index: number) => {
+          let extractedAnswer = '';
+          
+          if (typeof ans === 'string') {
+            extractedAnswer = ans || 'No answer provided';
+          } else if (ans && typeof ans === 'object' && ans.answer) {
+            extractedAnswer = ans.answer || 'No answer provided';
+          } else if (ans && typeof ans === 'object') {
+            // Handle other object formats
+            extractedAnswer = ans.text || ans.response || ans.content || 'No answer provided';
+          } else {
+            extractedAnswer = 'No answer provided';
+          }
+          
+          console.log(`📝 Answer ${index}:`, {
+            originalType: typeof ans,
+            originalValue: ans,
+            extractedAnswer: extractedAnswer.substring(0, 100) + (extractedAnswer.length > 100 ? '...' : '')
+          });
+          
+          return extractedAnswer;
+        });
+      } else if (questionsDoc.answers && typeof questionsDoc.answers === 'object') {
+        // Handle object format (not array)
+        const answersObj = questionsDoc.answers;
+        answers = Object.values(answersObj).map((ans: any) => {
+          if (typeof ans === 'string') {
+            return ans || 'No answer provided';
+          } else if (ans && typeof ans === 'object' && ans.answer) {
+            return ans.answer || 'No answer provided';
+          } else {
+            return 'No answer provided';
+          }
+        });
+      } else {
+        console.error('❌ Answers is not an array or object:', typeof questionsDoc.answers);
+        return NextResponse.json(
+          { error: 'Invalid answers format', debug: { answersType: typeof questionsDoc.answers } },
+          { status: 400 }
+        );
+      }
     }
 
     // Final validation - ensure we have meaningful answers
