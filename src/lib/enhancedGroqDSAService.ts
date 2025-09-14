@@ -175,6 +175,12 @@ export class EnhancedGroqDSAService {
 
       let problems = extractJSON(response);
       
+      // Validate that problems is an array before mapping
+      if (!Array.isArray(problems)) {
+        console.warn('❌ Problems response is not an array, using fallback');
+        return this.generateFallbackDSAProblems(companyName, difficulty, numberOfProblems);
+      }
+      
       // Ensure each problem has valid test cases
       problems = problems.map((problem: any, index: number) => {
         // Fix missing or invalid test cases
@@ -312,6 +318,12 @@ export class EnhancedGroqDSAService {
       ], 0.7);
 
       let problems = extractJSON(response);
+      
+      // Validate that problems is an array before mapping
+      if (!Array.isArray(problems)) {
+        console.warn('❌ Problems response is not an array, using fallback');
+        return this.generateFallbackDSAProblems(companyName, difficulty, numberOfProblems);
+      }
       
       // Validate and fix test cases
       problems = problems.map((problem: any, index: number) => {

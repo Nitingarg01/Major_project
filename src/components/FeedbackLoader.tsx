@@ -55,7 +55,9 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
             window.location.reload()
           }, 1500)
         } else {
-          throw new Error('Failed to generate feedback')
+          const errorData = await response.json().catch(() => ({}))
+          console.error('Feedback generation failed:', errorData)
+          throw new Error(errorData.error || 'Failed to generate feedback')
         }
       } catch (error) {
         console.error('Error generating feedback:', error)

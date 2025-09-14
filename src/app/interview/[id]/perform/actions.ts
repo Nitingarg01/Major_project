@@ -9,11 +9,17 @@ export const getInterviewDetails = async (id:string)=>{
     if(!id){
         return 
     }
-     const dbClient = client;
-    const db = dbClient.db();
+    try {
+        const dbClient = client;
+        await dbClient.connect(); // Ensure connection is established
+        const db = dbClient.db();
 
-    const interview = await db.collection("interviews").findOne({_id:new ObjectId(id)})
-    return interview
+        const interview = await db.collection("interviews").findOne({_id:new ObjectId(id)})
+        return interview
+    } catch (error) {
+        console.error('❌ MongoDB connection error in getInterviewDetails:', error);
+        throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
 }
 
 export const getQuestions = async (interviewId:string)=>{
@@ -21,13 +27,20 @@ export const getQuestions = async (interviewId:string)=>{
     if(!interviewId){
         return
     }
-    const db = client.db()
+    try {
+        const dbClient = client;
+        await dbClient.connect(); // Ensure connection is established
+        const db = dbClient.db()
 
-    const interviewQuestions = await db.collection("questions").findOne({interviewId:interviewId})
-    if(!interviewQuestions){
-        return null
+        const interviewQuestions = await db.collection("questions").findOne({interviewId:interviewId})
+        if(!interviewQuestions){
+            return null
+        }
+        return interviewQuestions
+    } catch (error) {
+        console.error('❌ MongoDB connection error in getQuestions:', error);
+        throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-    return interviewQuestions
 }
 
 export const setAnswers = async (data:Record<string, string>[],id:string)=>{
@@ -74,7 +87,10 @@ export const setAnswers = async (data:Record<string, string>[],id:string)=>{
 
 // Fast insights generation using Groq AI
 const generateInsightsDirectly = async (interviewId: string) => {
-    const db = client.db();
+    try {
+        const dbClient = client;
+        await dbClient.connect(); // Ensure connection is established
+        const db = dbClient.db();
     
     console.log('🚀 Starting fast feedback generation with Groq AI...');
     const startTime = Date.now();
@@ -202,5 +218,9 @@ const generateInsightsDirectly = async (interviewId: string) => {
 
         console.log(`⚠️ Used fallback analysis in ${Date.now() - startTime}ms`);
         return fallbackInsights;
+    }
+    } catch (error) {
+        console.error('❌ MongoDB connection error in generateInsightsDirectly:', error);
+        throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 }

@@ -162,9 +162,18 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
+  // Helper function to safely extract parameters from input
+  const getInputParameters = (input: any): string => {
+    if (!input) return 'nums';
+    if (typeof input === 'string') {
+      return input.split(' ').map((_, i) => `param${i + 1}`).join(', ');
+    }
+    return 'nums';
+  };
+
   // Language templates
   const languageTemplates = {
-    python: `def solution(${problem?.examples?.[0]?.input?.split(' ').map((_, i) => `param${i + 1}`).join(', ') || 'nums'}):
+    python: `def solution(${getInputParameters(problem?.examples?.[0]?.input)}):
     # Write your solution here
     pass
 
@@ -172,7 +181,7 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
 # result = solution(${problem?.examples?.[0]?.input || '[1,2,3]'})
 # print(result)`,
     
-    javascript: `function solution(${problem?.examples?.[0]?.input?.split(' ').map((_, i) => `param${i + 1}`).join(', ') || 'nums'}) {
+    javascript: `function solution(${getInputParameters(problem?.examples?.[0]?.input)}) {
     // Write your solution here
     
 }
