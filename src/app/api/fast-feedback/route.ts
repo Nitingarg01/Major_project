@@ -226,6 +226,19 @@ export async function POST(request: NextRequest) {
         });
       }
       
+      // Check if this is a regular interview that was never completed
+      if (interview.status !== 'completed') {
+        return NextResponse.json(
+          { 
+            error: 'Interview not completed yet', 
+            message: 'Please complete the interview before generating feedback',
+            interviewStatus: interview.status,
+            debug: { interviewId, status: interview.status, isDSAInterview }
+          },
+          { status: 400 }
+        );
+      }
+      
       return NextResponse.json(
         { 
           error: 'No answers submitted', 
