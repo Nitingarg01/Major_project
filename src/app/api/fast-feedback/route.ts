@@ -101,16 +101,35 @@ export async function POST(request: NextRequest) {
       (typeof questionsDoc.answers === 'object' && Object.keys(questionsDoc.answers).length > 0);
 
     if (!hasValidAnswers) {
-      console.error('❌ No answers found in questions document:', {
+      console.warn('⚠️ No answers found in questions document:', {
         interviewId,
         hasAnswers: !!questionsDoc.answers,
         answersLength: Array.isArray(questionsDoc.answers) ? questionsDoc.answers.length : 0,
         answersType: typeof questionsDoc.answers,
         answersKeys: questionsDoc.answers && typeof questionsDoc.answers === 'object' ? Object.keys(questionsDoc.answers) : [],
-        questionsDoc: Object.keys(questionsDoc)
+        questionsDoc: Object.keys(questionsDoc),
+        interviewStatus: interview.status
       });
+      
+      // Check if this is an interview that was never completed
+      if (interview.status !== 'completed') {
+        return NextResponse.json(
+          { 
+            error: 'Interview not completed yet', 
+            message: 'Please complete the interview before generating feedback',
+            interviewStatus: interview.status,
+            debug: { interviewId, status: interview.status }
+          },
+          { status: 400 }
+        );
+      }
+      
       return NextResponse.json(
-        { error: 'No answers found for analysis', debug: { interviewId, documentKeys: Object.keys(questionsDoc) } },
+        { 
+          error: 'No answers submitted', 
+          message: 'No answers were submitted for this completed interview',
+          debug: { interviewId, documentKeys: Object.keys(questionsDoc), status: interview.status }
+        },
         { status: 404 }
       );
     }
