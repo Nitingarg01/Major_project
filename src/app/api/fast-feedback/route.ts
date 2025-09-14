@@ -177,6 +177,71 @@ export async function POST(request: NextRequest) {
         );
       }
       
+      // For DSA interviews without submissions, provide a "no submissions" feedback
+      if (isDSAInterview) {
+        console.log('🤖 Generating no-submissions feedback for DSA interview');
+        const noSubmissionsFeedback = {
+          overallScore: 0,
+          parameterScores: {
+            "Problem Solving": 0,
+            "Code Quality": 0,
+            "Algorithm Knowledge": 0,
+            "Implementation Skills": 0,
+            "Testing & Debugging": 0
+          },
+          strengths: [],
+          improvements: [
+            "Submit code solutions to receive detailed feedback",
+            "Attempt to solve the provided DSA problems",
+            "Test your solutions with the given test cases"
+          ],
+          recommendations: [
+            "Start by understanding the problem requirements",
+            "Break down the problem into smaller sub-problems",
+            "Choose appropriate data structures and algorithms",
+            "Test your solution with edge cases",
+            "Submit your code even if it doesn't pass all test cases"
+          ],
+          summary: `No code submissions found for this ${interview.companyName} DSA interview. Please submit your solutions to receive personalized feedback and performance analysis.`,
+          metadata: {
+            analyzedAt: new Date(),
+            aiProvider: 'fallback',
+            model: 'no-submissions-analysis',
+            processingTime: Date.now() - startTime,
+            interviewId: interviewId,
+            companyName: interview.companyName,
+            jobTitle: interview.jobTitle,
+            questionsAnalyzed: questionsDoc.questions?.length || 0,
+            answersProcessed: 0,
+            submissionStatus: 'no-submissions'
+          }
+        };
+
+        // Store the no-submissions analysis
+        await db.collection("questions").findOneAndUpdate(
+          { interviewId: interviewId },
+          {
+            $set: {
+              extracted: noSubmissionsFeedback,
+              analyzedAt: new Date(),
+              aiProvider: 'no-submissions-fallback'
+            }
+          }
+        );
+
+        return NextResponse.json({
+          success: true,
+          message: 'No submissions feedback generated',
+          insights: noSubmissionsFeedback,
+          performance: {
+            processingTime: Date.now() - startTime,
+            aiProvider: 'fallback',
+            model: 'no-submissions-analysis',
+            questionsAnalyzed: questionsDoc.questions?.length || 0
+          }
+        });
+      }
+      
       return NextResponse.json(
         { 
           error: 'No answers submitted', 
