@@ -110,7 +110,13 @@ export async function POST(request: NextRequest) {
             status: 200,
             questionbank: quesBank._id,
             intStatus: intSet.status,
-            answersCount: data.length
+            answersCount: transformedAnswers.length,
+            debug: {
+                originalDataLength: data.length,
+                transformedDataLength: transformedAnswers.length,
+                sampleOriginal: data[0],
+                sampleTransformed: transformedAnswers[0]
+            }
         })
 
     } catch (error) {
