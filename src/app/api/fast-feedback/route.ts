@@ -161,23 +161,7 @@ export async function POST(request: NextRequest) {
         isDSAInterview
       });
       
-      // Check if this is an interview that was never completed
-      // For DSA interviews, allow feedback generation if there are code submissions even if status is not 'completed'
-      if (interview.status !== 'completed' && !(isDSAInterview && dsaAnswers.length > 0)) {
-        return NextResponse.json(
-          { 
-            error: 'Interview not completed yet', 
-            message: isDSAInterview ? 
-              'Please submit your code solutions before generating feedback' : 
-              'Please complete the interview before generating feedback',
-            interviewStatus: interview.status,
-            debug: { interviewId, status: interview.status, isDSAInterview, hasCodeSubmissions: dsaAnswers.length > 0 }
-          },
-          { status: 400 }
-        );
-      }
-      
-      // For DSA interviews without submissions, provide a "no submissions" feedback
+      // For DSA interviews without submissions, provide a "no submissions" feedback regardless of status
       if (isDSAInterview) {
         console.log('🤖 Generating no-submissions feedback for DSA interview');
         const noSubmissionsFeedback = {
