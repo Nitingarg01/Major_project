@@ -106,9 +106,48 @@ export async function POST(request: NextRequest) {
     });
 
     // Check if answers exist in any format
-    const hasValidAnswers = questionsDoc.answers && 
+    let hasValidAnswers = questionsDoc.answers && 
       (Array.isArray(questionsDoc.answers) && questionsDoc.answers.length > 0) ||
       (typeof questionsDoc.answers === 'object' && Object.keys(questionsDoc.answers).length > 0);
+
+    // For DSA interviews, also check for execution results or interview responses
+    let dsaAnswers = [];
+    if (isDSAInterview && !hasValidAnswers) {
+      console.log('🔍 Checking DSA-specific answer formats...');
+      
+      // Check for DSA execution results
+      const dsaExecutions = await db.collection('dsa_executions').find({
+        problemId: { $in: questionsDoc.questions?.map((q: any) => q.id || q.dsaProblem?.id) || [] }
+      }).toArray();
+      
+      // Check for interview responses (used by complete-interview)
+      const interviewResponses = interview.responses || [];
+      
+      console.log('📊 DSA data found:', {
+        executionResults: dsaExecutions.length,
+        interviewResponses: interviewResponses.length,
+        hasResponses: interviewResponses.length > 0
+      });
+      
+      if (dsaExecutions.length > 0 || interviewResponses.length > 0) {
+        hasValidAnswers = true;
+        // Convert DSA executions to answer format
+        dsaAnswers = questionsDoc.questions?.map((question: any) => {
+          const execution = dsaExecutions.find(exec => 
+            exec.problemId === question.id || exec.problemId === question.dsaProblem?.id
+          );
+          const response = interviewResponses.find((r: any) => r.questionId === question.id);
+          
+          if (execution) {
+            return `Code Solution: ${execution.sourceCode}\n\nExecution Result: ${execution.success ? 'PASSED' : 'FAILED'}\nTest Results: ${execution.testsPassed}/${execution.totalTests} tests passed\nExecution Time: ${execution.executionTime}ms`;
+          } else if (response) {
+            return response.userAnswer || response.answer || 'No answer provided';
+          } else {
+            return 'No answer provided';
+          }
+        }) || [];
+      }
+    }
 
     if (!hasValidAnswers) {
       console.warn('⚠️ No answers found in questions document:', {
@@ -118,7 +157,8 @@ export async function POST(request: NextRequest) {
         answersType: typeof questionsDoc.answers,
         answersKeys: questionsDoc.answers && typeof questionsDoc.answers === 'object' ? Object.keys(questionsDoc.answers) : [],
         questionsDoc: Object.keys(questionsDoc),
-        interviewStatus: interview.status
+        interviewStatus: interview.status,
+        isDSAInterview
       });
       
       // Check if this is an interview that was never completed
@@ -128,7 +168,7 @@ export async function POST(request: NextRequest) {
             error: 'Interview not completed yet', 
             message: 'Please complete the interview before generating feedback',
             interviewStatus: interview.status,
-            debug: { interviewId, status: interview.status }
+            debug: { interviewId, status: interview.status, isDSAInterview }
           },
           { status: 400 }
         );
@@ -138,7 +178,7 @@ export async function POST(request: NextRequest) {
         { 
           error: 'No answers submitted', 
           message: 'No answers were submitted for this completed interview',
-          debug: { interviewId, documentKeys: Object.keys(questionsDoc), status: interview.status }
+          debug: { interviewId, documentKeys: Object.keys(questionsDoc), status: interview.status, isDSAInterview }
         },
         { status: 404 }
       );
