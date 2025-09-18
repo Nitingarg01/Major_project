@@ -189,14 +189,16 @@ export default function PerformanceSaver({
 
         if (result.success) {
           setSaved(true)
-          console.log('Performance data saved successfully')
+          console.log('✅ Performance data saved successfully!')
           toast.success('Performance data saved successfully!')
         } else {
-          console.error('Failed to save performance data:', result.error)
+          console.error('❌ Failed to save performance data:', result.error)
           if (result.details) {
             console.error('Error details:', result.details)
           }
-          toast.error('Failed to save performance data')
+          toast.error(`Failed to save performance data: ${result.error}`)
+          
+          // Don't set saved to true so it can retry
         }
       } catch (error) {
         console.error('Error saving performance data:', error)
