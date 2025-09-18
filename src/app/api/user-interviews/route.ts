@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    console.log('Running optimized database queries for user:', userId)
+    console.log('Running optimized database queries for user:', userObjectId)
     
     // Add timeout wrapper for database operations
     const timeout = new Promise((_, reject) => 
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       // Get user's recent NON-COMPLETED interviews (exclude completed ones from dashboard)
       db.collection('interviews')
         .find({ 
-          userId,
+          userId: userObjectId,
           status: { $ne: 'completed' } // Exclude completed interviews from dashboard
         })
         .sort({ createdAt: -1 })
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
       // Get all stats in one aggregation query
       db.collection('interviews')
         .aggregate([
-          { $match: { userId } },
+          { $match: { userId: userObjectId } },
           {
             $group: {
               _id: null,
