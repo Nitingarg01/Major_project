@@ -44,29 +44,43 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!interviewId || !jobTitle || !companyName || score === undefined) {
-      console.log('Validation failed:', { interviewId, jobTitle, companyName, score })
+      console.log('❌ Validation failed:', { interviewId, jobTitle, companyName, score })
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    console.log('Connecting to database...')
+    console.log('🔗 Connecting to database...')
     const { db } = await connectToDatabase()
-    console.log('Database connected successfully')
+    console.log('✅ Database connected successfully')
 
     // Validate ObjectId format
     let userObjectId, interviewObjectId
     try {
       userObjectId = new ObjectId(session.user.id)
       interviewObjectId = new ObjectId(interviewId)
-      console.log('ObjectIds created successfully')
+      console.log('🆔 ObjectIds created successfully:', { userObjectId, interviewObjectId })
     } catch (objectIdError) {
-      console.error('Invalid ObjectId format:', objectIdError)
+      console.error('❌ Invalid ObjectId format:', objectIdError)
       return NextResponse.json(
         { success: false, error: 'Invalid ID format' },
         { status: 400 }
       )
+    }
+
+    // Check if performance data already exists
+    const existingPerformance = await db.collection('performances').findOne({
+      interviewId: interviewObjectId
+    })
+    
+    if (existingPerformance) {
+      console.log('⚠️ Performance data already exists, skipping save')
+      return NextResponse.json({
+        success: true,
+        performanceId: existingPerformance._id.toString(),
+        message: 'Performance data already exists'
+      })
     }
 
     // Save performance data
