@@ -105,12 +105,12 @@ export async function POST(request: NextRequest) {
       roundResults: roundResults || []
     }
 
-    console.log('Inserting performance data...')
+    console.log('💾 Inserting performance data...')
     const result = await db.collection('performances').insertOne(performanceData)
-    console.log('Performance data inserted with ID:', result.insertedId)
+    console.log('✅ Performance data inserted with ID:', result.insertedId)
 
     // Update interview status to completed and remove from active list
-    console.log('Updating interview status...')
+    console.log('🔄 Updating interview status to completed...')
     const updateResult = await db.collection('interviews').updateOne(
       { _id: interviewObjectId },
       { 
@@ -121,12 +121,17 @@ export async function POST(request: NextRequest) {
         }
       }
     )
-    console.log('Interview updated:', updateResult.modifiedCount, 'documents modified')
+    console.log('📊 Interview updated:', updateResult.modifiedCount, 'documents modified')
+
+    if (updateResult.modifiedCount === 0) {
+      console.warn('⚠️ No interview was updated - interview may not exist or already completed')
+    }
 
     return NextResponse.json({
       success: true,
       performanceId: result.insertedId.toString(),
-      message: 'Performance data saved successfully'
+      message: 'Performance data saved and interview marked as completed',
+      interviewUpdated: updateResult.modifiedCount > 0
     })
 
   } catch (error) {
