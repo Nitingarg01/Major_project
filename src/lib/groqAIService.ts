@@ -339,46 +339,62 @@ export class GroqAIService {
     }
   }
 
-  // Fast performance analysis with Groq AI (optimized for speed)
+  // Fast performance analysis with Groq AI (optimized for speed and accuracy)
   public async analyzeOverallPerformance(
     questions: any[],
     answers: string[],
     jobTitle: string,
     skills: string[]
   ): Promise<any> {
-    const systemMessage = `You are a fast interview analyzer. Provide quick, accurate performance evaluation for a ${jobTitle} position. Be concise but thorough.`;
+    const systemMessage = `You are an expert interview evaluator for ${jobTitle} positions. Provide detailed, fair, and constructive performance analysis based on actual candidate responses. Focus on providing specific, actionable feedback that helps candidates improve.`;
     
-    // Simplified prompt for faster processing
+    // Enhanced prompt with better structure and examples
     const prompt = `
-      Analyze this ${jobTitle} interview performance quickly:
+      Analyze this ${jobTitle} interview performance:
 
-      Interview Data:
-      ${questions.slice(0, 5).map((q, index) => `
-      Q${index + 1}: ${q.question}
-      Answer: ${answers[index] || 'No answer'}
-      `).join('\n')}
+      Interview Context:
+      - Position: ${jobTitle}
+      - Required Skills: ${skills.join(', ')}
+      - Questions Analyzed: ${questions.length}
+      - Answers Provided: ${answers.filter(a => a && a.trim() && a !== 'No answer provided').length}
 
-      Required Skills: ${skills.join(', ')}
-      
-      Provide fast analysis in this JSON format:
+      Question-Answer Analysis:
+      ${questions.slice(0, Math.min(questions.length, 6)).map((q, index) => {
+        const answer = answers[index] || 'No answer provided';
+        const wordCount = answer.split(' ').length;
+        return `
+      Q${index + 1} [${q.category || 'general'}]: ${q.question}
+      Answer (${wordCount} words): ${answer}
+      Expected: ${q.expectedAnswer || 'Comprehensive technical response'}
+      `;
+      }).join('\n')}
+
+      Provide comprehensive analysis in this JSON format:
       {
-        "overallScore": (number 1-10),
+        "overallScore": (number 1-10, be fair and realistic based on actual answer quality),
         "parameterScores": {
-          "Technical Knowledge": (number 1-10),
-          "Problem Solving": (number 1-10), 
-          "Communication Skills": (number 1-10),
-          "Practical Application": (number 1-10),
-          "Company Fit": (number 1-10)
+          "Technical Knowledge": (1-10, based on technical accuracy and depth),
+          "Problem Solving": (1-10, based on logical approach and methodology), 
+          "Communication Skills": (1-10, based on clarity and structure),
+          "Practical Application": (1-10, based on real-world relevance),
+          "Company Fit": (1-10, based on professionalism and alignment)
         },
-        "overallVerdict": "Brief 2-sentence performance summary",
+        "overallVerdict": "2-3 sentence summary of performance highlighting specific strengths and areas for improvement",
         "adviceForImprovement": [
-          {"question": "Q1 summary", "advice": "Quick improvement tip"},
-          {"question": "Q2 summary", "advice": "Quick improvement tip"}
+          {"question": "Brief question summary", "advice": "Specific improvement advice based on actual answer quality"},
+          {"question": "Brief question summary", "advice": "Specific improvement advice based on actual answer quality"}
         ],
-        "strengths": ["strength 1", "strength 2", "strength 3"],
-        "improvements": ["improvement 1", "improvement 2", "improvement 3"],
-        "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"]
+        "strengths": ["specific strength 1 based on actual responses", "specific strength 2", "specific strength 3"],
+        "improvements": ["specific improvement area 1 based on gaps identified", "specific improvement area 2", "specific improvement area 3"],
+        "recommendations": ["actionable recommendation 1 for ${jobTitle} role", "actionable recommendation 2", "actionable recommendation 3"]
       }
+      
+      IMPORTANT: Base scores on actual answer quality, not just word count. Consider:
+      - Technical accuracy and understanding
+      - Completeness of response
+      - Real-world application and examples
+      - Communication clarity and structure
+      - Relevance to ${jobTitle} role requirements
     `;
 
     try {
@@ -387,30 +403,33 @@ export class GroqAIService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 2000, // Reduced for faster response
-        temperature: 0.1  // Lower temperature for faster, more consistent results
+        max_tokens: 3000, // Increased for more detailed analysis
+        temperature: 0.2  // Lower temperature for more consistent scoring
       });
 
       const analysis = extractJSON(response);
       
-      // Ensure all required fields are present
-      return {
-        overallScore: analysis.overallScore || 6.5,
-        parameterScores: analysis.parameterScores || {
-          "Technical Knowledge": 7,
-          "Problem Solving": 6,
-          "Communication Skills": 7,
-          "Practical Application": 6,
-          "Company Fit": 6
+      // Validate and enhance the analysis
+      const validatedAnalysis = {
+        overallScore: Math.max(1, Math.min(10, analysis.overallScore || 5.0)),
+        parameterScores: {
+          "Technical Knowledge": Math.max(1, Math.min(10, analysis.parameterScores?.["Technical Knowledge"] || 5.0)),
+          "Problem Solving": Math.max(1, Math.min(10, analysis.parameterScores?.["Problem Solving"] || 5.0)),
+          "Communication Skills": Math.max(1, Math.min(10, analysis.parameterScores?.["Communication Skills"] || 5.0)),
+          "Practical Application": Math.max(1, Math.min(10, analysis.parameterScores?.["Practical Application"] || 5.0)),
+          "Company Fit": Math.max(1, Math.min(10, analysis.parameterScores?.["Company Fit"] || 5.0))
         },
-        overallVerdict: analysis.overallVerdict || `Good performance in the ${jobTitle} interview with demonstrated skills and potential for growth.`,
+        overallVerdict: analysis.overallVerdict || `The candidate demonstrated ${analysis.overallScore >= 7 ? 'strong' : analysis.overallScore >= 5 ? 'adequate' : 'developing'} performance in the ${jobTitle} interview with good potential for growth.`,
         adviceForImprovement: analysis.adviceForImprovement || [
-          { question: "General feedback", advice: "Continue practicing technical concepts and communication skills." }
+          { question: "General feedback", advice: "Continue practicing technical concepts and communication skills relevant to the role." }
         ],
-        strengths: analysis.strengths || ["Completed interview", "Good communication", "Technical awareness"],
-        improvements: analysis.improvements || ["More detailed examples", "Deeper technical insights", "Better structure"],
-        recommendations: analysis.recommendations || ["Practice more", "Study key technologies", "Prepare examples"]
+        strengths: analysis.strengths || ["Completed interview questions", "Showed engagement with the process", "Demonstrated basic understanding"],
+        improvements: analysis.improvements || ["Provide more detailed technical explanations", "Include specific examples from experience", "Better structure in responses"],
+        recommendations: analysis.recommendations || [`Practice ${jobTitle}-specific interview questions`, "Study relevant technologies and best practices", "Prepare concrete examples from professional experience"]
       };
+      
+      console.log(`✅ Groq AI analysis completed - Overall Score: ${validatedAnalysis.overallScore}/10`);
+      return validatedAnalysis;
     } catch (error) {
       console.error('❌ Error analyzing overall performance with Groq:', error);
       return this.generateMockOverallAnalysis(questions, answers);
@@ -554,26 +573,111 @@ export class GroqAIService {
   }
 
   private generateMockOverallAnalysis(questions: any[], answers: string[]) {
-    const avgWordCount = answers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / answers.length;
-    const score = Math.min(10, Math.max(4, avgWordCount / 20));
+    // Filter out empty or invalid answers
+    const meaningfulAnswers = answers.filter(ans => 
+      ans && 
+      ans.trim() !== '' && 
+      ans !== 'No answer provided' && 
+      ans.trim().length > 5
+    );
+    
+    const totalQuestions = questions.length;
+    const answeredQuestions = meaningfulAnswers.length;
+    const completionRate = answeredQuestions / totalQuestions;
+    
+    // Calculate quality metrics
+    const avgWordCount = meaningfulAnswers.length > 0 ?
+      meaningfulAnswers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / meaningfulAnswers.length : 0;
+    const avgCharLength = meaningfulAnswers.length > 0 ?
+      meaningfulAnswers.reduce((sum, ans) => sum + ans.length, 0) / meaningfulAnswers.length : 0;
+    
+    // Improved scoring algorithm
+    const completionScore = Math.max(1, Math.min(10, completionRate * 8 + 2));
+    const lengthScore = Math.max(1, Math.min(10, (avgWordCount / 25) * 6 + 2));
+    const detailScore = Math.max(1, Math.min(10, (avgCharLength / 200) * 6 + 2));
+    
+    // Calculate parameter scores with more realistic distribution
+    const technicalScore = Math.round(((lengthScore + detailScore) / 2) * 10) / 10;
+    const problemSolvingScore = Math.round(((completionScore + lengthScore) / 2) * 10) / 10;
+    const communicationScore = Math.round(((lengthScore + completionScore) / 2) * 10) / 10;
+    const practicalScore = Math.round(((technicalScore + problemSolvingScore) / 2) * 10) / 10;
+    const companyFitScore = Math.round(communicationScore * 10) / 10;
+    
+    const overallScore = Math.round(((technicalScore + problemSolvingScore + communicationScore + practicalScore + companyFitScore) / 5) * 10) / 10;
+    
+    // Generate dynamic feedback based on performance
+    const performanceLevel = overallScore >= 8 ? 'excellent' : overallScore >= 6.5 ? 'strong' : overallScore >= 5 ? 'good' : overallScore >= 3.5 ? 'adequate' : 'developing';
+    
+    const strengths = [];
+    const improvements = [];
+    const recommendations = [];
+    
+    // Dynamic content based on actual performance
+    if (completionRate === 1) {
+      strengths.push("Completed all interview questions thoroughly");
+    } else if (completionRate >= 0.8) {
+      strengths.push("Answered most interview questions effectively");
+    } else if (completionRate >= 0.5) {
+      strengths.push("Attempted majority of the interview questions");
+    }
+    
+    if (avgWordCount > 30) {
+      strengths.push("Provided detailed and comprehensive responses");
+    } else if (avgWordCount > 15) {
+      strengths.push("Gave well-structured answers to questions");
+    }
+    
+    if (overallScore >= 6) {
+      strengths.push("Demonstrated solid understanding of key concepts");
+    } else if (overallScore >= 4) {
+      strengths.push("Showed basic grasp of fundamental topics");
+    }
+    
+    // Targeted improvements
+    if (avgWordCount < 20) {
+      improvements.push("Provide more detailed explanations with specific examples");
+    }
+    if (completionRate < 1) {
+      improvements.push("Attempt to answer all interview questions completely");
+    }
+    if (overallScore < 7) {
+      improvements.push("Deepen technical knowledge and communication clarity");
+    }
+    if (avgCharLength < 150) {
+      improvements.push("Expand on answers with more comprehensive explanations");
+    }
+    
+    // Smart recommendations
+    recommendations.push("Practice interview questions specific to your target role");
+    recommendations.push("Prepare concrete examples from your professional experience");
+    if (overallScore < 6) {
+      recommendations.push("Review fundamental concepts and technologies for your field");
+    }
+    recommendations.push("Focus on clear, structured communication during interviews");
     
     return {
-      overallScore: Math.round(score * 10) / 10,
+      overallScore,
       parameterScores: {
-        "Technical Knowledge": Math.min(10, Math.round((score + 1) * 10) / 10),
-        "Problem Solving": Math.round(score * 10) / 10,
-        "Communication Skills": Math.min(10, Math.round((score + 0.5) * 10) / 10),
-        "Practical Application": Math.max(3, Math.round((score - 0.5) * 10) / 10),
-        "Company Fit": Math.round(score * 10) / 10
+        "Technical Knowledge": technicalScore,
+        "Problem Solving": problemSolvingScore,
+        "Communication Skills": communicationScore,
+        "Practical Application": practicalScore,
+        "Company Fit": companyFitScore
       },
-      overallVerdict: `The candidate demonstrated ${score >= 7 ? 'strong and well-rounded' : score >= 5 ? 'adequate but improvable' : 'basic but developing'} performance across the interview questions with good potential for growth.`,
-      adviceForImprovement: questions.slice(0, 3).map((q, i) => ({
-        question: q.question,
-        advice: `For this ${q.category} question about ${q.question.substring(0, 50)}..., consider providing more structured responses with specific technical examples and practical implementation details.`
-      })),
-      strengths: ["Completed all interview questions", "Showed problem-solving mindset", "Maintained professional communication", "Demonstrated basic technical understanding"],
-      improvements: ["Provide more detailed technical explanations", "Include specific examples from professional experience", "Structure responses more clearly with key points"],
-      recommendations: ["Practice more technical interview questions in your domain", "Work on articulating complex concepts clearly", "Study company-specific technologies and practices", "Practice coding problems regularly"]
+      overallVerdict: `The candidate demonstrated ${performanceLevel} performance in the interview, completing ${answeredQuestions}/${totalQuestions} questions with an average response length of ${Math.round(avgWordCount)} words. ${overallScore >= 7 ? 'Strong technical communication skills were evident.' : overallScore >= 5 ? 'Good foundation with room for improvement in detail and depth.' : 'Basic understanding shown, focus on expanding technical knowledge and communication.'} ${performanceLevel === 'excellent' ? 'Outstanding preparation and knowledge.' : 'Continued practice will enhance interview performance.'}`,
+      adviceForImprovement: questions.slice(0, Math.min(3, questions.length)).map((q: any, index: number) => {
+        const answer = answers[index] || 'No answer provided';
+        const wordCount = answer.split(' ').length;
+        return {
+          question: q.question || `Question ${index + 1}`,
+          advice: wordCount > 15 ? 
+            "Good response foundation - enhance with more specific technical details and real-world examples" :
+            "Provide a more comprehensive answer with detailed explanations, examples, and technical depth"
+        };
+      }),
+      strengths: strengths.length > 0 ? strengths : ["Participated actively in the interview process", "Showed engagement with the questions"],
+      improvements: improvements.length > 0 ? improvements : ["Continue developing technical expertise", "Practice interview communication skills"],
+      recommendations
     };
   }
 }

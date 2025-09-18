@@ -102,7 +102,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
     }
 
     // Get interview details for context
-    const interview = await db.collection("interviews").findOne({_id: new require('mongodb').ObjectId(interviewId)});
+    const interview = await db.collection("interviews").findOne({_id: new ObjectId(interviewId)});
     const jobTitle = interview?.jobTitle || "Software Engineer";
     const companyName = interview?.companyName || "TechCorp";
     const skills = interview?.skills || ["JavaScript", "React"];
@@ -167,6 +167,42 @@ const generateInsightsDirectly = async (interviewId: string) => {
             }
         );
 
+        // CRITICAL: Mark interview as completed so it doesn't show in dashboard
+        await db.collection('interviews').updateOne(
+            { _id: new ObjectId(interviewId) },
+            { 
+                $set: { 
+                    status: 'completed',
+                    completedAt: new Date(),
+                    performanceAnalyzed: true,
+                    finalScore: enhancedInsights.overallScore || 0
+                } 
+            }
+        );
+
+        // Store comprehensive performance analysis for stats dashboard
+        const performanceDoc = {
+            interviewId,
+            userId: interview?.userId || 'unknown',
+            companyName: companyName,
+            jobTitle: jobTitle,
+            performance: enhancedInsights,
+            questions: questions.map((q: any, index: number) => ({
+                ...q,
+                userAnswer: answers[index] || 'No answer provided',
+                response: { analysis: { score: 6 } }
+            })),
+            createdAt: new Date(),
+            aiProvider: 'groq'
+        };
+
+        // Update or insert performance analysis
+        await db.collection('performance_analysis').updateOne(
+            { interviewId },
+            { $set: performanceDoc },
+            { upsert: true }
+        );
+
         const processingTime = Date.now() - startTime;
         console.log(`✅ Fast feedback generated in ${processingTime}ms with Groq AI`);
         
@@ -214,6 +250,42 @@ const generateInsightsDirectly = async (interviewId: string) => {
                     aiProvider: 'fallback'
                 }
             }
+        );
+
+        // CRITICAL: Mark interview as completed even with fallback analysis
+        await db.collection('interviews').updateOne(
+            { _id: new ObjectId(interviewId) },
+            { 
+                $set: { 
+                    status: 'completed',
+                    completedAt: new Date(),
+                    performanceAnalyzed: true,
+                    finalScore: fallbackInsights.overallScore || 0
+                } 
+            }
+        );
+
+        // Store fallback performance analysis for stats dashboard
+        const fallbackPerformanceDoc = {
+            interviewId,
+            userId: interview?.userId || 'unknown',
+            companyName: companyName,
+            jobTitle: jobTitle,
+            performance: fallbackInsights,
+            questions: questions.map((q: any, index: number) => ({
+                ...q,
+                userAnswer: answers[index] || 'No answer provided',
+                response: { analysis: { score: 6 } }
+            })),
+            createdAt: new Date(),
+            aiProvider: 'fallback'
+        };
+
+        // Update or insert performance analysis
+        await db.collection('performance_analysis').updateOne(
+            { interviewId },
+            { $set: fallbackPerformanceDoc },
+            { upsert: true }
         );
 
         console.log(`⚠️ Used fallback analysis in ${Date.now() - startTime}ms`);

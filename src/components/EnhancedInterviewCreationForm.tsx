@@ -86,6 +86,27 @@ const EnhancedInterviewCreationForm = () => {
             console.log('🚀 Creating enhanced interview with AI intelligence...')
             const response = await createInterview(data, projectContext, workExDetails)
             
+            // Check if there's a specific error response
+            if (response && !response.success && response.error) {
+                // Handle duplicate company error
+                if (response.error.includes('already completed an interview')) {
+                    toast.error("🏢 Duplicate Company Interview", {
+                        description: response.error,
+                        action: {
+                            label: "View Performance Stats",
+                            onClick: () => router.push('/performance')
+                        }
+                    })
+                    return;
+                }
+                
+                // Handle other errors
+                toast.error("❌ Interview Creation Failed", {
+                    description: response.error
+                })
+                return;
+            }
+            
             toast.success("🎉 Enhanced AI Interview Created Successfully!", {
                 description: selectedCompanyData?.metadata?.hasSpecificQuestions 
                     ? "Company-specific questions generated with advanced AI"

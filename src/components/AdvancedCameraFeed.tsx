@@ -88,30 +88,35 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         
-        // Handle video play with proper error handling
-        try {
-          await videoRef.current.play();
-          setIsInitialized(true);
-        } catch (playError: any) {
-          // Handle AbortError specifically
-          if (playError.name === 'AbortError') {
-            console.warn('Video play was interrupted, retrying...');
-            // Wait a bit and try again
-            setTimeout(async () => {
-              if (videoRef.current && streamRef.current) {
-                try {
-                  await videoRef.current.play();
-                  setIsInitialized(true);
-                } catch (retryError) {
-                  console.error('Video play retry failed:', retryError);
-                  setCameraError('Video playback failed. Please refresh the page.');
-                }
+        // Handle video play with improved error handling
+        const playPromise = videoRef.current.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsInitialized(true);
+            })
+            .catch((playError) => {
+              // Handle AbortError specifically - this is expected when switching rapidly
+              if (playError.name === 'AbortError') {
+                console.log('Video play was interrupted (normal during initialization)');
+              } else {
+                console.error('Video play failed:', playError);
+                setCameraError('Video playback failed. Please check your browser settings.');
+                // Only retry for non-AbortError cases
+                setTimeout(async () => {
+                  if (videoRef.current && streamRef.current) {
+                    try {
+                      await videoRef.current.play();
+                      setIsInitialized(true);
+                    } catch (retryError) {
+                      console.error('Video play retry failed:', retryError);
+                      setCameraError('Video playback failed. Please refresh the page.');
+                    }
+                  }
+                }, 100);
               }
-            }, 100);
-          } else {
-            console.error('Video play failed:', playError);
-            setCameraError('Video playback failed. Please check your browser settings.');
-          }
+            });
         }
       }
     } catch (error: any) {
@@ -131,6 +136,11 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
+    }
+    if (videoRef.current) {
+      // Pause video before cleanup to prevent AbortError
+      videoRef.current.pause();
+      videoRef.current.srcObject = null;
     }
     setIsInitialized(false);
     setDetectionActive(false);

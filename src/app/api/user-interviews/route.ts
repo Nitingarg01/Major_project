@@ -30,38 +30,47 @@ export async function GET(request: NextRequest) {
     const db = client.db("Cluster0");
     const userId = session.user.id;
     
-    console.log('Running database queries for user:', userId)
+    console.log('Running optimized database queries for user:', userId)
     
     // Add timeout wrapper for database operations
     const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Database query timeout')), 8000)
+      setTimeout(() => reject(new Error('Database query timeout')), 12000)
     )
     
+    // Use aggregation pipeline for better performance
     const dbQueries = Promise.all([
-      // Get user's recent interviews
+      // Get user's recent NON-COMPLETED interviews (exclude completed ones from dashboard)
       db.collection('interviews')
-        .find({ userId })
+        .find({ 
+          userId,
+          status: { $ne: 'completed' } // Exclude completed interviews from dashboard
+        })
         .sort({ createdAt: -1 })
         .limit(limit)
         .toArray(),
       
-      // Get total interviews count
+      // Get all stats in one aggregation query
       db.collection('interviews')
-        .countDocuments({ userId }),
-      
-      // Get completed interviews count
-      db.collection('interviews')
-        .countDocuments({ 
-          userId, 
-          status: 'completed' 
-        }),
-      
-      // Get in-progress interviews count
-      db.collection('interviews')
-        .countDocuments({ 
-          userId, 
-          status: { $in: ['ready', 'in-progress'] }
-        })
+        .aggregate([
+          { $match: { userId } },
+          {
+            $group: {
+              _id: null,
+              total: { $sum: 1 },
+              completed: {
+                $sum: {
+                  $cond: [{ $eq: ['$status', 'completed'] }, 1, 0]
+                }
+              },
+              inProgress: {
+                $sum: {
+                  $cond: [{ $in: ['$status', ['ready', 'in-progress']] }, 1, 0]
+                }
+              }
+            }
+          }
+        ])
+        .toArray()
     ]);
     
     const result = await Promise.race([
@@ -81,7 +90,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Type assertion since we know it's the dbQueries result at this point
-    const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = result as [any[], number, number, number];
+    const [interviews, statsResult] = result as [any[], any[]];
+    
+    // Extract stats from aggregation result
+    const stats = statsResult.length > 0 ? statsResult[0] : { total: 0, completed: 0, inProgress: 0 };
+    const { total: totalInterviews, completed: completedInterviews, inProgress: inProgressInterviews } = stats;
 
     console.log('Database query results:', {
       interviewsCount: interviews.length,

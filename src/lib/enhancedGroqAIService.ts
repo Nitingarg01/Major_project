@@ -411,6 +411,22 @@ Return ONLY a valid JSON array:
       });
 
       const problems = extractJSON(response);
+      
+      // Debug logging
+      console.log('Raw Groq response:', response.substring(0, 200) + '...');
+      console.log('Extracted problems:', problems);
+      
+      // Validate that problems is an array
+      if (!Array.isArray(problems)) {
+        console.warn('DSA generation did not return an array, got:', typeof problems, problems);
+        return this.generateMockDSAProblems(companyName, difficulty, count);
+      }
+      
+      if (problems.length === 0) {
+        console.warn('DSA generation returned empty array, using fallback');
+        return this.generateMockDSAProblems(companyName, difficulty, count);
+      }
+      
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `enhanced-dsa-${companyName.toLowerCase()}-${Date.now()}-${index}`,

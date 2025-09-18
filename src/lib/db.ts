@@ -48,3 +48,15 @@ export async function connectDB() {
   await client.connect();
   return client.db("Cluster0");
 }
+
+// Export a connection function that returns both client and db
+export async function connectToDatabase() {
+  try {
+    await client.connect();
+    const db = client.db("Cluster0");
+    return { client, db };
+  } catch (error) {
+    console.error('Database connection error:', error);
+    throw error;
+  }
+}

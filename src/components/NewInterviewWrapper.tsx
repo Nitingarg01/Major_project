@@ -486,12 +486,54 @@ const NewInterviewWrapper = ({
     }
 
     const currentRoundConfig = roundConfigs[currentRound]
+    const currentRoundQuestions = questions[currentRoundConfig.type] || []
 
-    switch (currentRoundConfig.type) {
-      case 'dsa':
-        // Ensure we have DSA problems and pass the first one to DSACompiler
-        const dsaProblems = currentRoundQuestions || []
-        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
+    try {
+      switch (currentRoundConfig.type) {
+        case 'dsa':
+          // Ensure we have DSA problems and pass the first one to DSACompiler
+          const dsaProblems = currentRoundQuestions || []
+        let dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
+        
+        // Debug logging to identify the issue
+        console.log('DSA Problems:', dsaProblems)
+        console.log('Selected DSA Problem:', dsaProblem)
+        
+        // Validate and sanitize the DSA problem structure
+        if (dsaProblem && typeof dsaProblem === 'object') {
+          try {
+            // Check if it has the expected DSAProblem structure
+            if (!dsaProblem.title || !dsaProblem.description) {
+              console.warn('Invalid DSA problem structure, using fallback')
+              dsaProblem = null
+            } else {
+              // Create a clean, serializable version of the DSA problem
+              // This prevents React rendering issues with complex nested objects
+              dsaProblem = {
+                id: String(dsaProblem.id || 'fallback-dsa'),
+                title: String(dsaProblem.title || 'Coding Challenge'),
+                description: String(dsaProblem.description || 'Solve this coding problem'),
+                difficulty: String(dsaProblem.difficulty || 'medium'),
+                examples: Array.isArray(dsaProblem.examples) ? dsaProblem.examples.map(ex => ({
+                  input: String(ex.input || ''),
+                  output: String(ex.output || ''),
+                  explanation: String(ex.explanation || '')
+                })) : [],
+                testCases: Array.isArray(dsaProblem.testCases) ? dsaProblem.testCases.map(tc => ({
+                  id: String(tc.id || ''),
+                  input: String(tc.input || ''),
+                  expectedOutput: String(tc.expectedOutput || '')
+                })) : [],
+                constraints: Array.isArray(dsaProblem.constraints) ? dsaProblem.constraints.map(c => String(c)) : [],
+                topics: Array.isArray(dsaProblem.topics) ? dsaProblem.topics.map(t => String(t)) : ['Programming'],
+                hints: Array.isArray(dsaProblem.hints) ? dsaProblem.hints.map(h => String(h)) : []
+              }
+            }
+          } catch (sanitizeError) {
+            console.error('Error sanitizing DSA problem:', sanitizeError)
+            dsaProblem = null
+          }
+        }
         
         return (
           <DSACompiler
@@ -519,6 +561,23 @@ const NewInterviewWrapper = ({
             onRoundComplete={handleRoundComplete}
           />
         )
+      }
+    } catch (error) {
+      console.error('Error rendering round component:', error)
+      return (
+        <div className="text-center p-8 bg-red-50 border border-red-200 rounded-lg">
+          <h3 className="text-lg font-semibold text-red-800 mb-2">Component Error</h3>
+          <p className="text-red-600 mb-4">
+            There was an issue loading this interview round. Please try refreshing the page.
+          </p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Refresh Page
+          </button>
+        </div>
+      )
     }
   }
 

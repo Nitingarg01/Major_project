@@ -97,7 +97,7 @@ export default function DashboardPage() {
       const timeoutId = setTimeout(() => {
         console.log('Request timeout - aborting...')
         controller.abort()
-      }, 8000) // 8 second timeout
+      }, 15000) // 15 second timeout - increased for better performance
       
       console.log('Making API call to /api/user-interviews...')
       const response = await fetch('/api/user-interviews?limit=5', {
@@ -339,11 +339,23 @@ export default function DashboardPage() {
             <SmartAIDashboard />
           </div>
 
-          {/* Recent Interviews */}
+          {/* Active Interviews */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-900">Recent Interviews</h2>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">Active Interviews</h2>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Ready to start or in-progress interviews
+                    {stats.completed > 0 && (
+                      <span className="ml-2">
+                        • <Link href="/performance" className="text-blue-600 hover:text-blue-700 underline">
+                          {stats.completed} completed interview{stats.completed > 1 ? 's' : ''} in performance stats
+                        </Link>
+                      </span>
+                    )}
+                  </p>
+                </div>
                 <Link href="/interview">
                   <Button variant="outline" size="sm">
                     View All
@@ -357,14 +369,29 @@ export default function DashboardPage() {
               {interviews.length === 0 ? (
                 <div className="text-center py-12">
                   <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No interviews yet</h3>
-                  <p className="text-gray-600 mb-6">Start your interview preparation journey by creating your first mock interview</p>
-                  <Link href="/create">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create Your First Interview
-                    </Button>
-                  </Link>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No active interviews</h3>
+                  <p className="text-gray-600 mb-6">
+                    {stats.completed > 0 
+                      ? `You have completed ${stats.completed} interview${stats.completed > 1 ? 's' : ''}. View your performance stats or start a new interview.`
+                      : 'Start your interview preparation journey by creating your first mock interview'
+                    }
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Link href="/create">
+                      <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                        <Plus className="w-4 h-4 mr-2" />
+                        {stats.completed > 0 ? 'Start New Interview' : 'Create Your First Interview'}
+                      </Button>
+                    </Link>
+                    {stats.completed > 0 && (
+                      <Link href="/performance">
+                        <Button variant="outline">
+                          <BarChart3 className="w-4 h-4 mr-2" />
+                          View Performance Stats
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -401,14 +428,6 @@ export default function DashboardPage() {
                             <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                               <PlayCircle className="w-4 h-4 mr-2" />
                               Start
-                            </Button>
-                          </Link>
-                        )}
-                        {interview.status === 'completed' && (
-                          <Link href={`/interview/${interview._id}/feedback`}>
-                            <Button size="sm" variant="outline">
-                              <BarChart3 className="w-4 h-4 mr-2" />
-                              View Results
                             </Button>
                           </Link>
                         )}

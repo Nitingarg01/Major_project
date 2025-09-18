@@ -40,26 +40,32 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           
-          // Handle video play with proper error handling
-          try {
-            await videoRef.current.play();
-          } catch (playError: any) {
-            // Handle AbortError specifically
-            if (playError.name === 'AbortError') {
-              console.warn('Video play was interrupted, retrying...');
-              // Wait a bit and try again
-              setTimeout(async () => {
-                if (videoRef.current && streamRef.current) {
-                  try {
-                    await videoRef.current.play();
-                  } catch (retryError) {
-                    console.error('Video play retry failed:', retryError);
-                  }
+          // Handle video play with improved error handling
+          const playPromise = videoRef.current.play();
+          
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                // Video started successfully
+              })
+              .catch((playError) => {
+                // Handle AbortError specifically - this is expected when switching rapidly
+                if (playError.name === 'AbortError') {
+                  console.log('Video play was interrupted (normal during camera toggle)');
+                } else {
+                  console.error('Video play failed:', playError);
+                  // Only retry for non-AbortError cases
+                  setTimeout(async () => {
+                    if (videoRef.current && streamRef.current && cameraOn) {
+                      try {
+                        await videoRef.current.play();
+                      } catch (retryError) {
+                        console.error('Video play retry failed:', retryError);
+                      }
+                    }
+                  }, 100);
                 }
-              }, 100);
-            } else {
-              console.error('Video play failed:', playError);
-            }
+              });
           }
         }
       } catch (err) {
@@ -73,6 +79,8 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
         streamRef.current = null;
       }
       if (videoRef.current) {
+        // Pause video before removing srcObject to prevent AbortError
+        videoRef.current.pause();
         videoRef.current.srcObject = null;
       }
     };

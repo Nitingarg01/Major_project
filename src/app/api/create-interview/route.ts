@@ -350,6 +350,25 @@ export async function POST(request: NextRequest) {
         const dbClient = client;
         const db = dbClient.db();
 
+        // Check for duplicate company interview (only if there's a completed interview)
+        const existingCompanyInterview = await db.collection('interviews').findOne({
+            userId: userId,
+            companyName: companyName,
+            status: 'completed'
+        });
+
+        if (existingCompanyInterview) {
+            console.log(`⚠️ User already has a completed interview for ${companyName}`);
+            return NextResponse.json(
+                { 
+                    error: `You have already completed an interview for ${companyName}. Check your performance stats to view the results.`,
+                    existingInterviewId: existingCompanyInterview._id,
+                    redirectTo: '/performance'
+                },
+                { status: 409 } // Conflict status
+            );
+        }
+
         const interviewData = {
             userId: userId,
             jobDesc,

@@ -260,7 +260,7 @@ const AdvancedCameraMonitoring = ({
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           
-          // Improved play() handling to fix the play() request error
+          // Enhanced play() handling to prevent AbortError
           const playPromise = videoRef.current.play();
           
           if (playPromise !== undefined) {
@@ -271,12 +271,15 @@ const AdvancedCameraMonitoring = ({
                 setFaceDetectionStatus('detecting');
               })
               .catch((error) => {
-                console.error("Video play error:", error);
                 // Handle the play() request interruption error
-                if (error.name !== 'AbortError') {
+                if (error.name === 'AbortError') {
+                  console.log('Video play was interrupted (normal during rapid toggling)');
+                  // Don't add alert for AbortError as it's expected behavior
+                } else {
+                  console.error("Video play error:", error);
                   addActivityAlert({
                     type: 'camera_blocked',
-                    message: 'Camera playback interrupted',
+                    message: 'Camera playback failed',
                     severity: 'medium',
                     timestamp: new Date()
                   });

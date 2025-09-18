@@ -3,45 +3,102 @@ import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 import GroqAIService from '@/lib/groqAIService';
 
-// Fallback analysis function when AI services are not available
+// Enhanced fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
-  const answeredQuestions = answers.filter(answer => answer && answer.trim().length > 10).length;
+  const meaningfulAnswers = answers.filter(answer => 
+    answer && 
+    answer.trim().length > 10 && 
+    answer !== 'No answer provided' &&
+    !answer.toLowerCase().includes('no answer')
+  );
+  const answeredQuestions = meaningfulAnswers.length;
   const answerQuality = answeredQuestions / totalQuestions;
   
-  // Calculate scores based on answer length and completeness
-  const avgAnswerLength = answers.reduce((sum, answer) => sum + (answer?.length || 0), 0) / answers.length;
-  const technicalScore = Math.min(10, Math.max(1, (avgAnswerLength / 100) * 8 + 2));
-  const communicationScore = Math.min(10, Math.max(1, answerQuality * 8 + 2));
-  const problemSolvingScore = Math.min(10, Math.max(1, (answeredQuestions / totalQuestions) * 8 + 2));
+  // Enhanced scoring based on answer content quality
+  const avgAnswerLength = meaningfulAnswers.reduce((sum, answer) => sum + (answer?.length || 0), 0) / Math.max(meaningfulAnswers.length, 1);
+  const avgWordCount = meaningfulAnswers.reduce((sum, answer) => sum + (answer?.split(' ').length || 0), 0) / Math.max(meaningfulAnswers.length, 1);
   
-  const overallScore = (technicalScore + communicationScore + problemSolvingScore) / 3;
+  // More sophisticated scoring algorithm
+  const lengthScore = Math.min(10, Math.max(2, (avgAnswerLength / 150) * 8 + 2)); // Based on char length
+  const wordCountScore = Math.min(10, Math.max(2, (avgWordCount / 30) * 8 + 2)); // Based on word count
+  const completionScore = Math.min(10, Math.max(1, answerQuality * 9 + 1)); // Based on completion rate
+  
+  // Calculate individual parameter scores
+  const technicalScore = Math.round(((lengthScore + wordCountScore) / 2) * 10) / 10;
+  const communicationScore = Math.round(((wordCountScore + completionScore) / 2) * 10) / 10;
+  const problemSolvingScore = Math.round(((lengthScore + completionScore) / 2) * 10) / 10;
+  const practicalScore = Math.round(((technicalScore + problemSolvingScore) / 2) * 10) / 10;
+  const companyFitScore = Math.round(communicationScore * 10) / 10;
+  
+  const overallScore = Math.round(((technicalScore + communicationScore + problemSolvingScore + practicalScore + companyFitScore) / 5) * 10) / 10;
+  
+  // Generate contextual feedback based on performance
+  const performanceLevel = overallScore >= 8 ? 'excellent' : overallScore >= 6 ? 'good' : overallScore >= 4 ? 'fair' : 'needs improvement';
+  
+  const strengths = [];
+  const improvements = [];
+  const recommendations = [];
+  
+  // Dynamic strengths based on performance
+  if (answeredQuestions === totalQuestions) {
+    strengths.push("Completed all interview questions");
+  } else if (answeredQuestions > totalQuestions * 0.8) {
+    strengths.push("Answered most interview questions");
+  }
+  
+  if (avgWordCount > 25) {
+    strengths.push("Provided detailed and comprehensive answers");
+  } else if (avgWordCount > 15) {
+    strengths.push("Gave structured responses to questions");
+  }
+  
+  if (overallScore >= 6) {
+    strengths.push("Demonstrated good understanding of the topics");
+  }
+  
+  // Dynamic improvements based on performance gaps
+  if (avgWordCount < 20) {
+    improvements.push("Provide more detailed explanations with specific examples");
+  }
+  
+  if (answeredQuestions < totalQuestions) {
+    improvements.push("Attempt to answer all interview questions");
+  }
+  
+  if (overallScore < 7) {
+    improvements.push("Strengthen technical knowledge and communication skills");
+  }
+  
+  // Recommendations based on job title and performance
+  recommendations.push(`Practice ${jobTitle}-specific interview questions`);
+  recommendations.push("Prepare concrete examples from your professional experience");
+  recommendations.push("Focus on clear communication and structured problem-solving");
+  
+  if (overallScore < 6) {
+    recommendations.push("Review fundamental concepts for your target role");
+  }
   
   return {
-    overallScore: Math.round(overallScore * 10) / 10,
+    overallScore,
     parameterScores: {
-      "Technical Knowledge": Math.round(technicalScore * 10) / 10,
-      "Problem Solving": Math.round(problemSolvingScore * 10) / 10,
-      "Communication Skills": Math.round(communicationScore * 10) / 10,
-      "Practical Application": Math.round((technicalScore + problemSolvingScore) / 2 * 10) / 10,
-      "Company Fit": Math.round(communicationScore * 10) / 10
+      "Technical Knowledge": technicalScore,
+      "Problem Solving": problemSolvingScore,
+      "Communication Skills": communicationScore,
+      "Practical Application": practicalScore,
+      "Company Fit": companyFitScore
     },
-    strengths: [
-      "Demonstrated willingness to engage with questions",
-      "Provided structured responses",
-      "Showed understanding of technical concepts"
-    ],
-    improvements: [
-      "Provide more detailed technical explanations",
-      "Include specific examples from experience",
-      "Elaborate on problem-solving approaches"
-    ],
-    recommendations: [
-      "Practice explaining technical concepts clearly",
-      "Prepare specific examples for common interview questions",
-      "Focus on demonstrating problem-solving methodology"
-    ],
-    summary: `Based on your ${jobTitle} interview performance, you showed good engagement with ${answeredQuestions}/${totalQuestions} questions answered. Your responses demonstrate technical awareness and communication skills. Focus on providing more detailed examples and explanations to improve your overall performance.`
+    overallVerdict: `${performanceLevel.charAt(0).toUpperCase() + performanceLevel.slice(1)} performance in the ${jobTitle} interview. You answered ${answeredQuestions}/${totalQuestions} questions with an average of ${Math.round(avgWordCount)} words per response, demonstrating ${overallScore >= 7 ? 'strong' : overallScore >= 5 ? 'adequate' : 'developing'} technical communication skills.`,
+    strengths: strengths.length > 0 ? strengths : ["Participated in the interview process", "Showed engagement with the questions"],
+    improvements: improvements.length > 0 ? improvements : ["Continue developing technical expertise", "Practice interview communication skills"],
+    recommendations: recommendations,
+    adviceForImprovement: questions.slice(0, 3).map((q: any, index: number) => ({
+      question: q.question || `Question ${index + 1}`,
+      advice: answers[index] && answers[index].length > 10 ? 
+        "Good response - consider adding more specific technical details and real-world examples" :
+        "Provide a more comprehensive answer with specific examples and technical depth"
+    })),
+    summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`
   };
 }
 
@@ -139,7 +196,11 @@ export async function POST(request: NextRequest) {
           const response = interviewResponses.find((r: any) => r.questionId === question.id);
           
           if (execution) {
-            return `Code Solution: ${execution.sourceCode}\n\nExecution Result: ${execution.success ? 'PASSED' : 'FAILED'}\nTest Results: ${execution.testsPassed}/${execution.totalTests} tests passed\nExecution Time: ${execution.executionTime}ms`;
+            return `Code Solution: ${execution.sourceCode}
+
+Execution Result: ${execution.success ? 'PASSED' : 'FAILED'}
+Test Results: ${execution.testsPassed}/${execution.totalTests} tests passed
+Execution Time: ${execution.executionTime}ms`;
           } else if (response) {
             return response.userAnswer || response.answer || 'No answer provided';
           } else {
@@ -249,8 +310,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const questions = questionsDoc.questions || [];
-    
     // Handle different answer formats - both new format (objects with answer property) and direct strings
     let answers: string[] = [];
     
@@ -273,27 +332,42 @@ export async function POST(request: NextRequest) {
         answers = questionsDoc.answers.map((ans: any, index: number) => {
           let extractedAnswer = '';
           
-          if (typeof ans === 'string') {
-            extractedAnswer = ans || 'No answer provided';
-          } else if (ans && typeof ans === 'object' && ans.answer) {
-            extractedAnswer = ans.answer || 'No answer provided';
-          } else if (ans && typeof ans === 'object') {
-            // Handle other object formats
-            extractedAnswer = ans.text || ans.response || ans.content || 'No answer provided';
+          // Handle the format saved by setanswers API: {questionIndex: 0, answer: "text", timestamp: Date}
+          if (ans && typeof ans === 'object') {
+            if (ans.answer) {
+              extractedAnswer = ans.answer;
+            } else if (ans.text) {
+              extractedAnswer = ans.text;
+            } else if (ans.response) {
+              extractedAnswer = ans.response;
+            } else if (ans.content) {
+              extractedAnswer = ans.content;
+            } else {
+              // If it's an object but doesn't have expected properties, convert to string
+              extractedAnswer = JSON.stringify(ans);
+            }
+          } else if (typeof ans === 'string') {
+            extractedAnswer = ans;
           } else {
             extractedAnswer = 'No answer provided';
           }
           
-          console.log(`📝 Answer ${index}:`, {
+          // Clean up the answer
+          if (extractedAnswer && typeof extractedAnswer === 'string') {
+            extractedAnswer = extractedAnswer.trim();
+          }
+          
+          console.log(`📝 Answer ${index + 1}:`, {
             originalType: typeof ans,
-            originalValue: ans,
-            extractedAnswer: extractedAnswer.substring(0, 100) + (extractedAnswer.length > 100 ? '...' : '')
+            hasAnswerProp: ans && typeof ans === 'object' && 'answer' in ans,
+            extractedLength: extractedAnswer.length,
+            extractedPreview: extractedAnswer.substring(0, 50) + (extractedAnswer.length > 50 ? '...' : '')
           });
           
-          return extractedAnswer;
+          return extractedAnswer || 'No answer provided';
         });
       } else if (questionsDoc.answers && typeof questionsDoc.answers === 'object') {
-        // Handle object format (not array)
+        // Handle object format (not array) - convert to array
         const answersObj = questionsDoc.answers;
         answers = Object.values(answersObj).map((ans: any) => {
           if (typeof ans === 'string') {
@@ -312,6 +386,8 @@ export async function POST(request: NextRequest) {
         );
       }
     }
+
+    const questions = questionsDoc.questions || [];
 
     // Final validation - ensure we have meaningful answers
     const meaningfulAnswers = answers.filter(answer => 
@@ -378,6 +454,42 @@ export async function POST(request: NextRequest) {
           aiProvider: 'groq-fast'
         }
       }
+    );
+
+    // CRITICAL: Mark interview as completed so it doesn't show in dashboard
+    await db.collection('interviews').updateOne(
+      { _id: new ObjectId(interviewId) },
+      { 
+        $set: { 
+          status: 'completed',
+          completedAt: new Date(),
+          performanceAnalyzed: true,
+          finalScore: enhancedInsights.overallScore || 0
+        } 
+      }
+    );
+
+    // Store comprehensive performance analysis for stats dashboard
+    const performanceDoc = {
+      interviewId,
+      userId: interview.userId,
+      companyName: interview.companyName,
+      jobTitle: interview.jobTitle,
+      performance: enhancedInsights,
+      questions: questions.map((q: any, index: number) => ({
+        ...q,
+        userAnswer: answers[index] || 'No answer provided',
+        response: { analysis: { score: enhancedInsights.parameterScores?.[q.category] || 6 } }
+      })),
+      createdAt: new Date(),
+      aiProvider: 'groq-fast'
+    };
+
+    // Update or insert performance analysis
+    await db.collection('performance_analysis').updateOne(
+      { interviewId },
+      { $set: performanceDoc },
+      { upsert: true }
     );
 
     const processingTime = Date.now() - startTime;
