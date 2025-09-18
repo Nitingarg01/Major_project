@@ -25,20 +25,26 @@ export default function PerformanceSaver({
   timeSpent = 0 
 }: PerformanceSaverProps) {
   const [saved, setSaved] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
+  const maxRetries = 3
 
   useEffect(() => {
     const savePerformanceData = async () => {
       if (saved) return // Prevent duplicate saves
 
       try {
+        console.log('🚀 Starting performance data save attempt', retryCount + 1)
+        
         // Validate input data
         if (!interviewData.interviewId || !interviewData.jobTitle || !interviewData.companyName) {
-          console.error('Missing required interview data:', interviewData)
+          console.error('❌ Missing required interview data:', interviewData)
+          toast.error('Cannot save performance: Missing interview data')
           return
         }
 
         if (!feedbackData.parameterScores || typeof feedbackData.overallScore !== 'number') {
-          console.error('Missing or invalid feedback data:', feedbackData)
+          console.error('❌ Missing or invalid feedback data:', feedbackData)
+          toast.error('Cannot save performance: Missing feedback data')
           return
         }
 
