@@ -5,13 +5,13 @@ import { ObjectId } from 'mongodb'
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('Save performance API called')
+    console.log('💾 Save performance API called')
     
     const session = await auth()
-    console.log('Session check:', { hasSession: !!session, hasUserId: !!session?.user?.id })
+    console.log('🔐 Session check:', { hasSession: !!session, hasUserId: !!session?.user?.id })
     
     if (!session?.user?.id) {
-      console.log('Unauthorized: No session or user ID')
+      console.log('❌ Unauthorized: No session or user ID')
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -19,12 +19,13 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    console.log('Request body received:', { 
+    console.log('📋 Request body received:', { 
       hasInterviewId: !!body.interviewId,
       hasJobTitle: !!body.jobTitle,
       hasCompanyName: !!body.companyName,
       hasScore: body.score !== undefined,
-      score: body.score
+      score: body.score,
+      interviewId: body.interviewId
     })
     
     const {
