@@ -30,6 +30,19 @@ export async function GET(request: NextRequest) {
     const db = client.db("Cluster0");
     const userId = session.user.id;
     
+    // Convert userId to ObjectId for consistency with save-performance API
+    let userObjectId;
+    try {
+      userObjectId = new ObjectId(userId);
+      console.log('UserObjectId created successfully:', userObjectId)
+    } catch (objectIdError) {
+      console.error('Invalid userId ObjectId format:', objectIdError)
+      return NextResponse.json(
+        { error: 'Invalid user ID format' },
+        { status: 400 }
+      );
+    }
+    
     console.log('Running optimized database queries for user:', userId)
     
     // Add timeout wrapper for database operations
