@@ -215,13 +215,24 @@ export default function PerformanceSaver({
           }
         }
       } catch (error) {
-        console.error('Error saving performance data:', error)
+        console.error('❌  Error saving performance data:', error)
+        
+        // Retry logic for network errors
+        if (retryCount < maxRetries) {
+          console.log(`🔄 Retrying due to error... (${retryCount + 1}/${maxRetries})`)
+          setRetryCount(prev => prev + 1)
+          setTimeout(() => {
+            savePerformanceData()
+          }, 2000)
+        } else {
+          toast.error(`Network error: Failed to save performance data after ${maxRetries} attempts`)
+        }
       }
     }
 
-    // Save performance data when component mounts
+    // Save performance data when component mounts or retry count changes
     savePerformanceData()
-  }, [interviewData, feedbackData, timeSpent, saved])
+  }, [interviewData, feedbackData, timeSpent, saved, retryCount])
 
   return null // This component doesn't render anything
 }
