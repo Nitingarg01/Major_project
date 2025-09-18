@@ -154,6 +154,11 @@ const page = async ({ params }: PageProps) => {
 
   return (
     <div className='flex flex-col'>
+      {/* Performance Debugger (Development Only) */}
+      <div className="max-w-7xl mx-auto px-4 mt-4">
+        <PerformanceDebugger interviewId={id} />
+      </div>
+
       {/* Save performance data automatically */}
       <PerformanceSaver
         interviewData={{
