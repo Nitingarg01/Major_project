@@ -179,7 +179,7 @@ export default function PerformanceSaver({
           roundResults
         }
 
-        console.log('Sending performance data:', performanceData)
+        console.log('📝 Sending performance data:', performanceData)
         
         const response = await fetch('/api/save-performance', {
           method: 'POST',
@@ -189,9 +189,9 @@ export default function PerformanceSaver({
           body: JSON.stringify(performanceData),
         })
 
-        console.log('Response status:', response.status)
+        console.log('📡 Response status:', response.status)
         const result = await response.json()
-        console.log('Response data:', result)
+        console.log('📋 Response data:', result)
 
         if (result.success) {
           setSaved(true)
@@ -202,9 +202,17 @@ export default function PerformanceSaver({
           if (result.details) {
             console.error('Error details:', result.details)
           }
-          toast.error(`Failed to save performance data: ${result.error}`)
           
-          // Don't set saved to true so it can retry
+          // Retry logic
+          if (retryCount < maxRetries) {
+            console.log(`🔄 Retrying... (${retryCount + 1}/${maxRetries})`)
+            setRetryCount(prev => prev + 1)
+            setTimeout(() => {
+              savePerformanceData()
+            }, 2000) // Wait 2 seconds before retry
+          } else {
+            toast.error(`Failed to save performance data after ${maxRetries} attempts: ${result.error}`)
+          }
         }
       } catch (error) {
         console.error('Error saving performance data:', error)
