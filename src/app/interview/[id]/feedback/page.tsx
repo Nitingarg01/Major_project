@@ -25,6 +25,7 @@ import Link from 'next/link'
 import PerformanceSaver from '@/components/PerformanceSaver'
 import ManualPerformanceSaver from '@/components/ManualPerformanceSaver'
 import FeedbackLoader from '@/components/FeedbackLoader'
+import PerformanceDebugger from '@/components/PerformanceDebugger'
 
 interface PageProps {
   params: Promise<{ id: string }>
