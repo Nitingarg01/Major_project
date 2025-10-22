@@ -123,11 +123,11 @@ export default function ManualPerformanceSaver({
       }
 
       // Generate feedback based on experience level and interview type
-      const strengths = labels;
+      const strengths = labels
         .filter(label => (feedbackData.parameterScores[label] || 0) >= 7)
         .map(label => `Strong performance in ${label.toLowerCase()}`)
 
-      const improvements = labels;
+      const improvements = labels
         .filter(label => (feedbackData.parameterScores[label] || 0) < 5)
         .map(label => `Focus on improving ${label.toLowerCase()} skills`)
 

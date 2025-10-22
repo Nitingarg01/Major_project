@@ -99,7 +99,7 @@ function calculatePerformanceStats(performances: any[]) {
   })
 
   // Recent performance trend (last 10 interviews)
-  const recentPerformance = performances;
+  const recentPerformance = performances
     .slice(0, 10)
     .reverse()
     .map(p => p.score)

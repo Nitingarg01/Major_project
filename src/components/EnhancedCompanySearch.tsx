@@ -70,7 +70,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     setLoading(true);
     try {
       // First, check if it matches popular companies for quick response
-      const popularMatches = POPULAR_COMPANIES;
+      const popularMatches = POPULAR_COMPANIES
         .filter(company => 
           company.toLowerCase().includes(searchQuery.toLowerCase());
         )
@@ -122,7 +122,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     } catch (error) {
       console.error('Error searching companies:', error);
       // Fallback to popular companies only
-      const fallbackMatches = POPULAR_COMPANIES;
+      const fallbackMatches = POPULAR_COMPANIES
         .filter(company => 
           company.toLowerCase().includes(searchQuery.toLowerCase());
         )

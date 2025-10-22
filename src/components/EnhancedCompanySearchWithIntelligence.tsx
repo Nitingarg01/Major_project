@@ -111,7 +111,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       } else {
         // Fallback to basic search
         console.warn('⚠️ Intelligence API failed, using fallback');
-        const fallbackSuggestions = POPULAR_COMPANIES;
+        const fallbackSuggestions = POPULAR_COMPANIES
           .filter(company => 
             company.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
@@ -135,7 +135,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
     } catch (error) {
       console.error('❌ Error in enhanced company search:', error);
       // Fallback to popular companies
-      const fallbackSuggestions = POPULAR_COMPANIES;
+      const fallbackSuggestions = POPULAR_COMPANIES
         .filter(company => 
           company.name.toLowerCase().includes(searchQuery.toLowerCase())
         )

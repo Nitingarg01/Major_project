@@ -180,7 +180,7 @@ const countFrequency = (items: string[]) => {
 
 const calculatePerformanceTrend = (performanceAnalyses: any[]) => {
   // Get last 7 performance scores for trend analysis
-  const recentScores = performanceAnalyses;
+  const recentScores = performanceAnalyses
     .slice(0, 7)
     .map(analysis => analysis.performance?.overallScore || 0)
     .reverse(); // Show chronological order

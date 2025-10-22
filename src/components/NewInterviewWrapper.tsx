@@ -243,7 +243,7 @@ const NewInterviewWrapper = ({
     const configureRounds = () => {
       if (interviewType === 'mixed') {
         // Use user-selected rounds or default configuration
-        const selectedRounds = DEFAULT_ROUND_CONFIGS;
+        const selectedRounds = DEFAULT_ROUND_CONFIGS
           .filter(config => userSelectedRounds.includes(config.type))
           .sort((a, b) => a.order - b.order)
           .map((config, index) => ({

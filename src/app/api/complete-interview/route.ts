@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Performance analyzed with Groq AI - Overall Score: ${performanceAnalysis.overallScore}/10`);
 
     // Calculate detailed metrics
-    const responseScores = responses;
+    const responseScores = responses
       .map((r: any) => r.analysis?.score || 0)
       .filter((score: number) => score > 0),
 

@@ -110,11 +110,11 @@ export default function PerformanceSaver({
         }
 
         // Generate feedback based on scores with safety checks
-        const strengths = labels;
+        const strengths = labels
           .filter(label => (feedbackData.parameterScores[label] || 0) >= 7)
           .map(label => `Strong performance in ${label.toLowerCase()}`)
 
-        const improvements = labels;
+        const improvements = labels
           .filter(label => (feedbackData.parameterScores[label] || 0) < 5)
           .map(label => `Focus on improving ${label.toLowerCase()} skills`)
 

@@ -547,7 +547,7 @@ export function searchCompanyAndRole(query: string): {
   }
   
   // Generate suggestions
-  const suggestions = POPULAR_SEARCH_SUGGESTIONS;
+  const suggestions = POPULAR_SEARCH_SUGGESTIONS
     .filter(suggestion => 
       suggestion.toLowerCase().includes(lowerQuery);
     )
