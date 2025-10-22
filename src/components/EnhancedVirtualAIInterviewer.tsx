@@ -69,7 +69,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   jobTitle = 'Position',
   interviewType = 'Technical',
   timeLimit = 45,
-  personality = 'professional';
+  personality = 'professional'
 }) => {
   // Core state
   const [interviewState, setInterviewState] = useState<InterviewState>({
