@@ -411,7 +411,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     }
 
     const currentQuestion = questions[interviewState.currentQuestionIndex]
-    const responseTime = questionStartTimeRef.current;
+    const responseTime = questionStartTimeRef.current
       ? Date.now() - questionStartTimeRef.current.getTime()
       : 0
 
