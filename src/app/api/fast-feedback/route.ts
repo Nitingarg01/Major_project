@@ -237,7 +237,7 @@ export async function POST(request: NextRequest) {
         // Convert DSA executions to answer format
         dsaAnswers = questionsDoc.questions?.map((question: any) => {
           const execution = dsaExecutions.find(exec =>
-            exec.problemId === question.id || exec.problemId === question.dsaProblem?.id;
+            exec.problemId === question.id || exec.problemId === question.dsaProblem?.id
           );
           const response = interviewResponses.find((r: any) => r.questionId === question.id);
           
