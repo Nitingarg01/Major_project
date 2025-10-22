@@ -74,19 +74,25 @@ export class EnhancedVirtualInterviewerAI {
 
     // Try ElevenLabs first if available
     if (useElevenLabs && this.elevenLabs.isServiceAvailable()) {
-      const result = await this.elevenLabs.textToSpeech(text, {
-        personality,
-        onStart: options?.onStart,
-        onEnd: options?.onEnd,
-        onError: (error) => {
-          console.warn('ElevenLabs failed, falling back to browser TTS:', error)
-          this.speakWithBrowserTTS(text, options)
-        }
-      })
+      try {
+        const result = await this.elevenLabs.textToSpeech(text, {
+          personality,
+          onStart: options?.onStart,
+          onEnd: options?.onEnd,
+          onError: (error) => {
+            console.warn('ElevenLabs failed, falling back to browser TTS:', error)
+            // Fallback to browser TTS on error
+            this.speakWithBrowserTTS(text, options)
+          }
+        })
 
-      if (result.success && result.audio) {
-        this.currentAudio = result.audio
-        return
+        if (result.success && result.audio) {
+          this.currentAudio = result.audio
+          return
+        }
+      } catch (error) {
+        console.warn('ElevenLabs exception, using browser TTS:', error)
+        // Continue to fallback
       }
     }
 
