@@ -10,9 +10,9 @@ import { toast } from 'sonner';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    email: '';
+    email: '',
     password: ''
-  })
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
