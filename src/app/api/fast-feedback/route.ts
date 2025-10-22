@@ -99,6 +99,9 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
         "Provide a more comprehensive answer with specific examples and technical depth"
     })),
     summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`
+  }
+}
+
 // Fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
