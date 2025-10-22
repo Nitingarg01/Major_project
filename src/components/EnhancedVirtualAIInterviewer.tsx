@@ -286,6 +286,11 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   const stopListening = useCallback(() => {
     if (speechRecognition) {
       try {
+        // Clear restart timeout when manually stopping
+        if (recognitionRestartTimeoutRef.current) {
+          clearTimeout(recognitionRestartTimeoutRef.current)
+          recognitionRestartTimeoutRef.current = null
+        }
         speechRecognition.stop()
       } catch (e) {
         console.log('Recognition stop error:', e)
