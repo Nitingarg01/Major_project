@@ -88,31 +88,47 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         
-        // Handle video play with proper error handling
-        try {
-          await videoRef.current.play();
-          setIsInitialized(true);
-        } catch (playError: any) {
-          // Handle AbortError specifically
-          if (playError.name === 'AbortError') {
-            console.warn('Video play was interrupted, retrying...');
-            // Wait a bit and try again
-            setTimeout(async () => {
-              if (videoRef.current && streamRef.current) {
-                try {
-                  await videoRef.current.play();
-                  setIsInitialized(true);
-                } catch (retryError) {
-                  console.error('Video play retry failed:', retryError);
-                  setCameraError('Video playback failed. Please refresh the page.');
+        // Handle video play with proper error handling and retry logic
+        const attemptPlay = async (retryCount = 0): Promise<void> => {
+          if (!videoRef.current || !streamRef.current) return;
+          
+          try {
+            // Ensure video is ready before playing
+            if (videoRef.current.readyState < 2) {
+              await new Promise<void>((resolve) => {
+                if (videoRef.current) {
+                  videoRef.current.onloadeddata = () => resolve();
                 }
-              }
-            }, 100);
-          } else {
-            console.error('Video play failed:', playError);
-            setCameraError('Video playback failed. Please check your browser settings.');
+                // Timeout after 2 seconds
+                setTimeout(() => resolve(), 2000);
+              });
+            }
+            
+            await videoRef.current.play();
+            setIsInitialized(true);
+          } catch (playError: any) {
+            // Handle AbortError with exponential backoff retry
+            if (playError.name === 'AbortError' && retryCount < 3) {
+              console.warn(`Video play interrupted, retry ${retryCount + 1}/3`);
+              const delay = Math.min(100 * Math.pow(2, retryCount), 500);
+              
+              setTimeout(async () => {
+                await attemptPlay(retryCount + 1);
+              }, delay);
+            } else if (playError.name === 'NotAllowedError') {
+              console.error('Video autoplay blocked:', playError);
+              setCameraError('Please click "Start Camera" to enable video. Browser autoplay is restricted.');
+            } else if (retryCount >= 3) {
+              console.error('Video play failed after retries');
+              setCameraError('Video playback failed. Please refresh and try again.');
+            } else {
+              console.error('Video play failed:', playError);
+              setCameraError('Video playback failed. Please check your browser settings.');
+            }
           }
-        }
+        };
+        
+        await attemptPlay();
       }
     } catch (error: any) {
       console.error('Camera initialization failed:', error);
