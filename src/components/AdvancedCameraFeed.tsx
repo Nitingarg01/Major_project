@@ -180,15 +180,25 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
   }, []);
 
   // Toggle recording
-  const toggleRecording = () => {
+  const toggleRecording = async () => {
     if (!isInitialized) {
-      initializeCamera();
+      await initializeCamera();
+      // Auto-start recording after camera initializes
+      setTimeout(() => {
+        if (isInitialized && !isRecording) {
+          onRecordingChange(true);
+          if (enableFaceDetection && modelsLoaded) {
+            setDetectionActive(true);
+            startFaceDetection();
+          }
+        }
+      }, 500);
       return;
     }
     
     if (isRecording) {
-      stopCamera();
       onRecordingChange(false);
+      stopCamera();
     } else {
       onRecordingChange(true);
       if (enableFaceDetection && modelsLoaded) {
