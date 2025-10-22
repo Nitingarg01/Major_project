@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       sourceCode,
       language,
       problem,
-      companyName = 'Technology Company';
+      companyName = 'Technology Company'
     } = body;
 
     // Validate required fields

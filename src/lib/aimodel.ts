@@ -55,7 +55,7 @@ class AIInterviewModel {
       experienceLevel, 
       interviewType,
       resumeContent,
-      numberOfQuestions = 10;
+      numberOfQuestions = 10
     } = params;
 
     let prompt = '';

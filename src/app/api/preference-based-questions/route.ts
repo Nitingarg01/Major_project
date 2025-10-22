@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       experienceLevel, 
       interviewType, 
       numberOfQuestions,
-      forceRegenerate = false;
+      forceRegenerate = false
     } = body;
 
     // Validate required fields

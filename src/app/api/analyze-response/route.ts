@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       userAnswer,
       expectedAnswer,
       category = 'technical',
-      companyContext = 'Technology Company';
+      companyContext = 'Technology Company'
     } = body;
 
     // Validate required fields
