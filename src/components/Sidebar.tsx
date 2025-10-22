@@ -84,7 +84,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           {/* Header */}
           <div className="flex items-center justify-center h-16 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
             <Link href="/" className="text-white font-bold text-xl">
+<<<<<<< HEAD
               RecruiterAI
+=======
+              Interview AI
+>>>>>>> e191508 (Initial commit)
             </Link>
           </div>
 

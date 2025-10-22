@@ -124,6 +124,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           
+<<<<<<< HEAD
           // Handle video play with improved error handling
           const playPromise = videoRef.current.play();
           
@@ -163,6 +164,42 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                   }, 100);
                 }
               });
+=======
+          // Handle video play with proper error handling
+          try {
+            await videoRef.current.play();
+            setIsMonitoring(true);
+          } catch (playError: any) {
+            // Handle AbortError specifically
+            if (playError.name === 'AbortError') {
+              console.warn('Video play was interrupted, retrying...');
+              // Wait a bit and try again
+              setTimeout(async () => {
+                if (videoRef.current && streamRef.current) {
+                  try {
+                    await videoRef.current.play();
+                    setIsMonitoring(true);
+                  } catch (retryError) {
+                    console.error('Video play retry failed:', retryError);
+                    addActivityAlert({
+                      type: 'no_face',
+                      message: 'Video playback failed. Please refresh the page.',
+                      severity: 'high',
+                      timestamp: new Date()
+                    });
+                  }
+                }
+              }, 100);
+            } else {
+              console.error('Video play failed:', playError);
+              addActivityAlert({
+                type: 'no_face',
+                message: 'Video playback failed. Please check your browser settings.',
+                severity: 'high',
+                timestamp: new Date()
+              });
+            }
+>>>>>>> e191508 (Initial commit)
           }
         }
       } catch (err) {
@@ -182,8 +219,11 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         streamRef.current = null;
       }
       if (videoRef.current) {
+<<<<<<< HEAD
         // Pause video before removing srcObject to prevent AbortError
         videoRef.current.pause();
+=======
+>>>>>>> e191508 (Initial commit)
         videoRef.current.srcObject = null;
       }
       setIsMonitoring(false);

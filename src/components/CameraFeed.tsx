@@ -40,6 +40,7 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           
+<<<<<<< HEAD
           // Handle video play with improved error handling
           const playPromise = videoRef.current.play();
           
@@ -66,6 +67,28 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
                   }, 100);
                 }
               });
+=======
+          // Handle video play with proper error handling
+          try {
+            await videoRef.current.play();
+          } catch (playError: any) {
+            // Handle AbortError specifically
+            if (playError.name === 'AbortError') {
+              console.warn('Video play was interrupted, retrying...');
+              // Wait a bit and try again
+              setTimeout(async () => {
+                if (videoRef.current && streamRef.current) {
+                  try {
+                    await videoRef.current.play();
+                  } catch (retryError) {
+                    console.error('Video play retry failed:', retryError);
+                  }
+                }
+              }, 100);
+            } else {
+              console.error('Video play failed:', playError);
+            }
+>>>>>>> e191508 (Initial commit)
           }
         }
       } catch (err) {
@@ -79,8 +102,11 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
         streamRef.current = null;
       }
       if (videoRef.current) {
+<<<<<<< HEAD
         // Pause video before removing srcObject to prevent AbortError
         videoRef.current.pause();
+=======
+>>>>>>> e191508 (Initial commit)
         videoRef.current.srcObject = null;
       }
     };

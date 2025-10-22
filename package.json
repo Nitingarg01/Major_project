@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "recruiterai",
+=======
+  "name": "interview-ai",
+>>>>>>> e191508 (Initial commit)
   "version": "0.1.0",
   "private": true,
   "scripts": {

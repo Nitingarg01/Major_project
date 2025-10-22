@@ -47,6 +47,7 @@ export default client
 export async function connectDB() {
   await client.connect();
   return client.db("Cluster0");
+<<<<<<< HEAD
 }
 
 // Export a connection function that returns both client and db
@@ -59,4 +60,6 @@ export async function connectToDatabase() {
     console.error('Database connection error:', error);
     throw error;
   }
+=======
+>>>>>>> e191508 (Initial commit)
 }

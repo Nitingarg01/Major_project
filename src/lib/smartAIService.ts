@@ -10,7 +10,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface SmartAIRequest {
+<<<<<<< HEAD
   task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation';
+=======
+  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation';
+>>>>>>> e191508 (Initial commit)
   context: {
     jobTitle?: string;
     companyName?: string;
@@ -47,12 +51,27 @@ export class SmartAIService {
 
   private constructor() {
     this.groqService = EnhancedGroqAIService.getInstance();
+<<<<<<< HEAD
     
     // Initialize Gemini for lightweight tasks (resume parsing only)
     const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (geminiKey) {
       this.geminiAI = new GoogleGenerativeAI(geminiKey);
       this.geminiModel = this.geminiAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+=======
+
+    // Initialize Gemini for lightweight tasks (resume parsing only)
+    const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    if (geminiKey) {
+      try {
+        this.geminiAI = new GoogleGenerativeAI(geminiKey);
+        // Try the most stable model first
+        this.geminiModel = this.geminiAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      } catch (error) {
+        console.warn('Failed to initialize Gemini:', error instanceof Error ? error.message : String(error));
+        this.geminiModel = null;
+      }
+>>>>>>> e191508 (Initial commit)
     }
 
     console.log('🧠 Enhanced SmartAIService initialized - Groq + Gemini routing');
@@ -67,16 +86,24 @@ export class SmartAIService {
 
   public async processRequest(request: SmartAIRequest): Promise<SmartAIResponse> {
     const startTime = Date.now();
+<<<<<<< HEAD
     
     try {
       console.log(`🎯 Processing ${request.task} with optimal AI provider...`);
       
+=======
+
+    try {
+      console.log(`🎯 Processing ${request.task} with optimal AI provider...`);
+
+>>>>>>> e191508 (Initial commit)
       // Route to appropriate AI service based on task complexity
       let result: any;
       let provider: 'enhanced-groq' | 'gemini';
       let model: string;
       let features: string[] = [];
 
+<<<<<<< HEAD
       // Try primary provider first
       if (this.shouldUseGroq(request.task)) {
         try {
@@ -114,6 +141,28 @@ export class SmartAIService {
           model = 'llama-3.3-70b-versatile';
           features = ['Fallback processing', 'Enhanced capabilities'];
         }
+=======
+      if (this.shouldUseGroq(request.task)) {
+        result = await this.processWithGroq(request);
+        provider = 'enhanced-groq';
+        model = 'llama-3.3-70b-versatile';
+        features = [
+          'Company-specific intelligence',
+          'Enhanced prompt engineering',
+          'Advanced problem generation',
+          'Cultural fit analysis'
+        ];
+      } else {
+        result = await this.processWithGemini(request);
+        provider = 'gemini';
+        model = 'gemini-1.5-flash';
+        features = [
+          'Fast processing',
+          'Resume parsing',
+          'Basic company search',
+          'Cost-effective'
+        ];
+>>>>>>> e191508 (Initial commit)
       }
 
       const processingTime = Date.now() - startTime;
@@ -130,12 +179,20 @@ export class SmartAIService {
       };
     } catch (error) {
       console.error(`❌ SmartAI processing failed for ${request.task}:`, error);
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> e191508 (Initial commit)
       // Attempt fallback if primary service fails
       try {
         const fallbackResult = await this.processFallback(request);
         const processingTime = Date.now() - startTime;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> e191508 (Initial commit)
         return {
           success: true,
           data: fallbackResult.data,
@@ -163,9 +220,16 @@ export class SmartAIService {
     // Complex tasks that need high-quality AI with company intelligence
     const groqTasks = [
       'question_generation',
+<<<<<<< HEAD
       'response_analysis', 
       'performance_analysis',
       'dsa_generation'
+=======
+      'response_analysis',
+      'performance_analysis',
+      'dsa_generation',
+      'aptitude_generation'
+>>>>>>> e191508 (Initial commit)
     ];
     return groqTasks.includes(task);
   }
@@ -193,6 +257,7 @@ export class SmartAIService {
         );
 
       case 'dsa_generation':
+<<<<<<< HEAD
         try {
           const dsaProblems = await this.groqService.generateCompanySpecificDSAProblems(
             request.context.companyName || 'Technology Company',
@@ -230,6 +295,22 @@ export class SmartAIService {
             hints: ['Think step by step', 'Consider edge cases']
           }];
         }
+=======
+        return await this.groqService.generateCompanySpecificDSAProblems(
+          request.context.companyName || 'Technology Company',
+          request.context.difficulty as any || 'medium',
+          request.context.count || 3,
+          request.context.jobTitle || 'Software Engineer'
+        );
+
+      case 'aptitude_generation':
+        return await this.generateAptitudeQuestions(
+          request.context.difficulty as any || 'medium',
+          request.context.count || 5,
+          request.context.jobTitle || 'Software Engineer',
+          request.context.companyName || 'Technology Company'
+        );
+>>>>>>> e191508 (Initial commit)
 
       case 'performance_analysis':
         // This would need questions and answers arrays - simplified for now
@@ -258,6 +339,7 @@ export class SmartAIService {
       throw new Error('Gemini not initialized - only resume parsing supported');
     }
 
+<<<<<<< HEAD
     switch (request.task) {
       case 'resume_parsing':
         return await this.parseResumeWithGemini(request.context.resumeText || '');
@@ -267,6 +349,30 @@ export class SmartAIService {
       
       default:
         throw new Error(`Unsupported Gemini task: ${request.task}`);
+=======
+    try {
+      switch (request.task) {
+        case 'resume_parsing':
+          return await this.parseResumeWithGemini(request.context.resumeText || '');
+
+        case 'company_search':
+          return await this.searchCompanyWithGemini(request.context.companyName || '');
+
+        default:
+          throw new Error(`Unsupported Gemini task: ${request.task}`);
+      }
+    } catch (error) {
+      console.warn('Gemini API unavailable, using fallback:', error instanceof Error ? error.message : String(error));
+
+      // Return fallback data when Gemini is unavailable
+      if (request.task === 'company_search') {
+        return this.generateCompanySearchFallback(request.context.companyName || '');
+      } else if (request.task === 'resume_parsing') {
+        return this.generateResumeParsingFallback(request.context.resumeText || '');
+      }
+
+      throw error;
+>>>>>>> e191508 (Initial commit)
     }
   }
 
@@ -318,7 +424,11 @@ export class SmartAIService {
     const result = await this.geminiModel.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> e191508 (Initial commit)
     try {
       return extractJSON(text);
     } catch (error) {
@@ -379,6 +489,7 @@ export class SmartAIService {
       }
     `;
 
+<<<<<<< HEAD
     try {
       const result = await this.geminiModel.generateContent(prompt);
       const response = await result.response;
@@ -403,6 +514,16 @@ export class SmartAIService {
       }
       
       // Return fallback data instead of throwing error
+=======
+    const result = await this.geminiModel.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    try {
+      return extractJSON(text);
+    } catch (error) {
+      console.error('Failed to parse Gemini company response:', error);
+>>>>>>> e191508 (Initial commit)
       return {
         basicInfo: {
           name: companyName,
@@ -436,6 +557,7 @@ export class SmartAIService {
   }
 
   private async processFallback(request: SmartAIRequest): Promise<{ data: any; provider: 'enhanced-groq' | 'gemini'; model: string }> {
+<<<<<<< HEAD
     console.log('🔄 Using fallback processing for:', request.task);
     
     // Try the opposite service as fallback, but with additional error handling
@@ -465,12 +587,32 @@ export class SmartAIService {
         const data = this.generateBasicFallback(request);
         return { data, provider: 'enhanced-groq', model: 'static-fallback' };
       }
+=======
+    // Try the opposite service as fallback
+    if (this.shouldUseGroq(request.task)) {
+      // Try Gemini as fallback (limited capabilities)
+      if (request.task === 'resume_parsing' && this.geminiModel) {
+        const data = await this.processWithGemini(request);
+        return { data, provider: 'gemini', model: 'gemini-1.5-flash' };
+      }
+
+      // Generate basic fallback for complex tasks
+      const data = this.generateBasicFallback(request);
+      return { data, provider: 'enhanced-groq', model: 'fallback' };
+    } else {
+      // Try Enhanced Groq as fallback
+      const data = await this.processWithGroq(request);
+      return { data, provider: 'enhanced-groq', model: 'llama-3.3-70b-versatile' };
+>>>>>>> e191508 (Initial commit)
     }
   }
 
   private generateBasicFallback(request: SmartAIRequest): any {
+<<<<<<< HEAD
     console.log('📋 Generating static fallback for:', request.task);
     
+=======
+>>>>>>> e191508 (Initial commit)
     switch (request.task) {
       case 'question_generation':
         return Array.from({ length: request.context.numberOfQuestions || 5 }, (_, i) => ({
@@ -481,7 +623,11 @@ export class SmartAIService {
           difficulty: 'medium',
           points: 10
         }));
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> e191508 (Initial commit)
       case 'response_analysis':
         return {
           score: 6,
@@ -490,6 +636,7 @@ export class SmartAIService {
           strengths: ['Attempted the question'],
           improvements: ['Technical depth', 'Communication clarity']
         };
+<<<<<<< HEAD
         
       case 'company_search':
         const companyName = request.context.companyName || 'Technology Company';
@@ -573,6 +720,11 @@ export class SmartAIService {
           fallback: true,
           message: 'Using basic fallback data'
         };
+=======
+
+      default:
+        return { error: 'Fallback not available for this task' };
+>>>>>>> e191508 (Initial commit)
     }
   }
 
@@ -586,8 +738,13 @@ export class SmartAIService {
       'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Jenkins',
       'Git', 'GitHub', 'GitLab', 'Linux', 'Bash', 'PowerShell'
     ];
+<<<<<<< HEAD
     
     return commonSkills.filter(skill => 
+=======
+
+    return commonSkills.filter(skill =>
+>>>>>>> e191508 (Initial commit)
       text.toLowerCase().includes(skill.toLowerCase())
     );
   }
@@ -604,6 +761,89 @@ export class SmartAIService {
     return matches ? matches[0] : 'Not found';
   }
 
+<<<<<<< HEAD
+=======
+  private generateCompanySearchFallback(companyName: string): any {
+    console.log(`🔄 Using fallback data for company: ${companyName}`);
+
+    return {
+      basicInfo: {
+        name: companyName,
+        industry: "Technology",
+        description: `${companyName} is a technology company. (Fallback data - Gemini API unavailable)`,
+        founded: "Unknown",
+        headquarters: "Unknown",
+        size: "Unknown"
+      },
+      technical: {
+        primaryTechStack: ["JavaScript", "Python", "React", "Node.js"],
+        programmingLanguages: ["JavaScript", "Python", "Java", "TypeScript"],
+        frameworks: ["React", "Node.js", "Express", "Next.js"],
+        databases: ["PostgreSQL", "MongoDB", "Redis"],
+        cloudPlatforms: ["AWS", "Azure", "GCP"]
+      },
+      culture: {
+        values: ["Innovation", "Collaboration", "Excellence", "Growth"],
+        workStyle: "Hybrid work environment",
+        benefits: ["Health insurance", "Flexible hours", "Learning budget", "Remote work"]
+      },
+      interviewInfo: {
+        commonQuestionTypes: ["Technical", "Behavioral", "System Design", "Problem Solving"],
+        technicalFocus: ["Coding skills", "System design", "Problem solving", "Communication"],
+        preparationTips: [
+          "Study common algorithms and data structures",
+          "Practice coding problems",
+          "Review system design concepts",
+          "Prepare behavioral examples"
+        ]
+      },
+      recentNews: ["Company information limited - API service unavailable"],
+      keyProducts: ["Technology solutions and services"],
+      fallbackMode: true,
+      message: "This is fallback data. Gemini API is temporarily unavailable."
+    };
+  }
+
+  private generateResumeParsingFallback(resumeText: string): any {
+    console.log('🔄 Using fallback resume parsing - Gemini API unavailable');
+
+    return {
+      personalInfo: {
+        name: "Unable to parse - API unavailable",
+        email: this.extractEmailFromText(resumeText),
+        phone: this.extractPhoneFromText(resumeText),
+        location: "Unable to parse"
+      },
+      skills: {
+        technical: this.extractSkillsFromText(resumeText),
+        languages: ["English"],
+        frameworks: this.extractSkillsFromText(resumeText).filter(skill =>
+          ['React', 'Angular', 'Vue.js', 'Node.js', 'Express', 'Django', 'Flask'].includes(skill)
+        )
+      },
+      experience: [{
+        company: "Unable to parse",
+        role: "Unable to parse",
+        duration: "Unable to parse",
+        achievements: ["Resume parsing unavailable - please review manually"]
+      }],
+      projects: [{
+        name: "Unable to parse",
+        description: "Resume parsing unavailable - please review manually",
+        technologies: this.extractSkillsFromText(resumeText).slice(0, 3)
+      }],
+      education: [{
+        institution: "Unable to parse",
+        degree: "Unable to parse",
+        year: "Unable to parse"
+      }],
+      summary: "Resume parsing failed due to API unavailability. Manual review required.",
+      fallbackMode: true,
+      message: "This is fallback data. Gemini API is temporarily unavailable."
+    };
+  }
+
+>>>>>>> e191508 (Initial commit)
   // Convenience methods for direct task execution
   public async generateQuestions(params: {
     jobTitle: string;
@@ -685,7 +925,11 @@ export class SmartAIService {
   }> {
     try {
       const groqHealth = await this.groqService.healthCheck();
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> e191508 (Initial commit)
       return {
         groqAvailable: groqHealth.groqAvailable,
         geminiAvailable: !!this.geminiModel,
@@ -694,7 +938,11 @@ export class SmartAIService {
         fallbackAvailable: groqHealth.groqAvailable && !!this.geminiModel,
         features: [
           'Company-specific intelligence',
+<<<<<<< HEAD
           'Enhanced prompt engineering', 
+=======
+          'Enhanced prompt engineering',
+>>>>>>> e191508 (Initial commit)
           'DSA problem generation',
           'Cultural fit analysis',
           'Resume parsing (Gemini)',
@@ -712,6 +960,130 @@ export class SmartAIService {
       };
     }
   }
+<<<<<<< HEAD
+=======
+
+  public async generateAptitudeQuestionsConvenience(
+    difficulty: string = 'medium',
+    count: number = 5,
+    jobTitle: string = 'Software Engineer',
+    companyName: string = 'Technology Company'
+  ) {
+    return this.processRequest({
+      task: 'aptitude_generation',
+      context: {
+        difficulty,
+        count,
+        jobTitle,
+        companyName
+      },
+      priority: 'medium'
+    });
+  }
+
+  public async generateAptitudeQuestions(
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
+    count: number = 5,
+    jobTitle: string = 'Software Engineer',
+    companyName: string = 'Technology Company'
+  ) {
+    const aptitudeTypes = ['numerical', 'logical', 'verbal', 'spatial', 'abstract'];
+    const questions = [];
+
+    for (let i = 0; i < count; i++) {
+      const type = aptitudeTypes[i % aptitudeTypes.length];
+      const questionId = `aptitude-${type}-${Date.now()}-${i}`;
+
+      let question, options, correctAnswer, explanation;
+
+      switch (type) {
+        case 'numerical':
+          if (difficulty === 'easy') {
+            question = `If a team of 4 developers can complete a project in 8 days, how many days would it take 2 developers to complete the same project?`;
+            options = ['12 days', '16 days', '20 days', '24 days'];
+            correctAnswer = 1;
+            explanation = 'Using inverse proportion: 4 developers × 8 days = 32 developer-days. 32 ÷ 2 developers = 16 days.';
+          } else if (difficulty === 'hard') {
+            question = `A server processes requests at a rate that follows the pattern: 100, 150, 225, 337.5, ... What will be the processing rate after 6 iterations?`;
+            options = ['759.375', '843.75', '1012.5', '1265.625'];
+            correctAnswer = 0;
+            explanation = 'Each term is multiplied by 1.5: 100 → 150 → 225 → 337.5 → 506.25 → 759.375';
+          } else {
+            question = `If a database query takes 2.5 seconds to process 1000 records, how long would it take to process 4500 records at the same rate?`;
+            options = ['10.25 seconds', '11.25 seconds', '12.5 seconds', '13.75 seconds'];
+            correctAnswer = 1;
+            explanation = 'Rate = 2.5s/1000 records = 0.0025s per record. 4500 × 0.0025 = 11.25 seconds.';
+          }
+          break;
+
+        case 'logical':
+          if (difficulty === 'easy') {
+            question = `In a software team, all frontend developers know React, and some React developers know TypeScript. Which statement is definitely true?`;
+            options = ['All frontend developers know TypeScript', 'Some frontend developers know TypeScript', 'No frontend developers know TypeScript', 'Some frontend developers may know TypeScript'];
+            correctAnswer = 3;
+            explanation = 'We cannot determine if frontend developers know TypeScript from the given information.';
+          } else if (difficulty === 'hard') {
+            question = `If "All bugs are issues" and "Some issues are critical" and "No critical items are ignored", what can we conclude?`;
+            options = ['All bugs are critical', 'Some bugs are not ignored', 'All issues are bugs', 'Some critical bugs exist'];
+            correctAnswer = 1;
+            explanation = 'Since some issues are critical and no critical items are ignored, some issues (which include bugs) are not ignored.';
+          } else {
+            question = `If all successful deployments are tested, and this deployment was successful, what can we conclude?`;
+            options = ['This deployment was tested', 'This deployment was not tested', 'Testing is optional', 'Cannot determine'];
+            correctAnswer = 0;
+            explanation = 'If all successful deployments are tested, and this deployment was successful, then it must have been tested.';
+          }
+          break;
+
+        case 'verbal':
+          if (difficulty === 'easy') {
+            question = `Choose the word most similar in meaning to "OPTIMIZE":`;
+            options = ['Complicate', 'Improve', 'Ignore', 'Delay'];
+            correctAnswer = 1;
+            explanation = 'Optimize means to make something as effective or functional as possible, which is similar to improve.';
+          } else if (difficulty === 'hard') {
+            question = `Choose the word that best completes: "The code review process should be _____ to ensure quality while maintaining development velocity."`;
+            options = ['Perfunctory', 'Meticulous', 'Cursory', 'Superficial'];
+            correctAnswer = 1;
+            explanation = 'Meticulous means showing great attention to detail, which is essential for quality code reviews.';
+          } else {
+            question = `What does "SCALABLE" mean in software development context?`;
+            options = ['Easy to break', 'Able to handle increased load', 'Written quickly', 'Difficult to understand'];
+            correctAnswer = 1;
+            explanation = 'Scalable refers to the ability of a system to handle increased workload or demand.';
+          }
+          break;
+
+        case 'spatial':
+          question = `If you rotate a square 90 degrees clockwise, then flip it horizontally, what is the final orientation compared to the original?`;
+          options = ['Same as original', '180 degrees rotated', '90 degrees clockwise', '90 degrees counterclockwise'];
+          correctAnswer = 3;
+          explanation = 'Rotating 90° clockwise then flipping horizontally results in a 90° counterclockwise rotation from original.';
+          break;
+
+        case 'abstract':
+          question = `In the sequence: Circle, Triangle, Square, Pentagon, what comes next?`;
+          options = ['Hexagon', 'Rectangle', 'Oval', 'Diamond'];
+          correctAnswer = 0;
+          explanation = 'The sequence follows increasing number of sides: 0(circle), 3, 4, 5, so 6(hexagon) comes next.';
+          break;
+      }
+
+      questions.push({
+        id: questionId,
+        type: type as 'numerical' | 'logical' | 'verbal' | 'spatial' | 'abstract',
+        question,
+        options,
+        correctAnswer,
+        explanation,
+        difficulty,
+        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'hard' ? 120 : 90
+      });
+    }
+
+    return questions;
+  }
+>>>>>>> e191508 (Initial commit)
 }
 
 export default SmartAIService;

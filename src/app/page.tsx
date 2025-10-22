@@ -4,7 +4,11 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react'
 
 export const metadata: Metadata = {
+<<<<<<< HEAD
   title: 'RecruiterAI - Advanced AI Interview Platform',
+=======
+  title: 'Interview AI - Advanced AI Interview Platform',
+>>>>>>> e191508 (Initial commit)
   description: 'Master your interview skills with AI-powered mock interviews, real-time feedback, and personalized coaching.',
 }
 
@@ -45,7 +49,11 @@ const testimonials = [
   {
     name: 'Sarah Chen',
     role: 'Software Engineer at Google',
+<<<<<<< HEAD
     content: 'RecruiterAI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
+=======
+    content: 'Interview AI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
+>>>>>>> e191508 (Initial commit)
     rating: 5
   },
   {
@@ -71,7 +79,11 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+<<<<<<< HEAD
                 RecruiterAI
+=======
+                Interview AI
+>>>>>>> e191508 (Initial commit)
               </Link>
             </div>
             
@@ -99,7 +111,11 @@ export default function HomePage() {
           <div className="mb-8">
             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border border-blue-200">
               <Zap className="w-4 h-4 mr-2" />
+<<<<<<< HEAD
               <span className="font-bold text-xl">Advanced AI Interview Platform</span>
+=======
+              <span className="font-bold text-xl">Advanced Interview AI Platform</span>
+>>>>>>> e191508 (Initial commit)
             </span>
           </div>
           
@@ -158,7 +174,11 @@ export default function HomePage() {
               Everything You Need to Succeed
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+<<<<<<< HEAD
               Our comprehensive AI interview platform provides all the tools and insights you need to ace your next interview.
+=======
+              Our comprehensive Interview AI platform provides all the tools and insights you need to ace your next interview.
+>>>>>>> e191508 (Initial commit)
             </p>
           </div>
           
@@ -183,6 +203,114 @@ export default function HomePage() {
         </div>
       </section>
 
+<<<<<<< HEAD
+=======
+      {/* Virtual AI Demo Section */}
+      <section className="py-20 bg-gradient-to-br from-purple-900 to-blue-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800 border border-purple-200 mb-6">
+              <Zap className="w-4 h-4 mr-2" />
+              <span className="font-bold">NEW: Revolutionary Technology</span>
+            </div>
+            <h2 className="text-4xl font-bold mb-4">
+              Meet Your Virtual AI Interviewer
+            </h2>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              Experience the future of interview preparation with face-to-face AI conversations that feel completely natural.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold">Revolutionary Features:</h3>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg">Face-to-Face Conversation</h4>
+                    <p className="text-blue-100">Interactive AI avatar that speaks and listens just like a human interviewer</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg">Natural Speech Recognition</h4>
+                    <p className="text-blue-100">Real-time voice-to-text conversion for seamless conversation flow</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg">Intelligent Follow-ups</h4>
+                    <p className="text-blue-100">AI generates contextual questions based on your responses</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg">Real-time Analysis</h4>
+                    <p className="text-blue-100">Immediate feedback and performance evaluation during conversation</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                <Link
+                  href="/virtual-ai-demo"
+                  className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-blue-600 transition-all transform hover:scale-105 flex items-center justify-center"
+                >
+                  Try Virtual AI Demo
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+                
+                <Link
+                  href="/signup"
+                  className="border-2 border-white text-white px-6 py-3 rounded-xl font-semibold hover:bg-white hover:text-purple-900 transition-all flex items-center justify-center"
+                >
+                  Start Free Trial
+                </Link>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-gradient-to-br from-purple-800 to-blue-800 rounded-2xl p-8 border border-purple-400">
+                <div className="text-center">
+                  <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full mx-auto mb-6 flex items-center justify-center border-4 border-white shadow-2xl">
+                    <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">AI Interviewer Ready</h4>
+                  <p className="text-purple-200 mb-4">Click demo to experience face-to-face AI conversation</p>
+                  <div className="flex justify-center space-x-2">
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                    <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating elements */}
+              <div className="absolute -top-4 -right-4 w-8 h-8 bg-yellow-400 rounded-full animate-bounce"></div>
+              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-green-400 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+>>>>>>> e191508 (Initial commit)
       {/* Testimonials Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -191,7 +319,11 @@ export default function HomePage() {
               Success Stories
             </h2>
             <p className="text-xl text-gray-600">
+<<<<<<< HEAD
               See how RecruiterAI helped professionals land their dream jobs
+=======
+              See how Interview AI helped professionals land their dream jobs
+>>>>>>> e191508 (Initial commit)
             </p>
           </div>
           
@@ -226,7 +358,11 @@ export default function HomePage() {
             Ready to Ace Your Next Interview?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
+<<<<<<< HEAD
             Join thousands of professionals who've successfully prepared with RecruiterAI
+=======
+            Join thousands of professionals who've successfully prepared with Interview AI
+>>>>>>> e191508 (Initial commit)
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -246,9 +382,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
+<<<<<<< HEAD
               <div className="text-2xl font-bold mb-4">RecruiterAI</div>
               <p className="text-gray-400">
                 The most advanced AI interview platform for career success.
+=======
+              <div className="text-2xl font-bold mb-4">Interview AI</div>
+              <p className="text-gray-400">
+                The most advanced Interview AI platform for career success.
+>>>>>>> e191508 (Initial commit)
               </p>
             </div>
             
@@ -281,7 +423,11 @@ export default function HomePage() {
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+<<<<<<< HEAD
             <p>&copy; 2024 RecruiterAI. All rights reserved.</p>
+=======
+            <p>&copy; 2024 Interview AI. All rights reserved.</p>
+>>>>>>> e191508 (Initial commit)
           </div>
         </div>
       </footer>

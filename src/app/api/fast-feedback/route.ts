@@ -3,6 +3,7 @@ import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 import GroqAIService from '@/lib/groqAIService';
 
+<<<<<<< HEAD
 // Enhanced fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
@@ -99,6 +100,47 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
         "Provide a more comprehensive answer with specific examples and technical depth"
     })),
     summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`
+=======
+// Fallback analysis function when AI services are not available
+function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
+  const totalQuestions = questions.length;
+  const answeredQuestions = answers.filter(answer => answer && answer.trim().length > 10).length;
+  const answerQuality = answeredQuestions / totalQuestions;
+  
+  // Calculate scores based on answer length and completeness
+  const avgAnswerLength = answers.reduce((sum, answer) => sum + (answer?.length || 0), 0) / answers.length;
+  const technicalScore = Math.min(10, Math.max(1, (avgAnswerLength / 100) * 8 + 2));
+  const communicationScore = Math.min(10, Math.max(1, answerQuality * 8 + 2));
+  const problemSolvingScore = Math.min(10, Math.max(1, (answeredQuestions / totalQuestions) * 8 + 2));
+  
+  const overallScore = (technicalScore + communicationScore + problemSolvingScore) / 3;
+  
+  return {
+    overallScore: Math.round(overallScore * 10) / 10,
+    parameterScores: {
+      "Technical Knowledge": Math.round(technicalScore * 10) / 10,
+      "Problem Solving": Math.round(problemSolvingScore * 10) / 10,
+      "Communication Skills": Math.round(communicationScore * 10) / 10,
+      "Practical Application": Math.round((technicalScore + problemSolvingScore) / 2 * 10) / 10,
+      "Company Fit": Math.round(communicationScore * 10) / 10
+    },
+    strengths: [
+      "Demonstrated willingness to engage with questions",
+      "Provided structured responses",
+      "Showed understanding of technical concepts"
+    ],
+    improvements: [
+      "Provide more detailed technical explanations",
+      "Include specific examples from experience",
+      "Elaborate on problem-solving approaches"
+    ],
+    recommendations: [
+      "Practice explaining technical concepts clearly",
+      "Prepare specific examples for common interview questions",
+      "Focus on demonstrating problem-solving methodology"
+    ],
+    summary: `Based on your ${jobTitle} interview performance, you showed good engagement with ${answeredQuestions}/${totalQuestions} questions answered. Your responses demonstrate technical awareness and communication skills. Focus on providing more detailed examples and explanations to improve your overall performance.`
+>>>>>>> e191508 (Initial commit)
   };
 }
 
@@ -131,11 +173,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+<<<<<<< HEAD
     // Get questions and answers with better error handling
+=======
+    // Get questions and answers
+>>>>>>> e191508 (Initial commit)
     const questionsDoc = await db.collection("questions").findOne({
       interviewId: interviewId
     });
 
+<<<<<<< HEAD
     console.log('📄 Questions document found:', {
       exists: !!questionsDoc,
       hasAnswers: !!questionsDoc?.answers,
@@ -148,10 +195,16 @@ export async function POST(request: NextRequest) {
       console.error('❌ No questions document found for interviewId:', interviewId);
       return NextResponse.json(
         { error: 'Interview questions not found' },
+=======
+    if (!questionsDoc || !questionsDoc.answers || questionsDoc.answers.length === 0) {
+      return NextResponse.json(
+        { error: 'No answers found for analysis' },
+>>>>>>> e191508 (Initial commit)
         { status: 404 }
       );
     }
 
+<<<<<<< HEAD
     // Check if this is a DSA interview and handle accordingly
     const isDSAInterview = interview.jobTitle?.toLowerCase().includes('dsa') || 
                           questionsDoc.questions?.some((q: any) => q.category === 'dsa' || q.dsaProblem);
@@ -403,6 +456,12 @@ Execution Time: ${execution.executionTime}ms`;
     if (meaningfulAnswers.length === 0) {
       console.warn('⚠️ No meaningful answers found, but proceeding with analysis');
     }
+=======
+    const questions = questionsDoc.questions || [];
+    const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided');
+
+    console.log(`🧠 Analyzing ${questions.length} questions...`);
+>>>>>>> e191508 (Initial commit)
 
     // Try Groq AI first, fallback to mock analysis if API key not available
     let insights;
@@ -456,6 +515,7 @@ Execution Time: ${execution.executionTime}ms`;
       }
     );
 
+<<<<<<< HEAD
     // CRITICAL: Mark interview as completed so it doesn't show in dashboard
     await db.collection('interviews').updateOne(
       { _id: new ObjectId(interviewId) },
@@ -492,6 +552,8 @@ Execution Time: ${execution.executionTime}ms`;
       { upsert: true }
     );
 
+=======
+>>>>>>> e191508 (Initial commit)
     const processingTime = Date.now() - startTime;
     console.log(`✅ Fast feedback completed in ${processingTime}ms`);
 

@@ -102,7 +102,11 @@ const generateInsightsDirectly = async (interviewId: string) => {
     }
 
     // Get interview details for context
+<<<<<<< HEAD
     const interview = await db.collection("interviews").findOne({_id: new ObjectId(interviewId)});
+=======
+    const interview = await db.collection("interviews").findOne({_id: new require('mongodb').ObjectId(interviewId)});
+>>>>>>> e191508 (Initial commit)
     const jobTitle = interview?.jobTitle || "Software Engineer";
     const companyName = interview?.companyName || "TechCorp";
     const skills = interview?.skills || ["JavaScript", "React"];
@@ -167,6 +171,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
             }
         );
 
+<<<<<<< HEAD
         // CRITICAL: Mark interview as completed so it doesn't show in dashboard
         await db.collection('interviews').updateOne(
             { _id: new ObjectId(interviewId) },
@@ -203,6 +208,8 @@ const generateInsightsDirectly = async (interviewId: string) => {
             { upsert: true }
         );
 
+=======
+>>>>>>> e191508 (Initial commit)
         const processingTime = Date.now() - startTime;
         console.log(`✅ Fast feedback generated in ${processingTime}ms with Groq AI`);
         
@@ -252,6 +259,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
             }
         );
 
+<<<<<<< HEAD
         // CRITICAL: Mark interview as completed even with fallback analysis
         await db.collection('interviews').updateOne(
             { _id: new ObjectId(interviewId) },
@@ -288,6 +296,8 @@ const generateInsightsDirectly = async (interviewId: string) => {
             { upsert: true }
         );
 
+=======
+>>>>>>> e191508 (Initial commit)
         console.log(`⚠️ Used fallback analysis in ${Date.now() - startTime}ms`);
         return fallbackInsights;
     }

@@ -312,6 +312,7 @@ const NewInterviewWrapper = ({
                 questionsResult[round.type] = generateEnhancedFallbackDSA(companyName, experienceLevel, round.questionCount);
               }
             } else if (round.type === 'aptitude') {
+<<<<<<< HEAD
               // Generate aptitude questions - fallback for now
               const aptitudeQuestions = [
                 {
@@ -329,6 +330,63 @@ const NewInterviewWrapper = ({
                 }
               ];
               questionsResult[round.type] = aptitudeQuestions
+=======
+              // Generate aptitude questions using SmartAI
+              try {
+                const result = await smartAIService.processRequest({
+                  task: 'aptitude_generation',
+                  context: {
+                    difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                    count: round.questionCount,
+                    jobTitle,
+                    companyName
+                  }
+                });
+                
+                if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+                  questionsResult[round.type] = result.data;
+                  console.log(`✅ Generated ${result.data.length} aptitude questions successfully`);
+                } else {
+                  throw new Error('Aptitude generation failed');
+                }
+              } catch (aptitudeError) {
+                console.log('⚠️ Aptitude generation failed, using fallback questions');
+                // Fallback aptitude questions with proper format
+                const aptitudeQuestions = [
+                  {
+                    id: `aptitude-1-${Date.now()}`,
+                    type: 'numerical' as const,
+                    question: `If a car travels 60 miles per hour for 2 hours, how far does it travel?`,
+                    options: ['100 miles', '120 miles', '140 miles', '160 miles'],
+                    correctAnswer: 1,
+                    explanation: 'Distance = Speed × Time = 60 mph × 2 hours = 120 miles',
+                    difficulty: (experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium') as const,
+                    timeLimit: 60
+                  },
+                  {
+                    id: `aptitude-2-${Date.now()}`,
+                    type: 'logical' as const,
+                    question: `If all roses are flowers and some flowers are red, which statement is definitely true?`,
+                    options: ['All roses are red', 'Some roses are red', 'No roses are red', 'Some roses may be red'],
+                    correctAnswer: 3,
+                    explanation: 'We cannot determine the color of roses from the given information, so some roses may be red.',
+                    difficulty: (experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium') as const,
+                    timeLimit: 90
+                  },
+                  {
+                    id: `aptitude-3-${Date.now()}`,
+                    type: 'verbal' as const,
+                    question: `Choose the word that is most similar in meaning to "METICULOUS":`,
+                    options: ['Careless', 'Detailed', 'Quick', 'Lazy'],
+                    correctAnswer: 1,
+                    explanation: 'Meticulous means showing great attention to detail; very careful and precise.',
+                    difficulty: (experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium') as const,
+                    timeLimit: 45
+                  }
+                ];
+                questionsResult[round.type] = aptitudeQuestions.slice(0, round.questionCount);
+              }
+>>>>>>> e191508 (Initial commit)
             } else {
               // Generate regular interview questions
               const roundQuestions = await aiService.generateInterviewQuestions({
@@ -486,6 +544,7 @@ const NewInterviewWrapper = ({
     }
 
     const currentRoundConfig = roundConfigs[currentRound]
+<<<<<<< HEAD
     const currentRoundQuestions = questions[currentRoundConfig.type] || []
 
     try {
@@ -534,6 +593,14 @@ const NewInterviewWrapper = ({
             dsaProblem = null
           }
         }
+=======
+
+    switch (currentRoundConfig.type) {
+      case 'dsa':
+        // Ensure we have DSA problems and pass the first one to DSACompiler
+        const dsaProblems = currentRoundQuestions || []
+        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
+>>>>>>> e191508 (Initial commit)
         
         return (
           <DSACompiler
@@ -561,6 +628,7 @@ const NewInterviewWrapper = ({
             onRoundComplete={handleRoundComplete}
           />
         )
+<<<<<<< HEAD
       }
     } catch (error) {
       console.error('Error rendering round component:', error)
@@ -578,6 +646,8 @@ const NewInterviewWrapper = ({
           </button>
         </div>
       )
+=======
+>>>>>>> e191508 (Initial commit)
     }
   }
 

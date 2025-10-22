@@ -4,9 +4,14 @@ import { auth } from '@/app/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+<<<<<<< HEAD
 import { Badge } from '@/components/ui/badge'
 import { Building2, Clock, Target, Users, Brain, ArrowRight, Play, FileText } from 'lucide-react'
 import CompanyIntelligenceService from '@/lib/companyIntelligence'
+=======
+import CompanyIntelligenceService from '@/lib/companyIntelligence'
+import InterviewPageClient from '@/components/InterviewPageClient'
+>>>>>>> e191508 (Initial commit)
 
 const page = async ({params}:{
     params: Promise<{id:string}>
@@ -34,6 +39,7 @@ const page = async ({params}:{
     // Get company intelligence
     const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName)
 
+<<<<<<< HEAD
     function capitalizeFirstWord(str: string) {
         if (!str) return "";
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -239,3 +245,15 @@ const page = async ({params}:{
 }
 
 export default page
+=======
+    return (
+        <InterviewPageClient 
+            interview={interview}
+            det={det}
+            companyIntelligence={companyIntelligence}
+        />
+    )
+}
+
+export default page
+>>>>>>> e191508 (Initial commit)
