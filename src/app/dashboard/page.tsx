@@ -98,7 +98,6 @@ export default function DashboardPage() {
       const timeoutId = setTimeout(() => {
         console.log('Request timeout - aborting...')
         controller.abort()
-      }, 15000) // 15 second timeout - increased for better performance
       }, 8000) // 8 second timeout
       
       console.log('Making API call to /api/user-interviews...')
