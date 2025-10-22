@@ -20,9 +20,9 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
   const avgWordCount = meaningfulAnswers.reduce((sum, answer) => sum + (answer?.split(' ').length || 0), 0) / Math.max(meaningfulAnswers.length, 1);
   
   // More sophisticated scoring algorithm
-  const lengthScore = Math.min(10, Math.max(2, (avgAnswerLength / 150) * 8 + 2)); // Based on char length;
-  const wordCountScore = Math.min(10, Math.max(2, (avgWordCount / 30) * 8 + 2)); // Based on word count;
-  const completionScore = Math.min(10, Math.max(1, answerQuality * 9 + 1)); // Based on completion rate;
+  const lengthScore = Math.min(10, Math.max(2, (avgAnswerLength / 150) * 8 + 2)); // Based on char length
+  const wordCountScore = Math.min(10, Math.max(2, (avgWordCount / 30) * 8 + 2)); // Based on word count
+  const completionScore = Math.min(10, Math.max(1, answerQuality * 9 + 1)); // Based on completion rate
   
   // Calculate individual parameter scores
   const technicalScore = Math.round(((lengthScore + wordCountScore) / 2) * 10) / 10;
