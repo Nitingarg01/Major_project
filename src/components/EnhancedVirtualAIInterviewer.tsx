@@ -615,9 +615,9 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   const AIAvatar = () => (
     <div className="relative w-32 h-32 mx-auto mb-4">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-300 ${
-        aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :;
-        aiAvatarState === 'listening' ? 'border-blue-400 animate-pulse shadow-lg shadow-blue-200' :;
-        aiAvatarState === 'thinking' ? 'border-yellow-400 animate-spin shadow-lg shadow-yellow-200' :;
+        aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :
+        aiAvatarState === 'listening' ? 'border-blue-400 animate-pulse shadow-lg shadow-blue-200' :
+        aiAvatarState === 'thinking' ? 'border-yellow-400 animate-spin shadow-lg shadow-yellow-200' :
         'border-purple-300 shadow-md'
       } bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 flex items-center justify-center`}>
         <Bot className={`w-16 h-16 text-white transition-transform duration-300 ${
