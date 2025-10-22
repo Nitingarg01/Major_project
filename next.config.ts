@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
     if(isServer){
       config.externals.push('pdf-parse');
     }
-    return config
+    return config;
   },
   async headers(){
     return [
