@@ -628,14 +628,14 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       {/* Status indicator */}
       <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
         <Badge variant={
-          aiAvatarState === 'speaking' ? 'default' :;
-          aiAvatarState === 'listening' ? 'secondary' :;
-          aiAvatarState === 'thinking' ? 'outline' :;
+          aiAvatarState === 'speaking' ? 'default' :
+          aiAvatarState === 'listening' ? 'secondary' :
+          aiAvatarState === 'thinking' ? 'outline' :
           'secondary'
         } className="text-xs">
-          {aiAvatarState === 'speaking' ? '🗣️ Speaking' :;
-           aiAvatarState === 'listening' ? '👂 Listening' :;
-           aiAvatarState === 'thinking' ? '🤔 Thinking' :;
+          {aiAvatarState === 'speaking' ? '🗣️ Speaking' :
+           aiAvatarState === 'listening' ? '👂 Listening' :
+           aiAvatarState === 'thinking' ? '🤔 Thinking' :
            '😊 Ready'}
         </Badge>
       </div>
