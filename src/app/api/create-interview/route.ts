@@ -350,7 +350,6 @@ export async function POST(request: NextRequest) {
         const dbClient = client;
         const db = dbClient.db();
 
-<<<<<<< HEAD
         // Check for duplicate company interview (only if there's a completed interview)
         const existingCompanyInterview = await db.collection('interviews').findOne({
             userId: userId,
@@ -370,8 +369,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-=======
->>>>>>> e191508 (Initial commit)
         const interviewData = {
             userId: userId,
             jobDesc,

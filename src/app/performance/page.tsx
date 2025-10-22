@@ -1,14 +1,10 @@
 'use client'
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react'
-=======
 import { useEffect, useState } from 'react'
->>>>>>> e191508 (Initial commit)
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
-<<<<<<< HEAD
   ArrowLeft,
   TrendingUp,
   TrendingDown,
@@ -68,7 +64,6 @@ interface PerformanceStats {
   strongestArea: string
   weakestArea: string
   recentPerformance: number[]
-=======
   ArrowLeft, 
   BarChart3, 
   TrendingUp, 
@@ -106,13 +101,11 @@ interface FeedbackItem {
   strengths: string[]
   improvements: string[]
   createdAt: string
->>>>>>> e191508 (Initial commit)
 }
 
 export default function PerformancePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-<<<<<<< HEAD
   const [performanceData, setPerformanceData] = useState<PerformanceData[]>([])
   const [stats, setStats] = useState<PerformanceStats | null>(null)
   const [loading, setLoading] = useState(true)
@@ -123,13 +116,11 @@ export default function PerformancePage() {
   useEffect(() => {
     if (status === 'loading') return
     
-=======
   const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null)
   const [selectedFeedback, setSelectedFeedback] = useState<FeedbackItem | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
->>>>>>> e191508 (Initial commit)
     if (status === 'unauthenticated') {
       router.push('/login')
       return
@@ -142,7 +133,6 @@ export default function PerformancePage() {
 
   const fetchPerformanceData = async () => {
     try {
-<<<<<<< HEAD
       const response = await fetch('/api/performance-stats')
       const data = await response.json()
 
@@ -153,7 +143,6 @@ export default function PerformancePage() {
         throw new Error(data.error || 'Failed to fetch performance data')
       }
     } catch (error: any) {
-=======
       const response = await fetch('/api/user-performance')
       const data = await response.json()
 
@@ -195,7 +184,6 @@ export default function PerformancePage() {
         })
       }
     } catch (error) {
->>>>>>> e191508 (Initial commit)
       console.error('Error fetching performance data:', error)
       toast.error('Failed to load performance data')
     } finally {
@@ -203,7 +191,6 @@ export default function PerformancePage() {
     }
   }
 
-<<<<<<< HEAD
   const filteredData = performanceData.filter(item => {
     const matchesType = filterType === 'all' || item.interviewType === filterType
     const matchesSearch = searchTerm === '' || 
@@ -212,15 +199,12 @@ export default function PerformancePage() {
     return matchesType && matchesSearch
   })
 
-=======
->>>>>>> e191508 (Initial commit)
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600 bg-green-100'
     if (score >= 60) return 'text-yellow-600 bg-yellow-100'
     return 'text-red-600 bg-red-100'
   }
 
-<<<<<<< HEAD
   const getScoreIcon = (score: number) => {
     if (score >= 80) return <TrendingUp className="w-4 h-4" />
     if (score >= 60) return <Target className="w-4 h-4" />
@@ -236,13 +220,10 @@ export default function PerformancePage() {
     return `${mins}m`
   }
 
-=======
->>>>>>> e191508 (Initial commit)
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-<<<<<<< HEAD
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
@@ -499,7 +480,6 @@ export default function PerformancePage() {
                   </div>
                   <Button variant="ghost" onClick={() => setSelectedInterview(null)}>
                     ×
-=======
       year: 'numeric'
     })
   }
@@ -739,13 +719,11 @@ export default function PerformancePage() {
                   </div>
                   <Button variant="outline" onClick={() => setSelectedFeedback(null)}>
                     Close
->>>>>>> e191508 (Initial commit)
                   </Button>
                 </div>
               </div>
               
               <div className="p-6">
-<<<<<<< HEAD
                 {/* Performance Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -836,7 +814,6 @@ export default function PerformancePage() {
                           </li>
                         ))}
                       </ul>
-=======
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-lg font-semibold text-gray-900">Overall Score</h4>
@@ -873,7 +850,6 @@ export default function PerformancePage() {
                           <span className="text-orange-800">{improvement}</span>
                         </div>
                       ))}
->>>>>>> e191508 (Initial commit)
                     </div>
                   </div>
                 </div>
@@ -882,10 +858,7 @@ export default function PerformancePage() {
           </div>
         )}
       </div>
-<<<<<<< HEAD
     </LoadingWrapper>
-=======
     </div>
->>>>>>> e191508 (Initial commit)
   )
 }

@@ -124,7 +124,6 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           
-<<<<<<< HEAD
           // Handle video play with improved error handling
           const playPromise = videoRef.current.play();
           
@@ -164,7 +163,6 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                   }, 100);
                 }
               });
-=======
           // Handle video play with proper error handling
           try {
             await videoRef.current.play();
@@ -199,7 +197,6 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                 timestamp: new Date()
               });
             }
->>>>>>> e191508 (Initial commit)
           }
         }
       } catch (err) {
@@ -219,11 +216,8 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         streamRef.current = null;
       }
       if (videoRef.current) {
-<<<<<<< HEAD
         // Pause video before removing srcObject to prevent AbortError
         videoRef.current.pause();
-=======
->>>>>>> e191508 (Initial commit)
         videoRef.current.srcObject = null;
       }
       setIsMonitoring(false);

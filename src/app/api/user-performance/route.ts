@@ -16,11 +16,8 @@ export async function GET(request: NextRequest) {
     }
 
     const userId = session.user.id;
-<<<<<<< HEAD
     const db = client.db('Cluster0'); // Use the correct database name
-=======
     const db = client.db();
->>>>>>> e191508 (Initial commit)
     
     console.log(`🔍 Fetching performance data for user: ${userId}`);
 

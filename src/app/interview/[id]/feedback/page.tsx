@@ -9,7 +9,6 @@ import { redirect } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-<<<<<<< HEAD
 import {
   Building2,
   TrendingUp,
@@ -17,7 +16,6 @@ import {
   Award,
   FileText,
   Home,
-=======
 import { 
   Building2, 
   TrendingUp, 
@@ -26,22 +24,18 @@ import {
   FileText, 
   Home, 
   RotateCcw,
->>>>>>> e191508 (Initial commit)
   Lightbulb,
   CheckCircle,
   AlertTriangle,
   Star
 } from 'lucide-react'
 import Link from 'next/link'
-<<<<<<< HEAD
 import PerformanceSaver from '@/components/PerformanceSaver'
 import ManualPerformanceSaver from '@/components/ManualPerformanceSaver'
 import FeedbackLoader from '@/components/FeedbackLoader'
 import PerformanceDebugger from '@/components/PerformanceDebugger'
-=======
 import CompanyIntelligenceService from '@/lib/companyIntelligence'
 import FeedbackLoader from '@/components/FeedbackLoader'
->>>>>>> e191508 (Initial commit)
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -49,11 +43,8 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const session = await auth()
-<<<<<<< HEAD
   if (!session?.user) {
-=======
   if(!session?.user){
->>>>>>> e191508 (Initial commit)
     redirect('/login')
   }
 
@@ -74,7 +65,6 @@ const page = async ({ params }: PageProps) => {
     )
   }
 
-<<<<<<< HEAD
   // Generate simple company data (company intelligence service was removed)
   const companyData = {
     name: interview.companyName,
@@ -90,36 +80,29 @@ const page = async ({ params }: PageProps) => {
     techStack: ['JavaScript', 'React', 'Node.js', 'Python'],
     culture: ['Innovation', 'Collaboration', 'Excellence']
   }
-=======
   // Get company intelligence for enhanced feedback
   const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName)
->>>>>>> e191508 (Initial commit)
 
   const arr = det?.extracted?.parameterScores || {}
   console.log(det)
 
   const labels = Object.keys(arr) as string[]
   const data = Object.values(arr) as number[]
-<<<<<<< HEAD
   console.log(data, labels)
 
   if (!det || !det.extracted) {
-=======
   console.log(data,labels)
 
   if(!det || !det.extracted){
->>>>>>> e191508 (Initial commit)
     return <FeedbackLoader interviewId={id} />
   }
 
   // Calculate company-specific insights
   const overallScore = det?.extracted?.overallScore || 0
   const readinessScore = Math.min(100, Math.max(0, overallScore * 10))
-<<<<<<< HEAD
 
   // Generate company-specific recommendations
   const companySpecificTips = companyData.preparationTips
-=======
   
   // Generate company-specific recommendations
   const companySpecificTips = companyIntelligence?.companyData?.preparationTips || [
@@ -128,7 +111,6 @@ const page = async ({ params }: PageProps) => {
     'Research recent company developments and news',
     'Prepare specific examples that demonstrate relevant skills'
   ]
->>>>>>> e191508 (Initial commit)
 
   // Create preparation metrics based on performance
   const preparationMetrics = {
@@ -137,21 +119,18 @@ const page = async ({ params }: PageProps) => {
     companyKnowledge: Math.max(0, Math.min(100, readinessScore * 0.8)), // Based on overall performance
     culturalFit: Math.max(0, Math.min(100, readinessScore * 0.9))
   }
-<<<<<<< HEAD
 
   // Generate strengths and improvements
   const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>
     `Strong ${label.toLowerCase()} skills demonstrated`
   )
   const improvements = labels.filter((_, index) => data[index] < 5).map(label =>
-=======
   
   // Generate strengths and improvements
   const strengths = labels.filter((_, index) => data[index] >= 7).map(label => 
     `Strong ${label.toLowerCase()} skills demonstrated`
   )
   const improvements = labels.filter((_, index) => data[index] < 5).map(label => 
->>>>>>> e191508 (Initial commit)
     `Focus on improving ${label.toLowerCase()} abilities`
   )
 
@@ -163,21 +142,18 @@ const page = async ({ params }: PageProps) => {
     improvements: improvements.length > 0 ? improvements : ['Continue practicing to build confidence'],
     companySpecificTips,
     interviewIntelligence: {
-<<<<<<< HEAD
       averageRounds: 4,
       expectedDifficulty: companyData.difficulty,
       keyFocusAreas: companyData.focusAreas,
       culturalValues: companyData.culture,
       techStack: companyData.techStack,
       recentNews: [`${interview.companyName} continues to innovate in technology`, `${interview.companyName} expands engineering team`]
-=======
       averageRounds: companyIntelligence?.interviewInsights?.averageRounds || 4,
       expectedDifficulty: companyIntelligence?.companyData?.difficulty || 'medium',
       keyFocusAreas: companyIntelligence?.interviewInsights?.keySkillsRequired || ['Technical Skills', 'Problem Solving'],
       culturalValues: companyIntelligence?.companyData?.culture || ['Innovation', 'Collaboration'],
       techStack: companyIntelligence?.companyData?.techStack || [],
       recentNews: companyIntelligence?.recentUpdates || []
->>>>>>> e191508 (Initial commit)
     },
     preparationMetrics,
     confidenceBuilder: {
@@ -190,11 +166,8 @@ const page = async ({ params }: PageProps) => {
 
   const getScoreColor = (score: number) => {
     if (score >= 8) return 'bg-green-400'
-<<<<<<< HEAD
     if (score >= 6) return 'bg-blue-400'
-=======
     if (score >= 6) return 'bg-blue-400' 
->>>>>>> e191508 (Initial commit)
     if (score >= 4) return 'bg-yellow-400'
     return 'bg-red-400'
   }
@@ -209,7 +182,6 @@ const page = async ({ params }: PageProps) => {
   const scoreInfo = getScoreMessage(overallScore)
   const ScoreIcon = scoreInfo.icon
 
-<<<<<<< HEAD
   // Debug logging (moved outside JSX)
   console.log('Feedback page data:', {
     interviewId: id,
@@ -262,10 +234,8 @@ const page = async ({ params }: PageProps) => {
         />
       </div>
 
-=======
   return (
     <div className='flex flex-col'>
->>>>>>> e191508 (Initial commit)
       <div className='flex flex-col mx-4 p-2 mt-3 gap-6 max-w-7xl mx-auto'>
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
@@ -278,11 +248,8 @@ const page = async ({ params }: PageProps) => {
               <span>{interview?.jobTitle} Role at {interview?.companyName}</span>
             </div>
           </div>
-<<<<<<< HEAD
 
-=======
           
->>>>>>> e191508 (Initial commit)
           {/* Overall Score Display */}
           <div className="flex justify-center mb-6">
             <div className={`${getScoreColor(overallScore)} w-32 h-32 rounded-full flex flex-col items-center justify-center text-white shadow-lg`}>
@@ -290,28 +257,22 @@ const page = async ({ params }: PageProps) => {
               <div className="text-sm">/ 10</div>
             </div>
           </div>
-<<<<<<< HEAD
 
-=======
           
->>>>>>> e191508 (Initial commit)
           {/* Score Message */}
           <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
             <div className={`flex items-center justify-center gap-2 ${scoreInfo.color} mb-2`}>
               <ScoreIcon className="w-5 h-5" />
               <span className="font-semibold">{scoreInfo.message}</span>
             </div>
-<<<<<<< HEAD
             <div className="text-sm text-gray-600">
               Based on {companyData.name}'s interview standards and {companyData.difficulty} difficulty level
             </div>
-=======
             {companyIntelligence && (
               <div className="text-sm text-gray-600">
                 Based on {companyIntelligence.companyData.name}'s interview standards and {companyIntelligence.companyData.difficulty} difficulty level
               </div>
             )}
->>>>>>> e191508 (Initial commit)
           </div>
         </div>
 
@@ -331,16 +292,12 @@ const page = async ({ params }: PageProps) => {
               Preparation Dashboard
             </TabsTrigger>
           </TabsList>
-<<<<<<< HEAD
 
-=======
           
->>>>>>> e191508 (Initial commit)
           {/* Performance Analysis Tab */}
           <TabsContent value="visual" className='flex flex-col gap-5 mt-6'>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
               <span className="text-lg">
-<<<<<<< HEAD
                 <span className='font-semibold text-blue-800'>Overall Verdict:</span>
                 <span className="text-blue-700 ml-2">{det?.extracted?.overallVerdict}</span>
               </span>
@@ -348,7 +305,6 @@ const page = async ({ params }: PageProps) => {
 
             <EnhancedFeedback
               data={data}
-=======
                 <span className='font-semibold text-blue-800'>Overall Verdict:</span> 
                 <span className="text-blue-700 ml-2">{det?.extracted?.overallVerdict}</span>
               </span>
@@ -356,13 +312,11 @@ const page = async ({ params }: PageProps) => {
             
             <EnhancedFeedback 
               data={data} 
->>>>>>> e191508 (Initial commit)
               labels={labels}
               overallScore={det?.extracted?.overallScore || 0}
             />
 
             {/* Company-Specific Insights */}
-<<<<<<< HEAD
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -417,7 +371,6 @@ const page = async ({ params }: PageProps) => {
               companyInsights={companyInsights}
               onStartNewInterview={() => { }}
               onViewDetailedFeedback={() => { }}
-=======
             {companyIntelligence && (
               <Card>
                 <CardHeader>
@@ -474,7 +427,6 @@ const page = async ({ params }: PageProps) => {
               companyInsights={companyInsights}
               onStartNewInterview={() => {}}
               onViewDetailedFeedback={() => {}}
->>>>>>> e191508 (Initial commit)
             />
           </TabsContent>
         </Tabs>
@@ -482,17 +434,14 @@ const page = async ({ params }: PageProps) => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-6 rounded-lg border border-gray-200">
           <div className="flex items-center gap-4">
-<<<<<<< HEAD
             <Link href="/dashboard">
               <Button variant="outline" className="flex items-center gap-2">
                 <Home className="w-4 h-4" />
                 Go to Dashboard
-=======
             <Link href="/">
               <Button variant="outline" className="flex items-center gap-2">
                 <Home className="w-4 h-4" />
                 Back to Dashboard
->>>>>>> e191508 (Initial commit)
               </Button>
             </Link>
             <Link href="/create">
@@ -501,7 +450,6 @@ const page = async ({ params }: PageProps) => {
                 Practice Again
               </Button>
             </Link>
-<<<<<<< HEAD
             <Link href="/performance">
               <Button variant="outline" className="flex items-center gap-2 border-purple-200 text-purple-700 hover:bg-purple-50">
                 <TrendingUp className="w-4 h-4" />
@@ -510,10 +458,8 @@ const page = async ({ params }: PageProps) => {
             </Link>
           </div>
 
-=======
           </div>
           
->>>>>>> e191508 (Initial commit)
           {overallScore >= 7 && (
             <div className="bg-green-50 px-4 py-2 rounded-lg border border-green-200">
               <span className="text-green-800 font-medium flex items-center gap-2">

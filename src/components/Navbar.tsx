@@ -52,11 +52,8 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
       <nav className='w-full border-b border-gray-100 bg-white px-6 py-4'>
         <div className='flex justify-center items-center'>
           <div className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
-<<<<<<< HEAD
             AI Interview App
-=======
             Interview AI
->>>>>>> e191508 (Initial commit)
           </div>
         </div>
       </nav>
@@ -72,11 +69,8 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
           <NavigationMenuList className='flex-row space-x-7 '>
 
             <NavigationMenuItem>
-<<<<<<< HEAD
               <Link className='font-bold text-xl' href='/'>AI Interview App</Link>
-=======
               <Link className='font-bold text-xl' href='/'>Interview AI</Link>
->>>>>>> e191508 (Initial commit)
             </NavigationMenuItem>
 
           </NavigationMenuList>
@@ -99,14 +93,11 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-<<<<<<< HEAD
-=======
               <Link href="/virtual-ai-demo" className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center">
                 🤖 Virtual AI Demo
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
->>>>>>> e191508 (Initial commit)
               <Link href="/preferences" className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 ⚙️ Preferences
               </Link>

@@ -10,11 +10,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-<<<<<<< HEAD
             <h3 className="text-lg font-bold text-gray-900">AI Interview App</h3>
-=======
             <h3 className="text-lg font-bold text-gray-900">Interview AI</h3>
->>>>>>> e191508 (Initial commit)
             <p className="text-sm text-gray-600">
               Practice for interviews and ace the real ones with AI-powered mock interviews.
             </p>
@@ -86,11 +83,8 @@ const Footer = () => {
             </div>
             <div className="mt-4 sm:mt-0 flex items-center space-x-2 text-sm text-gray-500">
               <Code className="w-4 h-4" />
-<<<<<<< HEAD
               <span>&copy; 2024 AI Interview App. All rights reserved.</span>
-=======
               <span>&copy; 2024 Interview AI. All rights reserved.</span>
->>>>>>> e191508 (Initial commit)
             </div>
           </div>
         </div>

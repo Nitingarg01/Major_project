@@ -97,11 +97,8 @@ export default function DashboardPage() {
       const timeoutId = setTimeout(() => {
         console.log('Request timeout - aborting...')
         controller.abort()
-<<<<<<< HEAD
       }, 15000) // 15 second timeout - increased for better performance
-=======
       }, 8000) // 8 second timeout
->>>>>>> e191508 (Initial commit)
       
       console.log('Making API call to /api/user-interviews...')
       const response = await fetch('/api/user-interviews?limit=5', {
@@ -343,7 +340,6 @@ export default function DashboardPage() {
             <SmartAIDashboard />
           </div>
 
-<<<<<<< HEAD
           {/* Active Interviews */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
@@ -361,13 +357,11 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-=======
           {/* Recent Interviews */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold text-gray-900">Recent Interviews</h2>
->>>>>>> e191508 (Initial commit)
                 <Link href="/interview">
                   <Button variant="outline" size="sm">
                     View All
@@ -381,7 +375,6 @@ export default function DashboardPage() {
               {interviews.length === 0 ? (
                 <div className="text-center py-12">
                   <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-<<<<<<< HEAD
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">No active interviews</h3>
                   <p className="text-gray-600 mb-6">
                     {stats.completed > 0 
@@ -405,7 +398,6 @@ export default function DashboardPage() {
                       </Link>
                     )}
                   </div>
-=======
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">No interviews yet</h3>
                   <p className="text-gray-600 mb-6">Start your interview preparation journey by creating your first mock interview</p>
                   <Link href="/create">
@@ -414,7 +406,6 @@ export default function DashboardPage() {
                       Create Your First Interview
                     </Button>
                   </Link>
->>>>>>> e191508 (Initial commit)
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -454,8 +445,6 @@ export default function DashboardPage() {
                             </Button>
                           </Link>
                         )}
-<<<<<<< HEAD
-=======
                         {interview.status === 'completed' && (
                           <Link href={`/interview/${interview._id}/feedback`}>
                             <Button size="sm" variant="outline">
@@ -464,7 +453,6 @@ export default function DashboardPage() {
                             </Button>
                           </Link>
                         )}
->>>>>>> e191508 (Initial commit)
                         {interview.status === 'in-progress' && (
                           <Link href={`/interview/${interview._id}/perform`}>
                             <Button size="sm" className="bg-green-600 hover:bg-green-700">

@@ -132,14 +132,11 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
-<<<<<<< HEAD
     if (videoRef.current) {
       // Pause video before cleanup to prevent AbortError
       videoRef.current.pause();
       videoRef.current.srcObject = null;
     }
-=======
->>>>>>> e191508 (Initial commit)
     setIsInitialized(false);
     setDetectionActive(false);
     setFaceDetected(false);

@@ -4,11 +4,8 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react'
 
 export const metadata: Metadata = {
-<<<<<<< HEAD
   title: 'RecruiterAI - Advanced AI Interview Platform',
-=======
   title: 'Interview AI - Advanced AI Interview Platform',
->>>>>>> e191508 (Initial commit)
   description: 'Master your interview skills with AI-powered mock interviews, real-time feedback, and personalized coaching.',
 }
 
@@ -49,11 +46,8 @@ const testimonials = [
   {
     name: 'Sarah Chen',
     role: 'Software Engineer at Google',
-<<<<<<< HEAD
     content: 'RecruiterAI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
-=======
     content: 'Interview AI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
->>>>>>> e191508 (Initial commit)
     rating: 5
   },
   {
@@ -79,11 +73,8 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-<<<<<<< HEAD
                 RecruiterAI
-=======
                 Interview AI
->>>>>>> e191508 (Initial commit)
               </Link>
             </div>
             
@@ -111,11 +102,8 @@ export default function HomePage() {
           <div className="mb-8">
             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border border-blue-200">
               <Zap className="w-4 h-4 mr-2" />
-<<<<<<< HEAD
               <span className="font-bold text-xl">Advanced AI Interview Platform</span>
-=======
               <span className="font-bold text-xl">Advanced Interview AI Platform</span>
->>>>>>> e191508 (Initial commit)
             </span>
           </div>
           
@@ -174,11 +162,8 @@ export default function HomePage() {
               Everything You Need to Succeed
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-<<<<<<< HEAD
               Our comprehensive AI interview platform provides all the tools and insights you need to ace your next interview.
-=======
               Our comprehensive Interview AI platform provides all the tools and insights you need to ace your next interview.
->>>>>>> e191508 (Initial commit)
             </p>
           </div>
           
@@ -203,8 +188,6 @@ export default function HomePage() {
         </div>
       </section>
 
-<<<<<<< HEAD
-=======
       {/* Virtual AI Demo Section */}
       <section className="py-20 bg-gradient-to-br from-purple-900 to-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -310,7 +293,6 @@ export default function HomePage() {
         </div>
       </section>
 
->>>>>>> e191508 (Initial commit)
       {/* Testimonials Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -319,11 +301,8 @@ export default function HomePage() {
               Success Stories
             </h2>
             <p className="text-xl text-gray-600">
-<<<<<<< HEAD
               See how RecruiterAI helped professionals land their dream jobs
-=======
               See how Interview AI helped professionals land their dream jobs
->>>>>>> e191508 (Initial commit)
             </p>
           </div>
           
@@ -358,11 +337,8 @@ export default function HomePage() {
             Ready to Ace Your Next Interview?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-<<<<<<< HEAD
             Join thousands of professionals who've successfully prepared with RecruiterAI
-=======
             Join thousands of professionals who've successfully prepared with Interview AI
->>>>>>> e191508 (Initial commit)
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -382,15 +358,12 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-<<<<<<< HEAD
               <div className="text-2xl font-bold mb-4">RecruiterAI</div>
               <p className="text-gray-400">
                 The most advanced AI interview platform for career success.
-=======
               <div className="text-2xl font-bold mb-4">Interview AI</div>
               <p className="text-gray-400">
                 The most advanced Interview AI platform for career success.
->>>>>>> e191508 (Initial commit)
               </p>
             </div>
             
@@ -423,11 +396,8 @@ export default function HomePage() {
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-<<<<<<< HEAD
             <p>&copy; 2024 RecruiterAI. All rights reserved.</p>
-=======
             <p>&copy; 2024 Interview AI. All rights reserved.</p>
->>>>>>> e191508 (Initial commit)
           </div>
         </div>
       </footer>

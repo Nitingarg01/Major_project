@@ -30,13 +30,10 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   onComplete, 
   timeLimit = 30 
 }) => {
-<<<<<<< HEAD
-=======
   // Validate and filter questions to ensure they have required properties
   const validQuestions = questions.filter(q => 
     q && q.type && q.difficulty && q.question && q.options
   )
->>>>>>> e191508 (Initial commit)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number}>({})
   const [timeLeft, setTimeLeft] = useState(timeLimit * 60)
@@ -46,19 +43,16 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
 
   useEffect(() => {
     // Set question time limit
-<<<<<<< HEAD
     const currentQ = questions[currentQuestion]
     if (currentQ?.timeLimit) {
       setQuestionTimeLeft(currentQ.timeLimit)
     }
   }, [currentQuestion, questions])
-=======
     const currentQ = validQuestions[currentQuestion]
     if (currentQ?.timeLimit) {
       setQuestionTimeLeft(currentQ.timeLimit)
     }
   }, [currentQuestion, validQuestions])
->>>>>>> e191508 (Initial commit)
 
   // Overall timer
   useEffect(() => {
@@ -85,11 +79,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
         if (prev <= 1) {
           clearInterval(timer)
           // Auto-move to next question
-<<<<<<< HEAD
           if (currentQuestion < questions.length - 1) {
-=======
           if (currentQuestion < validQuestions.length - 1) {
->>>>>>> e191508 (Initial commit)
             setCurrentQuestion(prev => prev + 1)
             toast.warning('Time up! Moving to next question')
           }
@@ -100,11 +91,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     }, 1000)
 
     return () => clearInterval(timer)
-<<<<<<< HEAD
   }, [questionTimeLeft, currentQuestion, questions.length])
-=======
   }, [questionTimeLeft, currentQuestion, validQuestions.length])
->>>>>>> e191508 (Initial commit)
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -158,11 +146,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   }
 
   const nextQuestion = () => {
-<<<<<<< HEAD
     if (currentQuestion < questions.length - 1) {
-=======
     if (currentQuestion < validQuestions.length - 1) {
->>>>>>> e191508 (Initial commit)
       setCurrentQuestion(prev => prev + 1)
     }
   }
@@ -182,11 +167,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
 
   const calculateResults = () => {
     let correctAnswers = 0
-<<<<<<< HEAD
     const questionResults = questions.map((question, index) => {
-=======
     const questionResults = validQuestions.map((question, index) => {
->>>>>>> e191508 (Initial commit)
       const selectedAnswer = selectedAnswers[index]
       const isCorrect = selectedAnswer === question.correctAnswer
       if (isCorrect) correctAnswers++
@@ -204,11 +186,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       }
     })
 
-<<<<<<< HEAD
     const totalQuestions = questions.length
-=======
     const totalQuestions = validQuestions.length
->>>>>>> e191508 (Initial commit)
     const answeredQuestions = Object.keys(selectedAnswers).length
     const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0
     const completionRate = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0
@@ -241,10 +220,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     }
   }
 
-<<<<<<< HEAD
   const progress = ((currentQuestion + 1) / questions.length) * 100
   const currentQ = questions[currentQuestion]
-=======
   // Early return if no valid questions
   if (validQuestions.length === 0) {
     return (
@@ -259,7 +236,6 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
 
   const progress = ((currentQuestion + 1) / validQuestions.length) * 100
   const currentQ = validQuestions[currentQuestion]
->>>>>>> e191508 (Initial commit)
 
   if (showResults && results) {
     return (
@@ -373,13 +349,10 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     )
   }
 
-<<<<<<< HEAD
   if (!currentQ) return <div>Loading...</div>
-=======
   if (!currentQ || !currentQ.type || !currentQ.difficulty) {
     return <div>Loading...</div>
   }
->>>>>>> e191508 (Initial commit)
 
   const TypeIcon = getTypeIcon(currentQ.type)
 
@@ -401,11 +374,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
         {/* Progress */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm text-gray-600">
-<<<<<<< HEAD
             <span>Question {currentQuestion + 1} of {questions.length}</span>
-=======
             <span>Question {currentQuestion + 1} of {validQuestions.length}</span>
->>>>>>> e191508 (Initial commit)
             <span>{Math.round(progress)}% Complete</span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -419,17 +389,14 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
             <div className="flex items-center gap-3">
               <TypeIcon className="w-5 h-5" />
               <Badge className={getTypeColor(currentQ.type)}>
-<<<<<<< HEAD
                 {currentQ.type.toUpperCase()}
               </Badge>
               <Badge className={getDifficultyColor(currentQ.difficulty)}>
                 {currentQ.difficulty.toUpperCase()}
-=======
                 {currentQ.type?.toUpperCase() || 'UNKNOWN'}
               </Badge>
               <Badge className={getDifficultyColor(currentQ.difficulty)}>
                 {currentQ.difficulty?.toUpperCase() || 'UNKNOWN'}
->>>>>>> e191508 (Initial commit)
               </Badge>
             </div>
             {questionTimeLeft > 0 && (
@@ -500,20 +467,14 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
 
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">
-<<<<<<< HEAD
             {Object.keys(selectedAnswers).length}/{questions.length} answered
-=======
             {Object.keys(selectedAnswers).length}/{validQuestions.length} answered
->>>>>>> e191508 (Initial commit)
           </span>
         </div>
 
         <div className="flex items-center gap-3">
-<<<<<<< HEAD
           {currentQuestion < questions.length - 1 ? (
-=======
           {currentQuestion < validQuestions.length - 1 ? (
->>>>>>> e191508 (Initial commit)
             <Button onClick={nextQuestion}>
               Next
             </Button>
@@ -531,11 +492,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       {/* Question Navigation */}
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <div className="flex flex-wrap gap-2">
-<<<<<<< HEAD
           {questions.map((_, index) => (
-=======
           {validQuestions.map((_, index) => (
->>>>>>> e191508 (Initial commit)
             <button
               key={index}
               onClick={() => setCurrentQuestion(index)}

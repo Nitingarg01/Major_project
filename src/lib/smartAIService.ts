@@ -10,11 +10,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface SmartAIRequest {
-<<<<<<< HEAD
   task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation';
-=======
   task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation';
->>>>>>> e191508 (Initial commit)
   context: {
     jobTitle?: string;
     companyName?: string;
@@ -51,14 +48,12 @@ export class SmartAIService {
 
   private constructor() {
     this.groqService = EnhancedGroqAIService.getInstance();
-<<<<<<< HEAD
     
     // Initialize Gemini for lightweight tasks (resume parsing only)
     const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (geminiKey) {
       this.geminiAI = new GoogleGenerativeAI(geminiKey);
       this.geminiModel = this.geminiAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-=======
 
     // Initialize Gemini for lightweight tasks (resume parsing only)
     const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
@@ -71,7 +66,6 @@ export class SmartAIService {
         console.warn('Failed to initialize Gemini:', error instanceof Error ? error.message : String(error));
         this.geminiModel = null;
       }
->>>>>>> e191508 (Initial commit)
     }
 
     console.log('🧠 Enhanced SmartAIService initialized - Groq + Gemini routing');
@@ -86,24 +80,20 @@ export class SmartAIService {
 
   public async processRequest(request: SmartAIRequest): Promise<SmartAIResponse> {
     const startTime = Date.now();
-<<<<<<< HEAD
     
     try {
       console.log(`🎯 Processing ${request.task} with optimal AI provider...`);
       
-=======
 
     try {
       console.log(`🎯 Processing ${request.task} with optimal AI provider...`);
 
->>>>>>> e191508 (Initial commit)
       // Route to appropriate AI service based on task complexity
       let result: any;
       let provider: 'enhanced-groq' | 'gemini';
       let model: string;
       let features: string[] = [];
 
-<<<<<<< HEAD
       // Try primary provider first
       if (this.shouldUseGroq(request.task)) {
         try {
@@ -141,7 +131,6 @@ export class SmartAIService {
           model = 'llama-3.3-70b-versatile';
           features = ['Fallback processing', 'Enhanced capabilities'];
         }
-=======
       if (this.shouldUseGroq(request.task)) {
         result = await this.processWithGroq(request);
         provider = 'enhanced-groq';
@@ -162,7 +151,6 @@ export class SmartAIService {
           'Basic company search',
           'Cost-effective'
         ];
->>>>>>> e191508 (Initial commit)
       }
 
       const processingTime = Date.now() - startTime;
@@ -179,20 +167,14 @@ export class SmartAIService {
       };
     } catch (error) {
       console.error(`❌ SmartAI processing failed for ${request.task}:`, error);
-<<<<<<< HEAD
       
-=======
 
->>>>>>> e191508 (Initial commit)
       // Attempt fallback if primary service fails
       try {
         const fallbackResult = await this.processFallback(request);
         const processingTime = Date.now() - startTime;
-<<<<<<< HEAD
         
-=======
 
->>>>>>> e191508 (Initial commit)
         return {
           success: true,
           data: fallbackResult.data,
@@ -220,16 +202,13 @@ export class SmartAIService {
     // Complex tasks that need high-quality AI with company intelligence
     const groqTasks = [
       'question_generation',
-<<<<<<< HEAD
       'response_analysis', 
       'performance_analysis',
       'dsa_generation'
-=======
       'response_analysis',
       'performance_analysis',
       'dsa_generation',
       'aptitude_generation'
->>>>>>> e191508 (Initial commit)
     ];
     return groqTasks.includes(task);
   }
@@ -257,7 +236,6 @@ export class SmartAIService {
         );
 
       case 'dsa_generation':
-<<<<<<< HEAD
         try {
           const dsaProblems = await this.groqService.generateCompanySpecificDSAProblems(
             request.context.companyName || 'Technology Company',
@@ -295,7 +273,6 @@ export class SmartAIService {
             hints: ['Think step by step', 'Consider edge cases']
           }];
         }
-=======
         return await this.groqService.generateCompanySpecificDSAProblems(
           request.context.companyName || 'Technology Company',
           request.context.difficulty as any || 'medium',
@@ -310,7 +287,6 @@ export class SmartAIService {
           request.context.jobTitle || 'Software Engineer',
           request.context.companyName || 'Technology Company'
         );
->>>>>>> e191508 (Initial commit)
 
       case 'performance_analysis':
         // This would need questions and answers arrays - simplified for now
@@ -339,7 +315,6 @@ export class SmartAIService {
       throw new Error('Gemini not initialized - only resume parsing supported');
     }
 
-<<<<<<< HEAD
     switch (request.task) {
       case 'resume_parsing':
         return await this.parseResumeWithGemini(request.context.resumeText || '');
@@ -349,7 +324,6 @@ export class SmartAIService {
       
       default:
         throw new Error(`Unsupported Gemini task: ${request.task}`);
-=======
     try {
       switch (request.task) {
         case 'resume_parsing':
@@ -372,7 +346,6 @@ export class SmartAIService {
       }
 
       throw error;
->>>>>>> e191508 (Initial commit)
     }
   }
 
@@ -424,11 +397,8 @@ export class SmartAIService {
     const result = await this.geminiModel.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-<<<<<<< HEAD
     
-=======
 
->>>>>>> e191508 (Initial commit)
     try {
       return extractJSON(text);
     } catch (error) {
@@ -489,7 +459,6 @@ export class SmartAIService {
       }
     `;
 
-<<<<<<< HEAD
     try {
       const result = await this.geminiModel.generateContent(prompt);
       const response = await result.response;
@@ -514,7 +483,6 @@ export class SmartAIService {
       }
       
       // Return fallback data instead of throwing error
-=======
     const result = await this.geminiModel.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
@@ -523,7 +491,6 @@ export class SmartAIService {
       return extractJSON(text);
     } catch (error) {
       console.error('Failed to parse Gemini company response:', error);
->>>>>>> e191508 (Initial commit)
       return {
         basicInfo: {
           name: companyName,
@@ -557,7 +524,6 @@ export class SmartAIService {
   }
 
   private async processFallback(request: SmartAIRequest): Promise<{ data: any; provider: 'enhanced-groq' | 'gemini'; model: string }> {
-<<<<<<< HEAD
     console.log('🔄 Using fallback processing for:', request.task);
     
     // Try the opposite service as fallback, but with additional error handling
@@ -587,7 +553,6 @@ export class SmartAIService {
         const data = this.generateBasicFallback(request);
         return { data, provider: 'enhanced-groq', model: 'static-fallback' };
       }
-=======
     // Try the opposite service as fallback
     if (this.shouldUseGroq(request.task)) {
       // Try Gemini as fallback (limited capabilities)
@@ -603,16 +568,12 @@ export class SmartAIService {
       // Try Enhanced Groq as fallback
       const data = await this.processWithGroq(request);
       return { data, provider: 'enhanced-groq', model: 'llama-3.3-70b-versatile' };
->>>>>>> e191508 (Initial commit)
     }
   }
 
   private generateBasicFallback(request: SmartAIRequest): any {
-<<<<<<< HEAD
     console.log('📋 Generating static fallback for:', request.task);
     
-=======
->>>>>>> e191508 (Initial commit)
     switch (request.task) {
       case 'question_generation':
         return Array.from({ length: request.context.numberOfQuestions || 5 }, (_, i) => ({
@@ -623,11 +584,8 @@ export class SmartAIService {
           difficulty: 'medium',
           points: 10
         }));
-<<<<<<< HEAD
         
-=======
 
->>>>>>> e191508 (Initial commit)
       case 'response_analysis':
         return {
           score: 6,
@@ -636,7 +594,6 @@ export class SmartAIService {
           strengths: ['Attempted the question'],
           improvements: ['Technical depth', 'Communication clarity']
         };
-<<<<<<< HEAD
         
       case 'company_search':
         const companyName = request.context.companyName || 'Technology Company';
@@ -720,11 +677,9 @@ export class SmartAIService {
           fallback: true,
           message: 'Using basic fallback data'
         };
-=======
 
       default:
         return { error: 'Fallback not available for this task' };
->>>>>>> e191508 (Initial commit)
     }
   }
 
@@ -738,13 +693,10 @@ export class SmartAIService {
       'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Jenkins',
       'Git', 'GitHub', 'GitLab', 'Linux', 'Bash', 'PowerShell'
     ];
-<<<<<<< HEAD
     
     return commonSkills.filter(skill => 
-=======
 
     return commonSkills.filter(skill =>
->>>>>>> e191508 (Initial commit)
       text.toLowerCase().includes(skill.toLowerCase())
     );
   }
@@ -761,8 +713,6 @@ export class SmartAIService {
     return matches ? matches[0] : 'Not found';
   }
 
-<<<<<<< HEAD
-=======
   private generateCompanySearchFallback(companyName: string): any {
     console.log(`🔄 Using fallback data for company: ${companyName}`);
 
@@ -843,7 +793,6 @@ export class SmartAIService {
     };
   }
 
->>>>>>> e191508 (Initial commit)
   // Convenience methods for direct task execution
   public async generateQuestions(params: {
     jobTitle: string;
@@ -925,11 +874,8 @@ export class SmartAIService {
   }> {
     try {
       const groqHealth = await this.groqService.healthCheck();
-<<<<<<< HEAD
       
-=======
 
->>>>>>> e191508 (Initial commit)
       return {
         groqAvailable: groqHealth.groqAvailable,
         geminiAvailable: !!this.geminiModel,
@@ -938,11 +884,8 @@ export class SmartAIService {
         fallbackAvailable: groqHealth.groqAvailable && !!this.geminiModel,
         features: [
           'Company-specific intelligence',
-<<<<<<< HEAD
           'Enhanced prompt engineering', 
-=======
           'Enhanced prompt engineering',
->>>>>>> e191508 (Initial commit)
           'DSA problem generation',
           'Cultural fit analysis',
           'Resume parsing (Gemini)',
@@ -960,8 +903,6 @@ export class SmartAIService {
       };
     }
   }
-<<<<<<< HEAD
-=======
 
   public async generateAptitudeQuestionsConvenience(
     difficulty: string = 'medium',
@@ -1083,7 +1024,6 @@ export class SmartAIService {
 
     return questions;
   }
->>>>>>> e191508 (Initial commit)
 }
 
 export default SmartAIService;

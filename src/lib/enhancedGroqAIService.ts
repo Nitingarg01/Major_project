@@ -411,7 +411,6 @@ Return ONLY a valid JSON array:
       });
 
       const problems = extractJSON(response);
-<<<<<<< HEAD
       
       // Debug logging
       console.log('Raw Groq response:', response.substring(0, 200) + '...');
@@ -428,8 +427,6 @@ Return ONLY a valid JSON array:
         return this.generateMockDSAProblems(companyName, difficulty, count);
       }
       
-=======
->>>>>>> e191508 (Initial commit)
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `enhanced-dsa-${companyName.toLowerCase()}-${Date.now()}-${index}`,

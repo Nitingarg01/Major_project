@@ -84,11 +84,8 @@ export const handleForgotPassword = async (formData: FormData) => {
                 <p>Best regards,<br>The AI Interview Team</p>
             </div>
             <div class="footer">
-<<<<<<< HEAD
                 <p>© 2024 AI Interview App. Made with ❤️ for developers.</p>
-=======
                 <p>© 2024 Interview AI. Made with ❤️ for developers.</p>
->>>>>>> e191508 (Initial commit)
                 <p>If you're having trouble clicking the button, copy and paste the URL above into your web browser.</p>
             </div>
         </div>

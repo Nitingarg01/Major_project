@@ -3,7 +3,6 @@ import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 import GroqAIService from '@/lib/groqAIService';
 
-<<<<<<< HEAD
 // Enhanced fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
@@ -100,7 +99,6 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
         "Provide a more comprehensive answer with specific examples and technical depth"
     })),
     summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`
-=======
 // Fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
@@ -140,7 +138,6 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
       "Focus on demonstrating problem-solving methodology"
     ],
     summary: `Based on your ${jobTitle} interview performance, you showed good engagement with ${answeredQuestions}/${totalQuestions} questions answered. Your responses demonstrate technical awareness and communication skills. Focus on providing more detailed examples and explanations to improve your overall performance.`
->>>>>>> e191508 (Initial commit)
   };
 }
 
@@ -173,16 +170,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-<<<<<<< HEAD
     // Get questions and answers with better error handling
-=======
     // Get questions and answers
->>>>>>> e191508 (Initial commit)
     const questionsDoc = await db.collection("questions").findOne({
       interviewId: interviewId
     });
 
-<<<<<<< HEAD
     console.log('📄 Questions document found:', {
       exists: !!questionsDoc,
       hasAnswers: !!questionsDoc?.answers,
@@ -195,16 +188,13 @@ export async function POST(request: NextRequest) {
       console.error('❌ No questions document found for interviewId:', interviewId);
       return NextResponse.json(
         { error: 'Interview questions not found' },
-=======
     if (!questionsDoc || !questionsDoc.answers || questionsDoc.answers.length === 0) {
       return NextResponse.json(
         { error: 'No answers found for analysis' },
->>>>>>> e191508 (Initial commit)
         { status: 404 }
       );
     }
 
-<<<<<<< HEAD
     // Check if this is a DSA interview and handle accordingly
     const isDSAInterview = interview.jobTitle?.toLowerCase().includes('dsa') || 
                           questionsDoc.questions?.some((q: any) => q.category === 'dsa' || q.dsaProblem);
@@ -456,12 +446,10 @@ Execution Time: ${execution.executionTime}ms`;
     if (meaningfulAnswers.length === 0) {
       console.warn('⚠️ No meaningful answers found, but proceeding with analysis');
     }
-=======
     const questions = questionsDoc.questions || [];
     const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided');
 
     console.log(`🧠 Analyzing ${questions.length} questions...`);
->>>>>>> e191508 (Initial commit)
 
     // Try Groq AI first, fallback to mock analysis if API key not available
     let insights;
@@ -515,7 +503,6 @@ Execution Time: ${execution.executionTime}ms`;
       }
     );
 
-<<<<<<< HEAD
     // CRITICAL: Mark interview as completed so it doesn't show in dashboard
     await db.collection('interviews').updateOne(
       { _id: new ObjectId(interviewId) },
@@ -552,8 +539,6 @@ Execution Time: ${execution.executionTime}ms`;
       { upsert: true }
     );
 
-=======
->>>>>>> e191508 (Initial commit)
     const processingTime = Date.now() - startTime;
     console.log(`✅ Fast feedback completed in ${processingTime}ms`);
 

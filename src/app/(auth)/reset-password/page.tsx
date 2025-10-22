@@ -56,11 +56,8 @@ const ResetPasswordPage = async ({ searchParams }: ResetPasswordPageProps) => {
 
         {/* Footer */}
         <div className="text-center mt-8 text-xs text-gray-500">
-<<<<<<< HEAD
           <p>© 2024 AI Interview App. Made with ❤️ for developers.</p>
-=======
           <p>© 2024 Interview AI. Made with ❤️ for developers.</p>
->>>>>>> e191508 (Initial commit)
         </div>
       </div>
     </div>

@@ -175,15 +175,12 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Try Again
               </Button>
-<<<<<<< HEAD
               <Link href="/dashboard" className="flex-1">
                 <Button variant="outline" className="w-full">
                   Go to Dashboard
-=======
               <Link href="/" className="flex-1">
                 <Button variant="outline" className="w-full">
                   Go Home
->>>>>>> e191508 (Initial commit)
                 </Button>
               </Link>
             </>

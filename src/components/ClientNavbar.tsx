@@ -20,11 +20,8 @@ const MinimalLoadingNavbar = () => {
     <nav className='w-full border-b border-gray-100 bg-white px-6 py-4'>
       <div className='flex justify-center items-center'>
         <div className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
-<<<<<<< HEAD
           AI Interview App
-=======
           Interview AI
->>>>>>> e191508 (Initial commit)
         </div>
       </div>
     </nav>

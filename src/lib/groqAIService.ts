@@ -339,18 +339,14 @@ export class GroqAIService {
     }
   }
 
-<<<<<<< HEAD
   // Fast performance analysis with Groq AI (optimized for speed and accuracy)
-=======
   // Fast performance analysis with Groq AI (optimized for speed)
->>>>>>> e191508 (Initial commit)
   public async analyzeOverallPerformance(
     questions: any[],
     answers: string[],
     jobTitle: string,
     skills: string[]
   ): Promise<any> {
-<<<<<<< HEAD
     const systemMessage = `You are an expert interview evaluator for ${jobTitle} positions. Provide detailed, fair, and constructive performance analysis based on actual candidate responses. Focus on providing specific, actionable feedback that helps candidates improve.`;
     
     // Enhanced prompt with better structure and examples
@@ -400,7 +396,6 @@ export class GroqAIService {
       - Real-world application and examples
       - Communication clarity and structure
       - Relevance to ${jobTitle} role requirements
-=======
     const systemMessage = `You are a fast interview analyzer. Provide quick, accurate performance evaluation for a ${jobTitle} position. Be concise but thorough.`;
     
     // Simplified prompt for faster processing
@@ -434,7 +429,6 @@ export class GroqAIService {
         "improvements": ["improvement 1", "improvement 2", "improvement 3"],
         "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"]
       }
->>>>>>> e191508 (Initial commit)
     `;
 
     try {
@@ -443,18 +437,14 @@ export class GroqAIService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: prompt }
         ],
-<<<<<<< HEAD
         max_tokens: 3000, // Increased for more detailed analysis
         temperature: 0.2  // Lower temperature for more consistent scoring
-=======
         max_tokens: 2000, // Reduced for faster response
         temperature: 0.1  // Lower temperature for faster, more consistent results
->>>>>>> e191508 (Initial commit)
       });
 
       const analysis = extractJSON(response);
       
-<<<<<<< HEAD
       // Validate and enhance the analysis
       const validatedAnalysis = {
         overallScore: Math.max(1, Math.min(10, analysis.overallScore || 5.0)),
@@ -476,7 +466,6 @@ export class GroqAIService {
       
       console.log(`✅ Groq AI analysis completed - Overall Score: ${validatedAnalysis.overallScore}/10`);
       return validatedAnalysis;
-=======
       // Ensure all required fields are present
       return {
         overallScore: analysis.overallScore || 6.5,
@@ -495,7 +484,6 @@ export class GroqAIService {
         improvements: analysis.improvements || ["More detailed examples", "Deeper technical insights", "Better structure"],
         recommendations: analysis.recommendations || ["Practice more", "Study key technologies", "Prepare examples"]
       };
->>>>>>> e191508 (Initial commit)
     } catch (error) {
       console.error('❌ Error analyzing overall performance with Groq:', error);
       return this.generateMockOverallAnalysis(questions, answers);
@@ -639,7 +627,6 @@ export class GroqAIService {
   }
 
   private generateMockOverallAnalysis(questions: any[], answers: string[]) {
-<<<<<<< HEAD
     // Filter out empty or invalid answers
     const meaningfulAnswers = answers.filter(ans => 
       ans && 
@@ -745,7 +732,6 @@ export class GroqAIService {
       strengths: strengths.length > 0 ? strengths : ["Participated actively in the interview process", "Showed engagement with the questions"],
       improvements: improvements.length > 0 ? improvements : ["Continue developing technical expertise", "Practice interview communication skills"],
       recommendations
-=======
     const avgWordCount = answers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / answers.length;
     const score = Math.min(10, Math.max(4, avgWordCount / 20));
     
@@ -766,7 +752,6 @@ export class GroqAIService {
       strengths: ["Completed all interview questions", "Showed problem-solving mindset", "Maintained professional communication", "Demonstrated basic technical understanding"],
       improvements: ["Provide more detailed technical explanations", "Include specific examples from professional experience", "Structure responses more clearly with key points"],
       recommendations: ["Practice more technical interview questions in your domain", "Work on articulating complex concepts clearly", "Study company-specific technologies and practices", "Practice coding problems regularly"]
->>>>>>> e191508 (Initial commit)
     };
   }
 }

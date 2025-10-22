@@ -27,7 +27,6 @@ export async function POST(request: NextRequest) {
         const db = client.db()
 
         console.log(`📝 Saving ${data.length} answers for interview ${id}`)
-<<<<<<< HEAD
         console.log('📄 Answer data format:', {
             isArray: Array.isArray(data),
             length: data.length,
@@ -63,24 +62,19 @@ export async function POST(request: NextRequest) {
             count: transformedAnswers.length,
             sampleTransformed: transformedAnswers[0]
         })
-=======
->>>>>>> e191508 (Initial commit)
 
         // Update questions with answers
         const quesBank = await db.collection("questions").findOneAndUpdate(
             { interviewId: id },
             {
                 $set: {
-<<<<<<< HEAD
                     answers: transformedAnswers,
                     completedAt: new Date(),
                     answersCount: transformedAnswers.length,
                     lastUpdated: new Date()
-=======
                     answers: data,
                     completedAt: new Date(),
                     answersCount: data.length
->>>>>>> e191508 (Initial commit)
                 }
             },
             { returnDocument: 'after' }
@@ -119,7 +113,6 @@ export async function POST(request: NextRequest) {
             status: 200,
             questionbank: quesBank._id,
             intStatus: intSet.status,
-<<<<<<< HEAD
             answersCount: transformedAnswers.length,
             debug: {
                 originalDataLength: data.length,
@@ -127,9 +120,7 @@ export async function POST(request: NextRequest) {
                 sampleOriginal: data[0],
                 sampleTransformed: transformedAnswers[0]
             }
-=======
             answersCount: data.length
->>>>>>> e191508 (Initial commit)
         })
 
     } catch (error) {

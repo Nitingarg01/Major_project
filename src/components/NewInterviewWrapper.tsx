@@ -312,7 +312,6 @@ const NewInterviewWrapper = ({
                 questionsResult[round.type] = generateEnhancedFallbackDSA(companyName, experienceLevel, round.questionCount);
               }
             } else if (round.type === 'aptitude') {
-<<<<<<< HEAD
               // Generate aptitude questions - fallback for now
               const aptitudeQuestions = [
                 {
@@ -330,7 +329,6 @@ const NewInterviewWrapper = ({
                 }
               ];
               questionsResult[round.type] = aptitudeQuestions
-=======
               // Generate aptitude questions using SmartAI
               try {
                 const result = await smartAIService.processRequest({
@@ -386,7 +384,6 @@ const NewInterviewWrapper = ({
                 ];
                 questionsResult[round.type] = aptitudeQuestions.slice(0, round.questionCount);
               }
->>>>>>> e191508 (Initial commit)
             } else {
               // Generate regular interview questions
               const roundQuestions = await aiService.generateInterviewQuestions({
@@ -544,7 +541,6 @@ const NewInterviewWrapper = ({
     }
 
     const currentRoundConfig = roundConfigs[currentRound]
-<<<<<<< HEAD
     const currentRoundQuestions = questions[currentRoundConfig.type] || []
 
     try {
@@ -593,14 +589,12 @@ const NewInterviewWrapper = ({
             dsaProblem = null
           }
         }
-=======
 
     switch (currentRoundConfig.type) {
       case 'dsa':
         // Ensure we have DSA problems and pass the first one to DSACompiler
         const dsaProblems = currentRoundQuestions || []
         const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
->>>>>>> e191508 (Initial commit)
         
         return (
           <DSACompiler
@@ -628,7 +622,6 @@ const NewInterviewWrapper = ({
             onRoundComplete={handleRoundComplete}
           />
         )
-<<<<<<< HEAD
       }
     } catch (error) {
       console.error('Error rendering round component:', error)
@@ -646,8 +639,6 @@ const NewInterviewWrapper = ({
           </button>
         </div>
       )
-=======
->>>>>>> e191508 (Initial commit)
     }
   }
 

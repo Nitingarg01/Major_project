@@ -86,7 +86,6 @@ const EnhancedInterviewCreationForm = () => {
             console.log('🚀 Creating enhanced interview with AI intelligence...')
             const response = await createInterview(data, projectContext, workExDetails)
             
-<<<<<<< HEAD
             // Check if there's a specific error response
             if (response && !response.success && response.error) {
                 // Handle duplicate company error
@@ -108,8 +107,6 @@ const EnhancedInterviewCreationForm = () => {
                 return;
             }
             
-=======
->>>>>>> e191508 (Initial commit)
             toast.success("🎉 Enhanced AI Interview Created Successfully!", {
                 description: selectedCompanyData?.metadata?.hasSpecificQuestions 
                     ? "Company-specific questions generated with advanced AI"

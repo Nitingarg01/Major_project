@@ -40,7 +40,6 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           
-<<<<<<< HEAD
           // Handle video play with improved error handling
           const playPromise = videoRef.current.play();
           
@@ -67,7 +66,6 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
                   }, 100);
                 }
               });
-=======
           // Handle video play with proper error handling
           try {
             await videoRef.current.play();
@@ -88,7 +86,6 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
             } else {
               console.error('Video play failed:', playError);
             }
->>>>>>> e191508 (Initial commit)
           }
         }
       } catch (err) {
@@ -102,11 +99,8 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
         streamRef.current = null;
       }
       if (videoRef.current) {
-<<<<<<< HEAD
         // Pause video before removing srcObject to prevent AbortError
         videoRef.current.pause();
-=======
->>>>>>> e191508 (Initial commit)
         videoRef.current.srcObject = null;
       }
     };

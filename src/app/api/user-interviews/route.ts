@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { auth } from '@/app/auth';
-<<<<<<< HEAD
 import { ObjectId } from 'mongodb';
-=======
->>>>>>> e191508 (Initial commit)
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,7 +31,6 @@ export async function GET(request: NextRequest) {
     const db = client.db("Cluster0");
     const userId = session.user.id;
     
-<<<<<<< HEAD
     // Convert userId to ObjectId for consistency with save-performance API
     let userObjectId;
     try {
@@ -63,7 +59,6 @@ export async function GET(request: NextRequest) {
           userId: userObjectId,
           status: { $ne: 'completed' } // Exclude completed interviews from dashboard
         })
-=======
     console.log('Running database queries for user:', userId)
     
     // Add timeout wrapper for database operations
@@ -75,12 +70,10 @@ export async function GET(request: NextRequest) {
       // Get user's recent interviews
       db.collection('interviews')
         .find({ userId })
->>>>>>> e191508 (Initial commit)
         .sort({ createdAt: -1 })
         .limit(limit)
         .toArray(),
       
-<<<<<<< HEAD
       // Get all stats in one aggregation query
       db.collection('interviews')
         .aggregate([
@@ -103,7 +96,6 @@ export async function GET(request: NextRequest) {
           }
         ])
         .toArray()
-=======
       // Get total interviews count
       db.collection('interviews')
         .countDocuments({ userId }),
@@ -121,7 +113,6 @@ export async function GET(request: NextRequest) {
           userId, 
           status: { $in: ['ready', 'in-progress'] }
         })
->>>>>>> e191508 (Initial commit)
     ]);
     
     const result = await Promise.race([
@@ -141,15 +132,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Type assertion since we know it's the dbQueries result at this point
-<<<<<<< HEAD
     const [interviews, statsResult] = result as [any[], any[]];
     
     // Extract stats from aggregation result
     const stats = statsResult.length > 0 ? statsResult[0] : { total: 0, completed: 0, inProgress: 0 };
     const { total: totalInterviews, completed: completedInterviews, inProgress: inProgressInterviews } = stats;
-=======
     const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = result as [any[], number, number, number];
->>>>>>> e191508 (Initial commit)
 
     console.log('Database query results:', {
       interviewsCount: interviews.length,
