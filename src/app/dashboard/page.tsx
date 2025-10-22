@@ -357,23 +357,6 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-          {/* Active Interviews */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Active Interviews</h2>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Ready to start or in-progress interviews
-                    {stats.completed > 0 && (
-                      <span className="ml-2">
-                        • <Link href="/performance" className="text-blue-600 hover:text-blue-700 underline">
-                          {stats.completed} completed interview{stats.completed > 1 ? 's' : ''} in performance stats
-                        </Link>
-                      </span>
-                    )}
-                  </p>
-                </div>
                 <Link href="/interview">
                   <Button variant="outline" size="sm">
                     View All
@@ -410,14 +393,6 @@ export default function DashboardPage() {
                       </Link>
                     )}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No interviews yet</h3>
-                  <p className="text-gray-600 mb-6">Start your interview preparation journey by creating your first mock interview</p>
-                  <Link href="/create">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create Your First Interview
-                    </Button>
-                  </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
