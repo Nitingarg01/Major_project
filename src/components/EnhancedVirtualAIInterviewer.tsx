@@ -360,8 +360,13 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     speakText(welcomeResponse.message)
     
     // Ask first question after welcome
-    setTimeout(() => {
-      askCurrentQuestion()
+    if (speakTimeoutRef.current) {
+      clearTimeout(speakTimeoutRef.current)
+    }
+    speakTimeoutRef.current = setTimeout(() => {
+      if (!isCleaningUpRef.current) {
+        askCurrentQuestion()
+      }
     }, 5000)
 
     toast.success('🎬 Interview started! Good luck!')
