@@ -158,7 +158,6 @@ export default function HomePage() {
               Everything You Need to Succeed
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our comprehensive AI interview platform provides all the tools and insights you need to ace your next interview.
               Our comprehensive Interview AI platform provides all the tools and insights you need to ace your next interview.
             </p>
           </div>
