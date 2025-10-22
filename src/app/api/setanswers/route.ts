@@ -117,7 +117,6 @@ export async function POST(request: NextRequest) {
                 sampleOriginal: data[0],
                 sampleTransformed: transformedAnswers[0]
             }
-            answersCount: data.length
         })
 
     } catch (error) {
