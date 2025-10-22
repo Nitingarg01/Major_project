@@ -229,7 +229,7 @@ export class OptimizedAIService {
         'Google', 'Meta', 'Amazon', 'Microsoft', 'Apple', 'Tesla', 
         'OpenAI', 'Anthropic', 'Netflix', 'Stripe', 'Uber', 'Airbnb'
       ];
-      return popularCompanies.filter(name => 
+      return popularCompanies.filter(name =>;
         name.toLowerCase().includes(queryLower)
       ).slice(0, 8);
     }
@@ -317,7 +317,7 @@ export class OptimizedAIService {
     
     const systemMessage = `You are an expert interview question generator specializing in ${params.interviewType} interviews for ${params.companyName}. Generate high-quality, company-specific questions.`;
     
-    const userMessage = `Generate exactly ${params.numberOfQuestions} ${params.interviewType} interview questions for:
+    const userMessage = `Generate exactly ${params.numberOfQuestions} ${params.interviewType} interview questions for:;
 
 Position: ${params.jobTitle} at ${params.companyName}
 Experience Level: ${params.experienceLevel}
@@ -395,14 +395,14 @@ Return ONLY a valid JSON array:
   public async generateDSAProblems(
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 6
+    count: number = 6;
   ): Promise<DSAProblem[]> {
     
     const companyData = this.companyDatabase.get(companyName.toLowerCase());
     
     const systemMessage = `You are an expert algorithm and data structures interviewer creating ${companyName}-specific coding problems.`;
     
-    const userMessage = `Generate exactly ${count} DSA problems for ${companyName} interviews.
+    const userMessage = `Generate exactly ${count} DSA problems for ${companyName} interviews.;
 
 ${companyData ? `
 Company Context:
@@ -504,7 +504,7 @@ Return ONLY a valid JSON array:
     
     const systemMessage = `You are a senior technical interviewer at ${companyContext} providing detailed, constructive feedback. Your analysis should be thorough, fair, and actionable.`;
     
-    const userMessage = `Analyze this interview response for ${companyContext}:
+    const userMessage = `Analyze this interview response for ${companyContext}:;
 
 Question (${category}): ${question}
 Expected Answer: ${expectedAnswer}
@@ -572,7 +572,7 @@ Consider:
     
     const systemMessage = `You are a senior hiring manager at ${companyName} providing comprehensive interview performance evaluation for a ${jobTitle} position.`;
     
-    const userMessage = `Analyze this complete interview performance for ${jobTitle} at ${companyName}:
+    const userMessage = `Analyze this complete interview performance for ${jobTitle} at ${companyName}:;
 
 ${companyData ? `
 Company Standards:

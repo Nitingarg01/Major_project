@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export const LoaderFive = ({ className = "", size = "h-8 w-8" }: { className?: string, size?: string }) => {
   return (

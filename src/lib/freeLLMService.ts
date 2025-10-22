@@ -146,7 +146,7 @@ export class FreeLLMService {
     }
 
     // Check rate limits
-    return counts.minute < provider.rateLimits.requestsPerMinute && 
+    return counts.minute < provider.rateLimits.requestsPerMinute &&;
            counts.day < provider.rateLimits.requestsPerDay;
   }
 
@@ -333,7 +333,7 @@ export class FreeLLMService {
     companyIntelligence?: any;
     difficultyLevel?: 'hard';
   }): Promise<any[]> {
-    const systemMessage = `You are an expert SENIOR-LEVEL interview question generator specializing in EXTREMELY CHALLENGING ${params.interviewType} interviews for ${params.companyName}. 
+    const systemMessage = `You are an expert SENIOR-LEVEL interview question generator specializing in EXTREMELY CHALLENGING ${params.interviewType} interviews for ${params.companyName}.;
     
     CREATE ONLY THE HARDEST, MOST CHALLENGING QUESTIONS that would be asked to SENIOR SOFTWARE ENGINEERS and PRINCIPAL ENGINEERS at top-tier tech companies.
     
@@ -346,7 +346,7 @@ export class FreeLLMService {
     - REQUIRE 10-15 MINUTES to answer properly
     `;
     
-    let userMessage = `
+    let userMessage = `;
       Generate exactly ${params.numberOfQuestions} EXTREMELY CHALLENGING ${params.interviewType} interview questions for:
       
       Position: SENIOR ${params.jobTitle} at ${params.companyName}
@@ -457,7 +457,7 @@ export class FreeLLMService {
     count: number = 8,
     companyIntelligence?: any
   ): Promise<any[]> {
-    const systemMessage = `You are an expert DSA problem generator specializing in creating EXTREMELY CHALLENGING interview problems for ${companyName}. 
+    const systemMessage = `You are an expert DSA problem generator specializing in creating EXTREMELY CHALLENGING interview problems for ${companyName}.;
     
     Create HARD-LEVEL problems that would be asked to SENIOR SOFTWARE ENGINEERS at top-tier companies like Google, Meta, Amazon.
     
@@ -468,7 +468,7 @@ export class FreeLLMService {
     - Include FOLLOW-UP questions for optimization
     - Require deep understanding of TIME and SPACE complexity trade-offs`;
     
-    const userMessage = `
+    const userMessage = `;
       Generate exactly ${count} EXTREMELY CHALLENGING DSA problems for ${companyName} interviews.
       
       Requirements:
@@ -620,10 +620,10 @@ export class FreeLLMService {
     strengths: string[];
     improvements: string[];
   }> {
-    const systemMessage = `You are an expert interview evaluator providing constructive feedback for ${companyContext} interviews. 
+    const systemMessage = `You are an expert interview evaluator providing constructive feedback for ${companyContext} interviews.;
     You are evaluating HARD-LEVEL questions, so be more strict in your scoring.`;
     
-    const userMessage = `
+    const userMessage = `;
       Analyze this interview response for a HARD-LEVEL question:
       
       Question (${category}): ${question}
@@ -747,7 +747,7 @@ export class FreeLLMService {
 
   private generateMockAnalysis(userAnswer: string) {
     const wordCount = userAnswer.split(' ').length;
-    const score = Math.min(8, Math.max(3, wordCount / 15)); // Slightly lower scores for hard questions
+    const score = Math.min(8, Math.max(3, wordCount / 15)); // Slightly lower scores for hard questions;
     
     return {
       score,

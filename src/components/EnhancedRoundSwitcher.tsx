@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
-import { Badge } from './ui/badge'
-import { Button } from './ui/button'
-import { Progress } from './ui/progress'
+import React from 'react';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { Progress } from './ui/progress';
 import { 
   CheckCircle, 
   Circle, 
@@ -15,7 +15,7 @@ import {
   Lock,
   ArrowRight 
 } from 'lucide-react'
-import { InterviewRound } from '@/types/interview'
+import { InterviewRound } from '@/types/interview';
 
 interface EnhancedRoundSwitcherProps {
   rounds: InterviewRound[]
@@ -32,7 +32,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
   onRoundSwitch,
   canSwitchToRound = () => true,
   timeSpent = {},
-  totalTimeLimit = 90
+  totalTimeLimit = 90;
 }) => {
   const getRoundIcon = (roundType: string) => {
     switch (roundType) {
@@ -73,21 +73,21 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
   }
 
   const getTotalProgress = () => {
-    const completedRounds = rounds.filter(r => r.status === 'completed').length
-    return (completedRounds / rounds.length) * 100
+    const completedRounds = rounds.filter(r => r.status === 'completed').length;
+    return (completedRounds / rounds.length) * 100;
   }
 
   const getTotalTimeSpent = () => {
-    return Object.values(timeSpent).reduce((sum, time) => sum + time, 0)
+    return Object.values(timeSpent).reduce((sum, time) => sum + time, 0);
   }
 
   const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60)
-    const mins = minutes % 60
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
     if (hours > 0) {
-      return `${hours}h ${mins}m`
+      return `${hours}h ${mins}m`;
     }
-    return `${mins}m`
+    return `${mins}m`;
   }
 
   return (
@@ -116,11 +116,11 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
       {/* Round Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {rounds.map((round, index) => {
-          const RoundIcon = getRoundIcon(round.type)
-          const StatusIcon = getStatusIcon(round.status)
-          const isCurrentRound = index === currentRound
-          const canSwitch = canSwitchToRound(index)
-          const roundTime = timeSpent[round.id] || 0
+          const RoundIcon = getRoundIcon(round.type);
+          const StatusIcon = getStatusIcon(round.status);
+          const isCurrentRound = index === currentRound;
+          const canSwitch = canSwitchToRound(index);
+          const roundTime = timeSpent[round.id] || 0;
 
           return (
             <div
@@ -128,7 +128,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
               className={`relative p-4 rounded-lg border-2 transition-all cursor-pointer ${
                 isCurrentRound
                   ? 'border-blue-500 bg-blue-50'
-                  : round.status === 'completed'
+                  : round.status === 'completed';
                     ? 'border-green-300 bg-green-50'
                     : canSwitch
                       ? 'border-gray-200 hover:border-gray-300 bg-white'
@@ -257,7 +257,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
       {/* Current Round Details */}
       <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
         {(() => {
-          const CurrentRoundIcon = getRoundIcon(rounds[currentRound]?.type)
+          const CurrentRoundIcon = getRoundIcon(rounds[currentRound]?.type);
           return (
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-lg bg-gradient-to-r ${getRoundColor(rounds[currentRound]?.type)}`}>
@@ -279,4 +279,4 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
   )
 }
 
-export default EnhancedRoundSwitcher
+export default EnhancedRoundSwitcher;

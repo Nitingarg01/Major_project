@@ -1,9 +1,9 @@
 'use client'
-import React, { useRef, useEffect, useState, useCallback } from 'react'
-import { Card, CardContent } from './ui/card'
-import { Badge } from './ui/badge'
-import { Button } from './ui/button'
-import { Camera, CameraOff, AlertTriangle, Shield, Eye, EyeOff, Activity } from 'lucide-react'
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { Card, CardContent } from './ui/card';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { Camera, CameraOff, AlertTriangle, Shield, Eye, EyeOff, Activity } from 'lucide-react';
 import * as faceapi from 'face-api.js';
 
 interface AdvancedCameraFeedProps {
@@ -21,7 +21,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
   onAnomalyDetected,
   enableFaceDetection = false,
   enableMisbehaviorDetection = false,
-  className = ""
+  className = "";
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -133,9 +133,9 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
     } catch (error: any) {
       console.error('Camera initialization failed:', error);
       setCameraError(
-        error.name === 'NotAllowedError' 
+        error.name === 'NotAllowedError';
           ? 'Camera permission denied. Please allow camera access and refresh.'
-          : error.name === 'NotFoundError'
+          : error.name === 'NotFoundError';
           ? 'No camera found. Please connect a camera device.'
           : 'Camera initialization failed. Please check your camera settings.'
       );
@@ -215,7 +215,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       return await performFallbackDetection(video);
     } catch (error) {
       console.warn('Face detection failed:', error);
-      return true; // Assume face present if detection fails
+      return true; // Assume face present if detection fails;
     }
   };
 
@@ -237,7 +237,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
 
         // Continue detection loop
         if (detectionActive) {
-          setTimeout(detectFaces, 500); // Check every 500ms
+          setTimeout(detectFaces, 500); // Check every 500ms;
         }
       } catch (error) {
         console.error('Face detection error:', error);
@@ -284,7 +284,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       return avgBrightness > 30 && nonZeroPixels > (canvas.width * canvas.height * 0.1);
     } catch (error) {
       console.error('Fallback detection failed:', error);
-      return true; // Assume face present if detection fails
+      return true; // Assume face present if detection fails;
     }
   };
 
@@ -322,7 +322,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
             <Camera className="w-5 h-5 text-blue-600" />
             <h3 className="text-lg font-semibold">Interview Camera</h3>
             {enableFaceDetection && (
-              <Badge variant={faceDetectionHealth === 'ready' ? 'default' : 'secondary'}>
+              <Badge variant={faceDetectionHealth === 'ready' ? 'default' : 'secondary'}>;
                 {faceDetectionHealth === 'ready' ? 'AI Detection' : 'Basic Detection'}
               </Badge>
             )}
@@ -436,7 +436,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
         <div className="mt-4 text-xs text-gray-500 space-y-1">
           <div>Camera Status: {isInitialized ? 'Connected' : 'Disconnected'}</div>
           {enableFaceDetection && (
-            <div>Detection: {faceDetectionHealth === 'ready' ? 'AI-Powered' : 'Basic Fallback'}</div>
+            <div>Detection: {faceDetectionHealth === 'ready' ? 'AI-Powered' : 'Basic Fallback'}</div>;
           )}
           <div>Recording: {isRecording ? 'Active' : 'Inactive'}</div>
         </div>

@@ -534,14 +534,14 @@ export function searchCompanyAndRole(query: string): {
   suggestions: string[]
   companyData: CompanyData | null
 } {
-  const lowerQuery = query.toLowerCase()
+  const lowerQuery = query.toLowerCase();
   
   // Find matching company
-  let matchedCompany: CompanyData | null = null
+  let matchedCompany: CompanyData | null = null;
   for (const [key, company] of Object.entries(ENHANCED_COMPANIES)) {
     if (company.name.toLowerCase().includes(lowerQuery) || 
         lowerQuery.includes(company.name.toLowerCase())) {
-      matchedCompany = company
+      matchedCompany = company;
       break
     }
   }
@@ -581,12 +581,12 @@ export function searchCompanyAndRole(query: string): {
 }
 
 export function parseJobQuery(query: string): { company: string, jobTitle: string } {
-  const parts = query.trim().split(' ')
+  const parts = query.trim().split(' ');
   
   if (parts.length >= 2) {
     // First word is likely company, rest is job title
     const company = parts[0]
-    const jobTitle = parts.slice(1).join(' ')
+    const jobTitle = parts.slice(1).join(' ');
     return { company, jobTitle }
   }
   
@@ -594,6 +594,6 @@ export function parseJobQuery(query: string): { company: string, jobTitle: strin
 }
 
 export function getCompanyByName(name: string): CompanyData | null {
-  const key = name.toLowerCase().replace(/\s+/g, '')
-  return ENHANCED_COMPANIES[key] || null
+  const key = name.toLowerCase().replace(/\s+/g, '');
+  return ENHANCED_COMPANIES[key] || null;
 }

@@ -4,8 +4,8 @@
  * Improved conversation flow and response quality
  */
 
-import { SmartAIService } from './smartAIService'
-import ElevenLabsService from './elevenlabsService'
+import { SmartAIService } from './smartAIService';
+import ElevenLabsService from './elevenlabsService';
 
 export interface ConversationContext {
   companyName: string
@@ -47,19 +47,19 @@ export class EnhancedVirtualInterviewerAI {
   private static instance: EnhancedVirtualInterviewerAI
   private smartAI: SmartAIService
   private elevenLabs: ElevenLabsService
-  private currentAudio: HTMLAudioElement | null = null
-  private currentUtterance: SpeechSynthesisUtterance | null = null
+  private currentAudio: HTMLAudioElement | null = null;
+  private currentUtterance: SpeechSynthesisUtterance | null = null;
 
   private constructor() {
-    this.smartAI = SmartAIService.getInstance()
-    this.elevenLabs = ElevenLabsService.getInstance()
+    this.smartAI = SmartAIService.getInstance();
+    this.elevenLabs = ElevenLabsService.getInstance();
   }
 
   public static getInstance(): EnhancedVirtualInterviewerAI {
     if (!EnhancedVirtualInterviewerAI.instance) {
-      EnhancedVirtualInterviewerAI.instance = new EnhancedVirtualInterviewerAI()
+      EnhancedVirtualInterviewerAI.instance = new EnhancedVirtualInterviewerAI();
     }
-    return EnhancedVirtualInterviewerAI.instance
+    return EnhancedVirtualInterviewerAI.instance;
   }
 
   /**
@@ -69,8 +69,8 @@ export class EnhancedVirtualInterviewerAI {
     // Stop any ongoing speech
     this.stopSpeaking()
 
-    const useElevenLabs = options?.useElevenLabs !== false
-    const personality = options?.personality || 'professional'
+    const useElevenLabs = options?.useElevenLabs !== false;
+    const personality = options?.personality || 'professional';
 
     // Try ElevenLabs first if available
     if (useElevenLabs && this.elevenLabs.isServiceAvailable()) {
@@ -87,7 +87,7 @@ export class EnhancedVirtualInterviewerAI {
         })
 
         if (result.success && result.audio) {
-          this.currentAudio = result.audio
+          this.currentAudio = result.audio;
           return
         }
       } catch (error) {
@@ -109,10 +109,10 @@ export class EnhancedVirtualInterviewerAI {
       return
     }
 
-    const utterance = new SpeechSynthesisUtterance(text)
+    const utterance = new SpeechSynthesisUtterance(text);
     
     // Configure voice based on personality
-    const personality = options?.personality || 'professional'
+    const personality = options?.personality || 'professional';
     this.configureBrowserVoice(utterance, personality)
 
     utterance.onstart = () => {
@@ -128,7 +128,7 @@ export class EnhancedVirtualInterviewerAI {
       if (options?.onError) options.onError(error)
     }
 
-    this.currentUtterance = utterance
+    this.currentUtterance = utterance;
     window.speechSynthesis.speak(utterance)
   }
 
@@ -139,10 +139,10 @@ export class EnhancedVirtualInterviewerAI {
     utterance: SpeechSynthesisUtterance,
     personality: string
   ): void {
-    const voices = window.speechSynthesis.getVoices()
+    const voices = window.speechSynthesis.getVoices();
     
     // Select voice based on personality
-    let preferredVoice = null
+    let preferredVoice = null;
     
     switch (personality) {
       case 'professional':
@@ -151,8 +151,8 @@ export class EnhancedVirtualInterviewerAI {
           v.name.includes('Microsoft David') ||
           v.name.includes('Samantha')
         )
-        utterance.rate = 0.95
-        utterance.pitch = 1.0
+        utterance.rate = 0.95;
+        utterance.pitch = 1.0;
         break
       
       case 'friendly':
@@ -161,8 +161,8 @@ export class EnhancedVirtualInterviewerAI {
           v.name.includes('Microsoft Zira') ||
           v.name.includes('Karen')
         )
-        utterance.rate = 1.0
-        utterance.pitch = 1.1
+        utterance.rate = 1.0;
+        utterance.pitch = 1.1;
         break
       
       case 'strict':
@@ -170,8 +170,8 @@ export class EnhancedVirtualInterviewerAI {
           v.name.includes('Google UK English Male') ||
           v.name.includes('Microsoft Mark')
         )
-        utterance.rate = 0.9
-        utterance.pitch = 0.9
+        utterance.rate = 0.9;
+        utterance.pitch = 0.9;
         break
       
       case 'encouraging':
@@ -179,16 +179,16 @@ export class EnhancedVirtualInterviewerAI {
           v.name.includes('Google US English Female') ||
           v.name.includes('Microsoft Eva')
         )
-        utterance.rate = 1.05
-        utterance.pitch = 1.2
+        utterance.rate = 1.05;
+        utterance.pitch = 1.2;
         break
     }
 
     if (preferredVoice) {
-      utterance.voice = preferredVoice
+      utterance.voice = preferredVoice;
     }
     
-    utterance.volume = 0.9
+    utterance.volume = 0.9;
   }
 
   /**
@@ -198,8 +198,8 @@ export class EnhancedVirtualInterviewerAI {
     // Stop ElevenLabs audio
     if (this.currentAudio) {
       this.currentAudio.pause()
-      this.currentAudio.currentTime = 0
-      this.currentAudio = null
+      this.currentAudio.currentTime = 0;
+      this.currentAudio = null;
     }
 
     // Stop browser TTS
@@ -207,23 +207,23 @@ export class EnhancedVirtualInterviewerAI {
       window.speechSynthesis.cancel()
     }
     
-    this.currentUtterance = null
+    this.currentUtterance = null;
   }
 
   /**
    * Check if currently speaking
    */
   public isSpeaking(): boolean {
-    const elevenLabsSpeaking = this.currentAudio && !this.currentAudio.paused
-    const browserSpeaking = window.speechSynthesis?.speaking || false
-    return elevenLabsSpeaking || browserSpeaking
+    const elevenLabsSpeaking = this.currentAudio && !this.currentAudio.paused;
+    const browserSpeaking = window.speechSynthesis?.speaking || false;
+    return elevenLabsSpeaking || browserSpeaking;
   }
 
   /**
    * Generate welcome message with personality
    */
   public generateWelcomeMessage(context: ConversationContext): AIResponse {
-    const personality = context.personality || 'professional'
+    const personality = context.personality || 'professional';
     
     const messages = {
       professional: [
@@ -264,7 +264,7 @@ export class EnhancedVirtualInterviewerAI {
     originalQuestion: string,
     context: ConversationContext
   ): Promise<AIResponse> {
-    const personality = context.personality || 'professional'
+    const personality = context.personality || 'professional';
     
     try {
       // Use SmartAI for intelligent follow-ups
@@ -298,7 +298,7 @@ export class EnhancedVirtualInterviewerAI {
     }
 
     // Fallback to personality-based follow-ups
-    return this.generateFallbackFollowUp(userResponse, originalQuestion, context)
+    return this.generateFallbackFollowUp(userResponse, originalQuestion, context);
   }
 
   /**
@@ -344,7 +344,7 @@ export class EnhancedVirtualInterviewerAI {
       console.error('Error analyzing response:', error)
     }
 
-    return this.generateFallbackAnalysis(userResponse, question)
+    return this.generateFallbackAnalysis(userResponse, question);
   }
 
   /**
@@ -355,8 +355,8 @@ export class EnhancedVirtualInterviewerAI {
     totalQuestions: number,
     context: ConversationContext
   ): AIResponse {
-    const personality = context.personality || 'professional'
-    const isLastQuestion = currentQuestionIndex >= totalQuestions - 1
+    const personality = context.personality || 'professional';
+    const isLastQuestion = currentQuestionIndex >= totalQuestions - 1;
     
     if (isLastQuestion) {
       const closingMessages = {
@@ -397,10 +397,10 @@ export class EnhancedVirtualInterviewerAI {
   // Helper methods
   
   private getTimeOfDay(): string {
-    const hour = new Date().getHours()
+    const hour = new Date().getHours();
     if (hour < 12) return 'morning'
     if (hour < 18) return 'afternoon'
-    return 'evening'
+    return 'evening';
   }
 
   private makeFollowUpConversational(question: string, personality: string): string {
@@ -411,22 +411,22 @@ export class EnhancedVirtualInterviewerAI {
       encouraging: ["That's great!", "Wonderful!", "I love that!"]
     }
     
-    const personalityStarters = starters[personality as keyof typeof starters] || starters.professional
+    const personalityStarters = starters[personality as keyof typeof starters] || starters.professional;
     const starter = personalityStarters[Math.floor(Math.random() * personalityStarters.length)]
     
-    return `${starter} ${question}`
+    return `${starter} ${question}`;
   }
 
   private extractFollowUpQuestion(aiData: any, userResponse: string): string {
     if (Array.isArray(aiData) && aiData.length > 0 && aiData[0].question) {
-      return aiData[0].question
+      return aiData[0].question;
     }
     
-    const responseLength = userResponse.split(' ').length
+    const responseLength = userResponse.split(' ').length;
     if (responseLength < 15) {
-      return "Could you elaborate on that with more details?"
+      return "Could you elaborate on that with more details?";
     }
-    return "What was the most challenging aspect of that experience?"
+    return "What was the most challenging aspect of that experience?";
   }
 
   private generateFallbackFollowUp(
@@ -434,7 +434,7 @@ export class EnhancedVirtualInterviewerAI {
     originalQuestion: string,
     context: ConversationContext
   ): AIResponse {
-    const personality = context.personality || 'professional'
+    const personality = context.personality || 'professional';
     const followUps = [
       "Can you give me a specific example from your experience?",
       "How did that experience prepare you for this role?",
@@ -455,67 +455,67 @@ export class EnhancedVirtualInterviewerAI {
   }
 
   private calculateConfidence(response: string): number {
-    let score = 5
-    const lowerResponse = response.toLowerCase()
+    let score = 5;
+    const lowerResponse = response.toLowerCase();
     
     // Positive indicators
-    if (lowerResponse.includes('i am confident') || lowerResponse.includes('definitely')) score += 2
-    if (lowerResponse.includes('i believe') || lowerResponse.includes('i think')) score += 1
-    if (response.length > 100) score += 1
+    if (lowerResponse.includes('i am confident') || lowerResponse.includes('definitely')) score += 2;
+    if (lowerResponse.includes('i believe') || lowerResponse.includes('i think')) score += 1;
+    if (response.length > 100) score += 1;
     
     // Negative indicators
-    if (lowerResponse.includes('maybe') || lowerResponse.includes('perhaps')) score -= 1
-    if (lowerResponse.includes('not sure') || lowerResponse.includes('i guess')) score -= 2
+    if (lowerResponse.includes('maybe') || lowerResponse.includes('perhaps')) score -= 1;
+    if (lowerResponse.includes('not sure') || lowerResponse.includes('i guess')) score -= 2;
     
-    return Math.max(1, Math.min(10, score))
+    return Math.max(1, Math.min(10, score));
   }
 
   private calculateClarity(response: string): number {
-    const sentences = response.split(/[.!?]+/).filter(s => s.trim())
-    const avgLength = response.split(' ').length / Math.max(sentences.length, 1)
+    const sentences = response.split(/[.!?]+/).filter(s => s.trim());
+    const avgLength = response.split(' ').length / Math.max(sentences.length, 1);
     
     // Optimal sentence length is 15-25 words
-    let score = 7
-    if (avgLength < 10) score -= 2 // Too short
-    if (avgLength > 30) score -= 2 // Too long
-    if (avgLength >= 15 && avgLength <= 25) score += 2 // Perfect
+    let score = 7;
+    if (avgLength < 10) score -= 2 // Too short;
+    if (avgLength > 30) score -= 2 // Too long;
+    if (avgLength >= 15 && avgLength <= 25) score += 2 // Perfect;
     
-    return Math.max(1, Math.min(10, score))
+    return Math.max(1, Math.min(10, score));
   }
 
   private calculateRelevance(response: string, question: string): number {
-    const questionWords = question.toLowerCase().split(' ').filter(w => w.length > 4)
-    const responseWords = response.toLowerCase().split(' ')
+    const questionWords = question.toLowerCase().split(' ').filter(w => w.length > 4);
+    const responseWords = response.toLowerCase().split(' ');
     
-    let matchCount = 0
+    let matchCount = 0;
     questionWords.forEach(qw => {
       if (responseWords.some(rw => rw.includes(qw) || qw.includes(rw))) {
         matchCount++
       }
     })
     
-    const relevanceScore = (matchCount / Math.max(questionWords.length, 1)) * 10
-    return Math.max(3, Math.min(10, relevanceScore))
+    const relevanceScore = (matchCount / Math.max(questionWords.length, 1)) * 10;
+    return Math.max(3, Math.min(10, relevanceScore));
   }
 
   private generateFallbackAnalysis(userResponse: string, question: string) {
-    const wordCount = userResponse.split(' ').length
-    const hasExamples = /example|instance|time when|once|previously/i.test(userResponse)
+    const wordCount = userResponse.split(' ').length;
+    const hasExamples = /example|instance|time when|once|previously/i.test(userResponse);
 
-    let score = 5
+    let score = 5;
     const strengths: string[] = []
     const improvements: string[] = []
 
     if (wordCount > 50) {
-      score += 2
+      score += 2;
       strengths.push('Detailed and comprehensive response')
     } else if (wordCount < 20) {
-      score -= 1
+      score -= 1;
       improvements.push('Provide more detailed explanations')
     }
 
     if (hasExamples) {
-      score += 2
+      score += 2;
       strengths.push('Included specific examples')
     } else {
       improvements.push('Add concrete examples from experience')
@@ -533,4 +533,4 @@ export class EnhancedVirtualInterviewerAI {
   }
 }
 
-export default EnhancedVirtualInterviewerAI
+export default EnhancedVirtualInterviewerAI;

@@ -1,9 +1,9 @@
 'use client'
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Eye, User, Move, Target } from 'lucide-react'
-import type { BodyLanguageData } from '@/lib/bodyLanguageService'
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Eye, User, Move, Target } from 'lucide-react';
+import type { BodyLanguageData } from '@/lib/bodyLanguageService';
 
 interface BodyLanguageMonitorProps {
   data: BodyLanguageData
@@ -12,7 +12,7 @@ interface BodyLanguageMonitorProps {
 
 const BodyLanguageMonitor: React.FC<BodyLanguageMonitorProps> = ({
   data,
-  showRecommendations = true
+  showRecommendations = true;
 }) => {
   const getPostureColor = (posture: string) => {
     switch (posture) {
@@ -74,8 +74,8 @@ const BodyLanguageMonitor: React.FC<BodyLanguageMonitorProps> = ({
             </div>
             <Badge 
               className={`w-full justify-center py-2 border-2 ${
-                data.eyeContact >= 70 ? 'bg-green-100 text-green-800 border-green-300' :
-                data.eyeContact >= 50 ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                data.eyeContact >= 70 ? 'bg-green-100 text-green-800 border-green-300' :;
+                data.eyeContact >= 50 ? 'bg-blue-100 text-blue-800 border-blue-300' :;
                 'bg-yellow-100 text-yellow-800 border-yellow-300'
               }`}
               variant="outline"
@@ -105,7 +105,7 @@ const BodyLanguageMonitor: React.FC<BodyLanguageMonitorProps> = ({
             </div>
             <Badge 
               className={`w-full justify-center py-2 ${
-                data.headPosition === 'centered' ? 'bg-green-100 text-green-800' :
+                data.headPosition === 'centered' ? 'bg-green-100 text-green-800' :;
                 'bg-blue-100 text-blue-800'
               }`}
             >
@@ -122,7 +122,7 @@ const BodyLanguageMonitor: React.FC<BodyLanguageMonitorProps> = ({
                 {data.posture === 'poor' && '💺 Sit up straight for better posture. '}
                 {data.eyeContact < 50 && '👁️ Try to look at the camera more often. '}
                 {data.fidgeting === 'high' && '🤚 Minimize excessive movements. '}
-                {data.posture === 'excellent' && data.eyeContact >= 70 && data.fidgeting === 'low' && 
+                {data.posture === 'excellent' && data.eyeContact >= 70 && data.fidgeting === 'low' &&;
                   '✅ Excellent body language! Keep it up!'}
               </p>
             </div>
@@ -133,4 +133,4 @@ const BodyLanguageMonitor: React.FC<BodyLanguageMonitorProps> = ({
   )
 }
 
-export default BodyLanguageMonitor
+export default BodyLanguageMonitor;

@@ -37,7 +37,7 @@ const AdvancedCameraMonitoring = ({
   setCameraOn, 
   onActivityDetected, 
   isInterviewActive = false,
-  monitoringLevel = 'moderate'
+  monitoringLevel = 'moderate';
 }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -68,7 +68,7 @@ const AdvancedCameraMonitoring = ({
 
   const addActivityAlert = useCallback((alert: ActivityAlert) => {
     setActivityAlerts(prev => {
-      const newAlerts = [...prev.slice(-9), alert]; // Keep last 10 alerts
+      const newAlerts = [...prev.slice(-9), alert]; // Keep last 10 alerts;
       return newAlerts;
     });
     
@@ -79,7 +79,7 @@ const AdvancedCameraMonitoring = ({
       tabSwitches: alert.type === 'tab_switch' ? prev.tabSwitches + 1 : prev.tabSwitches,
       focusLost: alert.type === 'window_focus_lost' ? prev.focusLost + 1 : prev.focusLost,
       cameraIssues: alert.type === 'camera_blocked' || alert.type === 'no_face' ? prev.cameraIssues + 1 : prev.cameraIssues,
-      suspiciousActivity: alert.type === 'suspicious_movement' || alert.type === 'multiple_faces' ? prev.suspiciousActivity + 1 : prev.suspiciousActivity
+      suspiciousActivity: alert.type === 'suspicious_movement' || alert.type === 'multiple_faces' ? prev.suspiciousActivity + 1 : prev.suspiciousActivity;
     }));
 
     onActivityDetected?.(alert);
@@ -339,7 +339,7 @@ const AdvancedCameraMonitoring = ({
       return;
     }
 
-    const intervalTime = monitoringLevel === 'strict' ? 5000 : 
+    const intervalTime = monitoringLevel === 'strict' ? 5000 :;
                         monitoringLevel === 'moderate' ? 10000 : 15000;
 
     monitoringIntervalRef.current = setInterval(performAdvancedMonitoring, intervalTime);

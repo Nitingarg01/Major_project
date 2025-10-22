@@ -1,11 +1,11 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Card } from './ui/card'
-import { Badge } from './ui/badge'
-import { Button } from './ui/button'
-import { X, Lightbulb, AlertTriangle, MessageSquare, Sparkles, ChevronDown, ChevronUp } from 'lucide-react'
-import type { CoachHint } from '@/lib/aiInterviewCoach'
-import { AIInterviewCoach } from '@/lib/aiInterviewCoach'
+import React, { useState, useEffect } from 'react';
+import { Card } from './ui/card';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { X, Lightbulb, AlertTriangle, MessageSquare, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import type { CoachHint } from '@/lib/aiInterviewCoach';
+import { AIInterviewCoach } from '@/lib/aiInterviewCoach';
 
 interface AICoachOverlayProps {
   isEnabled: boolean
@@ -20,12 +20,12 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
   currentHints,
   onDismissHint
 }) => {
-  const [isExpanded, setIsExpanded] = useState(true)
-  const [visibleHints, setVisibleHints] = useState<CoachHint[]>([])
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [visibleHints, setVisibleHints] = useState<CoachHint[]>([]);
 
   useEffect(() => {
     if (isEnabled) {
-      setVisibleHints(currentHints.slice(-3)) // Show last 3 hints
+      setVisibleHints(currentHints.slice(-3)) // Show last 3 hints;
     }
   }, [currentHints, isEnabled])
 
@@ -72,7 +72,7 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation()
-                setIsExpanded(!isExpanded)
+                setIsExpanded(!isExpanded);
               }}
               className="text-white hover:bg-white/20 rounded p-1"
               data-testid="ai-coach-toggle-expand"
@@ -82,7 +82,7 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation()
-                onToggle()
+                onToggle();
               }}
               className="text-white hover:bg-white/20 rounded p-1"
               data-testid="ai-coach-close-button"
@@ -158,4 +158,4 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
   )
 }
 
-export default AICoachOverlay
+export default AICoachOverlay;

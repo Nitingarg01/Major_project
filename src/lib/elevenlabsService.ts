@@ -20,11 +20,11 @@ interface ElevenLabsConfig {
 
 export class ElevenLabsService {
   private static instance: ElevenLabsService
-  private apiKey: string | null = null
-  private voiceId: string = 'EXAVITQu4vr4xnSDxMaL' // Default: Sarah - Professional female voice
-  private model: string = 'eleven_turbo_v2' // Fast, low-latency model
-  private isAvailable: boolean = false
-  private quotaExceeded: boolean = false
+  private apiKey: string | null = null;
+  private voiceId: string = 'EXAVITQu4vr4xnSDxMaL' // Default: Sarah - Professional female voice;
+  private model: string = 'eleven_turbo_v2' // Fast, low-latency model;
+  private isAvailable: boolean = false;
+  private quotaExceeded: boolean = false;
 
   // Voice profiles for different interviewer personalities
   private voiceProfiles = {
@@ -52,23 +52,23 @@ export class ElevenLabsService {
 
   public static getInstance(): ElevenLabsService {
     if (!ElevenLabsService.instance) {
-      ElevenLabsService.instance = new ElevenLabsService()
+      ElevenLabsService.instance = new ElevenLabsService();
     }
-    return ElevenLabsService.instance
+    return ElevenLabsService.instance;
   }
 
   private initialize() {
     // Check for API key in environment
     if (typeof window === 'undefined') {
       // Server-side
-      this.apiKey = process.env.ELEVENLABS_API_KEY || null
+      this.apiKey = process.env.ELEVENLABS_API_KEY || null;
     } else {
       // Client-side - check localStorage for user-provided key
-      const storedKey = localStorage.getItem('elevenlabs_api_key')
-      this.apiKey = storedKey || null
+      const storedKey = localStorage.getItem('elevenlabs_api_key');
+      this.apiKey = storedKey || null;
     }
 
-    this.isAvailable = !!this.apiKey
+    this.isAvailable = !!this.apiKey;
     console.log('🎙️ ElevenLabs Service:', this.isAvailable ? 'Available' : 'Using fallback (Browser TTS)')
   }
 
@@ -76,9 +76,9 @@ export class ElevenLabsService {
    * Set API key (can be called from settings page)
    */
   public setApiKey(apiKey: string): void {
-    this.apiKey = apiKey
-    this.isAvailable = true
-    this.quotaExceeded = false
+    this.apiKey = apiKey;
+    this.isAvailable = true;
+    this.quotaExceeded = false;
     
     if (typeof window !== 'undefined') {
       localStorage.setItem('elevenlabs_api_key', apiKey)
@@ -91,8 +91,8 @@ export class ElevenLabsService {
    * Remove API key
    */
   public removeApiKey(): void {
-    this.apiKey = null
-    this.isAvailable = false
+    this.apiKey = null;
+    this.isAvailable = false;
     
     if (typeof window !== 'undefined') {
       localStorage.removeItem('elevenlabs_api_key')
@@ -103,7 +103,7 @@ export class ElevenLabsService {
    * Check if ElevenLabs is available
    */
   public isServiceAvailable(): boolean {
-    return this.isAvailable && !this.quotaExceeded
+    return this.isAvailable && !this.quotaExceeded;
   }
 
   /**
@@ -112,7 +112,7 @@ export class ElevenLabsService {
   public setVoicePersonality(personality: 'professional' | 'friendly' | 'strict' | 'encouraging'): void {
     const profile = this.voiceProfiles[personality]
     if (profile) {
-      this.voiceId = profile.voiceId
+      this.voiceId = profile.voiceId;
       console.log(`🎭 Voice personality set to: ${personality}`)
     }
   }
@@ -140,10 +140,10 @@ export class ElevenLabsService {
 
     try {
       // Get voice settings based on personality
-      const personality = options?.personality || 'professional'
+      const personality = options?.personality || 'professional';
       const profile = this.voiceProfiles[personality]
-      const voiceId = profile.voiceId
-      const voiceSettings = profile.settings
+      const voiceId = profile.voiceId;
+      const voiceSettings = profile.settings;
 
       // Call ElevenLabs API
       const response = await fetch(
@@ -166,20 +166,20 @@ export class ElevenLabsService {
       if (!response.ok) {
         // Check for quota exceeded
         if (response.status === 401 || response.status === 429) {
-          this.quotaExceeded = true
+          this.quotaExceeded = true;
           console.warn('⚠️ ElevenLabs quota exceeded, falling back to browser TTS')
           return { success: false, error: 'Quota exceeded' }
         }
         
-        throw new Error(`ElevenLabs API error: ${response.status}`)
+        throw new Error(`ElevenLabs API error: ${response.status}`);
       }
 
       // Get audio blob
-      const audioBlob = await response.blob()
-      const audioUrl = URL.createObjectURL(audioBlob)
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
 
       // Create audio element
-      const audio = new Audio(audioUrl)
+      const audio = new Audio(audioUrl);
       
       // Set up event handlers
       audio.onplay = () => {
@@ -224,10 +224,10 @@ export class ElevenLabsService {
       })
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch voices: ${response.status}`)
+        throw new Error(`Failed to fetch voices: ${response.status}`);
       }
 
-      const data = await response.json()
+      const data = await response.json();
       return data.voices || []
 
     } catch (error) {
@@ -245,7 +245,7 @@ export class ElevenLabsService {
     can_use_instant_voice_cloning: boolean
   } | null> {
     if (!this.apiKey) {
-      return null
+      return null;
     }
 
     try {
@@ -256,10 +256,10 @@ export class ElevenLabsService {
       })
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch usage: ${response.status}`)
+        throw new Error(`Failed to fetch usage: ${response.status}`);
       }
 
-      const data = await response.json()
+      const data = await response.json();
       return {
         character_count: data.subscription.character_count,
         character_limit: data.subscription.character_limit,
@@ -268,7 +268,7 @@ export class ElevenLabsService {
 
     } catch (error) {
       console.error('Error fetching usage stats:', error)
-      return null
+      return null;
     }
   }
 
@@ -276,8 +276,8 @@ export class ElevenLabsService {
    * Reset quota exceeded flag (call this daily or when user adds credits)
    */
   public resetQuotaFlag(): void {
-    this.quotaExceeded = false
+    this.quotaExceeded = false;
   }
 }
 
-export default ElevenLabsService
+export default ElevenLabsService;

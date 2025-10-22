@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
       status,
       health: healthStatus,
       system: systemInfo,
-      message: status === 'healthy' 
+      message: status === 'healthy';
         ? 'Optimized AI service is running with high-performance API integration (10x faster than Ollama)'
         : 'AI service needs configuration - check API keys'
     }, { status: statusCode });

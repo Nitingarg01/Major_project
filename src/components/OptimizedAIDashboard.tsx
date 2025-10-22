@@ -1,8 +1,8 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 import { 
   CheckCircle, 
   XCircle, 
@@ -74,7 +74,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
 
   useEffect(() => {
     fetchHealthStatus();
-    const interval = setInterval(fetchHealthStatus, 30000); // Update every 30 seconds
+    const interval = setInterval(fetchHealthStatus, 30000); // Update every 30 seconds;
     return () => clearInterval(interval);
   }, []);
 
@@ -126,7 +126,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
   };
 
   const getStatusIcon = (available: boolean) => {
-    return available 
+    return available;
       ? <CheckCircle className="w-5 h-5 text-green-500" />
       : <XCircle className="w-5 h-5 text-red-500" />;
   };

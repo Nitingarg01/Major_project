@@ -102,8 +102,8 @@ def main():
     # Print output
     pass
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__":;
+    main();
 `
     },
     {
@@ -253,7 +253,7 @@ const solution = new Solution();
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 3,
-    jobTitle: string = 'Software Engineer'
+    jobTitle: string = 'Software Engineer';
   ): Promise<DSAProblem[]> {
     try {
       console.log(`🎯 Generating ${count} ${difficulty} DSA problems for ${companyName}...`);
@@ -304,7 +304,7 @@ const solution = new Solution();
         testResults.push(result);
         if (!result.passed) allPassed = false;
         totalExecutionTime += result.executionTime;
-        maxMemory = Math.max(maxMemory, 0); // Judge0 doesn't always provide memory info
+        maxMemory = Math.max(maxMemory, 0); // Judge0 doesn't always provide memory info;
       }
 
       const avgExecutionTime = totalExecutionTime / testResults.length;
@@ -388,7 +388,7 @@ const solution = new Solution();
       const actualOutput = (result.stdout || '').trim();
       const expectedOutput = testCase.expectedOutput.trim();
       const passed = actualOutput === expectedOutput;
-      const executionTime = parseFloat(result.time || '0') * 1000; // Convert to ms
+      const executionTime = parseFloat(result.time || '0') * 1000; // Convert to ms;
 
       return {
         testCase: testCase,

@@ -1,6 +1,6 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
-import { Search, Building2, ArrowRight } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Building2, ArrowRight } from 'lucide-react';
 
 interface SimpleCompanyAutofillProps {
   onSelect: (company: string, jobTitle: string, companyData?: any) => void;
@@ -21,76 +21,76 @@ const COMPANY_LIST = [
 const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({ 
   onSelect, 
   placeholder = "Type company name (e.g., Google, Microsoft)", 
-  className = "" 
+  className = "";
 }) => {
-  const [query, setQuery] = useState('')
-  const [suggestions, setSuggestions] = useState<string[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Simple N-gram style filtering
   useEffect(() => {
     if (query.length >= 1) {
-      const filtered = COMPANY_LIST.filter(company => 
+      const filtered = COMPANY_LIST.filter(company =>;
         company.toLowerCase().startsWith(query.toLowerCase()) ||
         company.toLowerCase().includes(query.toLowerCase())
       ).slice(0, 8) // Show max 8 suggestions
       
-      setSuggestions(filtered)
-      setIsOpen(filtered.length > 0)
-      setSelectedIndex(0)
+      setSuggestions(filtered);
+      setIsOpen(filtered.length > 0);
+      setSelectedIndex(0);
     } else {
-      setSuggestions([])
-      setIsOpen(false)
+      setSuggestions([]);
+      setIsOpen(false);
     }
   }, [query])
 
   const handleSelect = (companyName: string) => {
-    setQuery(companyName)
-    setIsOpen(false)
+    setQuery(companyName);
+    setIsOpen(false);
     // Simple selection - just pass company name, no complex intelligence
-    onSelect(companyName, '', null)
+    onSelect(companyName, '', null);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!isOpen || suggestions.length === 0) return
+    if (!isOpen || suggestions.length === 0) return;
 
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1))
+        setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1));
         break
       case 'ArrowUp':
         e.preventDefault()
-        setSelectedIndex(prev => Math.max(prev - 1, 0))
+        setSelectedIndex(prev => Math.max(prev - 1, 0));
         break
       case 'Enter':
         e.preventDefault()
         if (suggestions[selectedIndex]) {
-          handleSelect(suggestions[selectedIndex])
+          handleSelect(suggestions[selectedIndex]);
         }
         break
       case 'Escape':
-        setIsOpen(false)
+        setIsOpen(false);
         break
     }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
+    setQuery(e.target.value);
   }
 
   const handleFocus = () => {
     if (query.length >= 1 && suggestions.length > 0) {
-      setIsOpen(true)
+      setIsOpen(true);
     }
   }
 
   const handleBlur = () => {
     // Delay to allow click on suggestions
-    setTimeout(() => setIsOpen(false), 200)
+    setTimeout(() => setIsOpen(false), 200);
   }
 
   return (
@@ -111,9 +111,9 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
         {query && (
           <button
             onClick={() => {
-              setQuery('')
-              setSuggestions([])
-              setIsOpen(false)
+              setQuery('');
+              setSuggestions([]);
+              setIsOpen(false);
               inputRef.current?.focus()
             }}
             className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
@@ -131,7 +131,7 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
               key={company}
               onClick={() => handleSelect(company)}
               className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all ${
-                index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'
+                index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50';
               }`}
             >
               <div className="flex items-center justify-between">
@@ -168,4 +168,4 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
   )
 }
 
-export default SimpleCompanyAutofill
+export default SimpleCompanyAutofill;

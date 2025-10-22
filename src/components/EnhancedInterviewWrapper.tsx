@@ -1,16 +1,16 @@
 'use client'
-import React, { useEffect, useState, useCallback } from 'react'
-import IntroModal from './IntroModal'
-import InterviewClientForm from './InterviewClientForm'
-import AdvancedDSACompiler from './AdvancedDSACompiler'
-import AptitudeQuiz from './AptitudeQuiz'
-import EnhancedRoundSwitcher from './EnhancedRoundSwitcher'
-import { Question, InterviewRound } from '@/types/interview'
-import AdvancedCameraFeed from './AdvancedCameraFeed'
-import { Badge } from './ui/badge'
-import { Button } from './ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Progress } from './ui/progress'
+import React, { useEffect, useState, useCallback } from 'react';
+import IntroModal from './IntroModal';
+import InterviewClientForm from './InterviewClientForm';
+import AdvancedDSACompiler from './AdvancedDSACompiler';
+import AptitudeQuiz from './AptitudeQuiz';
+import EnhancedRoundSwitcher from './EnhancedRoundSwitcher';
+import { Question, InterviewRound } from '@/types/interview';
+import AdvancedCameraFeed from './AdvancedCameraFeed';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
 import { 
   Clock, 
   AlertTriangle, 
@@ -29,10 +29,10 @@ import {
   Shield,
   TrendingUp
 } from 'lucide-react'
-import { toast } from 'sonner'
-import EnhancedRoundManager, { InterviewSession, RoundResult } from '@/lib/enhancedRoundManager'
-import CompanyIntelligenceService from '@/lib/companyIntelligence'
-import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'sonner';
+import EnhancedRoundManager, { InterviewSession, RoundResult } from '@/lib/enhancedRoundManager';
+import CompanyIntelligenceService from '@/lib/companyIntelligence';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ActivityAlert {
   type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured';
@@ -62,12 +62,12 @@ const enhancedDSAProblems = [
       {
         input: '[2,7,11,15], target = 9',
         output: '[0,1]',
-        explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].'
+        explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].';
       },
       {
         input: '[3,2,4], target = 6',
         output: '[1,2]',
-        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].'
+        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].';
       }
     ],
     testCases: [
@@ -203,20 +203,20 @@ const EnhancedInterviewWrapper = ({
   interviewType = 'mixed',
   rounds,
   companyName = 'TechCorp',
-  jobTitle = 'Software Engineer'
+  jobTitle = 'Software Engineer';
 }: EnhancedInterviewWrapperProps) => {
-  const [started, setStarted] = useState<boolean>(false)
-  const [cameraOn, setCameraOn] = useState(true)
-  const [currentRound, setCurrentRound] = useState(0)
-  const [activityAlerts, setActivityAlerts] = useState<ActivityAlert[]>([])
-  const [interviewStartTime, setInterviewStartTime] = useState<Date | null>(null)
-  const [timeElapsed, setTimeElapsed] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-  const [interviewSession, setInterviewSession] = useState<InterviewSession | null>(null)
-  const [companyIntelligence, setCompanyIntelligence] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [roundTimeSpent, setRoundTimeSpent] = useState<{ [roundId: string]: number }>({})
-  const [autoSaveInterval, setAutoSaveInterval] = useState<NodeJS.Timeout | null>(null)
+  const [started, setStarted] = useState<boolean>(false);
+  const [cameraOn, setCameraOn] = useState(true);
+  const [currentRound, setCurrentRound] = useState(0);
+  const [activityAlerts, setActivityAlerts] = useState<ActivityAlert[]>([]);
+  const [interviewStartTime, setInterviewStartTime] = useState<Date | null>(null);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [interviewSession, setInterviewSession] = useState<InterviewSession | null>(null);
+  const [companyIntelligence, setCompanyIntelligence] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [roundTimeSpent, setRoundTimeSpent] = useState<{ [roundId: string]: number }>({});
+  const [autoSaveInterval, setAutoSaveInterval] = useState<NodeJS.Timeout | null>(null);
   const [performanceMetrics, setPerformanceMetrics] = useState({
     questionsAnswered: 0,
     averageTimePerQuestion: 0,
@@ -224,34 +224,34 @@ const EnhancedInterviewWrapper = ({
     focusScore: 100
   })
 
-  const roundManager = EnhancedRoundManager.getInstance()
-  const intelligenceService = CompanyIntelligenceService.getInstance()
+  const roundManager = EnhancedRoundManager.getInstance();
+  const intelligenceService = CompanyIntelligenceService.getInstance();
 
   // Initialize enhanced session
   useEffect(() => {
     const initializeEnhancedSession = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         // Get company intelligence
-        const intelligence = await intelligenceService.getCompanyIntelligence(companyName)
-        setCompanyIntelligence(intelligence)
+        const intelligence = await intelligenceService.getCompanyIntelligence(companyName);
+        setCompanyIntelligence(intelligence);
 
         // Initialize enhanced interview session with dynamic rounds
-        const session = await createEnhancedSession(intelligence)
-        setInterviewSession(session)
+        const session = await createEnhancedSession(intelligence);
+        setInterviewSession(session);
       } catch (error) {
         console.error('Error initializing enhanced session:', error)
         toast.error('Failed to initialize interview session')
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    initializeEnhancedSession()
+    initializeEnhancedSession();
   }, [companyName, jobTitle, interviewType, id])
 
   const createEnhancedSession = async (intelligence: any): Promise<InterviewSession> => {
-    const sessionId = `enhanced_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    const sessionId = `enhanced_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // Create enhanced rounds based on interview type and company intelligence
     const enhancedRounds: InterviewRound[] = []
@@ -294,7 +294,7 @@ const EnhancedInterviewWrapper = ({
       })
     } else {
       // Single round based on type with enhanced duration
-      const duration = getDurationForType(interviewType)
+      const duration = getDurationForType(interviewType);
       enhancedRounds.push({
         id: `${interviewType}-round-enhanced`,
         type: interviewType,
@@ -329,24 +329,24 @@ const EnhancedInterviewWrapper = ({
   }
 
   const handleStart = () => {
-    setStarted(true)
-    setInterviewStartTime(new Date())
+    setStarted(true);
+    setInterviewStartTime(new Date());
     
     // Mark first round as in-progress
     if (interviewSession) {
       const updatedSession = { ...interviewSession }
       if (updatedSession.rounds[0]) {
-        updatedSession.rounds[0].status = 'in-progress'
-        setInterviewSession(updatedSession)
+        updatedSession.rounds[0].status = 'in-progress';
+        setInterviewSession(updatedSession);
       }
     }
 
     // Start auto-save and performance tracking
     const interval = setInterval(() => {
-      autoSaveProgress()
-      updatePerformanceMetrics()
+      autoSaveProgress();
+      updatePerformanceMetrics();
     }, 20000) // Every 20 seconds
-    setAutoSaveInterval(interval)
+    setAutoSaveInterval(interval);
 
     toast.success('🚀 Enhanced interview session started!', {
       description: 'Your progress is being automatically saved'
@@ -374,9 +374,9 @@ const EnhancedInterviewWrapper = ({
   const updatePerformanceMetrics = useCallback(() => {
     if (!interviewStartTime) return
     
-    const currentTime = new Date()
-    const totalTime = (currentTime.getTime() - interviewStartTime.getTime()) / 1000
-    const highSeverityAlerts = activityAlerts.filter(a => a.severity === 'high').length
+    const currentTime = new Date();
+    const totalTime = (currentTime.getTime() - interviewStartTime.getTime()) / 1000;
+    const highSeverityAlerts = activityAlerts.filter(a => a.severity === 'high').length;
     
     setPerformanceMetrics(prev => ({
       ...prev,
@@ -386,16 +386,16 @@ const EnhancedInterviewWrapper = ({
   }, [interviewStartTime, activityAlerts])
 
   const handleActivityDetected = useCallback((activity: ActivityAlert) => {
-    setActivityAlerts(prev => [...prev, activity])
+    setActivityAlerts(prev => [...prev, activity]);
     
     // Enhanced activity handling
     if (activity.severity === 'high') {
       if (activity.type === 'tab_switch' || activity.type === 'window_focus_lost') {
-        setIsPaused(true)
+        setIsPaused(true);
         toast.warning('⚠️ Interview paused - Please return focus to the interview', {
           description: 'The interview will resume automatically in 10 seconds'
         })
-        setTimeout(() => setIsPaused(false), 10000) // Resume after 10 seconds
+        setTimeout(() => setIsPaused(false), 10000) // Resume after 10 seconds;
       } else if (activity.type === 'multiple_faces') {
         toast.error('🚨 Multiple people detected in camera', {
           description: 'Please ensure only you are visible in the camera'
@@ -419,7 +419,7 @@ const EnhancedInterviewWrapper = ({
       return
     }
 
-    const canSwitch = canSwitchToRound(roundIndex)
+    const canSwitch = canSwitchToRound(roundIndex);
     if (!canSwitch) {
       toast.error('This round is not available yet. Complete previous rounds first.')
       return
@@ -427,8 +427,8 @@ const EnhancedInterviewWrapper = ({
 
     // Save current round time with enhanced tracking
     if (interviewStartTime) {
-      const currentTime = Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000)
-      const roundTime = currentTime - Object.values(roundTimeSpent).reduce((sum, time) => sum + time, 0)
+      const currentTime = Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000);
+      const roundTime = currentTime - Object.values(roundTimeSpent).reduce((sum, time) => sum + time, 0);
       
       setRoundTimeSpent(prev => ({
         ...prev,
@@ -436,7 +436,7 @@ const EnhancedInterviewWrapper = ({
       }))
     }
 
-    setCurrentRound(roundIndex)
+    setCurrentRound(roundIndex);
     
     // Update session with enhanced state tracking
     const updatedSession = { ...interviewSession }
@@ -445,20 +445,20 @@ const EnhancedInterviewWrapper = ({
     if (roundIndex > currentRound) {
       for (let i = currentRound; i < roundIndex; i++) {
         if (updatedSession.rounds[i].status === 'in-progress') {
-          updatedSession.rounds[i].status = 'completed'
+          updatedSession.rounds[i].status = 'completed';
         }
       }
     }
     
     // Mark new round as in-progress
     if (updatedSession.rounds[roundIndex].status === 'pending') {
-      updatedSession.rounds[roundIndex].status = 'in-progress'
+      updatedSession.rounds[roundIndex].status = 'in-progress';
     }
     
-    setInterviewSession(updatedSession)
+    setInterviewSession(updatedSession);
     
     // Clear alerts for new round
-    setActivityAlerts([])
+    setActivityAlerts([]);
     
     toast.success(`🎯 Switched to ${updatedSession.rounds[roundIndex].type} round`, {
       description: `Round ${roundIndex + 1} of ${updatedSession.rounds.length}`
@@ -472,16 +472,16 @@ const EnhancedInterviewWrapper = ({
     if (!round) return false
     
     // Can switch to current round or completed rounds
-    if (roundIndex <= currentRound) return true
+    if (roundIndex <= currentRound) return true;
     
     // Can switch to next round if current round has some progress
     if (roundIndex === currentRound + 1) {
-      const currentRoundStatus = interviewSession.rounds[currentRound]?.status
-      return currentRoundStatus === 'in-progress' || currentRoundStatus === 'completed'
+      const currentRoundStatus = interviewSession.rounds[currentRound]?.status;
+      return currentRoundStatus === 'in-progress' || currentRoundStatus === 'completed';
     }
     
     // Can't skip ahead more than one round
-    return false
+    return false;
   }, [interviewSession, currentRound])
 
   const handleRoundComplete = async (answers: string[] | any, timeSpent: number) => {
@@ -509,12 +509,12 @@ const EnhancedInterviewWrapper = ({
         activityAlerts.filter(alert => alert.severity === 'high')
       )
 
-      setInterviewSession(updatedSession)
+      setInterviewSession(updatedSession);
       
       // Move to next round if available
       if (updatedSession.currentRound < updatedSession.rounds.length) {
-        setCurrentRound(updatedSession.currentRound)
-        setActivityAlerts([]) // Clear alerts for new round
+        setCurrentRound(updatedSession.currentRound);
+        setActivityAlerts([]) // Clear alerts for new round;
         
         toast.success(`✅ Round ${currentRound + 1} completed successfully!`, {
           description: `Score: ${roundResult.score}/10 | Moving to next round...`
@@ -526,7 +526,7 @@ const EnhancedInterviewWrapper = ({
             description: 'Please wait while we analyze your performance'
           })
           
-          const finalReport = await roundManager.generateFinalReport(updatedSession)
+          const finalReport = await roundManager.generateFinalReport(updatedSession);
           console.log('Enhanced Final Interview Report:', finalReport)
           
           toast.success('🎉 Interview completed successfully!', {
@@ -535,7 +535,7 @@ const EnhancedInterviewWrapper = ({
           
           // Clean up auto-save
           if (autoSaveInterval) {
-            clearInterval(autoSaveInterval)
+            clearInterval(autoSaveInterval);
           }
           
           // Clear saved progress
@@ -543,7 +543,7 @@ const EnhancedInterviewWrapper = ({
           
           // Redirect to feedback page
           setTimeout(() => {
-            window.location.href = `/interview/${id}/feedback`
+            window.location.href = `/interview/${id}/feedback`;
           }, 3000)
         } catch (error) {
           console.error('Error generating final report:', error)
@@ -561,17 +561,17 @@ const EnhancedInterviewWrapper = ({
     if (!started || isPaused || !interviewStartTime) return
 
     const interval = setInterval(() => {
-      setTimeElapsed(Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000))
+      setTimeElapsed(Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000));
     }, 1000)
 
-    return () => clearInterval(interval)
+    return () => clearInterval(interval);
   }, [started, isPaused, interviewStartTime])
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (autoSaveInterval) {
-        clearInterval(autoSaveInterval)
+        clearInterval(autoSaveInterval);
       }
     }
   }, [autoSaveInterval])
@@ -582,16 +582,16 @@ const EnhancedInterviewWrapper = ({
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault()
-      e.returnValue = 'Are you sure you want to leave? Your interview progress will be saved but the session will end.'
-      return 'Are you sure you want to leave? Your interview progress will be saved but the session will end.'
+      e.returnValue = 'Are you sure you want to leave? Your interview progress will be saved but the session will end.';
+      return 'Are you sure you want to leave? Your interview progress will be saved but the session will end.';
     }
 
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault()
       if (window.confirm('Are you sure you want to leave the interview? Your progress will be saved.')) {
-        autoSaveProgress() // Save before leaving
+        autoSaveProgress() // Save before leaving;
         if (autoSaveInterval) {
-          clearInterval(autoSaveInterval)
+          clearInterval(autoSaveInterval);
         }
         window.history.back()
       } else {
@@ -620,21 +620,21 @@ const EnhancedInterviewWrapper = ({
   }, [started, autoSaveInterval, autoSaveProgress])
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 
   const getCurrentRoundComponent = () => {
     if (!interviewSession || !interviewSession.rounds[currentRound]) {
-      return <div>Loading round...</div>
+      return <div>Loading round...</div>;
     }
 
     const currentRoundData = interviewSession.rounds[currentRound]
 
     switch (currentRoundData.type) {
       case 'dsa':
-        const problemIndex = Math.floor(Math.random() * enhancedDSAProblems.length)
+        const problemIndex = Math.floor(Math.random() * enhancedDSAProblems.length);
         return (
           <AdvancedDSACompiler
             problem={enhancedDSAProblems[problemIndex]}
@@ -876,7 +876,7 @@ const EnhancedInterviewWrapper = ({
                 <CardContent className="space-y-2">
                   <div className="flex justify-between text-xs">
                     <span>Security Score:</span>
-                    <span className={`font-medium ${performanceMetrics.focusScore >= 80 ? 'text-green-600' : performanceMetrics.focusScore >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
+                    <span className={`font-medium ${performanceMetrics.focusScore >= 80 ? 'text-green-600' : performanceMetrics.focusScore >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>;
                       {performanceMetrics.focusScore}%
                     </span>
                   </div>
@@ -941,4 +941,4 @@ const EnhancedInterviewWrapper = ({
   )
 }
 
-export default EnhancedInterviewWrapper
+export default EnhancedInterviewWrapper;

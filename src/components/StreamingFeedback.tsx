@@ -1,11 +1,11 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from './ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Progress } from './ui/progress'
-import { Badge } from './ui/badge'
-import { Brain, Loader2, CheckCircle, AlertCircle, Lightbulb, TrendingUp } from 'lucide-react'
-import { toast } from 'sonner'
+import React, { useState, useEffect } from 'react';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
+import { Badge } from './ui/badge';
+import { Brain, Loader2, CheckCircle, AlertCircle, Lightbulb, TrendingUp } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface StreamingFeedbackProps {
   question: string
@@ -30,17 +30,17 @@ const StreamingFeedback = ({
   difficulty,
   onFeedbackComplete 
 }: StreamingFeedbackProps) => {
-  const [isStreaming, setIsStreaming] = useState(false)
-  const [currentStatus, setCurrentStatus] = useState('')
-  const [progress, setProgress] = useState(0)
-  const [feedback, setFeedback] = useState<FeedbackData | null>(null)
-  const [streamingText, setStreamingText] = useState('')
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState('');
+  const [progress, setProgress] = useState(0);
+  const [feedback, setFeedback] = useState<FeedbackData | null>(null);
+  const [streamingText, setStreamingText] = useState('');
 
   const startStreaming = async () => {
-    setIsStreaming(true)
-    setProgress(0)
-    setFeedback(null)
-    setStreamingText('')
+    setIsStreaming(true);
+    setProgress(0);
+    setFeedback(null);
+    setStreamingText('');
 
     try {
       const response = await fetch('/api/stream-response', {
@@ -57,44 +57,44 @@ const StreamingFeedback = ({
       })
 
       if (!response.body) {
-        throw new Error('No response body')
+        throw new Error('No response body');
       }
 
-      const reader = response.body.getReader()
-      const decoder = new TextDecoder()
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
 
       while (true) {
-        const { done, value } = await reader.read()
+        const { done, value } = await reader.read();
         
         if (done) break
 
-        const chunk = decoder.decode(value)
-        const lines = chunk.split('\n')
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             try {
-              const data = JSON.parse(line.slice(6))
+              const data = JSON.parse(line.slice(6));
               
               switch (data.type) {
                 case 'status':
-                  setCurrentStatus(data.data)
-                  setProgress(prev => Math.min(prev + 20, 90))
+                  setCurrentStatus(data.data);
+                  setProgress(prev => Math.min(prev + 20, 90));
                   break
                 case 'feedback':
-                  setFeedback(data.data)
-                  setProgress(100)
-                  setCurrentStatus('Analysis complete!')
+                  setFeedback(data.data);
+                  setProgress(100);
+                  setCurrentStatus('Analysis complete!');
                   if (onFeedbackComplete) {
-                    onFeedbackComplete(data.data)
+                    onFeedbackComplete(data.data);
                   }
                   break
                 case 'complete':
-                  setIsStreaming(false)
+                  setIsStreaming(false);
                   break
                 case 'error':
                   toast.error(data.data)
-                  setIsStreaming(false)
+                  setIsStreaming(false);
                   break
               }
             } catch (e) {
@@ -106,20 +106,20 @@ const StreamingFeedback = ({
     } catch (error) {
       console.error('Streaming error:', error)
       toast.error('Failed to generate feedback')
-      setIsStreaming(false)
+      setIsStreaming(false);
     }
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 8) return 'text-green-600 bg-green-50'
-    if (score >= 6) return 'text-yellow-600 bg-yellow-50'
-    return 'text-red-600 bg-red-50'
+    if (score >= 8) return 'text-green-600 bg-green-50';
+    if (score >= 6) return 'text-yellow-600 bg-yellow-50';
+    return 'text-red-600 bg-red-50';
   }
 
   const getScoreIcon = (score: number) => {
-    if (score >= 8) return <CheckCircle className="w-5 h-5 text-green-600" />
-    if (score >= 6) return <AlertCircle className="w-5 h-5 text-yellow-600" />
-    return <AlertCircle className="w-5 h-5 text-red-600" />
+    if (score >= 8) return <CheckCircle className="w-5 h-5 text-green-600" />;
+    if (score >= 6) return <AlertCircle className="w-5 h-5 text-yellow-600" />;
+    return <AlertCircle className="w-5 h-5 text-red-600" />;
   }
 
   return (
@@ -259,4 +259,4 @@ const StreamingFeedback = ({
   )
 }
 
-export default StreamingFeedback
+export default StreamingFeedback;

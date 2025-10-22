@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/app/auth'
-import { connectToDatabase } from '@/lib/db'
-import { ObjectId } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/app/auth';
+import { connectToDatabase } from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 export async function POST(request: NextRequest) {
   try {
     console.log('🔧 Fix completed interviews API called')
     
-    const session = await auth()
+    const session = await auth();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -16,8 +16,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { db } = await connectToDatabase()
-    const userObjectId = new ObjectId(session.user.id)
+    const { db } = await connectToDatabase();
+    const userObjectId = new ObjectId(session.user.id);
     
     console.log('🔍 Checking for inconsistent interview data for user:', userObjectId)
 
@@ -28,10 +28,10 @@ export async function POST(request: NextRequest) {
 
     console.log(`📊 Found ${performances.length} performance records`)
 
-    let fixedCount = 0
+    let fixedCount = 0;
     
     for (const performance of performances) {
-      const interviewId = performance.interviewId
+      const interviewId = performance.interviewId;
       
       // Check if interview exists and its status
       const interview = await db.collection('interviews')
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       .find({ userId: session.user.id }) // String version
       .toArray()
 
-    let convertedCount = 0
+    let convertedCount = 0;
     for (const interview of stringUserIdInterviews) {
       await db.collection('interviews').updateOne(
         { _id: interview._id },

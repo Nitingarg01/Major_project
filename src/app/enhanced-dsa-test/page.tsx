@@ -1,9 +1,9 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Zap, 
   Building, 
@@ -16,23 +16,23 @@ import {
   TrendingUp,
   Users
 } from 'lucide-react'
-import { toast } from 'sonner'
-import EnhancedDSACompiler from '@/components/EnhancedDSACompiler'
-import { DSAProblem } from '@/lib/enhancedDSAService'
+import { toast } from 'sonner';
+import EnhancedDSACompiler from '@/components/EnhancedDSACompiler';
+import { DSAProblem } from '@/lib/enhancedDSAService';
 
 const EnhancedDSATestPage = () => {
-  const [selectedCompany, setSelectedCompany] = useState('Google')
-  const [experienceLevel, setExperienceLevel] = useState<'entry' | 'mid' | 'senior'>('mid')
-  const [problemCount, setProblemCount] = useState(1)
-  const [generateUnique, setGenerateUnique] = useState(false)
-  const [generateInteractive, setGenerateInteractive] = useState(false)
-  const [challengeType, setChallengeType] = useState<'algorithm' | 'system_design' | 'optimization' | 'debugging'>('algorithm')
-  const [problems, setProblems] = useState<DSAProblem[]>([])
-  const [currentProblemIndex, setCurrentProblemIndex] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const [companyInsights, setCompanyInsights] = useState<any>(null)
-  const [previousProblemIds, setPreviousProblemIds] = useState<string[]>([])
-  const [serviceStatus, setServiceStatus] = useState<any>(null)
+  const [selectedCompany, setSelectedCompany] = useState('Google');
+  const [experienceLevel, setExperienceLevel] = useState<'entry' | 'mid' | 'senior'>('mid');
+  const [problemCount, setProblemCount] = useState(1);
+  const [generateUnique, setGenerateUnique] = useState(false);
+  const [generateInteractive, setGenerateInteractive] = useState(false);
+  const [challengeType, setChallengeType] = useState<'algorithm' | 'system_design' | 'optimization' | 'debugging'>('algorithm');
+  const [problems, setProblems] = useState<DSAProblem[]>([]);
+  const [currentProblemIndex, setCurrentProblemIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [companyInsights, setCompanyInsights] = useState<any>(null);
+  const [previousProblemIds, setPreviousProblemIds] = useState<string[]>([]);
+  const [serviceStatus, setServiceStatus] = useState<any>(null);
 
   const companies = [
     { name: 'Google', color: 'bg-blue-100 text-blue-800', icon: '🔍' },
@@ -45,22 +45,22 @@ const EnhancedDSATestPage = () => {
 
   // Check service status on mount
   useEffect(() => {
-    checkServiceStatus()
+    checkServiceStatus();
   }, [])
 
   const checkServiceStatus = async () => {
     try {
-      const response = await fetch('/api/generate-company-dsa')
-      const data = await response.json()
-      setServiceStatus(data)
+      const response = await fetch('/api/generate-company-dsa');
+      const data = await response.json();
+      setServiceStatus(data);
     } catch (error) {
       console.error('Failed to check service status:', error)
     }
   }
 
   const generateProblems = async () => {
-    setLoading(true)
-    const toastId = toast.loading(`Generating ${generateInteractive ? 'interactive' : generateUnique ? 'unique' : 'company-specific'} DSA problems for ${selectedCompany}...`)
+    setLoading(true);
+    const toastId = toast.loading(`Generating ${generateInteractive ? 'interactive' : generateUnique ? 'unique' : 'company-specific'} DSA problems for ${selectedCompany}...`);
 
     try {
       const response = await fetch('/api/generate-company-dsa', {
@@ -79,29 +79,29 @@ const EnhancedDSATestPage = () => {
         }),
       })
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (data.success) {
-        setProblems(data.problems)
-        setCompanyInsights(data.companyInsights)
-        setCurrentProblemIndex(0)
+        setProblems(data.problems);
+        setCompanyInsights(data.companyInsights);
+        setCurrentProblemIndex(0);
         
         // Add new problem IDs to avoid duplicates in future generations
-        setPreviousProblemIds(prev => [...prev, ...data.problems.map((p: DSAProblem) => p.id)])
+        setPreviousProblemIds(prev => [...prev, ...data.problems.map((p: DSAProblem) => p.id)]);
         
         toast.dismiss(toastId)
         toast.success(`🎉 Generated ${data.problems.length} ${selectedCompany}-style DSA problems!`, {
           description: `${generateInteractive ? 'Interactive' : generateUnique ? 'Unique' : 'Company-specific'} problems ready for practice`
         })
       } else {
-        throw new Error(data.error || 'Failed to generate problems')
+        throw new Error(data.error || 'Failed to generate problems');
       }
     } catch (error: any) {
       toast.dismiss(toastId)
       toast.error('Failed to generate problems: ' + error.message)
       console.error('Problem generation error:', error)
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -121,7 +121,7 @@ const EnhancedDSATestPage = () => {
     // Move to next problem if available
     if (currentProblemIndex < problems.length - 1) {
       setTimeout(() => {
-        setCurrentProblemIndex(prev => prev + 1)
+        setCurrentProblemIndex(prev => prev + 1);
         toast.info('Moving to next problem...')
       }, 2000)
     }
@@ -236,8 +236,8 @@ const EnhancedDSATestPage = () => {
                     variant={!generateUnique && !generateInteractive ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => {
-                      setGenerateUnique(false)
-                      setGenerateInteractive(false)
+                      setGenerateUnique(false);
+                      setGenerateInteractive(false);
                     }}
                     className="w-full"
                   >
@@ -248,8 +248,8 @@ const EnhancedDSATestPage = () => {
                     variant={generateUnique ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => {
-                      setGenerateUnique(true)
-                      setGenerateInteractive(false)
+                      setGenerateUnique(true);
+                      setGenerateInteractive(false);
                     }}
                     className="w-full"
                   >
@@ -260,8 +260,8 @@ const EnhancedDSATestPage = () => {
                     variant={generateInteractive ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => {
-                      setGenerateInteractive(true)
-                      setGenerateUnique(false)
+                      setGenerateInteractive(true);
+                      setGenerateUnique(false);
                     }}
                     className="w-full"
                   >
@@ -471,4 +471,4 @@ const EnhancedDSATestPage = () => {
   )
 }
 
-export default EnhancedDSATestPage
+export default EnhancedDSATestPage;

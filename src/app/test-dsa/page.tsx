@@ -1,11 +1,11 @@
 'use client'
-import React from 'react'
-import DSACompiler from '@/components/DSACompiler'
+import React from 'react';
+import DSACompiler from '@/components/DSACompiler';
 
 const TestDSAPage = () => {
   const handleSubmit = (code: string, results: any) => {
     console.log('DSA Solution submitted:', { code, results })
-    alert('DSA solution submitted successfully!')
+    alert('DSA solution submitted successfully!');
   }
 
   // Test with null problem to verify error handling
@@ -29,4 +29,4 @@ const TestDSAPage = () => {
   )
 }
 
-export default TestDSAPage
+export default TestDSAPage;

@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/app/auth'
-import { connectToDatabase } from '@/lib/db'
-import { ObjectId } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/app/auth';
+import { connectToDatabase } from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 export async function POST(request: NextRequest) {
   try {
     console.log('💾 Save performance API called')
     
-    const session = await auth()
+    const session = await auth();
     console.log('🔐 Session check:', { hasSession: !!session, hasUserId: !!session?.user?.id })
     
     if (!session?.user?.id) {
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const body = await request.json();
     console.log('📋 Request body received:', { 
       hasInterviewId: !!body.interviewId,
       hasJobTitle: !!body.jobTitle,
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       timeSpent,
       feedback,
       roundResults
-    } = body
+    } = body;
 
     // Validate required fields
     if (!interviewId || !jobTitle || !companyName || score === undefined) {
@@ -52,14 +52,14 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('🔗 Connecting to database...')
-    const { db } = await connectToDatabase()
+    const { db } = await connectToDatabase();
     console.log('✅ Database connected successfully')
 
     // Validate ObjectId format
-    let userObjectId, interviewObjectId
+    let userObjectId, interviewObjectId;
     try {
-      userObjectId = new ObjectId(session.user.id)
-      interviewObjectId = new ObjectId(interviewId)
+      userObjectId = new ObjectId(session.user.id);
+      interviewObjectId = new ObjectId(interviewId);
       console.log('🆔 ObjectIds created successfully:', { userObjectId, interviewObjectId })
     } catch (objectIdError) {
       console.error('❌ Invalid ObjectId format:', objectIdError)
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('💾 Inserting performance data...')
-    const result = await db.collection('performances').insertOne(performanceData)
+    const result = await db.collection('performances').insertOne(performanceData);
     console.log('✅ Performance data inserted with ID:', result.insertedId)
 
     // Update interview status to completed and remove from active list
@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
       { 
         success: false, 
         error: 'Internal server error',
-        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined;
       },
       { status: 500 }
     )

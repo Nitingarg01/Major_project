@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
         // Generate pure DSA problems
         console.log(`🧮 Generating ${numberOfQuestions} company-specific DSA problems`);
         
-        const difficulty = experienceLevel === 'entry' ? 'easy' : 
+        const difficulty = experienceLevel === 'entry' ? 'easy' :;
                           experienceLevel === 'senior' ? 'hard' : 'medium';
         
         const dsaProblems = await aiService.generateCompanySpecificDSAProblems(

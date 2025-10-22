@@ -120,7 +120,7 @@ export class EnhancedDSAService {
   public async generateCompanySpecificDSAProblems(
     companyName: string,
     count: number = 5,
-    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid'
+    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
     const pattern = this.companyPatterns[company] || this.companyPatterns['Google'];
@@ -180,7 +180,7 @@ export class EnhancedDSAService {
   public async generateInteractiveCodingChallenges(
     companyName: string,
     challengeType: 'algorithm' | 'system_design' | 'optimization' | 'debugging' = 'algorithm',
-    count: number = 3
+    count: number = 3;
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
     
@@ -188,7 +188,7 @@ export class EnhancedDSAService {
 
     const systemMessage = `You are creating interactive coding challenges for ${company} interviews. Focus on problems that benefit from step-by-step visualization and real-time feedback.`;
     
-    const userMessage = `
+    const userMessage = `;
       Create ${count} interactive ${challengeType} coding challenges for ${company}.
       
       Requirements:
@@ -293,7 +293,7 @@ export class EnhancedDSAService {
     companyName: string,
     previousProblemIds: string[] = [],
     count: number = 5,
-    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid'
+    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
     const uniquenessSeed = Date.now() + Math.random();
@@ -302,7 +302,7 @@ export class EnhancedDSAService {
 
     const systemMessage = `You are a creative DSA problem generator for ${company}. Create completely NEW and UNIQUE problems that have never been asked before. Be innovative and creative while maintaining ${company}'s interview standards.`;
     
-    const userMessage = `
+    const userMessage = `;
       Create ${count} COMPLETELY UNIQUE and NOVEL DSA problems for ${company} interviews.
       
       UNIQUENESS REQUIREMENTS:
@@ -412,7 +412,7 @@ export class EnhancedDSAService {
     difficulty: string,
     experienceLevel: string
   ): string {
-    return `
+    return `;
       Generate ${count} unique DSA problems specifically tailored for ${company} interviews.
       
       COMPANY PROFILE:
@@ -545,7 +545,7 @@ export class EnhancedDSAService {
       const health = await this.emergentIntegration.healthCheck();
       return {
         status: health.status,
-        emergentAvailable: health.status === 'healthy'
+        emergentAvailable: health.status === 'healthy';
       };
     } catch (error) {
       return {

@@ -69,7 +69,7 @@ export class FixedJudge0Service {
       'ruby': 72        // Ruby 2.7.0
     };
     
-    return languageMap[language.toLowerCase()] || 71; // Default to Python
+    return languageMap[language.toLowerCase()] || 71; // Default to Python;
   }
 
   private async makeApiRequest(endpoint: string, method: 'GET' | 'POST' = 'GET', body?: any): Promise<any> {
@@ -119,13 +119,13 @@ try:
     result = ${functionName}(${testInput.parameters})
     # Convert result to string for comparison
     if isinstance(result, list):
-        print(str(result).replace(' ', ''))
+        print(str(result).replace(' ', ''));
     elif isinstance(result, bool):
-        print('true' if result else 'false')
+        print('true' if result else 'false');
     else:
-        print(str(result))
+        print(str(result));
 except Exception as e:
-    print(f"Error: {str(e)}")
+    print(f"Error: {str(e)}");
 `;
       
       return { code: executableCode, stdin: '' };
@@ -199,7 +199,7 @@ try {
     if (language === 'cpp') {
       const testInput = this.parseTestInput(testCase.input);
       
-      const executableCode = `#include <iostream>
+      const executableCode = `#include <iostream>;
 #include <vector>
 #include <string>
 using namespace std;
@@ -338,7 +338,7 @@ int main() {
           });
 
           // Determine if test passed
-          const isAccepted = statusId === 3; // Accepted
+          const isAccepted = statusId === 3; // Accepted;
           const actualOutput = stdout || stderr || 'No output';
           const expectedOutput = testCase.expectedOutput.trim();
           
@@ -351,7 +351,7 @@ int main() {
           }
 
           // Handle compilation errors
-          if (statusId === 6 && i === 0) { // Compilation Error on first test case
+          if (statusId === 6 && i === 0) { // Compilation Error on first test case;
             return {
               success: false,
               results: [{
@@ -433,7 +433,7 @@ int main() {
       const hasDataStructures = /\[\]|{|}|\bdict\b|\blist\b|\barray\b/.test(sourceCode);
       
       // Calculate pass probability based on code quality indicators
-      let passProbability = 0.3; // Base probability
+      let passProbability = 0.3; // Base probability;
       
       if (codeLength > 50) passProbability += 0.2;
       if (hasFunction) passProbability += 0.3;

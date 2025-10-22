@@ -38,9 +38,9 @@ export class QuestionGenerator {
 
   public static getInstance(): QuestionGenerator {
     if (!QuestionGenerator.instance) {
-      QuestionGenerator.instance = new QuestionGenerator()
+      QuestionGenerator.instance = new QuestionGenerator();
     }
-    return QuestionGenerator.instance
+    return QuestionGenerator.instance;
   }
 
   // DSA Problem databases by difficulty and company
@@ -55,7 +55,7 @@ export class QuestionGenerator {
           {
             input: 'nums = [2,7,11,15], target = 9',
             output: '[0,1]',
-            explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].'
+            explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].';
           },
           {
             input: 'nums = [3,2,4], target = 6',
@@ -105,7 +105,7 @@ export class QuestionGenerator {
           { id: '4', input: '0', expectedOutput: 'true' }
         ],
         constraints: [
-          '-2^31 <= x <= 2^31 - 1'
+          '-2^31 <= x <= 2^31 - 1';
         ],
         topics: ['Math'],
         hints: [
@@ -124,7 +124,7 @@ export class QuestionGenerator {
           {
             input: 'l1 = [2,4,3], l2 = [5,6,4]',
             output: '[7,0,8]',
-            explanation: '342 + 465 = 807.'
+            explanation: '342 + 465 = 807.';
           }
         ],
         testCases: [
@@ -189,12 +189,12 @@ export class QuestionGenerator {
           {
             input: 'nums1 = [1,3], nums2 = [2]',
             output: '2.0',
-            explanation: 'merged array = [1,2,3] and median is 2.'
+            explanation: 'merged array = [1,2,3] and median is 2.';
           },
           {
             input: 'nums1 = [1,2], nums2 = [3,4]',
             output: '2.5',
-            explanation: 'merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.'
+            explanation: 'merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.';
           }
         ],
         testCases: [
@@ -208,7 +208,7 @@ export class QuestionGenerator {
           '0 <= m <= 1000',
           '0 <= n <= 1000',
           '1 <= m + n <= 2000',
-          '-10^6 <= nums1[i], nums2[i] <= 10^6'
+          '-10^6 <= nums1[i], nums2[i] <= 10^6';
         ],
         topics: ['Array', 'Binary Search', 'Divide and Conquer'],
         hints: [
@@ -345,9 +345,9 @@ export class QuestionGenerator {
   generateDSAProblems(
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 1
+    count: number = 1;
   ): DSAProblem[] {
-    const problems = this.dsaProblems[difficulty] || this.dsaProblems.medium
+    const problems = this.dsaProblems[difficulty] || this.dsaProblems.medium;
 
     // Company-specific problem selection
     let selectedProblems = [...problems]
@@ -366,33 +366,33 @@ export class QuestionGenerator {
 
     // Fallback to all problems if no specific matches
     if (selectedProblems.length === 0) {
-      selectedProblems = problems
+      selectedProblems = problems;
     }
 
     // Shuffle and select
-    const shuffled = selectedProblems.sort(() => Math.random() - 0.5)
-    return shuffled.slice(0, Math.min(count, shuffled.length))
+    const shuffled = selectedProblems.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, Math.min(count, shuffled.length));
   }
 
   // Generate aptitude questions based on types and difficulty
   generateAptitudeQuestions(
     types: ('verbal' | 'numerical' | 'logical' | 'spatial' | 'abstract')[],
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    questionsPerType: number = 2
+    questionsPerType: number = 2;
   ): AptitudeQuestion[] {
     const questions: AptitudeQuestion[] = []
 
     types.forEach(type => {
       const typeQuestions = this.aptitudeQuestions[type] || []
-      const filteredQuestions = typeQuestions.filter(q => 
-        q.difficulty === difficulty || difficulty === 'medium'
+      const filteredQuestions = typeQuestions.filter(q =>;
+        q.difficulty === difficulty || difficulty === 'medium';
       )
       
-      const shuffled = filteredQuestions.sort(() => Math.random() - 0.5)
+      const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
       questions.push(...shuffled.slice(0, questionsPerType))
     })
 
-    return questions.sort(() => Math.random() - 0.5)
+    return questions.sort(() => Math.random() - 0.5);
   }
 
   // Generate company-specific questions mix
@@ -404,30 +404,30 @@ export class QuestionGenerator {
     dsaProblems: DSAProblem[]
     aptitudeQuestions: AptitudeQuestion[]
   } {
-    let dsaDifficulty: 'easy' | 'medium' | 'hard' = 'medium'
-    let aptitudeDifficulty: 'easy' | 'medium' | 'hard' = 'medium'
+    let dsaDifficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    let aptitudeDifficulty: 'easy' | 'medium' | 'hard' = 'medium';
 
     // Adjust difficulty based on job level
     switch (jobLevel) {
       case 'entry':
-        dsaDifficulty = 'easy'
-        aptitudeDifficulty = 'easy'
+        dsaDifficulty = 'easy';
+        aptitudeDifficulty = 'easy';
         break
       case 'senior':
-        dsaDifficulty = 'hard'
-        aptitudeDifficulty = 'hard'
+        dsaDifficulty = 'hard';
+        aptitudeDifficulty = 'hard';
         break
     }
 
     // Company-specific adjustments
-    const companyLower = companyName.toLowerCase()
+    const companyLower = companyName.toLowerCase();
     if (['google', 'meta', 'apple'].includes(companyLower)) {
       // Top tech companies are generally harder
-      if (dsaDifficulty === 'easy') dsaDifficulty = 'medium'
-      if (dsaDifficulty === 'medium') dsaDifficulty = 'hard'
+      if (dsaDifficulty === 'easy') dsaDifficulty = 'medium';
+      if (dsaDifficulty === 'medium') dsaDifficulty = 'hard';
     }
 
-    const dsaProblems = this.generateDSAProblems(companyName, dsaDifficulty, 2)
+    const dsaProblems = this.generateDSAProblems(companyName, dsaDifficulty, 2);
     
     const aptitudeTypes: ('verbal' | 'numerical' | 'logical' | 'spatial')[] = []
     
@@ -453,4 +453,4 @@ export class QuestionGenerator {
   }
 }
 
-export default QuestionGenerator
+export default QuestionGenerator;

@@ -1,9 +1,9 @@
 'use client'
 import { useState, useRef, useEffect } from 'react';
-import React from 'react'
+import React from 'react';
 import { Tabs, TabsList, TabsContent, TabsTrigger } from './ui/tabs';
 // import { questions } from '@/constants/constants';
-import { Textarea } from "@/components/ui/textarea"
+import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
 import { Mic } from 'lucide-react';
 import { MicOff } from 'lucide-react';
@@ -29,15 +29,15 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
     const [micOn, setMicOn] = useState(false);
     const [transcript, setTranscript] = useState('');
     const [showFeedback, setShowFeedback] = useState(false);
-    const fieldName = `submitted.${index}.answer`; // Dynamic field name for form
+    const fieldName = `submitted.${index}.answer`; // Dynamic field name for form;
 
-    const {control,setValue,getValues} = useFormContext()
+    const {control,setValue,getValues} = useFormContext();
     const value = useWatch({
         control,
         name:fieldName
     })
     const { errors } = useFormState({ control });
-    const submittedErrors = errors?.submitted as Array<any> | undefined
+    const submittedErrors = errors?.submitted as Array<any> | undefined;
     const errorMessage = submittedErrors?.[index]?.answer?.message;
 
 
@@ -61,8 +61,8 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
                 if (event.results[i].isFinal) final += transcript + ' ';
             }
             // setTranscript(prev => prev + final);
-            const currentVal = getValues(fieldName) || ''
-            setValue(fieldName,currentVal+final)
+            const currentVal = getValues(fieldName) || '';
+            setValue(fieldName,currentVal+final);
         };
 
         recognition.onerror = (e: any) => {
@@ -118,7 +118,7 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
                         placeholder='Type your answer here or use the microphone...' 
                         value={value || ''} 
                         onChange={(e) => {
-                            setValue(fieldName, e.target.value)
+                            setValue(fieldName, e.target.value);
                         }} 
                         className='min-h-[120px] text-base' 
                     />      
@@ -141,4 +141,4 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
     )
 }
 
-export default QuestionAns
+export default QuestionAns;

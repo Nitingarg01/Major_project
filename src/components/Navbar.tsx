@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -10,13 +10,13 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
-import { auth, signOut } from '@/app/auth'
-import { Button } from './ui/button'
-import { handleLogout } from '@/app/(auth)/login/actions'
-import Link from 'next/link'
-import { useSession } from 'next-auth/react'
-import { Tooltip, TooltipContent } from './ui/tooltip'
-import { TooltipTrigger } from '@radix-ui/react-tooltip'
+import { auth, signOut } from '@/app/auth';
+import { Button } from './ui/button';
+import { handleLogout } from '@/app/(auth)/login/actions';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { Tooltip, TooltipContent } from './ui/tooltip';
+import { TooltipTrigger } from '@radix-ui/react-tooltip';
 import { usePathname } from "next/navigation";
 
 const navItems = [
@@ -41,7 +41,7 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
   useEffect(() => {
     // Only update session if we're authenticated and on certain paths
     if (status === 'authenticated') {
-      update()
+      update();
       console.log("Session updated for authenticated user");
     }
   }, [pathname, status, update]);
@@ -143,5 +143,5 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
   )
 }
 
-export default Navbar
+export default Navbar;
 

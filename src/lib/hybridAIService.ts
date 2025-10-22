@@ -79,7 +79,7 @@ export class HybridAIService {
     userAnswer: string,
     expectedAnswer: string,
     category: string,
-    companyContext: string = 'Technology Company'
+    companyContext: string = 'Technology Company';
   ): Promise<any> {
     try {
       const result = await this.smartAIService.analyzeResponse(
@@ -131,7 +131,7 @@ export class HybridAIService {
   // Get company suggestions using Smart AI
   public getCompanySuggestions(query: string): string[] {
     const suggestions = ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple', 'Netflix', 'Tesla', 'Spotify'];
-    return suggestions.filter(company => 
+    return suggestions.filter(company =>;
       company.toLowerCase().includes(query.toLowerCase())
     ).slice(0, 5);
   }

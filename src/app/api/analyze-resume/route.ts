@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const analysisPrompt = `
+    const analysisPrompt = `;
 You are an expert resume analyst and career coach. Analyze the following resume for a ${targetRole} position and provide comprehensive feedback.
 
 RESUME CONTENT:

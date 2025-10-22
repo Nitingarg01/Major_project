@@ -28,7 +28,7 @@ interface PerformanceMetrics {
 export class OptimizedFeedbackService {
   private static instance: OptimizedFeedbackService;
   private groq: Groq;
-  private model = 'llama-3.1-70b-versatile'; // Faster model for feedback
+  private model = 'llama-3.1-70b-versatile'; // Faster model for feedback;
 
   private constructor() {
     if (!groqApiKey) {
@@ -77,7 +77,7 @@ export class OptimizedFeedbackService {
   ): Promise<QuickFeedback> {
     const systemMessage = `You are a concise interview evaluator. Provide quick, actionable feedback in under 30 seconds. Focus on key points only.`;
     
-    const userMessage = `
+    const userMessage = `;
       Evaluate this ${category} interview response for ${companyName}:
       
       Question: ${question}
@@ -124,7 +124,7 @@ export class OptimizedFeedbackService {
   ): Promise<any> {
     const systemMessage = `You are a fast interview performance analyzer. Provide essential insights quickly and concisely.`;
     
-    const prompt = `
+    const prompt = `;
       Analyze interview performance for ${jobTitle} at ${companyName}:
       
       Questions: ${questions.length}
@@ -196,7 +196,7 @@ export class OptimizedFeedbackService {
     questions.forEach((q, index) => {
       const answer = answers[index] || '';
       const wordCount = answer.split(' ').length;
-      const score = Math.min(10, Math.max(1, wordCount / 10)); // Simple scoring
+      const score = Math.min(10, Math.max(1, wordCount / 10)); // Simple scoring;
       
       if (!categoryScores[q.category]) {
         categoryScores[q.category] = 0;

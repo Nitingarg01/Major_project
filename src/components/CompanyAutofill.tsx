@@ -1,8 +1,8 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
-import { Search, Building2, Briefcase, ArrowRight } from 'lucide-react'
-import { searchCompanyAndRole, parseJobQuery } from '@/lib/companyIntelligence'
-import { Badge } from './ui/badge'
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Building2, Briefcase, ArrowRight } from 'lucide-react';
+import { searchCompanyAndRole, parseJobQuery } from '@/lib/companyIntelligence';
+import { Badge } from './ui/badge';
 
 interface CompanyAutofillProps {
   onSelect: (company: string, jobTitle: string, companyData?: any) => void;
@@ -11,33 +11,33 @@ interface CompanyAutofillProps {
 }
 
 const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role (e.g., Google Software Engineer)", className = "" }: CompanyAutofillProps) => {
-  const [query, setQuery] = useState('')
-  const [suggestions, setSuggestions] = useState<string[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [companyData, setCompanyData] = useState<any>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const suggestionRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [companyData, setCompanyData] = useState<any>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (query.length >= 2) {
-      const { suggestions: newSuggestions, companyData: detectedCompany } = searchCompanyAndRole(query)
-      setSuggestions(newSuggestions)
-      setCompanyData(detectedCompany)
-      setIsOpen(newSuggestions.length > 0)
-      setSelectedIndex(0)
+      const { suggestions: newSuggestions, companyData: detectedCompany } = searchCompanyAndRole(query);
+      setSuggestions(newSuggestions);
+      setCompanyData(detectedCompany);
+      setIsOpen(newSuggestions.length > 0);
+      setSelectedIndex(0);
     } else {
-      setSuggestions([])
-      setIsOpen(false)
-      setCompanyData(null)
+      setSuggestions([]);
+      setIsOpen(false);
+      setCompanyData(null);
     }
   }, [query])
 
   const handleSelect = (suggestion: string) => {
-    const { company, jobTitle } = parseJobQuery(suggestion)
-    setQuery(suggestion)
-    setIsOpen(false)
-    onSelect(company, jobTitle, companyData)
+    const { company, jobTitle } = parseJobQuery(suggestion);
+    setQuery(suggestion);
+    setIsOpen(false);
+    onSelect(company, jobTitle, companyData);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -46,20 +46,20 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1))
+        setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1));
         break
       case 'ArrowUp':
         e.preventDefault()
-        setSelectedIndex(prev => Math.max(prev - 1, 0))
+        setSelectedIndex(prev => Math.max(prev - 1, 0));
         break
       case 'Enter':
         e.preventDefault()
         if (suggestions[selectedIndex]) {
-          handleSelect(suggestions[selectedIndex])
+          handleSelect(suggestions[selectedIndex]);
         }
         break
       case 'Escape':
-        setIsOpen(false)
+        setIsOpen(false);
         break
     }
   }
@@ -123,14 +123,14 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
       {isOpen && suggestions.length > 0 && (
         <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
           {suggestions.map((suggestion, index) => {
-            const { company, jobTitle } = parseJobQuery(suggestion)
+            const { company, jobTitle } = parseJobQuery(suggestion);
             return (
               <div
                 key={index}
                 ref={(el) => { suggestionRefs.current[index] = el }}
                 onClick={() => handleSelect(suggestion)}
                 className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 hover:bg-gray-50 ${
-                  index === selectedIndex ? 'bg-blue-50 border-blue-200' : ''
+                  index === selectedIndex ? 'bg-blue-50 border-blue-200' : '';
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -158,4 +158,4 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
   )
 }
 
-export default CompanyAutofill
+export default CompanyAutofill;

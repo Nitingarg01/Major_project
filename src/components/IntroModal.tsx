@@ -1,9 +1,9 @@
 'use client'
-import React from 'react'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { Clock, Camera, Mic, Brain, AlertTriangle, CheckCircle, Target } from 'lucide-react'
-import { InterviewRound } from '@/types/interview'
+import React from 'react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Clock, Camera, Mic, Brain, AlertTriangle, CheckCircle, Target } from 'lucide-react';
+import { InterviewRound } from '@/types/interview';
 
 interface IntroModalProps {
   onStart: () => void
@@ -195,4 +195,4 @@ const IntroModal = ({
   )
 }
 
-export default IntroModal
+export default IntroModal;

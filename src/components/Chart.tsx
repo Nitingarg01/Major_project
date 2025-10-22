@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -33,4 +33,4 @@ const Chart = ({data,labels}:{data:number[],labels:string[]}) => {
   return <Pie data={chartData} />;
 }
 
-export default Chart
+export default Chart;

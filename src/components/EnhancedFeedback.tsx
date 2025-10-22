@@ -1,7 +1,7 @@
 'use client'
-import React from 'react'
-import { Progress } from './ui/progress'
-import { Badge } from './ui/badge'
+import React from 'react';
+import { Progress } from './ui/progress';
+import { Badge } from './ui/badge';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -48,34 +48,34 @@ const getSkillIcon = (label: string) => {
 
 // Get color based on score
 const getScoreColor = (score: number) => {
-  if (score >= 8) return 'text-green-600 bg-green-50 border-green-200'
-  if (score >= 6) return 'text-blue-600 bg-blue-50 border-blue-200'
-  if (score >= 4) return 'text-yellow-600 bg-yellow-50 border-yellow-200'
-  return 'text-red-600 bg-red-50 border-red-200'
+  if (score >= 8) return 'text-green-600 bg-green-50 border-green-200';
+  if (score >= 6) return 'text-blue-600 bg-blue-50 border-blue-200';
+  if (score >= 4) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+  return 'text-red-600 bg-red-50 border-red-200';
 }
 
 const getProgressColor = (score: number) => {
-  if (score >= 8) return 'bg-green-500'
-  if (score >= 6) return 'bg-blue-500'
-  if (score >= 4) return 'bg-yellow-500'
-  return 'bg-red-500'
+  if (score >= 8) return 'bg-green-500';
+  if (score >= 6) return 'bg-blue-500';
+  if (score >= 4) return 'bg-yellow-500';
+  return 'bg-red-500';
 }
 
 const getScoreIcon = (score: number) => {
-  if (score >= 8) return CheckCircle
-  if (score >= 6) return Target
-  if (score >= 4) return AlertCircle
-  return XCircle
+  if (score >= 8) return CheckCircle;
+  if (score >= 6) return Target;
+  if (score >= 4) return AlertCircle;
+  return XCircle;
 }
 
 const EnhancedFeedback = ({ data, labels, overallScore }: EnhancedFeedbackProps) => {
   // Calculate average and identify strengths/improvements
-  const averageScore = data.length > 0 ? Math.round(data.reduce((a, b) => a + b, 0) / data.length) : 0
-  const maxScore = Math.max(...data)
-  const minScore = Math.min(...data)
+  const averageScore = data.length > 0 ? Math.round(data.reduce((a, b) => a + b, 0) / data.length) : 0;
+  const maxScore = Math.max(...data);
+  const minScore = Math.min(...data);
   
-  const strengths = labels.filter((_, index) => data[index] >= 7)
-  const needsImprovement = labels.filter((_, index) => data[index] < 5)
+  const strengths = labels.filter((_, index) => data[index] >= 7);
+  const needsImprovement = labels.filter((_, index) => data[index] < 5);
 
   return (
     <div className="space-y-6">
@@ -119,8 +119,8 @@ const EnhancedFeedback = ({ data, labels, overallScore }: EnhancedFeedbackProps)
         <div className="space-y-4">
           {labels.map((label, index) => {
             const score = data[index]
-            const IconComponent = getSkillIcon(label)
-            const ScoreIcon = getScoreIcon(score)
+            const IconComponent = getSkillIcon(label);
+            const ScoreIcon = getScoreIcon(score);
             
             return (
               <div key={index} className="bg-gray-50 rounded-lg p-4 border">
@@ -132,7 +132,7 @@ const EnhancedFeedback = ({ data, labels, overallScore }: EnhancedFeedbackProps)
                     <div>
                       <h4 className="font-semibold text-gray-800">{label}</h4>
                       <div className="flex items-center gap-2 mt-1">
-                        <ScoreIcon className={`w-4 h-4 ${score >= 7 ? 'text-green-600' : score >= 5 ? 'text-yellow-600' : 'text-red-600'}`} />
+                        <ScoreIcon className={`w-4 h-4 ${score >= 7 ? 'text-green-600' : score >= 5 ? 'text-yellow-600' : 'text-red-600'}`} />;
                         <span className="text-sm text-gray-600">
                           {score >= 8 ? 'Excellent' : score >= 6 ? 'Good' : score >= 4 ? 'Average' : 'Needs Work'}
                         </span>
@@ -209,4 +209,4 @@ const EnhancedFeedback = ({ data, labels, overallScore }: EnhancedFeedbackProps)
   )
 }
 
-export default EnhancedFeedback
+export default EnhancedFeedback;

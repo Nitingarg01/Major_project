@@ -1,7 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { 
   ArrowLeft, 
   BarChart3, 
@@ -25,11 +25,11 @@ import {
   Download,
   Share2
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
-import { toast } from 'sonner'
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { toast } from 'sonner';
 
 interface PerformanceData {
   overallScore: number
@@ -66,27 +66,27 @@ interface PerformanceData {
 }
 
 export default function InterviewPerformancePage() {
-  const params = useParams()
-  const router = useRouter()
-  const interviewId = params.id as string
+  const params = useParams();
+  const router = useRouter();
+  const interviewId = params.id as string;
   
-  const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [showDetailedFeedback, setShowDetailedFeedback] = useState(false)
+  const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showDetailedFeedback, setShowDetailedFeedback] = useState(false);
 
   useEffect(() => {
     if (interviewId) {
-      fetchPerformanceData()
+      fetchPerformanceData();
     }
   }, [interviewId])
 
   const fetchPerformanceData = async () => {
     try {
-      const response = await fetch(`/api/analyze-performance?interviewId=${interviewId}`)
-      const data = await response.json()
+      const response = await fetch(`/api/analyze-performance?interviewId=${interviewId}`);
+      const data = await response.json();
 
       if (data.success) {
-        setPerformanceData(data.performance)
+        setPerformanceData(data.performance);
       } else {
         toast.error('Failed to load performance data')
         router.push('/dashboard')
@@ -96,15 +96,15 @@ export default function InterviewPerformancePage() {
       toast.error('Failed to load performance data')
       router.push('/dashboard')
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 8) return 'text-green-600 bg-green-50 border-green-200'
-    if (score >= 6) return 'text-blue-600 bg-blue-50 border-blue-200'
-    if (score >= 4) return 'text-yellow-600 bg-yellow-50 border-yellow-200'
-    return 'text-red-600 bg-red-50 border-red-200'
+    if (score >= 8) return 'text-green-600 bg-green-50 border-green-200';
+    if (score >= 6) return 'text-blue-600 bg-blue-50 border-blue-200';
+    if (score >= 4) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+    return 'text-red-600 bg-red-50 border-red-200';
   }
 
   const getGradeFromScore = (score: number) => {
@@ -167,7 +167,7 @@ export default function InterviewPerformancePage() {
     )
   }
 
-  const { grade, color } = getGradeFromScore(performanceData.overallScore)
+  const { grade, color } = getGradeFromScore(performanceData.overallScore);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -447,7 +447,7 @@ export default function InterviewPerformancePage() {
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Trend</span>
                       <Badge variant={
-                        performanceData.detailedScores.historicalComparison.improvementTrend === 'improving' 
+                        performanceData.detailedScores.historicalComparison.improvementTrend === 'improving';
                           ? 'default' : 'secondary'
                       }>
                         {performanceData.detailedScores.historicalComparison.improvementTrend}

@@ -9,7 +9,7 @@ export const handleForgotPassword = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   
   if (!email) {
-    throw new Error("Please provide email address!")
+    throw new Error("Please provide email address!");
   }
 
   try {
@@ -25,7 +25,7 @@ export const handleForgotPassword = async (formData: FormData) => {
 
     // Generate reset token
     const resetToken = randomBytes(32).toString('hex');
-    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour;
 
     // Store reset token in database
     await db.collection("users").updateOne(
@@ -42,7 +42,7 @@ export const handleForgotPassword = async (formData: FormData) => {
     // Send reset email
     const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
     
-    const emailHtml = `
+    const emailHtml = `;
     <!DOCTYPE html>
     <html>
     <head>

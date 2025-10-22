@@ -46,7 +46,7 @@ export class InterviewServiceManager {
    */
   public async generateDSAProblems(
     companyName: string,
-    count: number = 2, // Default to 2 as per user requirements
+    count: number = 2, // Default to 2 as per user requirements;
     experienceLevel: 'entry' | 'mid' | 'senior' = 'mid',
     focusAreas: string[] = []
   ): Promise<DSAProblem[]> {
@@ -349,7 +349,7 @@ export class InterviewServiceManager {
         examples: [{
           input: 'nums = [2,7,11,15], target = 9',
           output: '[0,1]',
-          explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].'
+          explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].';
         }]
       },
       {

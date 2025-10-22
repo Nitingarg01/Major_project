@@ -25,16 +25,16 @@ export interface BodyLanguageAnalytics {
 export class BodyLanguageService {
   private static instance: BodyLanguageService
   private bodyLanguageHistory: BodyLanguageData[] = []
-  private lastHeadPosition: { x: number; y: number } | null = null
+  private lastHeadPosition: { x: number; y: number } | null = null;
   private movementFrames: number[] = []
   
   private constructor() {}
 
   public static getInstance(): BodyLanguageService {
     if (!BodyLanguageService.instance) {
-      BodyLanguageService.instance = new BodyLanguageService()
+      BodyLanguageService.instance = new BodyLanguageService();
     }
-    return BodyLanguageService.instance
+    return BodyLanguageService.instance;
   }
 
   /**
@@ -45,19 +45,19 @@ export class BodyLanguageService {
     faceDetectionData?: any
   ): Promise<BodyLanguageData> {
     try {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Canvas not supported')
 
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0)
 
       // Analyze various aspects
-      const eyeContact = this.analyzeEyeContact(faceDetectionData)
-      const posture = this.analyzePosture(faceDetectionData, canvas)
-      const fidgeting = this.analyzeFidgeting(faceDetectionData)
-      const headPosition = this.analyzeHeadPosition(faceDetectionData, canvas)
+      const eyeContact = this.analyzeEyeContact(faceDetectionData);
+      const posture = this.analyzePosture(faceDetectionData, canvas);
+      const fidgeting = this.analyzeFidgeting(faceDetectionData);
+      const headPosition = this.analyzeHeadPosition(faceDetectionData, canvas);
       
       // Calculate overall confidence score
       const confidence = this.calculateConfidenceScore({
@@ -84,11 +84,11 @@ export class BodyLanguageService {
         this.bodyLanguageHistory.shift()
       }
 
-      return bodyLanguageData
+      return bodyLanguageData;
       
     } catch (error) {
       console.error('Body language analysis error:', error)
-      return this.getDefaultBodyLanguage()
+      return this.getDefaultBodyLanguage();
     }
   }
 
@@ -97,20 +97,20 @@ export class BodyLanguageService {
    */
   private analyzeEyeContact(faceData: any): number {
     if (!faceData || !faceData.landmarks) {
-      return 50 // Default neutral score
+      return 50 // Default neutral score;
     }
 
     // Check face orientation
     // If face is detected and centered, assume good eye contact
-    const faceCentered = this.isFaceCentered(faceData)
-    const faceSize = this.getFaceSize(faceData)
+    const faceCentered = this.isFaceCentered(faceData);
+    const faceSize = this.getFaceSize(faceData);
     
-    let eyeContactScore = 50
+    let eyeContactScore = 50;
     
-    if (faceCentered) eyeContactScore += 30
-    if (faceSize > 0.2) eyeContactScore += 20 // Face is close enough
+    if (faceCentered) eyeContactScore += 30;
+    if (faceSize > 0.2) eyeContactScore += 20 // Face is close enough;
     
-    return Math.min(100, eyeContactScore)
+    return Math.min(100, eyeContactScore);
   }
 
   /**
@@ -121,27 +121,27 @@ export class BodyLanguageService {
     canvas: HTMLCanvasElement
   ): 'excellent' | 'good' | 'fair' | 'poor' {
     if (!faceData || !faceData.detection) {
-      return 'poor'
+      return 'poor';
     }
 
-    const box = faceData.detection.box
-    const canvasHeight = canvas.height
-    const canvasWidth = canvas.width
+    const box = faceData.detection.box;
+    const canvasHeight = canvas.height;
+    const canvasWidth = canvas.width;
 
     // Check if face is in upper half of frame (good posture)
-    const faceVerticalPosition = (box.y + box.height / 2) / canvasHeight
+    const faceVerticalPosition = (box.y + box.height / 2) / canvasHeight;
     
     // Check face size (too close or too far)
-    const faceSize = (box.width * box.height) / (canvasWidth * canvasHeight)
+    const faceSize = (box.width * box.height) / (canvasWidth * canvasHeight);
     
     if (faceVerticalPosition < 0.4 && faceSize > 0.15 && faceSize < 0.4) {
-      return 'excellent'
+      return 'excellent';
     } else if (faceVerticalPosition < 0.5 && faceSize > 0.1 && faceSize < 0.5) {
-      return 'good'
+      return 'good';
     } else if (faceVerticalPosition < 0.6 && faceSize > 0.08) {
-      return 'fair'
+      return 'fair';
     } else {
-      return 'poor'
+      return 'poor';
     }
   }
 
@@ -150,7 +150,7 @@ export class BodyLanguageService {
    */
   private analyzeFidgeting(faceData: any): 'low' | 'moderate' | 'high' {
     if (!faceData || !faceData.detection) {
-      return 'low'
+      return 'low';
     }
 
     const currentPosition = {
@@ -159,16 +159,16 @@ export class BodyLanguageService {
     }
 
     if (!this.lastHeadPosition) {
-      this.lastHeadPosition = currentPosition
-      return 'low'
+      this.lastHeadPosition = currentPosition;
+      return 'low';
     }
 
     // Calculate movement distance
-    const dx = currentPosition.x - this.lastHeadPosition.x
-    const dy = currentPosition.y - this.lastHeadPosition.y
-    const movement = Math.sqrt(dx * dx + dy * dy)
+    const dx = currentPosition.x - this.lastHeadPosition.x;
+    const dy = currentPosition.y - this.lastHeadPosition.y;
+    const movement = Math.sqrt(dx * dx + dy * dy);
 
-    this.lastHeadPosition = currentPosition
+    this.lastHeadPosition = currentPosition;
 
     // Store movement for trend analysis
     this.movementFrames.push(movement)
@@ -177,11 +177,11 @@ export class BodyLanguageService {
     }
 
     // Calculate average movement
-    const avgMovement = this.movementFrames.reduce((a, b) => a + b, 0) / this.movementFrames.length
+    const avgMovement = this.movementFrames.reduce((a, b) => a + b, 0) / this.movementFrames.length;
 
     if (avgMovement < 5) return 'low'
     if (avgMovement < 15) return 'moderate'
-    return 'high'
+    return 'high';
   }
 
   /**
@@ -192,14 +192,14 @@ export class BodyLanguageService {
     canvas: HTMLCanvasElement
   ): 'centered' | 'left' | 'right' | 'down' | 'up' {
     if (!faceData || !faceData.detection) {
-      return 'centered'
+      return 'centered';
     }
 
-    const box = faceData.detection.box
-    const centerX = box.x + box.width / 2
-    const centerY = box.y + box.height / 2
-    const canvasWidth = canvas.width
-    const canvasHeight = canvas.height
+    const box = faceData.detection.box;
+    const centerX = box.x + box.width / 2;
+    const centerY = box.y + box.height / 2;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
 
     // Check horizontal position
     if (centerX < canvasWidth * 0.35) return 'left'
@@ -209,7 +209,7 @@ export class BodyLanguageService {
     if (centerY < canvasHeight * 0.3) return 'up'
     if (centerY > canvasHeight * 0.6) return 'down'
     
-    return 'centered'
+    return 'centered';
   }
 
   /**
@@ -221,23 +221,23 @@ export class BodyLanguageService {
     fidgeting: string
     headPosition: string
   }): number {
-    let score = 0
+    let score = 0;
 
     // Posture score (0-30)
     const postureScores = { excellent: 30, good: 22, fair: 15, poor: 5 }
-    score += postureScores[data.posture as keyof typeof postureScores] || 15
+    score += postureScores[data.posture as keyof typeof postureScores] || 15;
 
     // Eye contact score (0-35)
-    score += (data.eyeContact / 100) * 35
+    score += (data.eyeContact / 100) * 35;
 
     // Fidgeting score (0-20, lower fidgeting = higher score)
     const fidgetingScores = { low: 20, moderate: 12, high: 5 }
-    score += fidgetingScores[data.fidgeting as keyof typeof fidgetingScores] || 12
+    score += fidgetingScores[data.fidgeting as keyof typeof fidgetingScores] || 12;
 
     // Head position score (0-15)
-    score += data.headPosition === 'centered' ? 15 : 8
+    score += data.headPosition === 'centered' ? 15 : 8;
 
-    return Math.round(Math.min(100, score))
+    return Math.round(Math.min(100, score));
   }
 
   /**
@@ -257,17 +257,17 @@ export class BodyLanguageService {
 
     // Calculate averages
     const postureScores = { excellent: 10, good: 7.5, fair: 5, poor: 2.5 }
-    const avgPosture = this.bodyLanguageHistory.reduce((sum, data) => 
+    const avgPosture = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + postureScores[data.posture], 0) / this.bodyLanguageHistory.length
 
-    const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) => 
+    const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + data.eyeContact, 0) / this.bodyLanguageHistory.length
 
     const fidgetingScores = { low: 2, moderate: 5, high: 8 }
-    const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) => 
+    const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + fidgetingScores[data.fidgeting], 0) / this.bodyLanguageHistory.length
 
-    const avgConfidence = this.bodyLanguageHistory.reduce((sum, data) => 
+    const avgConfidence = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + data.confidence, 0) / this.bodyLanguageHistory.length
 
     // Generate recommendations
@@ -314,7 +314,7 @@ export class BodyLanguageService {
       recommendations.push('Excellent body language! Keep it up!')
     }
 
-    return recommendations
+    return recommendations;
   }
 
   /**
@@ -322,16 +322,16 @@ export class BodyLanguageService {
    */
   private isFaceCentered(faceData: any): boolean {
     if (!faceData?.detection?.box) return false
-    const box = faceData.detection.box
+    const box = faceData.detection.box;
     // Assume canvas is 640x480 or similar
-    const centerX = box.x + box.width / 2
-    return centerX > 200 && centerX < 440
+    const centerX = box.x + box.width / 2;
+    return centerX > 200 && centerX < 440;
   }
 
   private getFaceSize(faceData: any): number {
     if (!faceData?.detection?.box) return 0
-    const box = faceData.detection.box
-    return (box.width * box.height) / (640 * 480) // Normalized
+    const box = faceData.detection.box;
+    return (box.width * box.height) / (640 * 480) // Normalized;
   }
 
   private getDefaultBodyLanguage(): BodyLanguageData {
@@ -350,7 +350,7 @@ export class BodyLanguageService {
    */
   public reset(): void {
     this.bodyLanguageHistory = []
-    this.lastHeadPosition = null
+    this.lastHeadPosition = null;
     this.movementFrames = []
   }
 
@@ -377,11 +377,11 @@ export class BodyLanguageService {
     }
 
     if (messages.length === 0) {
-      return 'Good body language'
+      return 'Good body language';
     }
 
-    return messages.join(' • ')
+    return messages.join(' • ');
   }
 }
 
-export default BodyLanguageService
+export default BodyLanguageService;

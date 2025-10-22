@@ -1,16 +1,16 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { handleLogin } from './actions'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Eye, EyeOff } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { handleLogin } from './actions';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
 
 const schema = z.object({
   email: z.string().min(6, "Please Enter a valid email.").refine(
@@ -23,8 +23,8 @@ const schema = z.object({
 })
 
 const CreateLoginForm = () => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -33,16 +33,16 @@ const CreateLoginForm = () => {
       password: ''
     }
   })
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       formData.append("email", data.email)
       formData.append("password", data.password)
       
-      const response = await handleLogin(formData)
+      const response = await handleLogin(formData);
       
       // Only execute success logic if we get a successful response
       if (response?.success) {
@@ -51,10 +51,10 @@ const CreateLoginForm = () => {
       }
     } catch (error) {
       // Display the actual error message from the server
-      const errorMessage = error instanceof Error ? error.message : "Login failed. Please check your credentials."
+      const errorMessage = error instanceof Error ? error.message : "Login failed. Please check your credentials.";
       toast.error(errorMessage)
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -132,4 +132,4 @@ const CreateLoginForm = () => {
   )
 }
 
-export default CreateLoginForm
+export default CreateLoginForm;

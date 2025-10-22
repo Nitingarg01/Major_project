@@ -1,9 +1,9 @@
-import React from 'react'
-import { InterviewCardProps } from '@/types/interview'
-import { getLogo } from '@/lib/utils'
-import Image from 'next/image'
-import { Badge } from "@/components/ui/badge"
-import { Button } from './ui/button'
+import React from 'react';
+import { InterviewCardProps } from '@/types/interview';
+import { getLogo } from '@/lib/utils';
+import Image from 'next/image';
+import { Badge } from "@/components/ui/badge";
+import { Button } from './ui/button';
 import { FileText, Trash2, AlertTriangle } from 'lucide-react';
 import { MessageCircleCode } from 'lucide-react';
 import {
@@ -11,9 +11,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import Link from 'next/link'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
-import DeleteInterviewButton from './DeleteInterviewButton'
+import Link from 'next/link';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import DeleteInterviewButton from './DeleteInterviewButton';
 
 function capitalizeFirstWord(str: string) {
   if (!str) return "";
@@ -21,18 +21,18 @@ function capitalizeFirstWord(str: string) {
 }
 
 const InterviewCard = async ({ interview }: InterviewCardProps) => {
-  const res = await getLogo(interview.companyName)
-  const image = res?.image || 'https://picsum.photos/200/300'
+  const res = await getLogo(interview.companyName);
+  const image = res?.image || 'https://picsum.photos/200/300';
 
   const createdAt = new Date(interview.createdAt);
   const formatted = `${createdAt.getFullYear()}-${String(createdAt.getMonth() + 1).padStart(2, '0')}-${String(createdAt.getDate()).padStart(2, '0')} ${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}`;
 
-  const skills = interview.skills
+  const skills = interview.skills;
   let renderSkills;
   if(skills.length>6){
-    renderSkills = skills.slice(0,8)
+    renderSkills = skills.slice(0,8);
   }else{
-    renderSkills = skills
+    renderSkills = skills;
   }
 
   return (
@@ -111,4 +111,4 @@ const InterviewCard = async ({ interview }: InterviewCardProps) => {
   )
 }
 
-export default InterviewCard
+export default InterviewCard;

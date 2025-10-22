@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,10 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import Link from "next/link"
-import { Brain, Sparkles, ArrowLeft } from "lucide-react"
-import ResetPasswordForm from "./form"
-import { redirect } from "next/navigation"
+import Link from "next/link";
+import { Brain, Sparkles, ArrowLeft } from "lucide-react";
+import ResetPasswordForm from "./form";
+import { redirect } from "next/navigation";
 
 interface ResetPasswordPageProps {
   searchParams: Promise<{
@@ -18,10 +18,10 @@ interface ResetPasswordPageProps {
 }
 
 const ResetPasswordPage = async ({ searchParams }: ResetPasswordPageProps) => {
-  const { token } = await searchParams
+  const { token } = await searchParams;
 
   if (!token) {
-    redirect('/login')
+    redirect('/login');
   }
 
   return (
@@ -64,4 +64,4 @@ const ResetPasswordPage = async ({ searchParams }: ResetPasswordPageProps) => {
   )
 }
 
-export default ResetPasswordPage
+export default ResetPasswordPage;

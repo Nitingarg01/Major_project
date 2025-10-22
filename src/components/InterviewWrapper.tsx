@@ -1,13 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import IntroModal from './IntroModal'
-import InterviewClientForm from './InterviewClientForm'
-import { Question } from '@/types/interview'
-import CameraFeed from './CameraFeed'
+import React, { useEffect, useState } from 'react';
+import IntroModal from './IntroModal';
+import InterviewClientForm from './InterviewClientForm';
+import { Question } from '@/types/interview';
+import CameraFeed from './CameraFeed';
 
 const InterviewWrapper = ({questions,id}:{questions:Question[],id:string}) => {
 
-    const [started,setStarted] = useState<boolean>(false)
+    const [started,setStarted] = useState<boolean>(false);
      const [cameraOn, setCameraOn] = useState(true);
 
        useEffect(() => {
@@ -53,4 +53,4 @@ const InterviewWrapper = ({questions,id}:{questions:Question[],id:string}) => {
   )
 }
 
-export default InterviewWrapper
+export default InterviewWrapper;

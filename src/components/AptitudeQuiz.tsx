@@ -1,11 +1,11 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Progress } from './ui/progress'
-import { Clock, Brain, CheckCircle, XCircle, AlertTriangle, Calculator, BookOpen, Zap } from 'lucide-react'
-import { toast } from 'sonner'
+import React, { useState, useEffect } from 'react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
+import { Clock, Brain, CheckCircle, XCircle, AlertTriangle, Calculator, BookOpen, Zap } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface AptitudeQuestion {
   id: string
@@ -28,29 +28,29 @@ interface AptitudeQuizProps {
 const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({ 
   questions, 
   onComplete, 
-  timeLimit = 30 
+  timeLimit = 30;
 }) => {
   // Validate and filter questions to ensure they have required properties
-  const validQuestions = questions.filter(q => 
+  const validQuestions = questions.filter(q =>;
     q && q.type && q.difficulty && q.question && q.options
   )
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number}>({})
-  const [timeLeft, setTimeLeft] = useState(timeLimit * 60)
-  const [questionTimeLeft, setQuestionTimeLeft] = useState(0)
-  const [showResults, setShowResults] = useState(false)
-  const [results, setResults] = useState<any>(null)
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number}>({});
+  const [timeLeft, setTimeLeft] = useState(timeLimit * 60);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [results, setResults] = useState<any>(null);
 
   useEffect(() => {
     // Set question time limit
     const currentQ = questions[currentQuestion]
     if (currentQ?.timeLimit) {
-      setQuestionTimeLeft(currentQ.timeLimit)
+      setQuestionTimeLeft(currentQ.timeLimit);
     }
   }, [currentQuestion, questions])
     const currentQ = validQuestions[currentQuestion]
     if (currentQ?.timeLimit) {
-      setQuestionTimeLeft(currentQ.timeLimit)
+      setQuestionTimeLeft(currentQ.timeLimit);
     }
   }, [currentQuestion, validQuestions])
 
@@ -59,52 +59,52 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          clearInterval(timer)
-          handleSubmit()
-          return 0
+          clearInterval(timer);
+          handleSubmit();
+          return 0;
         }
-        return prev - 1
+        return prev - 1;
       })
     }, 1000)
 
-    return () => clearInterval(timer)
+    return () => clearInterval(timer);
   }, [])
 
   // Question timer
   useEffect(() => {
-    if (questionTimeLeft <= 0) return
+    if (questionTimeLeft <= 0) return;
 
     const timer = setInterval(() => {
       setQuestionTimeLeft(prev => {
         if (prev <= 1) {
-          clearInterval(timer)
+          clearInterval(timer);
           // Auto-move to next question
           if (currentQuestion < questions.length - 1) {
           if (currentQuestion < validQuestions.length - 1) {
-            setCurrentQuestion(prev => prev + 1)
+            setCurrentQuestion(prev => prev + 1);
             toast.warning('Time up! Moving to next question')
           }
-          return 0
+          return 0;
         }
-        return prev - 1
+        return prev - 1;
       })
     }, 1000)
 
-    return () => clearInterval(timer)
+    return () => clearInterval(timer);
   }, [questionTimeLeft, currentQuestion, questions.length])
   }, [questionTimeLeft, currentQuestion, validQuestions.length])
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 
   const getTimeColor = (time: number, total: number) => {
-    const percentage = time / total
-    if (percentage <= 0.2) return 'text-red-600 bg-red-50'
-    if (percentage <= 0.5) return 'text-yellow-600 bg-yellow-50'
-    return 'text-green-600 bg-green-50'
+    const percentage = time / total;
+    if (percentage <= 0.2) return 'text-red-600 bg-red-50';
+    if (percentage <= 0.5) return 'text-yellow-600 bg-yellow-50';
+    return 'text-green-600 bg-green-50';
   }
 
   const getTypeIcon = (type: string) => {
@@ -148,29 +148,29 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   const nextQuestion = () => {
     if (currentQuestion < questions.length - 1) {
     if (currentQuestion < validQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1)
+      setCurrentQuestion(prev => prev + 1);
     }
   }
 
   const previousQuestion = () => {
     if (currentQuestion > 0) {
-      setCurrentQuestion(prev => prev - 1)
+      setCurrentQuestion(prev => prev - 1);
     }
   }
 
   const handleSubmit = () => {
-    const calculatedResults = calculateResults()
-    setResults(calculatedResults)
-    setShowResults(true)
-    onComplete(calculatedResults)
+    const calculatedResults = calculateResults();
+    setResults(calculatedResults);
+    setShowResults(true);
+    onComplete(calculatedResults);
   }
 
   const calculateResults = () => {
-    let correctAnswers = 0
+    let correctAnswers = 0;
     const questionResults = questions.map((question, index) => {
     const questionResults = validQuestions.map((question, index) => {
       const selectedAnswer = selectedAnswers[index]
-      const isCorrect = selectedAnswer === question.correctAnswer
+      const isCorrect = selectedAnswer === question.correctAnswer;
       if (isCorrect) correctAnswers++
 
       return {
@@ -186,15 +186,15 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       }
     })
 
-    const totalQuestions = questions.length
-    const totalQuestions = validQuestions.length
-    const answeredQuestions = Object.keys(selectedAnswers).length
-    const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0
-    const completionRate = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0
+    const totalQuestions = questions.length;
+    const totalQuestions = validQuestions.length;
+    const answeredQuestions = Object.keys(selectedAnswers).length;
+    const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
+    const completionRate = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
     // Calculate type-wise performance
     const typePerformance = questions.reduce((acc, question, index) => {
-      const type = question.type
+      const type = question.type;
       if (!acc[type]) {
         acc[type] = { total: 0, correct: 0 }
       }
@@ -205,7 +205,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
         acc[type].correct++
       }
       
-      return acc
+      return acc;
     }, {} as any)
 
     return {
@@ -220,7 +220,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     }
   }
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
   const currentQ = questions[currentQuestion]
   // Early return if no valid questions
   if (validQuestions.length === 0) {
@@ -234,7 +234,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     )
   }
 
-  const progress = ((currentQuestion + 1) / validQuestions.length) * 100
+  const progress = ((currentQuestion + 1) / validQuestions.length) * 100;
   const currentQ = validQuestions[currentQuestion]
 
   if (showResults && results) {
@@ -273,8 +273,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
               <h3 className="text-lg font-semibold mb-4">Performance by Category</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {Object.entries(results.typePerformance).map(([type, performance]: [string, any]) => {
-                  const Icon = getTypeIcon(type)
-                  const accuracy = performance.total > 0 ? Math.round((performance.correct / performance.total) * 100) : 0
+                  const Icon = getTypeIcon(type);
+                  const accuracy = performance.total > 0 ? Math.round((performance.correct / performance.total) * 100) : 0;
                   
                   return (
                     <div key={type} className="p-4 border border-gray-200 rounded-lg">
@@ -303,7 +303,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
                   <div key={index} className={`p-4 rounded-lg border ${
                     result.isCorrect 
                       ? 'bg-green-50 border-green-200' 
-                      : result.selectedAnswer !== undefined 
+                      : result.selectedAnswer !== undefined;
                         ? 'bg-red-50 border-red-200'
                         : 'bg-gray-50 border-gray-200'
                   }`}>
@@ -331,7 +331,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
                     <p className="text-sm text-gray-700 mb-2">{result.question}</p>
                     
                     <div className="text-xs text-gray-600">
-                      <div>Your answer: {result.selectedAnswer !== undefined ? result.options[result.selectedAnswer] : 'Not answered'}</div>
+                      <div>Your answer: {result.selectedAnswer !== undefined ? result.options[result.selectedAnswer] : 'Not answered'}</div>;
                       <div>Correct answer: {result.options[result.correctAnswer]}</div>
                       {result.explanation && (
                         <div className="mt-2 p-2 bg-blue-50 rounded text-blue-700">
@@ -351,10 +351,10 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
 
   if (!currentQ) return <div>Loading...</div>
   if (!currentQ || !currentQ.type || !currentQ.difficulty) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
-  const TypeIcon = getTypeIcon(currentQ.type)
+  const TypeIcon = getTypeIcon(currentQ.type);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
@@ -401,7 +401,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
             </div>
             {questionTimeLeft > 0 && (
               <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${
-                questionTimeLeft <= 10 ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+                questionTimeLeft <= 10 ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600';
               }`}>
                 <Clock className="w-3 h-3" />
                 {questionTimeLeft}s
@@ -432,14 +432,14 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  selectedAnswers[currentQuestion] === index
+                  selectedAnswers[currentQuestion] === index;
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                    selectedAnswers[currentQuestion] === index
+                    selectedAnswers[currentQuestion] === index;
                       ? 'border-blue-500 bg-blue-500'
                       : 'border-gray-300'
                   }`}>
@@ -498,9 +498,9 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
               key={index}
               onClick={() => setCurrentQuestion(index)}
               className={`w-8 h-8 rounded text-sm font-medium ${
-                index === currentQuestion
+                index === currentQuestion;
                   ? 'bg-blue-500 text-white'
-                  : selectedAnswers[index] !== undefined
+                  : selectedAnswers[index] !== undefined;
                     ? 'bg-green-100 text-green-800 border border-green-300'
                     : 'bg-white text-gray-600 border border-gray-300'
               }`}
@@ -514,4 +514,4 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   )
 }
 
-export default AptitudeQuiz
+export default AptitudeQuiz;

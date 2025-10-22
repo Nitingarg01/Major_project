@@ -1,7 +1,7 @@
 'use client'
-import React from 'react'
-import Link from 'next/link'
-import { Github, Linkedin, Mail, Code, Heart } from 'lucide-react'
+import React from 'react';
+import Link from 'next/link';
+import { Github, Linkedin, Mail, Code, Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -93,4 +93,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default Footer;

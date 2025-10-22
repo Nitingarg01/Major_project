@@ -69,7 +69,7 @@ const EnhancedAIDashboard: React.FC = () => {
 
   useEffect(() => {
     checkHealthStatus();
-    const interval = setInterval(checkHealthStatus, 30000); // Check every 30 seconds
+    const interval = setInterval(checkHealthStatus, 30000); // Check every 30 seconds;
     return () => clearInterval(interval);
   }, []);
 

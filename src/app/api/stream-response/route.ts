@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { aiInterviewModel } from '@/lib/aimodel'
+import { NextRequest, NextResponse } from 'next/server';
+import { aiInterviewModel } from '@/lib/aimodel';
 
 export async function POST(request: NextRequest) {
   try {
-    const { question, userAnswer, expectedAnswer, difficulty } = await request.json()
+    const { question, userAnswer, expectedAnswer, difficulty } = await request.json();
 
     if (!question || !userAnswer) {
       return NextResponse.json(
@@ -13,13 +13,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Create a readable stream for real-time response
-    const encoder = new TextEncoder()
+    const encoder = new TextEncoder();
     
     const stream = new ReadableStream({
       async start(controller) {
         try {
           // Generate feedback using AI model
-          const prompt = `
+          const prompt = `;
           You are an expert interview evaluator. Analyze this interview response and provide detailed feedback.
           
           Question: ${question}
@@ -55,13 +55,13 @@ export async function POST(request: NextRequest) {
           }
 
           // Generate actual feedback using AI
-          const result = await aiInterviewModel.generateContent(prompt)
-          const response = await result.response
-          const text = response.text()
+          const result = await aiInterviewModel.generateContent(prompt);
+          const response = await result.response;
+          const text = response.text();
           
           // Parse and clean the response
-          const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim()
-          const feedback = JSON.parse(cleanedText)
+          const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
+          const feedback = JSON.parse(cleanedText);
           
           // Send final feedback
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({

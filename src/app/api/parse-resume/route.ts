@@ -1,10 +1,10 @@
 import { extractTextFromPDF } from "@/lib/pdfParse";
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { modelUsed } from "@/constants/constants";
 import { error } from "console";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
 
 export async function POST(request: NextRequest) {
     console.log("✅ Received POST request to /api/parse-resume");
@@ -19,8 +19,8 @@ export async function POST(request: NextRequest) {
             }, { status: 400 })
         }
 
-        const formData = await request.formData()
-        const file = formData.get("resume") as File
+        const formData = await request.formData();
+        const file = formData.get("resume") as File;
 
         if (!file) {
             return NextResponse.json({ 
@@ -46,10 +46,10 @@ export async function POST(request: NextRequest) {
             }, { status: 400 })
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer())
+        const buffer = Buffer.from(await file.arrayBuffer());
         console.log(`📄 Processing ${file.name} (${file.size} bytes)`);
 
-        const textContent = await extractTextFromPDF(buffer)
+        const textContent = await extractTextFromPDF(buffer);
         console.log(`📝 Extracted text length: ${textContent.length} characters`)
 
         if (!textContent || textContent.length < 50) {
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             }, { status: 400 })
         }
 
-        const promptForDetails = `
+        const promptForDetails = `;
 You are an expert resume parser for tech job candidates. Extract structured information from the following resume text.
 
 Return ONLY a valid JSON object with these exact fields:
@@ -80,7 +80,7 @@ ${textContent.substring(0, 4000)}
 `;
 
         if (!process.env.GEMINI_API_KEY) {
-            throw new Error("GEMINI_API_KEY not configured")
+            throw new Error("GEMINI_API_KEY not configured");
         }
 
         const model = genAI.getGenerativeModel({
@@ -91,14 +91,14 @@ ${textContent.substring(0, 4000)}
             }
         })
 
-        const result = await model.generateContent(promptForDetails)
-        const text = result.response.text()
+        const result = await model.generateContent(promptForDetails);
+        const text = result.response.text();
         console.log("🧠 Gemini response received");
 
         try {
             // Clean the response and parse JSON
             const cleaned = text.replace(/```json\s*/g, '').replace(/\s*```/g, '').trim();
-            const extracted = JSON.parse(cleaned)
+            const extracted = JSON.parse(cleaned);
 
             // Validate the parsed data structure
             if (!extracted.skills || !Array.isArray(extracted.skills)) {

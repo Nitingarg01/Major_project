@@ -1,6 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface PerformanceSaverProps {
   interviewData: {
@@ -22,11 +22,11 @@ interface PerformanceSaverProps {
 export default function PerformanceSaver({ 
   interviewData, 
   feedbackData, 
-  timeSpent = 0 
+  timeSpent = 0;
 }: PerformanceSaverProps) {
-  const [saved, setSaved] = useState(false)
-  const [retryCount, setRetryCount] = useState(0)
-  const maxRetries = 3
+  const [saved, setSaved] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const maxRetries = 3;
 
   useEffect(() => {
     const savePerformanceData = async () => {
@@ -49,32 +49,32 @@ export default function PerformanceSaver({
         }
 
         // Calculate performance metrics with safety checks
-        const labels = Object.keys(feedbackData.parameterScores || {})
-        const scores = Object.values(feedbackData.parameterScores || {})
-        const totalQuestions = Math.max(labels.length, 1) // Ensure at least 1
-        const correctAnswers = scores.filter(score => score >= 6).length
-        const overallScore = Math.round((feedbackData.overallScore || 0) * 10)
+        const labels = Object.keys(feedbackData.parameterScores || {});
+        const scores = Object.values(feedbackData.parameterScores || {});
+        const totalQuestions = Math.max(labels.length, 1) // Ensure at least 1;
+        const correctAnswers = scores.filter(score => score >= 6).length;
+        const overallScore = Math.round((feedbackData.overallScore || 0) * 10);
 
         // Generate round results based on parameter scores
         const roundResults = []
         
         // Group parameters by likely round types
-        const technicalParams = labels.filter(label => 
+        const technicalParams = labels.filter(label =>;
           label.toLowerCase().includes('technical') || 
           label.toLowerCase().includes('problem') ||
           label.toLowerCase().includes('coding')
         )
-        const behavioralParams = labels.filter(label => 
+        const behavioralParams = labels.filter(label =>;
           label.toLowerCase().includes('behavioral') || 
           label.toLowerCase().includes('communication') ||
           label.toLowerCase().includes('leadership')
         )
-        const otherParams = labels.filter(label => 
+        const otherParams = labels.filter(label =>;
           !technicalParams.includes(label) && !behavioralParams.includes(label)
         )
 
         if (technicalParams.length > 0) {
-          const techScore = technicalParams.reduce((sum, param) => 
+          const techScore = technicalParams.reduce((sum, param) =>;
             sum + feedbackData.parameterScores[param], 0) / technicalParams.length
           roundResults.push({
             roundType: 'technical',
@@ -86,7 +86,7 @@ export default function PerformanceSaver({
         }
 
         if (behavioralParams.length > 0) {
-          const behavioralScore = behavioralParams.reduce((sum, param) => 
+          const behavioralScore = behavioralParams.reduce((sum, param) =>;
             sum + feedbackData.parameterScores[param], 0) / behavioralParams.length
           roundResults.push({
             roundType: 'behavioral',
@@ -98,7 +98,7 @@ export default function PerformanceSaver({
         }
 
         if (otherParams.length > 0) {
-          const otherScore = otherParams.reduce((sum, param) => 
+          const otherScore = otherParams.reduce((sum, param) =>;
             sum + feedbackData.parameterScores[param], 0) / otherParams.length
           roundResults.push({
             roundType: 'mixed',
@@ -151,7 +151,7 @@ export default function PerformanceSaver({
             recs.push('Focus on consistent practice and skill building')
           }
 
-          return recs
+          return recs;
         }
 
         const recommendations = getSmartRecommendations(
@@ -190,11 +190,11 @@ export default function PerformanceSaver({
         })
 
         console.log('📡 Response status:', response.status)
-        const result = await response.json()
+        const result = await response.json();
         console.log('📋 Response data:', result)
 
         if (result.success) {
-          setSaved(true)
+          setSaved(true);
           console.log('✅ Performance data saved successfully!')
           toast.success('Performance data saved successfully!')
         } else {
@@ -206,9 +206,9 @@ export default function PerformanceSaver({
           // Retry logic
           if (retryCount < maxRetries) {
             console.log(`🔄 Retrying... (${retryCount + 1}/${maxRetries})`)
-            setRetryCount(prev => prev + 1)
+            setRetryCount(prev => prev + 1);
             setTimeout(() => {
-              savePerformanceData()
+              savePerformanceData();
             }, 2000) // Wait 2 seconds before retry
           } else {
             toast.error(`Failed to save performance data after ${maxRetries} attempts: ${result.error}`)
@@ -220,9 +220,9 @@ export default function PerformanceSaver({
         // Retry logic for network errors
         if (retryCount < maxRetries) {
           console.log(`🔄 Retrying due to error... (${retryCount + 1}/${maxRetries})`)
-          setRetryCount(prev => prev + 1)
+          setRetryCount(prev => prev + 1);
           setTimeout(() => {
-            savePerformanceData()
+            savePerformanceData();
           }, 2000)
         } else {
           toast.error(`Network error: Failed to save performance data after ${maxRetries} attempts`)
@@ -231,8 +231,8 @@ export default function PerformanceSaver({
     }
 
     // Save performance data when component mounts or retry count changes
-    savePerformanceData()
+    savePerformanceData();
   }, [interviewData, feedbackData, timeSpent, saved, retryCount])
 
-  return null // This component doesn't render anything
+  return null // This component doesn't render anything;
 }

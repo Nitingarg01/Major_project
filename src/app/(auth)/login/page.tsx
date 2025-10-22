@@ -1,25 +1,25 @@
 'use client'
-import { useState } from 'react'
-import { signIn, getSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles, CheckCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
+import { useState } from 'react';
+import { signIn, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   })
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const result = await signIn('credentials', {
@@ -32,7 +32,7 @@ export default function LoginPage() {
         toast.error('Invalid credentials. Please try again.')
       } else {
         toast.success('Welcome back!')
-        const session = await getSession()
+        const session = await getSession();
         if (session) {
           router.push('/dashboard')
         }
@@ -40,7 +40,7 @@ export default function LoginPage() {
     } catch (error) {
       toast.error('Something went wrong. Please try again.')
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 

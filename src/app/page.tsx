@@ -1,7 +1,7 @@
-import { Suspense } from 'react'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react'
+import { Suspense } from 'react';
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'RecruiterAI - Advanced AI Interview Platform',

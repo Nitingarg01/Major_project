@@ -3,7 +3,7 @@
  * Handles natural conversation flow, follow-up questions, and real-time analysis
  */
 
-import { SmartAIService } from './smartAIService'
+import { SmartAIService } from './smartAIService';
 
 export interface ConversationContext {
   companyName: string
@@ -37,14 +37,14 @@ export class VirtualInterviewerAI {
   private smartAI: SmartAIService
 
   private constructor() {
-    this.smartAI = SmartAIService.getInstance()
+    this.smartAI = SmartAIService.getInstance();
   }
 
   public static getInstance(): VirtualInterviewerAI {
     if (!VirtualInterviewerAI.instance) {
-      VirtualInterviewerAI.instance = new VirtualInterviewerAI()
+      VirtualInterviewerAI.instance = new VirtualInterviewerAI();
     }
-    return VirtualInterviewerAI.instance
+    return VirtualInterviewerAI.instance;
   }
 
   /**
@@ -77,7 +77,7 @@ export class VirtualInterviewerAI {
     context: ConversationContext
   ): Promise<AIResponse> {
     try {
-      const prompt = `
+      const prompt = `;
 You are an experienced AI interviewer conducting a ${context.interviewType} interview for a ${context.jobTitle} position at ${context.companyName}.
 
 Original Question: "${originalQuestion}"
@@ -108,7 +108,7 @@ Generate only the follow-up response, nothing else.`
 
       if (result.success && result.data) {
         // Extract follow-up from AI response
-        const followUp = this.extractFollowUpFromResponse(result.data, userResponse)
+        const followUp = this.extractFollowUpFromResponse(result.data, userResponse);
         
         return {
           message: followUp,
@@ -123,7 +123,7 @@ Generate only the follow-up response, nothing else.`
     }
 
     // Fallback to predefined follow-ups
-    return this.generateFallbackFollowUp(userResponse, originalQuestion, context)
+    return this.generateFallbackFollowUp(userResponse, originalQuestion, context);
   }
 
   /**
@@ -134,7 +134,7 @@ Generate only the follow-up response, nothing else.`
     totalQuestions: number,
     context: ConversationContext
   ): AIResponse {
-    const isLastQuestion = currentQuestionIndex >= totalQuestions - 1
+    const isLastQuestion = currentQuestionIndex >= totalQuestions - 1;
     
     if (isLastQuestion) {
       return {
@@ -201,7 +201,7 @@ Generate only the follow-up response, nothing else.`
     }
 
     // Fallback analysis
-    return this.generateFallbackAnalysis(userResponse, question)
+    return this.generateFallbackAnalysis(userResponse, question);
   }
 
   /**
@@ -255,11 +255,11 @@ Generate only the follow-up response, nothing else.`
     if (Array.isArray(aiData) && aiData.length > 0) {
       const question = aiData[0]
       if (question.question) {
-        return this.makeFollowUpConversational(question.question)
+        return this.makeFollowUpConversational(question.question);
       }
     }
     
-    return this.generateContextualFollowUp(userResponse)
+    return this.generateContextualFollowUp(userResponse);
   }
 
   private makeFollowUpConversational(question: string): string {
@@ -272,18 +272,18 @@ Generate only the follow-up response, nothing else.`
     ]
     
     const starter = conversationalStarters[Math.floor(Math.random() * conversationalStarters.length)]
-    return starter + question
+    return starter + question;
   }
 
   private generateContextualFollowUp(userResponse: string): string {
-    const responseLength = userResponse.split(' ').length
+    const responseLength = userResponse.split(' ').length;
     
     if (responseLength < 10) {
-      return "Can you elaborate on that a bit more? I'd love to hear more details about your experience."
+      return "Can you elaborate on that a bit more? I'd love to hear more details about your experience.";
     } else if (responseLength > 50) {
-      return "That's a comprehensive answer! What would you say was the most challenging aspect of what you just described?"
+      return "That's a comprehensive answer! What would you say was the most challenging aspect of what you just described?";
     } else {
-      return "Interesting approach! How did you measure the success of that solution?"
+      return "Interesting approach! How did you measure the success of that solution?";
     }
   }
 
@@ -310,31 +310,31 @@ Generate only the follow-up response, nothing else.`
   }
 
   private generateFallbackAnalysis(userResponse: string, question: string) {
-    const wordCount = userResponse.split(' ').length
-    const hasExamples = userResponse.toLowerCase().includes('example') || 
+    const wordCount = userResponse.split(' ').length;
+    const hasExamples = userResponse.toLowerCase().includes('example') ||;
                        userResponse.toLowerCase().includes('instance') ||
                        userResponse.toLowerCase().includes('time when')
 
-    let score = 5
+    let score = 5;
     const strengths: string[] = []
     const improvements: string[] = []
 
     if (wordCount > 30) {
-      score += 1
+      score += 1;
       strengths.push('Detailed response')
     } else {
       improvements.push('Provide more detailed explanations')
     }
 
     if (hasExamples) {
-      score += 1
+      score += 1;
       strengths.push('Included specific examples')
     } else {
       improvements.push('Add concrete examples from your experience')
     }
 
     if (wordCount > 50) {
-      score += 1
+      score += 1;
       strengths.push('Comprehensive coverage of the topic')
     }
 
@@ -353,18 +353,18 @@ Generate only the follow-up response, nothing else.`
   }
 
   private explainQuestionIntent(question: string, context: ConversationContext): string {
-    return `your experience and approach to ${this.extractKeyTopic(question)} in the context of a ${context.jobTitle} role.`
+    return `your experience and approach to ${this.extractKeyTopic(question)} in the context of a ${context.jobTitle} role.`;
   }
 
   private provideQuestionContext(question: string, context: ConversationContext): string {
-    return `This question helps me understand how you'd handle ${this.extractKeyTopic(question)} at ${context.companyName}.`
+    return `This question helps me understand how you'd handle ${this.extractKeyTopic(question)} at ${context.companyName}.`;
   }
 
   private extractKeyTopic(question: string): string {
     // Extract the main topic from the question
-    const topics = question.toLowerCase().match(/(problem solving|teamwork|leadership|technical challenges|project management|communication|conflict resolution)/g)
-    return topics ? topics[0] : 'this type of situation'
+    const topics = question.toLowerCase().match(/(problem solving|teamwork|leadership|technical challenges|project management|communication|conflict resolution)/g);
+    return topics ? topics[0] : 'this type of situation';
   }
 }
 
-export default VirtualInterviewerAI
+export default VirtualInterviewerAI;

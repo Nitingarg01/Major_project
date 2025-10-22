@@ -119,7 +119,7 @@ export class EnhancedAIService {
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard',
     topics: string[],
-    count: number = 3
+    count: number = 3;
   ): Promise<DSAProblem[]> {
     if (!this.apiKey) {
       return this.generateMockDSAProblems(difficulty, count);
@@ -128,7 +128,7 @@ export class EnhancedAIService {
     try {
       const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-      const prompt = `
+      const prompt = `;
         Generate ${count} high-quality DSA problems for ${companyName} interview.
         
         Requirements:
@@ -194,7 +194,7 @@ export class EnhancedAIService {
   public async generateAptitudeQuestions(
     types: ('verbal' | 'numerical' | 'logical' | 'spatial')[],
     difficulty: 'easy' | 'medium' | 'hard',
-    count: number = 10
+    count: number = 10;
   ): Promise<AptitudeQuestion[]> {
     if (!this.apiKey) {
       return this.generateMockAptitudeQuestions(types, difficulty, count);
@@ -203,7 +203,7 @@ export class EnhancedAIService {
     try {
       const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-      const prompt = `
+      const prompt = `;
         Generate ${count} high-quality aptitude questions.
         
         Requirements:
@@ -269,7 +269,7 @@ export class EnhancedAIService {
     try {
       const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-      const prompt = `
+      const prompt = `;
         Analyze this interview response for ${companyContext}:
         
         Question (${category}): ${question}
@@ -317,7 +317,7 @@ export class EnhancedAIService {
 
   // Private helper methods
   private buildQuestionGenerationPrompt(params: QuestionGenerationParams): string {
-    return `
+    return `;
       Generate ${params.numberOfQuestions} high-quality interview questions for:
       
       Position: ${params.jobTitle} at ${params.companyName}
@@ -354,7 +354,7 @@ export class EnhancedAIService {
       - Add company-relevant context and scenarios
       - Ensure questions test the specified skills: ${params.skills.join(', ')}
       
-      ${params.interviewType === 'mixed' ? 
+      ${params.interviewType === 'mixed' ?;
         `Distribute questions across categories:
         - 40% Technical questions
         - 30% Behavioral questions  
@@ -459,7 +459,7 @@ export class EnhancedAIService {
         correctAnswer: i % 4,
         explanation: 'This is the correct answer because of logical reasoning.',
         difficulty: difficulty as 'easy' | 'medium' | 'hard',
-        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'medium' ? 90 : 120
+        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'medium' ? 90 : 120;
       });
     }
     

@@ -1,10 +1,10 @@
 'use client'
-import React, { useState, useRef, useEffect } from 'react'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Progress } from './ui/progress'
+import React, { useState, useRef, useEffect } from 'react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
 import { 
   Play, 
   Square, 
@@ -22,8 +22,8 @@ import {
   Save,
   RefreshCw
 } from 'lucide-react'
-import { toast } from 'sonner'
-import Judge0Service from '@/lib/judge0Service'
+import { toast } from 'sonner';
+import Judge0Service from '@/lib/judge0Service';
 
 interface TestCase {
   id: string
@@ -69,16 +69,16 @@ interface CodeExecutionStats {
 const AdvancedDSACompiler: React.FC<AdvancedDSACompilerProps> = ({ 
   problem, 
   onSubmit, 
-  timeLimit = 45 
+  timeLimit = 45;
 }) => {
-  const [code, setCode] = useState('')
-  const [language, setLanguage] = useState('python')
-  const [isRunning, setIsRunning] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [testResults, setTestResults] = useState<any[]>([])
-  const [timeLeft, setTimeLeft] = useState(timeLimit * 60)
-  const [showHints, setShowHints] = useState(false)
-  const [currentHint, setCurrentHint] = useState(0)
+  const [code, setCode] = useState('');
+  const [language, setLanguage] = useState('python');
+  const [isRunning, setIsRunning] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [testResults, setTestResults] = useState<any[]>([]);
+  const [timeLeft, setTimeLeft] = useState(timeLimit * 60);
+  const [showHints, setShowHints] = useState(false);
+  const [currentHint, setCurrentHint] = useState(0);
   const [codeExecutionStats, setCodeExecutionStats] = useState<CodeExecutionStats>({
     totalRuns: 0,
     successfulRuns: 0,
@@ -86,12 +86,12 @@ const AdvancedDSACompiler: React.FC<AdvancedDSACompilerProps> = ({
     memoryUsage: 0,
     codeQualityScore: 0
   })
-  const [syntaxValid, setSyntaxValid] = useState<boolean | null>(null)
-  const [autoSaveCount, setAutoSaveCount] = useState(0)
+  const [syntaxValid, setSyntaxValid] = useState<boolean | null>(null);
+  const [autoSaveCount, setAutoSaveCount] = useState(0);
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const judge0Service = Judge0Service.getInstance()
-  const startTime = useRef<Date>(new Date())
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const judge0Service = Judge0Service.getInstance();
+  const startTime = useRef<Date>(new Date());
 
   // Enhanced language templates with better starter code
   const languageTemplates = {
@@ -106,7 +106,7 @@ const AdvancedDSACompiler: React.FC<AdvancedDSACompilerProps> = ({
     pass
 
 # Example usage:
-# result = solution(${problem.examples[0]?.input || '[1,2,3]'})
+# result = solution(${problem.examples[0]?.input || '[1,2,3]'});
 # print(result)`,
     
     javascript: `function solution(${getJavaScriptParams(problem)}) {
@@ -169,8 +169,8 @@ int main() {
   }
 
   useEffect(() => {
-    setCode(languageTemplates[language as keyof typeof languageTemplates])
-    setSyntaxValid(null)
+    setCode(languageTemplates[language as keyof typeof languageTemplates]);
+    setSyntaxValid(null);
   }, [language])
 
   // Timer countdown with warnings
@@ -178,23 +178,23 @@ int main() {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          clearInterval(timer)
-          handleSubmit() // Auto-submit when time is up
-          return 0
+          clearInterval(timer);
+          handleSubmit() // Auto-submit when time is up;
+          return 0;
         }
         
         // Show warnings at key intervals
-        if (prev === 300) { // 5 minutes left
+        if (prev === 300) { // 5 minutes left;
           toast.warning('⏰ 5 minutes remaining!')
-        } else if (prev === 60) { // 1 minute left
+        } else if (prev === 60) { // 1 minute left;
           toast.error('⏰ 1 minute remaining!')
         }
         
-        return prev - 1
+        return prev - 1;
       })
     }, 1000)
 
-    return () => clearInterval(timer)
+    return () => clearInterval(timer);
   }, [])
 
   // Auto-save functionality
@@ -202,31 +202,31 @@ int main() {
     const autoSaveTimer = setInterval(() => {
       if (code.trim() && code !== languageTemplates[language as keyof typeof languageTemplates]) {
         localStorage.setItem(`dsa_code_${problem.id}_${language}`, code)
-        setAutoSaveCount(prev => prev + 1)
+        setAutoSaveCount(prev => prev + 1);
       }
     }, 30000) // Auto-save every 30 seconds
 
-    return () => clearInterval(autoSaveTimer)
+    return () => clearInterval(autoSaveTimer);
   }, [code, language, problem.id])
 
   // Load saved code on mount
   useEffect(() => {
-    const saved = localStorage.getItem(`dsa_code_${problem.id}_${language}`)
+    const saved = localStorage.getItem(`dsa_code_${problem.id}_${language}`);
     if (saved && saved !== languageTemplates[language as keyof typeof languageTemplates]) {
-      setCode(saved)
+      setCode(saved);
     }
   }, [language, problem.id])
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 
   const getTimeColor = () => {
-    if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes
-    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes
-    return 'text-green-600 bg-green-50 border-green-200'
+    if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes;
+    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes;
+    return 'text-green-600 bg-green-50 border-green-200';
   }
 
   const getDifficultyColor = (difficulty: string) => {
@@ -243,17 +243,17 @@ int main() {
     if (!code.trim()) return false
 
     try {
-      const validation = await judge0Service.validateSyntax(code, language)
-      setSyntaxValid(validation.isValid)
+      const validation = await judge0Service.validateSyntax(code, language);
+      setSyntaxValid(validation.isValid);
       
       if (!validation.isValid && validation.error) {
         toast.error(`Syntax Error: ${validation.error}`)
       }
       
-      return validation.isValid
+      return validation.isValid;
     } catch (error) {
-      setSyntaxValid(false)
-      return false
+      setSyntaxValid(false);
+      return false;
     }
   }
 
@@ -264,12 +264,12 @@ int main() {
       return
     }
 
-    setIsRunning(true)
-    const toastId = toast.loading('Validating and executing your code...')
+    setIsRunning(true);
+    const toastId = toast.loading('Validating and executing your code...');
 
     try {
       // First validate syntax
-      const isValid = await validateSyntax()
+      const isValid = await validateSyntax();
       if (!isValid) {
         toast.dismiss(toastId)
         toast.error('Please fix syntax errors before running')
@@ -277,15 +277,15 @@ int main() {
       }
 
       // Execute code with test cases
-      const results = await judge0Service.executeCode(code, language, problem.testCases)
-      setTestResults(results)
+      const results = await judge0Service.executeCode(code, language, problem.testCases);
+      setTestResults(results);
       
-      const passedCount = results.filter(r => r.passed).length
-      const totalCount = results.length
+      const passedCount = results.filter(r => r.passed).length;
+      const totalCount = results.length;
       
       // Update execution stats
-      const avgTime = results.reduce((sum, r) => sum + (parseFloat(r.executionTime || '0') || 0), 0) / results.length
-      const avgMemory = results.reduce((sum, r) => sum + (r.memory || 0), 0) / results.length
+      const avgTime = results.reduce((sum, r) => sum + (parseFloat(r.executionTime || '0') || 0), 0) / results.length;
+      const avgMemory = results.reduce((sum, r) => sum + (r.memory || 0), 0) / results.length;
       
       setCodeExecutionStats(prev => ({
         totalRuns: prev.totalRuns + 1,
@@ -311,53 +311,53 @@ int main() {
       toast.error('Execution failed: ' + error)
       console.error('Code execution error:', error)
     } finally {
-      setIsRunning(false)
+      setIsRunning(false);
     }
   }
 
   // Calculate code quality score based on various factors
   const calculateCodeQuality = (code: string, passed: number, total: number): number => {
-    let score = 0
+    let score = 0;
     
     // Test coverage (40% weight)
-    score += (passed / total) * 40
+    score += (passed / total) * 40;
     
     // Code length (20% weight) - prefer concise but readable code
-    const lines = code.split('\n').filter(line => line.trim()).length
-    const optimalLines = 50 // Assume 50 lines is optimal
-    const lengthScore = Math.max(0, 20 - Math.abs(lines - optimalLines) * 0.4)
-    score += lengthScore
+    const lines = code.split('\n').filter(line => line.trim()).length;
+    const optimalLines = 50 // Assume 50 lines is optimal;
+    const lengthScore = Math.max(0, 20 - Math.abs(lines - optimalLines) * 0.4);
+    score += lengthScore;
     
     // Comments and documentation (20% weight)
-    const commentLines = code.split('\n').filter(line => 
+    const commentLines = code.split('\n').filter(line =>;
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||
       line.includes('/*')
     ).length
-    score += Math.min(20, commentLines * 4)
+    score += Math.min(20, commentLines * 4);
     
     // Variable naming (10% weight)
-    const hasGoodNaming = /[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z]/.test(code)
-    if (hasGoodNaming) score += 10
+    const hasGoodNaming = /[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z]/.test(code);
+    if (hasGoodNaming) score += 10;
     
     // Function structure (10% weight)
-    const hasFunctions = /def |function |public |private/.test(code)
-    if (hasFunctions) score += 10
+    const hasFunctions = /def |function |public |private/.test(code);
+    if (hasFunctions) score += 10;
     
-    return Math.min(100, score)
+    return Math.min(100, score);
   }
 
   const handleSubmit = async () => {
-    setIsSubmitting(true)
-    const timeSpent = (timeLimit * 60) - timeLeft
+    setIsSubmitting(true);
+    const timeSpent = (timeLimit * 60) - timeLeft;
 
     try {
       // Final validation and execution
-      let finalResults = testResults
+      let finalResults = testResults;
       if (testResults.length === 0) {
         toast.loading('Running final tests before submission...')
-        finalResults = await judge0Service.executeCode(code, language, problem.testCases)
+        finalResults = await judge0Service.executeCode(code, language, problem.testCases);
       }
 
       const submissionData = {
@@ -377,7 +377,7 @@ int main() {
       // Clear auto-saved code
       localStorage.removeItem(`dsa_code_${problem.id}_${language}`)
       
-      onSubmit(code, submissionData, timeSpent)
+      onSubmit(code, submissionData, timeSpent);
       
       toast.success('🎯 Solution submitted successfully!', {
         description: `Time taken: ${Math.floor(timeSpent / 60)}m ${timeSpent % 60}s`
@@ -385,26 +385,26 @@ int main() {
     } catch (error) {
       toast.error('Submission failed: ' + error)
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
   const extractComplexity = (code: string, type: 'time' | 'space'): string => {
-    const pattern = new RegExp(`${type}\\s*complexity[:\\s]*o\\(([^)]+)\\)`, 'i')
-    const match = code.match(pattern)
-    return match ? `O(${match[1]})` : 'Not specified'
+    const pattern = new RegExp(`${type}\\s*complexity[:\\s]*o\\(([^)]+)\\)`, 'i');
+    const match = code.match(pattern);
+    return match ? `O(${match[1]})` : 'Not specified';
   }
 
   const showNextHint = () => {
     if (problem.hints && currentHint < problem.hints.length - 1) {
-      setCurrentHint(prev => prev + 1)
+      setCurrentHint(prev => prev + 1);
       toast.info(`💡 Hint ${currentHint + 2} revealed`)
     }
   }
 
   const getOverallProgress = () => {
-    if (testResults.length === 0) return 0
-    return (testResults.filter(r => r.passed).length / testResults.length) * 100
+    if (testResults.length === 0) return 0;
+    return (testResults.filter(r => r.passed).length / testResults.length) * 100;
   }
 
   return (
@@ -708,9 +708,9 @@ int main() {
 
                 <Button
                   onClick={() => {
-                    setCode(languageTemplates[language as keyof typeof languageTemplates])
-                    setSyntaxValid(null)
-                    setTestResults([])
+                    setCode(languageTemplates[language as keyof typeof languageTemplates]);
+                    setSyntaxValid(null);
+                    setTestResults([]);
                   }}
                   variant="outline"
                   size="sm"
@@ -821,41 +821,41 @@ function getPythonParams(problem: DSAProblem): string {
   if (problem.title.toLowerCase().includes('string')) return 's'
   if (problem.title.toLowerCase().includes('tree')) return 'root'
   if (problem.title.toLowerCase().includes('list')) return 'head'
-  return 'nums'
+  return 'nums';
 }
 
 function getJavaScriptParams(problem: DSAProblem): string {
-  return getPythonParams(problem)
+  return getPythonParams(problem);
 }
 
 function getJavaReturnType(problem: DSAProblem): string {
-  const output = problem.examples[0]?.output || ''
+  const output = problem.examples[0]?.output || '';
   if (output.includes('[') || output.includes(',')) return 'int[]'
   if (!isNaN(Number(output))) return 'int'
   if (output.includes('true') || output.includes('false')) return 'boolean'
-  return 'String'
+  return 'String';
 }
 
 function getJavaParams(problem: DSAProblem): string {
   if (problem.title.toLowerCase().includes('two sum')) return 'int[] nums, int target'
   if (problem.title.toLowerCase().includes('array')) return 'int[] nums'
   if (problem.title.toLowerCase().includes('string')) return 'String s'
-  return 'int[] nums'
+  return 'int[] nums';
 }
 
 function getCppReturnType(problem: DSAProblem): string {
-  const output = problem.examples[0]?.output || ''
+  const output = problem.examples[0]?.output || '';
   if (output.includes('[') || output.includes(',')) return 'vector<int>'
   if (!isNaN(Number(output))) return 'int'
   if (output.includes('true') || output.includes('false')) return 'bool'
-  return 'string'
+  return 'string';
 }
 
 function getCppParams(problem: DSAProblem): string {
   if (problem.title.toLowerCase().includes('two sum')) return 'vector<int>& nums, int target'
   if (problem.title.toLowerCase().includes('array')) return 'vector<int>& nums'
   if (problem.title.toLowerCase().includes('string')) return 'string s'
-  return 'vector<int>& nums'
+  return 'vector<int>& nums';
 }
 
-export default AdvancedDSACompiler
+export default AdvancedDSACompiler;

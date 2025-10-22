@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { connectToDatabase } from '@/lib/mongodb'
-import { ObjectId } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDatabase } from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 export async function POST(request: NextRequest) {
   try {
-    const { interviewId, results, type } = await request.json()
+    const { interviewId, results, type } = await request.json();
 
     if (!interviewId || !results) {
       return NextResponse.json(
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { db } = await connectToDatabase()
+    const { db } = await connectToDatabase();
 
     // Update the interview with results
     const updateResult = await db.collection('interviews').updateOne(
@@ -125,48 +125,48 @@ async function saveVirtualInterviewAnalytics(db: any, interviewId: string, resul
 }
 
 function calculateConversationNaturalness(conversationHistory: any[]): number {
-  if (!conversationHistory || conversationHistory.length === 0) return 0
+  if (!conversationHistory || conversationHistory.length === 0) return 0;
   
   // Simple metric based on conversation flow
-  let naturalness = 5 // Base score
+  let naturalness = 5 // Base score;
   
   // Check for back-and-forth conversation
-  let alternatingCount = 0
+  let alternatingCount = 0;
   for (let i = 1; i < conversationHistory.length; i++) {
     if (conversationHistory[i].speaker !== conversationHistory[i-1].speaker) {
       alternatingCount++
     }
   }
   
-  const alternatingRatio = alternatingCount / (conversationHistory.length - 1)
-  naturalness += alternatingRatio * 3 // Up to 3 bonus points
+  const alternatingRatio = alternatingCount / (conversationHistory.length - 1);
+  naturalness += alternatingRatio * 3 // Up to 3 bonus points;
   
-  return Math.min(naturalness, 10)
+  return Math.min(naturalness, 10);
 }
 
 function calculateEngagementScore(conversationHistory: any[]): number {
-  if (!conversationHistory || conversationHistory.length === 0) return 0
+  if (!conversationHistory || conversationHistory.length === 0) return 0;
   
-  const userMessages = conversationHistory.filter(msg => msg.speaker === 'user')
+  const userMessages = conversationHistory.filter(msg => msg.speaker === 'user');
   const totalWords = userMessages.reduce((sum, msg) => {
-    return sum + (msg.message?.split(' ').length || 0)
+    return sum + (msg.message?.split(' ').length || 0);
   }, 0)
   
-  const averageWordsPerResponse = totalWords / Math.max(userMessages.length, 1)
+  const averageWordsPerResponse = totalWords / Math.max(userMessages.length, 1);
   
   // Score based on response length (engagement indicator)
   if (averageWordsPerResponse > 50) return 10
   if (averageWordsPerResponse > 30) return 8
   if (averageWordsPerResponse > 20) return 6
   if (averageWordsPerResponse > 10) return 4
-  return 2
+  return 2;
 }
 
 function calculateFollowUpQuality(responses: any[]): number {
-  if (!responses || responses.length === 0) return 0
+  if (!responses || responses.length === 0) return 0;
   
-  const responsesWithFollowUp = responses.filter(r => r.aiFollowUp)
-  const followUpRatio = responsesWithFollowUp.length / responses.length
+  const responsesWithFollowUp = responses.filter(r => r.aiFollowUp);
+  const followUpRatio = responsesWithFollowUp.length / responses.length;
   
-  return followUpRatio * 10 // 0-10 scale based on follow-up frequency
+  return followUpRatio * 10 // 0-10 scale based on follow-up frequency;
 }

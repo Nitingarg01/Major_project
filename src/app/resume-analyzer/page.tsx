@@ -1,18 +1,18 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { LoaderFive } from '@/components/ui/loader'
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { LoaderFive } from '@/components/ui/loader';
 import { 
   FileText, Upload, Trash2, Eye, Calendar, Target, 
   BarChart3, CheckCircle, AlertCircle, XCircle, Sparkles,
   TrendingUp, Award, Briefcase, GraduationCap, Code, Star
 } from 'lucide-react'
-import { toast } from 'sonner'
-import Link from 'next/link'
+import { toast } from 'sonner';
+import Link from 'next/link';
 
 interface ResumeAnalysis {
   id: string
@@ -35,24 +35,24 @@ interface ResumeAnalysis {
 }
 
 const ResumeAnalyzer = () => {
-  const [analysisHistory, setAnalysisHistory] = useState<ResumeAnalysis[]>([])
-  const [currentAnalysis, setCurrentAnalysis] = useState<ResumeAnalysis | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [uploading, setUploading] = useState(false)
-  const [fileName, setFileName] = useState('')
-  const [targetRole, setTargetRole] = useState('')
-  const [activeTab, setActiveTab] = useState<'analyze' | 'history'>('analyze')
+  const [analysisHistory, setAnalysisHistory] = useState<ResumeAnalysis[]>([]);
+  const [currentAnalysis, setCurrentAnalysis] = useState<ResumeAnalysis | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [targetRole, setTargetRole] = useState('');
+  const [activeTab, setActiveTab] = useState<'analyze' | 'history'>('analyze');
 
   useEffect(() => {
-    fetchAnalysisHistory()
+    fetchAnalysisHistory();
   }, [])
 
   const fetchAnalysisHistory = async () => {
     try {
-      const response = await fetch('/api/resume-analysis-history')
+      const response = await fetch('/api/resume-analysis-history');
       if (response.ok) {
-        const data = await response.json()
-        setAnalysisHistory(data.analyses || [])
+        const data = await response.json();
+        setAnalysisHistory(data.analyses || []);
       }
     } catch (error) {
       console.error('Error fetching history:', error)
@@ -65,11 +65,11 @@ const ResumeAnalyzer = () => {
       return
     }
 
-    setUploading(true)
-    toast('🔍 Analyzing your resume...')
+    setUploading(true);
+    toast('🔍 Analyzing your resume...');
 
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       formData.append('resume', file)
       formData.append('targetRole', targetRole)
 
@@ -78,11 +78,11 @@ const ResumeAnalyzer = () => {
         body: formData
       })
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (response.ok) {
-        setCurrentAnalysis(result.analysis)
-        setAnalysisHistory(prev => [result.analysis, ...prev])
+        setCurrentAnalysis(result.analysis);
+        setAnalysisHistory(prev => [result.analysis, ...prev]);
         toast.success('✅ Resume analysis complete!')
       } else {
         toast.error(result.error || 'Analysis failed')
@@ -91,7 +91,7 @@ const ResumeAnalyzer = () => {
       console.error('Analysis error:', error)
       toast.error('Failed to analyze resume')
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
@@ -102,9 +102,9 @@ const ResumeAnalyzer = () => {
       })
 
       if (response.ok) {
-        setAnalysisHistory(prev => prev.filter(analysis => analysis.id !== id))
+        setAnalysisHistory(prev => prev.filter(analysis => analysis.id !== id));
         if (currentAnalysis?.id === id) {
-          setCurrentAnalysis(null)
+          setCurrentAnalysis(null);
         }
         toast.success('Analysis deleted successfully')
       } else {
@@ -117,15 +117,15 @@ const ResumeAnalyzer = () => {
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600 bg-green-50'
-    if (score >= 60) return 'text-yellow-600 bg-yellow-50'
-    return 'text-red-600 bg-red-50'
+    if (score >= 80) return 'text-green-600 bg-green-50';
+    if (score >= 60) return 'text-yellow-600 bg-yellow-50';
+    return 'text-red-600 bg-red-50';
   }
 
   const getScoreIcon = (score: number) => {
-    if (score >= 80) return <CheckCircle className="w-5 h-5 text-green-600" />
-    if (score >= 60) return <AlertCircle className="w-5 h-5 text-yellow-600" />  
-    return <XCircle className="w-5 h-5 text-red-600" />
+    if (score >= 80) return <CheckCircle className="w-5 h-5 text-green-600" />;
+    if (score >= 60) return <AlertCircle className="w-5 h-5 text-yellow-600" />;
+    return <XCircle className="w-5 h-5 text-red-600" />;
   }
 
   return (
@@ -233,8 +233,8 @@ const ResumeAnalyzer = () => {
                     onChange={(e) => {
                       const file = e.target.files?.[0]
                       if (file) {
-                        setFileName(file.name)
-                        analyzeResume(file)
+                        setFileName(file.name);
+                        analyzeResume(file);
                       }
                     }}
                     disabled={uploading}
@@ -447,4 +447,4 @@ const ResumeAnalyzer = () => {
   )
 }
 
-export default ResumeAnalyzer
+export default ResumeAnalyzer;

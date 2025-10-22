@@ -172,7 +172,7 @@ export class UserPreferencesService {
     preferences: UserInterviewPreferences,
     companyName: string
   ): boolean {
-    return preferences.dsaPreferences.companySpecificFocus && 
+    return preferences.dsaPreferences.companySpecificFocus &&;
            companyName && 
            companyName.trim().length > 0;
   }

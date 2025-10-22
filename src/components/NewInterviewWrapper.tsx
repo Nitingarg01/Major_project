@@ -1,26 +1,26 @@
 'use client'
 
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Clock, Building2, Users, Code, Brain, Calculator, Target, Save, Play, CheckCircle, AlertTriangle, Zap, Trophy, Settings } from 'lucide-react'
-import { toast } from 'sonner'
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Clock, Building2, Users, Code, Brain, Calculator, Target, Save, Play, CheckCircle, AlertTriangle, Zap, Trophy, Settings } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Components
-import IntroModal from './IntroModal'
-import InterviewClientForm from './InterviewClientForm'
-import DSACompiler from './DSACompiler'
-import AptitudeQuiz from './AptitudeQuiz'
-import AdvancedCameraMonitoring from './AdvancedCameraMonitoring'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Progress } from './ui/progress'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
+import IntroModal from './IntroModal';
+import InterviewClientForm from './InterviewClientForm';
+import DSACompiler from './DSACompiler';
+import AptitudeQuiz from './AptitudeQuiz';
+import AdvancedCameraMonitoring from './AdvancedCameraMonitoring';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 // Services
-import EnhancedInterviewAI from '@/lib/enhancedInterviewAI'
-import SmartAIService from '@/lib/smartAIService'
-import { Question, InterviewRound } from '@/types/interview'
+import EnhancedInterviewAI from '@/lib/enhancedInterviewAI';
+import SmartAIService from '@/lib/smartAIService';
+import { Question, InterviewRound } from '@/types/interview';
 
 interface ActivityAlert {
   type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement';
@@ -214,29 +214,29 @@ const NewInterviewWrapper = ({
   userSelectedRounds = ['technical', 'dsa', 'behavioral', 'aptitude']
 }: NewInterviewWrapperProps) => {
   // Core states
-  const [started, setStarted] = useState(false)
-  const [currentRound, setCurrentRound] = useState(0)
-  const [cameraOn, setCameraOn] = useState(true)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isPaused, setIsPaused] = useState(false)
+  const [started, setStarted] = useState(false);
+  const [currentRound, setCurrentRound] = useState(0);
+  const [cameraOn, setCameraOn] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Interview data states
-  const [roundConfigs, setRoundConfigs] = useState<InterviewRoundConfig[]>([])
-  const [generatedQuestions, setGeneratedQuestions] = useState<{[roundType: string]: any[]}>({})
-  const [companyData, setCompanyData] = useState<any>(null)
-  const [currentRoundQuestions, setCurrentRoundQuestions] = useState<any[]>([])
+  const [roundConfigs, setRoundConfigs] = useState<InterviewRoundConfig[]>([]);
+  const [generatedQuestions, setGeneratedQuestions] = useState<{[roundType: string]: any[]}>({});
+  const [companyData, setCompanyData] = useState<any>(null);
+  const [currentRoundQuestions, setCurrentRoundQuestions] = useState<any[]>([]);
 
   // Progress tracking
-  const [activityAlerts, setActivityAlerts] = useState<ActivityAlert[]>([])
-  const [interviewStartTime, setInterviewStartTime] = useState<Date | null>(null)
-  const [timeElapsed, setTimeElapsed] = useState(0)
-  const [roundTimeSpent, setRoundTimeSpent] = useState<{[roundId: string]: number}>({})
-  const [completedRounds, setCompletedRounds] = useState<Set<string>>(new Set())
-  const [roundProgress, setRoundProgress] = useState<{[roundId: string]: number}>({})
+  const [activityAlerts, setActivityAlerts] = useState<ActivityAlert[]>([]);
+  const [interviewStartTime, setInterviewStartTime] = useState<Date | null>(null);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [roundTimeSpent, setRoundTimeSpent] = useState<{[roundId: string]: number}>({});
+  const [completedRounds, setCompletedRounds] = useState<Set<string>>(new Set());
+  const [roundProgress, setRoundProgress] = useState<{[roundId: string]: number}>({});
 
   // Initialize AI services
-  const aiService = useMemo(() => EnhancedInterviewAI.getInstance(), [])
-  const smartAIService = useMemo(() => SmartAIService.getInstance(), [])
+  const aiService = useMemo(() => EnhancedInterviewAI.getInstance(), []);
+  const smartAIService = useMemo(() => SmartAIService.getInstance(), []);
 
   // Configure rounds based on user selection
   useEffect(() => {
@@ -251,10 +251,10 @@ const NewInterviewWrapper = ({
             order: index + 1
           }))
         
-        setRoundConfigs(selectedRounds)
+        setRoundConfigs(selectedRounds);
       } else {
         // Single round interview
-        const singleRound = DEFAULT_ROUND_CONFIGS.find(config => config.type === interviewType)
+        const singleRound = DEFAULT_ROUND_CONFIGS.find(config => config.type === interviewType);
         if (singleRound) {
           setRoundConfigs([{
             ...singleRound,
@@ -266,22 +266,22 @@ const NewInterviewWrapper = ({
       }
     }
 
-    configureRounds()
+    configureRounds();
   }, [interviewType, userSelectedRounds])
 
   // Initialize interview session
   useEffect(() => {
     const initializeSession = async () => {
-      if (roundConfigs.length === 0) return
+      if (roundConfigs.length === 0) return;
 
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         // Research company
-        const companyInfo = await aiService.researchCompany(companyName)
-        setCompanyData(companyInfo)
+        const companyInfo = await aiService.researchCompany(companyName);
+        setCompanyData(companyInfo);
 
         // Generate questions for all enabled rounds with timestamp to ensure uniqueness
-        const timestamp = Date.now()
+        const timestamp = Date.now();
         const questionsResult: {[roundType: string]: any[]} = {}
         
         for (const round of roundConfigs) {
@@ -328,7 +328,7 @@ const NewInterviewWrapper = ({
                   companyRelevance: 5
                 }
               ];
-              questionsResult[round.type] = aptitudeQuestions
+              questionsResult[round.type] = aptitudeQuestions;
               // Generate aptitude questions using SmartAI
               try {
                 const result = await smartAIService.processRequest({
@@ -398,15 +398,15 @@ const NewInterviewWrapper = ({
           } catch (roundError) {
             console.error(`Error generating ${round.type} questions:`, roundError)
             // Use fallback questions for this round
-            questionsResult[round.type] = questions.slice(0, round.questionCount)
+            questionsResult[round.type] = questions.slice(0, round.questionCount);
           }
         }
 
-        setGeneratedQuestions(questionsResult)
+        setGeneratedQuestions(questionsResult);
 
         // Set initial round questions if available
         if (roundConfigs[0] && questionsResult[roundConfigs[0].type]) {
-          setCurrentRoundQuestions(questionsResult[roundConfigs[0].type])
+          setCurrentRoundQuestions(questionsResult[roundConfigs[0].type]);
         }
 
         toast.success(`🎉 Interview prepared for ${companyName}! ${Object.keys(questionsResult).length} rounds ready.`)
@@ -418,26 +418,26 @@ const NewInterviewWrapper = ({
         const fallbackQuestions = {
           [roundConfigs[0]?.type || 'technical']: questions
         }
-        setGeneratedQuestions(fallbackQuestions)
-        setCurrentRoundQuestions(questions)
+        setGeneratedQuestions(fallbackQuestions);
+        setCurrentRoundQuestions(questions);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    initializeSession()
+    initializeSession();
   }, [roundConfigs, aiService, smartAIService, companyName, jobTitle, skills, experienceLevel, questions])
 
   // Handle interview start
   const handleStart = useCallback(() => {
-    setStarted(true)
-    setInterviewStartTime(new Date())
+    setStarted(true);
+    setInterviewStartTime(new Date());
     toast.success('Interview started! Good luck!')
   }, [])
 
   // Handle activity detection (moderate monitoring)
   const handleActivityDetected = useCallback((activity: ActivityAlert) => {
-    setActivityAlerts(prev => [...prev.slice(-9), activity])
+    setActivityAlerts(prev => [...prev.slice(-9), activity]);
     
     // Only show alerts, don't pause interview (moderate monitoring)
     if (activity.severity === 'high') {
@@ -447,15 +447,15 @@ const NewInterviewWrapper = ({
 
   // Handle round switching
   const handleRoundSwitch = useCallback((roundIndex: number) => {
-    if (roundIndex < 0 || roundIndex >= roundConfigs.length) return
+    if (roundIndex < 0 || roundIndex >= roundConfigs.length) return;
 
     const targetRound = roundConfigs[roundIndex]
     
     // Save current round time
     if (interviewStartTime && currentRound < roundConfigs.length) {
-      const currentTime = Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000)
-      const existingTime = Object.values(roundTimeSpent).reduce((sum, time) => sum + time, 0)
-      const roundTime = currentTime - existingTime
+      const currentTime = Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000);
+      const existingTime = Object.values(roundTimeSpent).reduce((sum, time) => sum + time, 0);
+      const roundTime = currentTime - existingTime;
       
       setRoundTimeSpent(prev => ({
         ...prev,
@@ -463,27 +463,27 @@ const NewInterviewWrapper = ({
       }))
     }
 
-    setCurrentRound(roundIndex)
+    setCurrentRound(roundIndex);
     
     // Load questions for new round
     if (generatedQuestions[targetRound.type]) {
-      setCurrentRoundQuestions(generatedQuestions[targetRound.type])
+      setCurrentRoundQuestions(generatedQuestions[targetRound.type]);
     }
 
     // Clear activity alerts for new round
-    setActivityAlerts([])
+    setActivityAlerts([]);
     
     toast.success(`Switched to ${targetRound.name}`)
   }, [roundConfigs, currentRound, interviewStartTime, roundTimeSpent, generatedQuestions])
 
   // Handle round completion
   const handleRoundComplete = useCallback(async (answers: any[], timeSpent: number) => {
-    if (currentRound >= roundConfigs.length) return
+    if (currentRound >= roundConfigs.length) return;
 
     const currentRoundConfig = roundConfigs[currentRound]
     
     // Mark round as completed
-    setCompletedRounds(prev => new Set([...prev, currentRoundConfig.id]))
+    setCompletedRounds(prev => new Set([...prev, currentRoundConfig.id]));
     setRoundProgress(prev => ({
       ...prev,
       [currentRoundConfig.id]: 100
@@ -499,13 +499,13 @@ const NewInterviewWrapper = ({
 
     // Auto-advance to next round or complete interview
     if (currentRound + 1 < roundConfigs.length) {
-      setTimeout(() => handleRoundSwitch(currentRound + 1), 1500)
+      setTimeout(() => handleRoundSwitch(currentRound + 1), 1500);
     } else {
       // Interview completed
       toast.success('🎉 Interview completed! Generating feedback...')
       
       setTimeout(() => {
-        window.location.href = `/interview/${id}/feedback`
+        window.location.href = `/interview/${id}/feedback`;
       }, 2000)
     }
   }, [currentRound, roundConfigs, handleRoundSwitch, id])
@@ -515,29 +515,29 @@ const NewInterviewWrapper = ({
     if (!started || isPaused || !interviewStartTime) return
 
     const interval = setInterval(() => {
-      setTimeElapsed(Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000))
+      setTimeElapsed(Math.floor((new Date().getTime() - interviewStartTime.getTime()) / 1000));
     }, 1000)
 
-    return () => clearInterval(interval)
+    return () => clearInterval(interval);
   }, [started, isPaused, interviewStartTime])
 
   // Helper functions
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 
   const calculateProgress = () => {
-    const totalRounds = roundConfigs.length
-    const completedCount = completedRounds.size
-    const currentProgress = currentRound < totalRounds ? (currentRound / totalRounds) * 100 : 100
-    return Math.min(100, currentProgress + (completedCount / totalRounds) * 100)
+    const totalRounds = roundConfigs.length;
+    const completedCount = completedRounds.size;
+    const currentProgress = currentRound < totalRounds ? (currentRound / totalRounds) * 100 : 100;
+    return Math.min(100, currentProgress + (completedCount / totalRounds) * 100);
   }
 
   const getCurrentRoundComponent = () => {
     if (currentRound >= roundConfigs.length) {
-      return <div className="text-center p-8">Interview completed!</div>
+      return <div className="text-center p-8">Interview completed!</div>;
     }
 
     const currentRoundConfig = roundConfigs[currentRound]
@@ -548,7 +548,7 @@ const NewInterviewWrapper = ({
         case 'dsa':
           // Ensure we have DSA problems and pass the first one to DSACompiler
           const dsaProblems = currentRoundQuestions || []
-        let dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
+        let dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null;
         
         // Debug logging to identify the issue
         console.log('DSA Problems:', dsaProblems)
@@ -560,7 +560,7 @@ const NewInterviewWrapper = ({
             // Check if it has the expected DSAProblem structure
             if (!dsaProblem.title || !dsaProblem.description) {
               console.warn('Invalid DSA problem structure, using fallback')
-              dsaProblem = null
+              dsaProblem = null;
             } else {
               // Create a clean, serializable version of the DSA problem
               // This prevents React rendering issues with complex nested objects
@@ -586,7 +586,7 @@ const NewInterviewWrapper = ({
             }
           } catch (sanitizeError) {
             console.error('Error sanitizing DSA problem:', sanitizeError)
-            dsaProblem = null
+            dsaProblem = null;
           }
         }
 
@@ -594,7 +594,7 @@ const NewInterviewWrapper = ({
       case 'dsa':
         // Ensure we have DSA problems and pass the first one to DSACompiler
         const dsaProblems = currentRoundQuestions || []
-        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null
+        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null;
         
         return (
           <DSACompiler
@@ -752,10 +752,10 @@ const NewInterviewWrapper = ({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               {roundConfigs.map((round, index) => {
-                const Icon = round.icon
-                const isActive = index === currentRound
-                const isCompleted = completedRounds.has(round.id)
-                const canAccess = index <= currentRound || isCompleted
+                const Icon = round.icon;
+                const isActive = index === currentRound;
+                const isCompleted = completedRounds.has(round.id);
+                const canAccess = index <= currentRound || isCompleted;
 
                 return (
                   <motion.button
@@ -874,4 +874,4 @@ const NewInterviewWrapper = ({
   )
 }
 
-export default NewInterviewWrapper
+export default NewInterviewWrapper;

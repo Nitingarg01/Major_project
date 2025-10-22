@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ManualPerformanceSaverProps {
   interviewData: {
@@ -23,22 +23,22 @@ interface ManualPerformanceSaverProps {
 export default function ManualPerformanceSaver({ 
   interviewData, 
   feedbackData, 
-  timeSpent = 0 
+  timeSpent = 0;
 }: ManualPerformanceSaverProps) {
-  const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const savePerformanceData = async () => {
     if (saving || saved) return
 
-    setSaving(true)
+    setSaving(true);
     try {
       // Calculate performance metrics
-      const labels = Object.keys(feedbackData.parameterScores || {})
-      const scores = Object.values(feedbackData.parameterScores || {})
-      const totalQuestions = Math.max(labels.length, 1) // Ensure at least 1
-      const correctAnswers = scores.filter(score => score >= 6).length
-      const overallScore = Math.round((feedbackData.overallScore || 0) * 10)
+      const labels = Object.keys(feedbackData.parameterScores || {});
+      const scores = Object.values(feedbackData.parameterScores || {});
+      const totalQuestions = Math.max(labels.length, 1) // Ensure at least 1;
+      const correctAnswers = scores.filter(score => score >= 6).length;
+      const overallScore = Math.round((feedbackData.overallScore || 0) * 10);
 
       // Generate round results based on interview type
       const roundResults = []
@@ -55,29 +55,29 @@ export default function ManualPerformanceSaver({
         }
       }
 
-      const roundType = getRoundType(interviewData.interviewType)
+      const roundType = getRoundType(interviewData.interviewType);
       
       // Create appropriate round results based on interview type
       if (interviewData.interviewType === 'mixed' && labels.length > 3) {
         // For mixed interviews, try to categorize by parameter names
-        const technicalParams = labels.filter(label => 
+        const technicalParams = labels.filter(label =>;
           label.toLowerCase().includes('technical') || 
           label.toLowerCase().includes('problem') ||
           label.toLowerCase().includes('coding') ||
           label.toLowerCase().includes('algorithm')
         )
-        const behavioralParams = labels.filter(label => 
+        const behavioralParams = labels.filter(label =>;
           label.toLowerCase().includes('behavioral') || 
           label.toLowerCase().includes('communication') ||
           label.toLowerCase().includes('leadership') ||
           label.toLowerCase().includes('teamwork')
         )
-        const otherParams = labels.filter(label => 
+        const otherParams = labels.filter(label =>;
           !technicalParams.includes(label) && !behavioralParams.includes(label)
         )
 
         if (technicalParams.length > 0) {
-          const techScore = technicalParams.reduce((sum, param) => 
+          const techScore = technicalParams.reduce((sum, param) =>;
             sum + (feedbackData.parameterScores[param] || 0), 0) / technicalParams.length
           roundResults.push({
             roundType: 'technical',
@@ -89,7 +89,7 @@ export default function ManualPerformanceSaver({
         }
 
         if (behavioralParams.length > 0) {
-          const behavioralScore = behavioralParams.reduce((sum, param) => 
+          const behavioralScore = behavioralParams.reduce((sum, param) =>;
             sum + (feedbackData.parameterScores[param] || 0), 0) / behavioralParams.length
           roundResults.push({
             roundType: 'behavioral',
@@ -101,7 +101,7 @@ export default function ManualPerformanceSaver({
         }
 
         if (otherParams.length > 0) {
-          const otherScore = otherParams.reduce((sum, param) => 
+          const otherScore = otherParams.reduce((sum, param) =>;
             sum + (feedbackData.parameterScores[param] || 0), 0) / otherParams.length
           roundResults.push({
             roundType: 'mixed',
@@ -186,7 +186,7 @@ export default function ManualPerformanceSaver({
           baseRecommendations.push('Significant improvement needed, consider additional practice')
         }
 
-        return baseRecommendations.slice(0, 4) // Limit to 4 recommendations
+        return baseRecommendations.slice(0, 4) // Limit to 4 recommendations;
       }
 
       const recommendations = getRecommendations(
@@ -224,15 +224,15 @@ export default function ManualPerformanceSaver({
         body: JSON.stringify(performanceData),
       })
 
-      const result = await response.json()
+      const result = await response.json();
       console.log('Manual save - response:', result)
 
       if (result.success) {
-        setSaved(true)
+        setSaved(true);
         toast.success('Performance data saved successfully!')
         // Refresh the page to update the dashboard
         setTimeout(() => {
-          window.location.href = '/dashboard'
+          window.location.href = '/dashboard';
         }, 2000)
       } else {
         toast.error(`Failed to save: ${result.error}`)
@@ -241,7 +241,7 @@ export default function ManualPerformanceSaver({
       console.error('Manual save error:', error)
       toast.error('Error saving performance data')
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 

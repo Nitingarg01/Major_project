@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       companyName = 'Technology Company',
       skills = [],
       interviewType = 'mixed',
-      experienceLevel = 'mid'
+      experienceLevel = 'mid';
     } = body;
 
     // Validate required fields
@@ -239,7 +239,7 @@ async function generateOverallAnalysis(
   try {
     const systemMessage = `You are a senior technical interviewer and hiring manager at ${companyName} conducting a comprehensive performance evaluation for a ${jobTitle} position. Provide detailed, actionable feedback that reflects ${companyName}'s hiring standards and culture.`;
     
-    const userMessage = `Analyze this complete interview performance for ${jobTitle} at ${companyName}:
+    const userMessage = `Analyze this complete interview performance for ${jobTitle} at ${companyName}:;
 
 INTERVIEW OVERVIEW:
 - Position: ${jobTitle} at ${companyName}

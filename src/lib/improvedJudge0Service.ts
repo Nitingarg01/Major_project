@@ -67,7 +67,7 @@ export class ImprovedJudge0Service {
       'ruby': 72        // Ruby 2.7.0
     };
     
-    return languageMap[language.toLowerCase()] || 71; // Default to Python
+    return languageMap[language.toLowerCase()] || 71; // Default to Python;
   }
 
   private async makeApiRequest(endpoint: string, method: 'GET' | 'POST' = 'GET', body?: any): Promise<any> {
@@ -112,7 +112,7 @@ export class ImprovedJudge0Service {
   private async getSubmissionResult(token: string): Promise<any> {
     // Poll for result with timeout
     const maxAttempts = 30;
-    const pollInterval = 1000; // 1 second
+    const pollInterval = 1000; // 1 second;
     
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const result = await this.makeApiRequest(`/submissions/${token}`);
@@ -155,9 +155,9 @@ export class ImprovedJudge0Service {
 try:
     ${inputParams.join(', ')}
     result = ${functionName}(${paramValues.join(', ')})
-    print(str(result).replace(' ', ''))
+    print(str(result).replace(' ', ''));
 except Exception as e:
-    print(f"Error: {e}")
+    print(f"Error: {e}");
 `;
       
       return executableCode;
@@ -206,7 +206,7 @@ except Exception as e:
           const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString() : '';
           
           // Check if execution was successful
-          const isSuccess = submission.status.id === 3; // Accepted
+          const isSuccess = submission.status.id === 3; // Accepted;
           const actualOutput = stdout.trim();
           const expectedOutput = testCase.expectedOutput.trim();
           const passed = isSuccess && actualOutput === expectedOutput;
@@ -234,7 +234,7 @@ except Exception as e:
           });
 
           // If there's a compilation error on first test case, return early
-          if (submission.status.id === 6 && results.length === 1) { // Compilation Error
+          if (submission.status.id === 6 && results.length === 1) { // Compilation Error;
             return {
               success: false,
               results,

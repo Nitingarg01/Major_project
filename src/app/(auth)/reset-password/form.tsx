@@ -1,15 +1,15 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { handleResetPassword } from './actions'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, Lock, CheckCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { handleResetPassword } from './actions';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { Eye, EyeOff, Lock, CheckCircle } from 'lucide-react';
 
 const schema = z.object({
   password: z.string().min(8, "Password should be minimum 8 characters!"),
@@ -24,11 +24,11 @@ interface ResetPasswordFormProps {
 }
 
 const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [resetSuccess, setResetSuccess] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -39,12 +39,12 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   })
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await handleResetPassword(token, data.password)
+      const response = await handleResetPassword(token, data.password);
       
       if (response?.success) {
-        setResetSuccess(true)
+        setResetSuccess(true);
         toast.success("Password reset successfully!")
         setTimeout(() => {
           router.push('/login')
@@ -53,10 +53,10 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
         toast.error(response?.error || "Failed to reset password")
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to reset password"
+      const errorMessage = error instanceof Error ? error.message : "Failed to reset password";
       toast.error(errorMessage)
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -172,4 +172,4 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   )
 }
 
-export default ResetPasswordForm
+export default ResetPasswordForm;

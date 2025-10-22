@@ -286,16 +286,16 @@ const PerformanceAnalytics = ({
           </CardHeader>
           <CardContent>
             <div className={`p-4 rounded-lg border ${
-              performance.anomalousActivity.riskLevel === 'high' 
+              performance.anomalousActivity.riskLevel === 'high';
                 ? 'bg-red-50 border-red-200' 
-                : performance.anomalousActivity.riskLevel === 'medium'
+                : performance.anomalousActivity.riskLevel === 'medium';
                 ? 'bg-yellow-50 border-yellow-200'
                 : 'bg-green-50 border-green-200'
             }`}>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant={
-                  performance.anomalousActivity.riskLevel === 'high' ? 'destructive' :
-                  performance.anomalousActivity.riskLevel === 'medium' ? 'secondary' : 'default'
+                  performance.anomalousActivity.riskLevel === 'high' ? 'destructive' :;
+                  performance.anomalousActivity.riskLevel === 'medium' ? 'secondary' : 'default';
                 }>
                   {performance.anomalousActivity.riskLevel.toUpperCase()} RISK
                 </Badge>

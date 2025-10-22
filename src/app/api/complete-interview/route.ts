@@ -204,7 +204,7 @@ function calculateCategoryScores(questions: any[], responses: any[]) {
       categoryScores[category].total += score;
     }
     
-    categoryScores[category].average = categoryScores[category].total > 0 
+    categoryScores[category].average = categoryScores[category].total > 0;
       ? Math.round((categoryScores[category].total / categoryScores[category].count) * 10) / 10
       : 0;
   });
@@ -269,11 +269,11 @@ async function getUserHistoricalPerformance(db: any, userId: string, companyName
       };
     }
     
-    const scores = previousAnalyses.map((analysis: any) => 
+    const scores = previousAnalyses.map((analysis: any) =>;
       analysis.performance?.overallScore || 0
     );
     
-    const improvementTrend = scores.length > 1 ? 
+    const improvementTrend = scores.length > 1 ?;
       (scores[0] > scores[1] ? 'improving' : 
        scores[0] < scores[1] ? 'declining' : 'stable') : 'insufficient_data';
     

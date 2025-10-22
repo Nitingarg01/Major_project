@@ -115,7 +115,7 @@ export class GroqAIService {
   }): Promise<InterviewQuestion[]> {
     const systemMessage = `You are an expert interview question generator specializing in ${params.interviewType} interviews for ${params.companyName}. Generate high-quality, relevant questions that assess candidates effectively for their specific role and experience level.`;
     
-    const userMessage = `
+    const userMessage = `;
       Generate exactly ${params.numberOfQuestions} ${params.interviewType} interview questions for:
       
       Position: ${params.jobTitle} at ${params.companyName}
@@ -192,7 +192,7 @@ export class GroqAIService {
   ): Promise<DSAProblem[]> {
     const systemMessage = `You are an expert DSA problem generator creating challenging and realistic coding interview problems for ${companyName}. Generate problems with comprehensive test cases that work with code execution systems.`;
     
-    const userMessage = `
+    const userMessage = `;
       Generate exactly ${count} unique DSA problems for ${companyName} technical interviews.
       
       Company Context: ${companyName}
@@ -205,7 +205,7 @@ export class GroqAIService {
       CRITICAL REQUIREMENTS:
       - Difficulty Level: ${difficulty}
       - Each problem MUST have at least 5 test cases
-      - Test cases must be in executable format (e.g., "nums = [1,2,3], target = 4")
+      - Test cases must be in executable format (e.g., "nums = [1,2,3], target = 4");
       - Include edge cases and boundary conditions
       - Expected outputs must be exact (e.g., "[0,1]" not "[0, 1]")
       - Problems should be realistic for ${companyName} interviews
@@ -287,7 +287,7 @@ export class GroqAIService {
   }> {
     const systemMessage = `You are an expert interview evaluator with extensive experience in ${companyContext} interviews. Provide detailed, constructive, and actionable feedback that helps candidates improve their interview performance.`;
     
-    const userMessage = `
+    const userMessage = `;
       Analyze this interview response in detail:
       
       Question Category: ${category}
@@ -350,7 +350,7 @@ export class GroqAIService {
     const systemMessage = `You are an expert interview evaluator for ${jobTitle} positions. Provide detailed, fair, and constructive performance analysis based on actual candidate responses. Focus on providing specific, actionable feedback that helps candidates improve.`;
     
     // Enhanced prompt with better structure and examples
-    const prompt = `
+    const prompt = `;
       Analyze this ${jobTitle} interview performance:
 
       Interview Context:
@@ -363,7 +363,7 @@ export class GroqAIService {
       ${questions.slice(0, Math.min(questions.length, 6)).map((q, index) => {
         const answer = answers[index] || 'No answer provided';
         const wordCount = answer.split(' ').length;
-        return `
+        return `;
       Q${index + 1} [${q.category || 'general'}]: ${q.question}
       Answer (${wordCount} words): ${answer}
       Expected: ${q.expectedAnswer || 'Comprehensive technical response'}
@@ -399,7 +399,7 @@ export class GroqAIService {
     const systemMessage = `You are a fast interview analyzer. Provide quick, accurate performance evaluation for a ${jobTitle} position. Be concise but thorough.`;
     
     // Simplified prompt for faster processing
-    const prompt = `
+    const prompt = `;
       Analyze this ${jobTitle} interview performance quickly:
 
       Interview Data:
@@ -628,10 +628,10 @@ export class GroqAIService {
 
   private generateMockOverallAnalysis(questions: any[], answers: string[]) {
     // Filter out empty or invalid answers
-    const meaningfulAnswers = answers.filter(ans => 
+    const meaningfulAnswers = answers.filter(ans =>;
       ans && 
-      ans.trim() !== '' && 
-      ans !== 'No answer provided' && 
+      ans.trim() !== '' &&;
+      ans !== 'No answer provided' &&;
       ans.trim().length > 5
     );
     
@@ -640,9 +640,9 @@ export class GroqAIService {
     const completionRate = answeredQuestions / totalQuestions;
     
     // Calculate quality metrics
-    const avgWordCount = meaningfulAnswers.length > 0 ?
+    const avgWordCount = meaningfulAnswers.length > 0 ?;
       meaningfulAnswers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / meaningfulAnswers.length : 0;
-    const avgCharLength = meaningfulAnswers.length > 0 ?
+    const avgCharLength = meaningfulAnswers.length > 0 ?;
       meaningfulAnswers.reduce((sum, ans) => sum + ans.length, 0) / meaningfulAnswers.length : 0;
     
     // Improved scoring algorithm

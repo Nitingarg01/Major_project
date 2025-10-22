@@ -1,14 +1,14 @@
-import React from 'react'
-import { getInterviewDetails, getQuestions } from '../perform/actions'
-import FeedbackAccordion from '@/components/FeedbackAccordion'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import EnhancedFeedback from '@/components/EnhancedFeedback'
-import CompanyPreparationDashboard from '@/components/CompanyPreparationDashboard'
-import { auth } from '@/app/auth'
-import { redirect } from 'next/navigation'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import React from 'react';
+import { getInterviewDetails, getQuestions } from '../perform/actions';
+import FeedbackAccordion from '@/components/FeedbackAccordion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import EnhancedFeedback from '@/components/EnhancedFeedback';
+import CompanyPreparationDashboard from '@/components/CompanyPreparationDashboard';
+import { auth } from '@/app/auth';
+import { redirect } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Building2,
   TrendingUp,
@@ -29,30 +29,30 @@ import {
   AlertTriangle,
   Star
 } from 'lucide-react'
-import Link from 'next/link'
-import PerformanceSaver from '@/components/PerformanceSaver'
-import ManualPerformanceSaver from '@/components/ManualPerformanceSaver'
-import FeedbackLoader from '@/components/FeedbackLoader'
-import PerformanceDebugger from '@/components/PerformanceDebugger'
-import CompanyIntelligenceService from '@/lib/companyIntelligence'
-import FeedbackLoader from '@/components/FeedbackLoader'
+import Link from 'next/link';
+import PerformanceSaver from '@/components/PerformanceSaver';
+import ManualPerformanceSaver from '@/components/ManualPerformanceSaver';
+import FeedbackLoader from '@/components/FeedbackLoader';
+import PerformanceDebugger from '@/components/PerformanceDebugger';
+import CompanyIntelligenceService from '@/lib/companyIntelligence';
+import FeedbackLoader from '@/components/FeedbackLoader';
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
 
 const page = async ({ params }: PageProps) => {
-  const session = await auth()
+  const session = await auth();
   if (!session?.user) {
   if(!session?.user){
-    redirect('/login')
+    redirect('/login');
   }
 
-  const id = (await params).id as string
+  const id = (await params).id as string;
   console.log("feedback", id)
 
-  const interview = await getInterviewDetails(id)
-  const det = await getQuestions(id)
+  const interview = await getInterviewDetails(id);
+  const det = await getQuestions(id);
 
   if (!interview) {
     return (
@@ -81,7 +81,7 @@ const page = async ({ params }: PageProps) => {
     culture: ['Innovation', 'Collaboration', 'Excellence']
   }
   // Get company intelligence for enhanced feedback
-  const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName)
+  const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName);
 
   const arr = det?.extracted?.parameterScores || {}
   console.log(det)
@@ -94,15 +94,15 @@ const page = async ({ params }: PageProps) => {
   console.log(data,labels)
 
   if(!det || !det.extracted){
-    return <FeedbackLoader interviewId={id} />
+    return <FeedbackLoader interviewId={id} />;
   }
 
   // Calculate company-specific insights
-  const overallScore = det?.extracted?.overallScore || 0
-  const readinessScore = Math.min(100, Math.max(0, overallScore * 10))
+  const overallScore = det?.extracted?.overallScore || 0;
+  const readinessScore = Math.min(100, Math.max(0, overallScore * 10));
 
   // Generate company-specific recommendations
-  const companySpecificTips = companyData.preparationTips
+  const companySpecificTips = companyData.preparationTips;
   
   // Generate company-specific recommendations
   const companySpecificTips = companyIntelligence?.companyData?.preparationTips || [
@@ -121,16 +121,16 @@ const page = async ({ params }: PageProps) => {
   }
 
   // Generate strengths and improvements
-  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>
+  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>;
     `Strong ${label.toLowerCase()} skills demonstrated`
   )
-  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>
+  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>;
   
   // Generate strengths and improvements
-  const strengths = labels.filter((_, index) => data[index] >= 7).map(label => 
+  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>;
     `Strong ${label.toLowerCase()} skills demonstrated`
   )
-  const improvements = labels.filter((_, index) => data[index] < 5).map(label => 
+  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>;
     `Focus on improving ${label.toLowerCase()} abilities`
   )
 
@@ -160,16 +160,16 @@ const page = async ({ params }: PageProps) => {
       completedMockInterviews: 1,
       averageScore: Math.round(overallScore * 10),
       improvementTrend: Math.max(0, Math.round((overallScore - 5) * 2)),
-      readyForRealInterview: overallScore >= 7
+      readyForRealInterview: overallScore >= 7;
     }
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 8) return 'bg-green-400'
-    if (score >= 6) return 'bg-blue-400'
-    if (score >= 6) return 'bg-blue-400' 
-    if (score >= 4) return 'bg-yellow-400'
-    return 'bg-red-400'
+    if (score >= 8) return 'bg-green-400';
+    if (score >= 6) return 'bg-blue-400';
+    if (score >= 6) return 'bg-blue-400';
+    if (score >= 4) return 'bg-yellow-400';
+    return 'bg-red-400';
   }
 
   const getScoreMessage = (score: number) => {
@@ -179,8 +179,8 @@ const page = async ({ params }: PageProps) => {
     return { message: "Needs significant improvement before interviewing.", icon: AlertTriangle, color: "text-red-800" }
   }
 
-  const scoreInfo = getScoreMessage(overallScore)
-  const ScoreIcon = scoreInfo.icon
+  const scoreInfo = getScoreMessage(overallScore);
+  const ScoreIcon = scoreInfo.icon;
 
   // Debug logging (moved outside JSX)
   console.log('Feedback page data:', {
@@ -474,4 +474,4 @@ const page = async ({ params }: PageProps) => {
   )
 }
 
-export default page
+export default page;

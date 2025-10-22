@@ -182,7 +182,7 @@ export class EnhancedDSAGenerator {
     // Create context-aware prompt for unique problem generation
     const systemMessage = `You are a senior technical interviewer at ${companyName} creating UNIQUE, company-specific DSA problems that reflect real business challenges and technical requirements.`;
 
-    const userMessage = `Generate 1 UNIQUE DSA problem specifically for ${companyName} interviews.
+    const userMessage = `Generate 1 UNIQUE DSA problem specifically for ${companyName} interviews.;
 
 Company Context:
 - Business: ${companyContext.businessDomains.join(', ')}
@@ -455,7 +455,7 @@ Return ONLY valid JSON:
       return !similarProblems;
     } catch (error) {
       console.error('❌ Error checking problem uniqueness:', error);
-      return true; // Assume unique if check fails
+      return true; // Assume unique if check fails;
     }
   }
 
@@ -493,7 +493,7 @@ Return ONLY valid JSON:
       });
 
       // Average uniqueness score
-      stats.averageUniquenessScore = problems.length > 0
+      stats.averageUniquenessScore = problems.length > 0;
         ? problems.reduce((sum: number, p: any) => sum + (p.uniquenessScore || 0), 0) / problems.length
         : 0;
 

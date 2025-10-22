@@ -1,11 +1,11 @@
 'use client'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { Building2, Clock, Target, Users, Brain, ArrowRight, Play, FileText, Zap } from 'lucide-react'
-import InterviewModeSelector from './InterviewModeSelector'
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Building2, Clock, Target, Users, Brain, ArrowRight, Play, FileText, Zap } from 'lucide-react';
+import InterviewModeSelector from './InterviewModeSelector';
 
 interface InterviewPageClientProps {
   interview: any
@@ -18,8 +18,8 @@ const InterviewPageClient: React.FC<InterviewPageClientProps> = ({
   det,
   companyIntelligence
 }) => {
-  const router = useRouter()
-  const [showModeSelector, setShowModeSelector] = useState(false)
+  const router = useRouter();
+  const [showModeSelector, setShowModeSelector] = useState(false);
 
   function capitalizeFirstWord(str: string) {
     if (!str) return "";
@@ -43,7 +43,7 @@ const InterviewPageClient: React.FC<InterviewPageClientProps> = ({
     }
   }
 
-  const InterviewTypeIcon = getInterviewTypeIcon(interview.interviewType || 'mixed')
+  const InterviewTypeIcon = getInterviewTypeIcon(interview.interviewType || 'mixed');
 
   if (showModeSelector) {
     return (
@@ -120,8 +120,8 @@ const InterviewPageClient: React.FC<InterviewPageClientProps> = ({
               <div className="space-y-4">
                 <div>
                   <Badge variant="outline" className={`
-                    ${companyIntelligence.companyData.difficulty === 'hard' ? 'border-red-300 text-red-700' :
-                    companyIntelligence.companyData.difficulty === 'medium' ? 'border-yellow-300 text-yellow-700' :
+                    ${companyIntelligence.companyData.difficulty === 'hard' ? 'border-red-300 text-red-700' :;
+                    companyIntelligence.companyData.difficulty === 'medium' ? 'border-yellow-300 text-yellow-700' :;
                     'border-green-300 text-green-700'}
                   `}>
                     {companyIntelligence.companyData.difficulty.toUpperCase()} Difficulty
@@ -295,4 +295,4 @@ const InterviewPageClient: React.FC<InterviewPageClientProps> = ({
   )
 }
 
-export default InterviewPageClient
+export default InterviewPageClient;

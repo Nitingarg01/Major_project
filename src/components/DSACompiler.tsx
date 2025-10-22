@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Play, Square, Check, X, Clock, Code, TestTube, Lightbulb, AlertTriangle } from 'lucide-react'
-import { toast } from 'sonner'
-import ImprovedJudge0Service from '@/lib/improvedJudge0Service'
+import React, { useState, useRef, useEffect } from 'react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Play, Square, Check, X, Clock, Code, TestTube, Lightbulb, AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
+import ImprovedJudge0Service from '@/lib/improvedJudge0Service';
 
 interface TestCase {
   id: string
@@ -48,12 +48,12 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [
       {
         input: 'nums = [2,7,11,15], target = 9',
         output: '[0,1]',
-        explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].'
+        explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].';
       },
       {
         input: 'nums = [3,2,4], target = 6',
         output: '[1,2]',
-        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].'
+        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].';
       }
     ],
     testCases: [
@@ -132,7 +132,7 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [
     constraints: [
       '1 <= intervals.length <= 10^4',
       'intervals[i].length == 2',
-      '0 <= starti <= endi <= 10^4'
+      '0 <= starti <= endi <= 10^4';
     ],
     topics: ['Array', 'Sorting'],
     hints: [
@@ -146,21 +146,21 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [
 const DSACompiler: React.FC<DSACompilerProps> = ({ 
   problem: providedProblem, 
   onSubmit, 
-  timeLimit = 45 
+  timeLimit = 45;
 }) => {
   // Use provided problem or default to first problem
   const problem = providedProblem || DEFAULT_DSA_PROBLEMS[0];
   
-  const [code, setCode] = useState('')
-  const [language, setLanguage] = useState('python')
-  const [isRunning, setIsRunning] = useState(false)
-  const [testResults, setTestResults] = useState<any[]>([])
-  const [timeLeft, setTimeLeft] = useState(timeLimit * 60)
-  const [showHints, setShowHints] = useState(false)
-  const [currentHint, setCurrentHint] = useState(0)
-  const [judge0Service] = useState(() => ImprovedJudge0Service.getInstance())
+  const [code, setCode] = useState('');
+  const [language, setLanguage] = useState('python');
+  const [isRunning, setIsRunning] = useState(false);
+  const [testResults, setTestResults] = useState<any[]>([]);
+  const [timeLeft, setTimeLeft] = useState(timeLimit * 60);
+  const [showHints, setShowHints] = useState(false);
+  const [currentHint, setCurrentHint] = useState(0);
+  const [judge0Service] = useState(() => ImprovedJudge0Service.getInstance());
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Helper function to safely extract parameters from input
   const getInputParameters = (input: any): string => {
@@ -178,7 +178,7 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
     pass
 
 # Test your solution
-# result = solution(${problem?.examples?.[0]?.input || '[1,2,3]'})
+# result = solution(${problem?.examples?.[0]?.input || '[1,2,3]'});
 # print(result)`,
     
     javascript: `function solution(${getInputParameters(problem?.examples?.[0]?.input)}) {
@@ -219,7 +219,7 @@ int main() {
 
   useEffect(() => {
     if (problem) {
-      setCode(languageTemplates[language as keyof typeof languageTemplates])
+      setCode(languageTemplates[language as keyof typeof languageTemplates]);
     }
   }, [language, problem])
 
@@ -228,27 +228,27 @@ int main() {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          clearInterval(timer)
-          handleSubmit() // Auto-submit when time is up
-          return 0
+          clearInterval(timer);
+          handleSubmit() // Auto-submit when time is up;
+          return 0;
         }
-        return prev - 1
+        return prev - 1;
       })
     }, 1000)
 
-    return () => clearInterval(timer)
+    return () => clearInterval(timer);
   }, [])
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 
   const getTimeColor = () => {
-    if (timeLeft <= 300) return 'text-red-600 bg-red-50' // Last 5 minutes
-    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50' // Last 10 minutes
-    return 'text-green-600 bg-green-50'
+    if (timeLeft <= 300) return 'text-red-600 bg-red-50' // Last 5 minutes;
+    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50' // Last 10 minutes;
+    return 'text-green-600 bg-green-50';
   }
 
   const getDifficultyColor = (difficulty: string) => {
@@ -266,29 +266,29 @@ int main() {
       return
     }
 
-    setIsRunning(true)
+    setIsRunning(true);
     toast.loading('Running your code against test cases...')
 
     try {
       // Use real Judge0 service for code execution
-      const executionResult = await judge0Service.executeCode(code, language, problem.testCases || [])
+      const executionResult = await judge0Service.executeCode(code, language, problem.testCases || []);
       
       if (!executionResult.success && executionResult.compilationError) {
         toast.error('Compilation Error: ' + executionResult.compilationError)
-        setTestResults([])
+        setTestResults([]);
         return
       }
 
       if (!executionResult.success && executionResult.runtimeError) {
         toast.error('Runtime Error: ' + executionResult.runtimeError)
-        setTestResults([])
+        setTestResults([]);
         return
       }
 
-      setTestResults(executionResult.results)
+      setTestResults(executionResult.results);
       
-      const passedCount = executionResult.totalPassed
-      const totalCount = executionResult.totalTests
+      const passedCount = executionResult.totalPassed;
+      const totalCount = executionResult.totalTests;
       
       if (passedCount === totalCount) {
         toast.success(`✅ All ${totalCount} test cases passed!`)
@@ -303,15 +303,15 @@ int main() {
       
       // Fallback to mock execution if Judge0 fails
       try {
-        const fallbackResult = await judge0Service.executeCodeFallback(code, language, problem.testCases || [])
-        setTestResults(fallbackResult.results)
+        const fallbackResult = await judge0Service.executeCodeFallback(code, language, problem.testCases || []);
+        setTestResults(fallbackResult.results);
         toast.warning('Using fallback execution (Judge0 unavailable)')
       } catch (fallbackError) {
         console.error('Fallback execution also failed:', fallbackError)
-        setTestResults([])
+        setTestResults([]);
       }
     } finally {
-      setIsRunning(false)
+      setIsRunning(false);
     }
   }
 
@@ -324,12 +324,12 @@ int main() {
       problem: problem.id
     }
     
-    onSubmit(code, finalResults)
+    onSubmit(code, finalResults);
   }
 
   const showNextHint = () => {
     if (problem.hints && currentHint < problem.hints.length - 1) {
-      setCurrentHint(prev => prev + 1)
+      setCurrentHint(prev => prev + 1);
     }
   }
 
@@ -612,26 +612,26 @@ int main() {
 // Helper functions for language templates
 function getReturnType(problem: DSAProblem | null): string {
   if (!problem) return 'int'
-  const output = problem?.examples?.[0]?.output || ''
+  const output = problem?.examples?.[0]?.output || '';
   if (output.includes('[') || output.includes(',')) return 'int[]'
   if (!isNaN(Number(output))) return 'int'
-  return 'String'
+  return 'String';
 }
 
 function getJavaParams(problem: DSAProblem | null): string {
-  return 'int[] nums' // Simplified
+  return 'int[] nums' // Simplified;
 }
 
 function getCppReturnType(problem: DSAProblem | null): string {
   if (!problem) return 'int'
-  const output = problem?.examples?.[0]?.output || ''
+  const output = problem?.examples?.[0]?.output || '';
   if (output.includes('[') || output.includes(',')) return 'vector<int>'
   if (!isNaN(Number(output))) return 'int'
-  return 'string'
+  return 'string';
 }
 
 function getCppParams(problem: DSAProblem | null): string {
-  return 'vector<int>& nums' // Simplified
+  return 'vector<int>& nums' // Simplified;
 }
 
 // Mock code execution function
@@ -641,7 +641,7 @@ async function mockExecuteCode(code: string, language: string, testCases: TestCa
   
   // Mock results - in real implementation, you'd use a code execution service
   return testCases.map((testCase, index) => {
-    const passed = Math.random() > 0.3 // 70% pass rate for demo
+    const passed = Math.random() > 0.3 // 70% pass rate for demo;
     return {
       passed,
       input: testCase.input,
@@ -652,4 +652,4 @@ async function mockExecuteCode(code: string, language: string, testCases: TestCa
   })
 }
 
-export default DSACompiler
+export default DSACompiler;

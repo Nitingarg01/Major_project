@@ -1,14 +1,14 @@
 'use client'
-import React, { useState } from 'react'
-import AdvancedCameraMonitoring from '@/components/AdvancedCameraMonitoring'
+import React, { useState } from 'react';
+import AdvancedCameraMonitoring from '@/components/AdvancedCameraMonitoring';
 
 const TestCameraPage = () => {
-  const [cameraOn, setCameraOn] = useState(false)
-  const [alerts, setAlerts] = useState<any[]>([])
+  const [cameraOn, setCameraOn] = useState(false);
+  const [alerts, setAlerts] = useState<any[]>([]);
 
   const handleActivityDetected = (activity: any) => {
     console.log('Activity detected:', activity)
-    setAlerts(prev => [...prev.slice(-4), activity]) // Keep last 5 alerts
+    setAlerts(prev => [...prev.slice(-4), activity]) // Keep last 5 alerts;
   }
 
   return (
@@ -39,8 +39,8 @@ const TestCameraPage = () => {
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{alert.type}</span>
                     <span className={`text-xs px-2 py-1 rounded ${
-                      alert.severity === 'high' ? 'bg-red-100 text-red-800' :
-                      alert.severity === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                      alert.severity === 'high' ? 'bg-red-100 text-red-800' :;
+                      alert.severity === 'medium' ? 'bg-yellow-100 text-yellow-800' :;
                       'bg-blue-100 text-blue-800'
                     }`}>
                       {alert.severity}
@@ -60,4 +60,4 @@ const TestCameraPage = () => {
   )
 }
 
-export default TestCameraPage
+export default TestCameraPage;

@@ -1,12 +1,12 @@
 'use client'
-import { useState } from 'react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles, CheckCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -15,10 +15,10 @@ export default function SignUpPage() {
     password: '',
     confirmPassword: ''
   })
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,7 +33,7 @@ export default function SignUpPage() {
       return
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const response = await fetch('/api/auth/signup', {
@@ -48,7 +48,7 @@ export default function SignUpPage() {
         }),
       })
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok) {
         toast.success('Account created successfully!')
@@ -71,7 +71,7 @@ export default function SignUpPage() {
     } catch (error) {
       toast.error('Something went wrong. Please try again.')
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 

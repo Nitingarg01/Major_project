@@ -1,11 +1,11 @@
-import { auth } from "../auth"
-import EnhancedInterviewCreationForm from "@/components/EnhancedInterviewCreationForm"
+import { auth } from "../auth";
+import EnhancedInterviewCreationForm from "@/components/EnhancedInterviewCreationForm";
 
 const page = async () => {
-  const session = await auth()
+  const session = await auth();
   
   if (!session?.user) {
-    return <div>Please login to create interviews</div>
+    return <div>Please login to create interviews</div>;
   }
 
   return (
@@ -21,4 +21,4 @@ const page = async () => {
   )
 }
 
-export default page
+export default page;

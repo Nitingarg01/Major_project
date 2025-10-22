@@ -31,7 +31,7 @@ function extractJSON(response) {
         let jsonString = '';
         if (jsonObjectMatch && jsonArrayMatch) {
           // Choose the longer match (more likely to be complete)
-          jsonString = jsonObjectMatch[0].length > jsonArrayMatch[0].length 
+          jsonString = jsonObjectMatch[0].length > jsonArrayMatch[0].length;
             ? jsonObjectMatch[0] 
             : jsonArrayMatch[0];
         } else if (jsonObjectMatch) {
@@ -68,7 +68,7 @@ function extractJSON(response) {
 console.log('Testing JSON extraction fixes...\n');
 
 // Test 1: Response with descriptive text before JSON
-const response1 = `Here is the JSON response with company data:
+const response1 = `Here is the JSON response with company data:;
 
 {
   "name": "TechCorp",
@@ -81,7 +81,7 @@ const response1 = `Here is the JSON response with company data:
 }`;
 
 // Test 2: Response with markdown code blocks
-const response2 = `Here are the interview questions:
+const response2 = `Here are the interview questions:;
 
 \`\`\`json
 [
@@ -95,7 +95,7 @@ const response2 = `Here are the interview questions:
 \`\`\``;
 
 // Test 3: Response with mixed content
-const response3 = `The system generated the following DSA problems for your interview:
+const response3 = `The system generated the following DSA problems for your interview:;
 
 Here are 3 challenging problems:
 

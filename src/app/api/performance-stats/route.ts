@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/app/auth'
-import { connectToDatabase } from '@/lib/db'
-import { ObjectId } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/app/auth';
+import { connectToDatabase } from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const { db } = await connectToDatabase()
+    const { db } = await connectToDatabase();
     
     // Fetch all completed interviews with performance data
     const performances = await db.collection('performances').find({
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     }).sort({ completedAt: -1 }).toArray()
 
     // Calculate performance statistics
-    const stats = calculatePerformanceStats(performances)
+    const stats = calculatePerformanceStats(performances);
 
     return NextResponse.json({
       success: true,
@@ -55,19 +55,19 @@ function calculatePerformanceStats(performances: any[]) {
     }
   }
 
-  const totalInterviews = performances.length
-  const totalScore = performances.reduce((sum, p) => sum + p.score, 0)
-  const averageScore = Math.round(totalScore / totalInterviews)
-  const totalTimeSpent = performances.reduce((sum, p) => sum + p.timeSpent, 0)
+  const totalInterviews = performances.length;
+  const totalScore = performances.reduce((sum, p) => sum + p.score, 0);
+  const averageScore = Math.round(totalScore / totalInterviews);
+  const totalTimeSpent = performances.reduce((sum, p) => sum + p.timeSpent, 0);
 
   // Calculate improvement trend (last 3 vs previous 3)
-  let improvementTrend = 0
+  let improvementTrend = 0;
   if (performances.length >= 6) {
-    const recent3 = performances.slice(0, 3)
-    const previous3 = performances.slice(3, 6)
-    const recentAvg = recent3.reduce((sum, p) => sum + p.score, 0) / 3
-    const previousAvg = previous3.reduce((sum, p) => sum + p.score, 0) / 3
-    improvementTrend = Math.round(recentAvg - previousAvg)
+    const recent3 = performances.slice(0, 3);
+    const previous3 = performances.slice(3, 6);
+    const recentAvg = recent3.reduce((sum, p) => sum + p.score, 0) / 3;
+    const previousAvg = previous3.reduce((sum, p) => sum + p.score, 0) / 3;
+    improvementTrend = Math.round(recentAvg - previousAvg);
   }
 
   // Find strongest and weakest areas
@@ -81,20 +81,20 @@ function calculatePerformanceStats(performances: any[]) {
     })
   })
 
-  let strongestArea = 'N/A'
-  let weakestArea = 'N/A'
-  let highestAvg = 0
-  let lowestAvg = 100
+  let strongestArea = 'N/A';
+  let weakestArea = 'N/A';
+  let highestAvg = 0;
+  let lowestAvg = 100;
 
   Object.entries(areaScores).forEach(([area, scores]) => {
-    const avg = scores.reduce((sum, score) => sum + score, 0) / scores.length
+    const avg = scores.reduce((sum, score) => sum + score, 0) / scores.length;
     if (avg > highestAvg) {
-      highestAvg = avg
-      strongestArea = area
+      highestAvg = avg;
+      strongestArea = area;
     }
     if (avg < lowestAvg) {
-      lowestAvg = avg
-      weakestArea = area
+      lowestAvg = avg;
+      weakestArea = area;
     }
   })
 

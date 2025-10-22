@@ -306,7 +306,7 @@ export class EnhancedRoundManager {
     try {
       const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-      const prompt = `
+      const prompt = `;
         Analyze this ${round.type} interview round performance for a ${jobTitle} position at ${companyName}.
         
         Round Type: ${round.type}
@@ -386,7 +386,7 @@ export class EnhancedRoundManager {
         securityAlerts: session.sessionMetadata.suspiciousActivity
       };
 
-      const prompt = `
+      const prompt = `;
         Generate a comprehensive interview report for a ${session.jobTitle} candidate interviewed at ${session.companyName}.
         
         Session Data:
@@ -577,7 +577,7 @@ export class EnhancedRoundManager {
         nextSteps: avgScore >= 7 ? ['Apply to real interviews', 'Practice advanced topics'] : ['Continue mock interviews', 'Focus on weak areas'],
         focusAreas: avgScore < 6 ? ['Technical skills', 'Communication'] : ['Advanced concepts', 'System design'],
         resources: ['LeetCode practice', 'System design courses', 'Mock interview platforms'],
-        readinessLevel: avgScore >= 8 ? 'advanced' : avgScore >= 6 ? 'intermediate' : 'beginner'
+        readinessLevel: avgScore >= 8 ? 'advanced' : avgScore >= 6 ? 'intermediate' : 'beginner';
       }
     };
   }

@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
-import { Badge } from './ui/badge'
-import { Button } from './ui/button'
-import { Progress } from './ui/progress'
+import React from 'react';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { Progress } from './ui/progress';
 import { 
   CheckCircle, 
   Circle, 
@@ -19,7 +19,7 @@ import {
   Trophy,
   Target
 } from 'lucide-react'
-import { InterviewRound } from '@/types/interview'
+import { InterviewRound } from '@/types/interview';
 
 interface ImprovedRoundSwitcherProps {
   rounds: InterviewRound[]
@@ -40,7 +40,7 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
   timeSpent = {},
   totalTimeLimit = 90,
   submittedRounds = new Set(),
-  showSubmissionWarning = true
+  showSubmissionWarning = true;
 }) => {
   const getRoundIcon = (roundType: string) => {
     switch (roundType) {
@@ -64,8 +64,8 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
 
   const getRoundStatus = (index: number) => {
     if (submittedRounds.has(index)) return 'completed'
-    if (index === currentRound) return 'in-progress'
-    return 'pending'
+    if (index === currentRound) return 'in-progress';
+    return 'pending';
   }
 
   const getStatusIcon = (status: string) => {
@@ -87,26 +87,26 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
   }
 
   const getTotalProgress = () => {
-    const completedRounds = submittedRounds.size
-    return (completedRounds / rounds.length) * 100
+    const completedRounds = submittedRounds.size;
+    return (completedRounds / rounds.length) * 100;
   }
 
   const getTotalTimeSpent = () => {
-    return Object.values(timeSpent).reduce((sum, time) => sum + time, 0)
+    return Object.values(timeSpent).reduce((sum, time) => sum + time, 0);
   }
 
   const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60)
-    const mins = minutes % 60
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
     if (hours > 0) {
-      return `${hours}h ${mins}m`
+      return `${hours}h ${mins}m`;
     }
-    return `${mins}m`
+    return `${mins}m`;
   }
 
   const canSwitchToRoundWithWarning = (roundIndex: number): boolean => {
     // Allow switching to any round, but show warning for submitted rounds
-    return canSwitchToRound(roundIndex)
+    return canSwitchToRound(roundIndex);
   }
 
   const handleRoundSwitch = (roundIndex: number) => {
@@ -120,7 +120,7 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
       if (!confirmed) return
     }
 
-    onRoundSwitch(roundIndex)
+    onRoundSwitch(roundIndex);
   }
 
   return (
@@ -165,13 +165,13 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
       {/* Round Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {rounds.map((round, index) => {
-          const RoundIcon = getRoundIcon(round.type)
-          const status = getRoundStatus(index)
-          const StatusIcon = getStatusIcon(status)
-          const isCurrentRound = index === currentRound
-          const canSwitch = canSwitchToRoundWithWarning(index)
-          const roundTime = timeSpent[round.id] || 0
-          const isSubmitted = submittedRounds.has(index)
+          const RoundIcon = getRoundIcon(round.type);
+          const status = getRoundStatus(index);
+          const StatusIcon = getStatusIcon(status);
+          const isCurrentRound = index === currentRound;
+          const canSwitch = canSwitchToRoundWithWarning(index);
+          const roundTime = timeSpent[round.id] || 0;
+          const isSubmitted = submittedRounds.has(index);
 
           return (
             <div
@@ -326,9 +326,9 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
       {/* Current Round Details */}
       <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
         {(() => {
-          const CurrentRoundIcon = getRoundIcon(rounds[currentRound]?.type)
-          const currentStatus = getRoundStatus(currentRound)
-          const isCurrentSubmitted = submittedRounds.has(currentRound)
+          const CurrentRoundIcon = getRoundIcon(rounds[currentRound]?.type);
+          const currentStatus = getRoundStatus(currentRound);
+          const isCurrentSubmitted = submittedRounds.has(currentRound);
           
           return (
             <div className="flex items-center justify-between">
@@ -360,4 +360,4 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
   )
 }
 
-export default ImprovedRoundSwitcher
+export default ImprovedRoundSwitcher;

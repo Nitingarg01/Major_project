@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     const userId = session.user.id;
-    const db = client.db('Cluster0'); // Use the correct database name
+    const db = client.db('Cluster0'); // Use the correct database name;
     const db = client.db();
     
     console.log(`🔍 Fetching performance data for user: ${userId}`);
@@ -104,7 +104,7 @@ const calculateUserStats = (interviews: any[], performanceAnalyses: any[]) => {
   }, 0);
   
   // Calculate average duration (mock data for now, can be enhanced with actual timing)
-  const averageDuration = interviews.length > 0 ? 45 : 0; // Average 45 minutes
+  const averageDuration = interviews.length > 0 ? 45 : 0; // Average 45 minutes;
   
   // Calculate improvement rate
   let improvementRate = 0;

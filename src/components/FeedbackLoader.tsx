@@ -1,48 +1,48 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from './ui/button'
-import { RotateCcw, Zap, CheckCircle, Clock } from 'lucide-react'
-import Link from 'next/link'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from './ui/button';
+import { RotateCcw, Zap, CheckCircle, Clock } from 'lucide-react';
+import Link from 'next/link';
 
 interface FeedbackLoaderProps {
   interviewId: string
 }
 
 export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
-  const [status, setStatus] = useState<'checking' | 'generating' | 'ready' | 'error'>('checking')
-  const [attempts, setAttempts] = useState(0)
-  const [processingTime, setProcessingTime] = useState(0)
-  const router = useRouter()
+  const [status, setStatus] = useState<'checking' | 'generating' | 'ready' | 'error'>('checking');
+  const [attempts, setAttempts] = useState(0);
+  const [processingTime, setProcessingTime] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
-    const startTime = Date.now()
+    const startTime = Date.now();
 
     const checkFeedback = async () => {
       try {
-        const response = await fetch(`/api/fast-feedback?interviewId=${interviewId}`)
-        const data = await response.json()
+        const response = await fetch(`/api/fast-feedback?interviewId=${interviewId}`);
+        const data = await response.json();
 
         if (data.feedbackReady) {
-          setStatus('ready')
+          setStatus('ready');
           setTimeout(() => {
             window.location.reload()
           }, 1000)
         } else {
-          setStatus('generating')
-          setProcessingTime(Date.now() - startTime)
+          setStatus('generating');
+          setProcessingTime(Date.now() - startTime);
         }
       } catch (error) {
         console.error('Error checking feedback:', error)
         if (attempts > 3) {
-          setStatus('error')
+          setStatus('error');
         }
       }
     }
 
     const generateFeedback = async () => {
       try {
-        setStatus('generating')
+        setStatus('generating');
         const response = await fetch('/api/fast-feedback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -50,44 +50,44 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
         })
 
         if (response.ok) {
-          setStatus('ready')
+          setStatus('ready');
           setTimeout(() => {
             window.location.reload()
           }, 1500)
         } else {
-          const errorData = await response.json().catch(() => ({}))
+          const errorData = await response.json().catch(() => ({}));
           console.error('Feedback generation failed:', errorData)
-          throw new Error(errorData.error || 'Failed to generate feedback')
+          throw new Error(errorData.error || 'Failed to generate feedback');
         }
       } catch (error) {
         console.error('Error generating feedback:', error)
-        setStatus('error')
+        setStatus('error');
       }
     }
 
     // Initial check
-    checkFeedback()
+    checkFeedback();
 
     // If not ready, try to generate
     const generateTimer = setTimeout(() => {
       if (status === 'checking' || status === 'generating') {
-        generateFeedback()
+        generateFeedback();
       }
     }, 2000)
 
     // Polling mechanism
     const pollInterval = setInterval(() => {
       if (status === 'generating' && attempts < 6) {
-        checkFeedback()
-        setAttempts(prev => prev + 1)
+        checkFeedback();
+        setAttempts(prev => prev + 1);
       } else if (attempts >= 6) {
-        setStatus('error')
+        setStatus('error');
       }
     }, 3000)
 
     return () => {
-      clearTimeout(generateTimer)
-      clearInterval(pollInterval)
+      clearTimeout(generateTimer);
+      clearInterval(pollInterval);
     }
   }, [interviewId, attempts, status])
 
@@ -124,7 +124,7 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
     }
   }
 
-  const statusInfo = getStatusInfo()
+  const statusInfo = getStatusInfo();
 
   return (
     <div className='flex flex-col gap-4 font-semibold text-2xl items-center justify-center min-h-[50vh] p-8'>

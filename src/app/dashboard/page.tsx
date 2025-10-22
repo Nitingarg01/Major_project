@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { 
   Plus, 
   Users, 
@@ -20,10 +20,10 @@ import {
   Trash2,
   Bot
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import LoadingWrapper from '@/components/LoadingWrapper'
-import SmartAIDashboard from '@/components/SmartAIDashboard'
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import LoadingWrapper from '@/components/LoadingWrapper';
+import SmartAIDashboard from '@/components/SmartAIDashboard';
 
 interface Interview {
   _id: string
@@ -42,14 +42,14 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [interviews, setInterviews] = useState<Interview[]>([])
-  const [stats, setStats] = useState<DashboardStats>({ total: 0, completed: 0, inProgress: 0 })
-  const [loading, setLoading] = useState(true)
-  const [hasInitialized, setHasInitialized] = useState(false)
-  const [deletingId, setDeletingId] = useState<string | null>(null)
-  const [serviceStatus, setServiceStatus] = useState<'checking' | 'online' | 'offline'>('checking')
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [interviews, setInterviews] = useState<Interview[]>([]);
+  const [stats, setStats] = useState<DashboardStats>({ total: 0, completed: 0, inProgress: 0 });
+  const [loading, setLoading] = useState(true);
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [serviceStatus, setServiceStatus] = useState<'checking' | 'online' | 'offline'>('checking');
 
   useEffect(() => {
     console.log('Auth status changed:', status)
@@ -74,8 +74,8 @@ export default function DashboardPage() {
 
     if (status === 'authenticated' && session?.user?.id) {
       console.log('User authenticated, fetching interviews...')
-      setHasInitialized(true)
-      fetchUserInterviews()
+      setHasInitialized(true);
+      fetchUserInterviews();
     } else if (status === 'authenticated' && !session?.user?.id) {
       console.error('Authenticated but no user ID found')
       toast.error('Authentication error. Please try logging in again.')
@@ -94,7 +94,7 @@ export default function DashboardPage() {
       console.log('Starting to fetch user interviews...')
       
       // Add timeout to prevent hanging requests
-      const controller = new AbortController()
+      const controller = new AbortController();
       const timeoutId = setTimeout(() => {
         console.log('Request timeout - aborting...')
         controller.abort()
@@ -109,25 +109,25 @@ export default function DashboardPage() {
         }
       })
       
-      clearTimeout(timeoutId)
+      clearTimeout(timeoutId);
       console.log('API Response status:', response.status)
       
       if (!response.ok) {
-        const errorText = await response.text()
+        const errorText = await response.text();
         console.error('API Error Response:', errorText)
-        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`)
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
       
-      const data = await response.json()
+      const data = await response.json();
       console.log('API Response data:', data)
 
       if (data.success) {
-        setInterviews(data.interviews || [])
-        setStats(data.stats || { total: 0, completed: 0, inProgress: 0 })
+        setInterviews(data.interviews || []);
+        setStats(data.stats || { total: 0, completed: 0, inProgress: 0 });
         console.log('Successfully loaded interviews:', data.interviews?.length || 0)
       } else {
         console.error('API returned success: false', data.error)
-        throw new Error(data.error || 'Failed to fetch data')
+        throw new Error(data.error || 'Failed to fetch data');
       }
     } catch (error: any) {
       console.error('Error fetching interviews:', error)
@@ -135,7 +135,7 @@ export default function DashboardPage() {
         toast.error('Request timeout. Please try again.')
       } else if (error?.message?.includes('401')) {
         console.error('Authentication error - redirecting to login')
-        setHasInitialized(false) // Reset initialization flag
+        setHasInitialized(false) // Reset initialization flag;
         router.push('/login')
         return
       } else {
@@ -143,39 +143,39 @@ export default function DashboardPage() {
       }
       
       // Set empty data to prevent infinite loading
-      setInterviews([])
-      setStats({ total: 0, completed: 0, inProgress: 0 })
+      setInterviews([]);
+      setStats({ total: 0, completed: 0, inProgress: 0 });
     } finally {
       console.log('Setting loading to false')
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-100 text-green-800';
       case 'ready':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-blue-100 text-blue-800';
       case 'in-progress':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-100 text-yellow-800';
       case 'generating':
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-gray-100 text-gray-800';
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-gray-100 text-gray-800';
     }
   }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-4 h-4" />
+        return <CheckCircle className="w-4 h-4" />;
       case 'ready':
-        return <PlayCircle className="w-4 h-4" />
+        return <PlayCircle className="w-4 h-4" />;
       case 'in-progress':
-        return <Clock className="w-4 h-4" />
+        return <Clock className="w-4 h-4" />;
       default:
-        return <Clock className="w-4 h-4" />
+        return <Clock className="w-4 h-4" />;
     }
   }
 
@@ -184,7 +184,7 @@ export default function DashboardPage() {
       return
     }
 
-    setDeletingId(interviewId)
+    setDeletingId(interviewId);
     
     try {
       const response = await fetch('/api/delete-interview', {
@@ -195,21 +195,21 @@ export default function DashboardPage() {
         body: JSON.stringify({ interviewId }),
       })
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok && data.success) {
         // Remove from local state
-        setInterviews(prev => prev.filter(interview => interview._id !== interviewId))
-        setStats(prev => ({ ...prev, total: prev.total - 1 }))
+        setInterviews(prev => prev.filter(interview => interview._id !== interviewId));
+        setStats(prev => ({ ...prev, total: prev.total - 1 }));
         toast.success('Interview deleted successfully')
       } else {
-        throw new Error(data.error || 'Failed to delete interview')
+        throw new Error(data.error || 'Failed to delete interview');
       }
     } catch (error: any) {
       console.error('Error deleting interview:', error)
       toast.error('Failed to delete interview. Please try again.')
     } finally {
-      setDeletingId(null)
+      setDeletingId(null);
     }
   }
 
@@ -236,7 +236,7 @@ export default function DashboardPage() {
 
   // If not authenticated, redirect (this should not show loading)
   if (status === 'unauthenticated') {
-    return null
+    return null;
   }
 
   return (

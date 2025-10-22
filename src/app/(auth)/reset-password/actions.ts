@@ -4,11 +4,11 @@ import { hash } from "bcrypt-ts";
 
 export const handleResetPassword = async (token: string, newPassword: string) => {
   if (!token || !newPassword) {
-    throw new Error("Invalid request parameters")
+    throw new Error("Invalid request parameters");
   }
 
   if (newPassword.length < 8) {
-    throw new Error("Password must be at least 8 characters long")
+    throw new Error("Password must be at least 8 characters long");
   }
 
   try {

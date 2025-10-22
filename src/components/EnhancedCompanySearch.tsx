@@ -1,9 +1,9 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
-import { Search, Building2, ArrowRight, Star, MapPin, Users, TrendingUp, Loader2 } from 'lucide-react'
-import { Badge } from './ui/badge'
-import { Card, CardContent } from './ui/card'
-import { Button } from './ui/button'
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Building2, ArrowRight, Star, MapPin, Users, TrendingUp, Loader2 } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
 
 interface EnhancedCompanySearchProps {
   onSelect: (company: string, jobTitle: string, companyData?: any) => void;
@@ -26,25 +26,25 @@ const POPULAR_COMPANIES = [
 const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({ 
   onSelect, 
   placeholder = "Search for companies (e.g., Google, Microsoft, Amazon)", 
-  className = "" 
+  className = "";
 }) => {
-  const [query, setQuery] = useState('')
-  const [suggestions, setSuggestions] = useState<CompanySuggestion[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [showTrending, setShowTrending] = useState(false)
-  const [recentSearches, setRecentSearches] = useState<string[]>([])
-  const [loading, setLoading] = useState(false)
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<CompanySuggestion[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [showTrending, setShowTrending] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
   
-  const inputRef = useRef<HTMLInputElement>(null)
-  const suggestionRefs = useRef<(HTMLDivElement | null)[]>([])
+  const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Load recent searches from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('recentCompanySearches')
+    const saved = localStorage.getItem('recentCompanySearches');
     if (saved) {
       try {
-        setRecentSearches(JSON.parse(saved))
+        setRecentSearches(JSON.parse(saved));
       } catch (e) {
         console.error('Failed to parse recent searches')
       }
@@ -53,21 +53,21 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
 
   useEffect(() => {
     if (query.length >= 2) {
-      searchCompanies(query)
-      setShowTrending(false)
+      searchCompanies(query);
+      setShowTrending(false);
     } else if (query.length === 0) {
-      setSuggestions([])
-      setShowTrending(true)
-      setIsOpen(true)
+      setSuggestions([]);
+      setShowTrending(true);
+      setIsOpen(true);
     } else {
-      setSuggestions([])
-      setIsOpen(false)
-      setShowTrending(false)
+      setSuggestions([]);
+      setIsOpen(false);
+      setShowTrending(false);
     }
   }, [query])
 
   const searchCompanies = async (searchQuery: string) => {
-    setLoading(true)
+    setLoading(true);
     try {
       // First, check if it matches popular companies for quick response
       const popularMatches = POPULAR_COMPANIES
@@ -82,9 +82,9 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         }))
 
       if (popularMatches.length > 0) {
-        setSuggestions(popularMatches)
-        setIsOpen(true)
-        setSelectedIndex(0)
+        setSuggestions(popularMatches);
+        setIsOpen(true);
+        setSelectedIndex(0);
       }
 
       // Use Groq API for additional company suggestions
@@ -97,7 +97,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
       })
 
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         if (data.success && data.companies) {
           // Combine popular matches with AI-generated suggestions
           const aiSuggestions = data.companies.map((company: any) => ({
@@ -114,9 +114,9 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
             }
           })
           
-          setSuggestions(combined.slice(0, 8))
-          setIsOpen(combined.length > 0)
-          setSelectedIndex(0)
+          setSuggestions(combined.slice(0, 8));
+          setIsOpen(combined.length > 0);
+          setSelectedIndex(0);
         }
       }
     } catch (error) {
@@ -133,10 +133,10 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
           description: `Explore opportunities at ${company}`
         }))
       
-      setSuggestions(fallbackMatches)
-      setIsOpen(fallbackMatches.length > 0)
+      setSuggestions(fallbackMatches);
+      setIsOpen(fallbackMatches.length > 0);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -166,22 +166,22 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
       'AMD': 'Semiconductors',
       'Qualcomm': 'Mobile Technology'
     }
-    return industryMap[company] || 'Technology'
+    return industryMap[company] || 'Technology';
   }
 
   const saveRecentSearch = (searchTerm: string) => {
-    const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5)
-    setRecentSearches(updated)
+    const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
+    setRecentSearches(updated);
     localStorage.setItem('recentCompanySearches', JSON.stringify(updated))
   }
 
   const handleSelect = (companyName: string) => {
-    setQuery(companyName)
-    setIsOpen(false)
-    saveRecentSearch(companyName)
+    setQuery(companyName);
+    setIsOpen(false);
+    saveRecentSearch(companyName);
     
     // Since we're only suggesting companies now, we don't parse job title
-    onSelect(companyName, '', null)
+    onSelect(companyName, '', null);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -194,28 +194,28 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setSelectedIndex(prev => Math.min(prev + 1, currentSuggestions.length - 1))
+        setSelectedIndex(prev => Math.min(prev + 1, currentSuggestions.length - 1));
         break
       case 'ArrowUp':
         e.preventDefault()
-        setSelectedIndex(prev => Math.max(prev - 1, 0))
+        setSelectedIndex(prev => Math.max(prev - 1, 0));
         break
       case 'Enter':
         e.preventDefault()
         if (showTrending) {
           const selected = currentSuggestions[selectedIndex]
           if (selected) {
-            handleSelect(typeof selected === 'string' ? selected : selected.name)
+            handleSelect(typeof selected === 'string' ? selected : selected.name);
           }
         } else {
           const selected = suggestions[selectedIndex]
           if (selected) {
-            handleSelect(selected.name)
+            handleSelect(selected.name);
           }
         }
         break
       case 'Escape':
-        setIsOpen(false)
+        setIsOpen(false);
         break
     }
   }
@@ -248,10 +248,10 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
           onKeyDown={handleKeyDown}
           onFocus={() => {
             if (query.length >= 2) {
-              setIsOpen(true)
+              setIsOpen(true);
             } else {
-              setShowTrending(true)
-              setIsOpen(true)
+              setShowTrending(true);
+              setIsOpen(true);
             }
           }}
           onBlur={() => setTimeout(() => setIsOpen(false), 300)}
@@ -261,7 +261,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         {query && (
           <button
             onClick={() => {
-              setQuery('')
+              setQuery('');
               inputRef.current?.focus()
             }}
             className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
@@ -285,8 +285,8 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                 </div>
                 <div className="space-y-1 max-h-60 overflow-y-auto">
                   {trendingSuggestions.map((company, index) => {
-                    const companyName = typeof company === 'string' ? company : company
-                    const isRecent = recentSearches.includes(companyName)
+                    const companyName = typeof company === 'string' ? company : company;
+                    const isRecent = recentSearches.includes(companyName);
                     
                     return (
                       <div
@@ -294,7 +294,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                         ref={(el) => { suggestionRefs.current[index] = el }}
                         onClick={() => handleSelect(companyName)}
                         className={`px-4 py-3 cursor-pointer rounded-lg transition-all ${
-                          index === selectedIndex ? 'bg-blue-50 border-2 border-blue-200' : 'hover:bg-gray-50'
+                          index === selectedIndex ? 'bg-blue-50 border-2 border-blue-200' : 'hover:bg-gray-50';
                         }`}
                       >
                         <div className="flex items-center justify-between">
@@ -330,7 +330,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                     ref={(el) => { suggestionRefs.current[index] = el }}
                     onClick={() => handleSelect(suggestion.name)}
                     className={`px-4 py-4 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all ${
-                      index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'
+                      index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50';
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -375,7 +375,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                     const randomCompany = POPULAR_COMPANIES[
                       Math.floor(Math.random() * POPULAR_COMPANIES.length)
                     ]
-                    handleSelect(randomCompany)
+                    handleSelect(randomCompany);
                   }}
                   className="text-xs h-6 px-2"
                 >
@@ -391,4 +391,4 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   )
 }
 
-export default EnhancedCompanySearch
+export default EnhancedCompanySearch;

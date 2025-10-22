@@ -4,7 +4,7 @@
  * Analyzes responses and offers constructive feedback
  */
 
-import { SmartAIService } from './smartAIService'
+import { SmartAIService } from './smartAIService';
 
 export interface CoachHint {
   id: string
@@ -29,26 +29,26 @@ export class AIInterviewCoach {
   private static instance: AIInterviewCoach
   private smartAI: SmartAIService
   private hintHistory: CoachHint[] = []
-  private isEnabled: boolean = true
-  private lastHintTime: Date | null = null
-  private minHintInterval: number = 10000 // 10 seconds between hints
+  private isEnabled: boolean = true;
+  private lastHintTime: Date | null = null;
+  private minHintInterval: number = 10000 // 10 seconds between hints;
 
   private constructor() {
-    this.smartAI = SmartAIService.getInstance()
+    this.smartAI = SmartAIService.getInstance();
   }
 
   public static getInstance(): AIInterviewCoach {
     if (!AIInterviewCoach.instance) {
-      AIInterviewCoach.instance = new AIInterviewCoach()
+      AIInterviewCoach.instance = new AIInterviewCoach();
     }
-    return AIInterviewCoach.instance
+    return AIInterviewCoach.instance;
   }
 
   /**
    * Enable or disable coaching
    */
   public setEnabled(enabled: boolean): void {
-    this.isEnabled = enabled
+    this.isEnabled = enabled;
     console.log(`🎓 AI Coach ${enabled ? 'enabled' : 'disabled'}`)
   }
 
@@ -63,7 +63,7 @@ export class AIInterviewCoach {
     // Check if enough time has passed since last hint
     if (this.lastHintTime && 
         Date.now() - this.lastHintTime.getTime() < this.minHintInterval) {
-      return hints
+      return hints;
     }
 
     // Analyze response length
@@ -108,7 +108,7 @@ export class AIInterviewCoach {
 
     // Check for filler words (if response provided)
     if (context.userResponse) {
-      const fillerCount = this.countFillerWords(context.userResponse)
+      const fillerCount = this.countFillerWords(context.userResponse);
       if (fillerCount > 5) {
         hints.push(this.createHint(
           'tip',
@@ -120,7 +120,7 @@ export class AIInterviewCoach {
     }
 
     // Provide question-specific hints
-    const contextualHint = await this.getContextualHint(context)
+    const contextualHint = await this.getContextualHint(context);
     if (contextualHint) {
       hints.push(contextualHint)
     }
@@ -128,15 +128,15 @@ export class AIInterviewCoach {
     // Store hints and update timestamp
     if (hints.length > 0) {
       this.hintHistory.push(...hints)
-      this.lastHintTime = new Date()
+      this.lastHintTime = new Date();
       
       // Keep only last 20 hints
       if (this.hintHistory.length > 20) {
-        this.hintHistory = this.hintHistory.slice(-20)
+        this.hintHistory = this.hintHistory.slice(-20);
       }
     }
 
-    return hints
+    return hints;
   }
 
   /**
@@ -169,7 +169,7 @@ export class AIInterviewCoach {
       }
 
       // Progress encouragement
-      const progress = (context.currentQuestionIndex / context.totalQuestions) * 100
+      const progress = (context.currentQuestionIndex / context.totalQuestions) * 100;
       if (progress === 50) {
         return this.createHint(
           'encouragement',
@@ -183,7 +183,7 @@ export class AIInterviewCoach {
       console.error('Error getting contextual hint:', error)
     }
 
-    return null
+    return null;
   }
 
   /**
@@ -197,9 +197,9 @@ export class AIInterviewCoach {
       default: 'Take your time and answer confidently. You\'ve got this!'
     }
 
-    const hintMessage = hints[interviewType.toLowerCase()] || hints.default
+    const hintMessage = hints[interviewType.toLowerCase()] || hints.default;
 
-    return this.createHint('tip', hintMessage, 'low', 'question_start')
+    return this.createHint('tip', hintMessage, 'low', 'question_start');
   }
 
   /**
@@ -210,33 +210,33 @@ export class AIInterviewCoach {
     questionsAnswered: number
     totalQuestions: number
   }): CoachHint {
-    let message = ''
-    let priority: 'low' | 'medium' | 'high' = 'low'
+    let message = '';
+    let priority: 'low' | 'medium' | 'high' = 'low';
 
     if (performance.avgScore >= 8) {
-      message = 'Outstanding performance! You\'re acing this interview!'
-      priority = 'low'
+      message = 'Outstanding performance! You\'re acing this interview!';
+      priority = 'low';
     } else if (performance.avgScore >= 6) {
-      message = 'You\'re doing well! Keep maintaining this level of detail.'
-      priority = 'low'
+      message = 'You\'re doing well! Keep maintaining this level of detail.';
+      priority = 'low';
     } else if (performance.avgScore >= 4) {
-      message = 'Good progress! Try to provide more specific examples.'
-      priority = 'medium'
+      message = 'Good progress! Try to provide more specific examples.';
+      priority = 'medium';
     } else {
-      message = 'Stay focused! Take your time with each answer.'
-      priority = 'high'
+      message = 'Stay focused! Take your time with each answer.';
+      priority = 'high';
     }
 
-    return this.createHint('encouragement', message, priority, 'performance_feedback')
+    return this.createHint('encouragement', message, priority, 'performance_feedback');
   }
 
   /**
    * Get time management hint
    */
   public getTimeManagementHint(timeRemaining: number, questionsRemaining: number): CoachHint | null {
-    if (questionsRemaining === 0) return null
+    if (questionsRemaining === 0) return null;
 
-    const avgTimePerQuestion = timeRemaining / questionsRemaining
+    const avgTimePerQuestion = timeRemaining / questionsRemaining;
 
     if (avgTimePerQuestion < 60) { // Less than 1 minute per question
       return this.createHint(
@@ -254,7 +254,7 @@ export class AIInterviewCoach {
       )
     }
 
-    return null
+    return null;
   }
 
   /**
@@ -281,23 +281,23 @@ export class AIInterviewCoach {
    */
   private countFillerWords(text: string): number {
     const fillers = ['um', 'uh', 'like', 'you know', 'sort of', 'kind of', 'basically', 'actually']
-    const lowerText = text.toLowerCase()
-    let count = 0
+    const lowerText = text.toLowerCase();
+    let count = 0;
 
     fillers.forEach(filler => {
-      const regex = new RegExp(`\\b${filler}\\b`, 'gi')
-      const matches = lowerText.match(regex)
-      if (matches) count += matches.length
+      const regex = new RegExp(`\\b${filler}\\b`, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) count += matches.length;
     })
 
-    return count
+    return count;
   }
 
   /**
    * Helper: Check if response uses STAR structure
    */
   private hasSTARStructure(response: string): boolean {
-    const lowerResponse = response.toLowerCase()
+    const lowerResponse = response.toLowerCase();
     const starKeywords = {
       situation: ['situation', 'when', 'where', 'context'],
       task: ['task', 'responsibility', 'goal', 'objective'],
@@ -305,14 +305,14 @@ export class AIInterviewCoach {
       result: ['result', 'outcome', 'achieved', 'accomplished', 'impact']
     }
 
-    let matchedCategories = 0
+    let matchedCategories = 0;
     Object.values(starKeywords).forEach(keywords => {
       if (keywords.some(keyword => lowerResponse.includes(keyword))) {
         matchedCategories++
       }
     })
 
-    return matchedCategories >= 2 // At least 2 STAR components mentioned
+    return matchedCategories >= 2 // At least 2 STAR components mentioned;
   }
 
   /**
@@ -327,7 +327,7 @@ export class AIInterviewCoach {
    */
   public reset(): void {
     this.hintHistory = []
-    this.lastHintTime = null
+    this.lastHintTime = null;
   }
 
   /**
@@ -356,4 +356,4 @@ export class AIInterviewCoach {
   }
 }
 
-export default AIInterviewCoach
+export default AIInterviewCoach;

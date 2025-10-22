@@ -85,7 +85,7 @@ export class PreferenceBasedQuestionGenerator {
         );
         allQuestions.push(...dsaQuestions);
         uniqueDSACount = dsaQuestions.length;
-        totalPreferenceAlignment += dsaQuestions.length; // DSA questions always align with preferences
+        totalPreferenceAlignment += dsaQuestions.length; // DSA questions always align with preferences;
       }
 
       // Generate System Design Questions
@@ -163,7 +163,7 @@ export class PreferenceBasedQuestionGenerator {
 
     const systemMessage = `You are an expert technical interviewer creating preference-aligned questions for ${companyName}.`;
 
-    const userMessage = `Generate ${count} technical interview questions for ${jobTitle} at ${companyName}.
+    const userMessage = `Generate ${count} technical interview questions for ${jobTitle} at ${companyName}.;
 
 User Technical Preferences:
 - Focus Areas: ${techPrefs.focusAreas.join(', ')}
@@ -253,7 +253,7 @@ Return ONLY valid JSON array:
     if (behavioralPrefs.cultureFit) preferredTypes.push('cultural fit');
     if (behavioralPrefs.situationalJudgment) preferredTypes.push('situational judgment');
 
-    const userMessage = `Generate ${count} behavioral interview questions for ${jobTitle} at ${companyName}.
+    const userMessage = `Generate ${count} behavioral interview questions for ${jobTitle} at ${companyName}.;
 
 User Behavioral Preferences (focus on these types):
 ${preferredTypes.map(type => `- ${type}`).join('\n')}
@@ -401,7 +401,7 @@ Return ONLY valid JSON array:
     
     const systemMessage = `You are a senior system design interviewer at ${companyName} creating preference-aligned architecture questions.`;
 
-    const userMessage = `Generate ${count} system design questions for ${jobTitle} at ${companyName}.
+    const userMessage = `Generate ${count} system design questions for ${jobTitle} at ${companyName}.;
 
 Experience Level: ${experienceLevel} (adjust complexity accordingly)
 Skills: ${skills.join(', ')}

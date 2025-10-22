@@ -73,7 +73,7 @@ async function testInterviewCompletionFlow() {
                 experienceLevel: 'mid',
                 createdAt: new Date(Date.now() - Math.random() * 86400000 * 7), // Random within last week
                 completedAt: stage.status === 'completed' ? new Date() : null,
-                availableInPerformanceStats: stage.status === 'completed'
+                availableInPerformanceStats: stage.status === 'completed';
             };
             
             createdInterviews.push(interview);

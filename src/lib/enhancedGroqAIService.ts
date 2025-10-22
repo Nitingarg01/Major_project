@@ -210,7 +210,7 @@ export class EnhancedGroqAIService {
     
     const companyProfile = this.companyProfiles.get(params.companyName.toLowerCase());
     
-    const systemMessage = `You are a senior technical interviewer at ${params.companyName} with 10+ years of experience. You excel at creating challenging, company-specific interview questions that accurately assess candidates for real-world success.
+    const systemMessage = `You are a senior technical interviewer at ${params.companyName} with 10+ years of experience. You excel at creating challenging, company-specific interview questions that accurately assess candidates for real-world success.;
 
 COMPANY CONTEXT: ${params.companyName}
 ${companyProfile ? `
@@ -229,7 +229,7 @@ Your questions should:
 4. Be practical and scenario-based, not theoretical
 5. Include company-specific context and examples`;
     
-    const userMessage = `Create exactly ${params.numberOfQuestions} ${params.interviewType} interview questions for:
+    const userMessage = `Create exactly ${params.numberOfQuestions} ${params.interviewType} interview questions for:;
 
 🎯 POSITION: ${params.jobTitle} at ${params.companyName}
 📊 LEVEL: ${params.experienceLevel} (${this.getExperienceLevelGuidance(params.experienceLevel)})
@@ -311,12 +311,12 @@ Return ONLY a valid JSON array:
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 6,
-    jobTitle: string = 'Software Engineer'
+    jobTitle: string = 'Software Engineer';
   ): Promise<DSAProblem[]> {
     
     const companyProfile = this.companyProfiles.get(companyName.toLowerCase());
     
-    const systemMessage = `You are a senior DSA problem creator at ${companyName}. You design coding problems that mirror real challenges engineers face at the company.
+    const systemMessage = `You are a senior DSA problem creator at ${companyName}. You design coding problems that mirror real challenges engineers face at the company.;
 
 COMPANY INTELLIGENCE: ${companyName}
 ${companyProfile ? `
@@ -334,7 +334,7 @@ Your problems should:
 4. Include real-world constraints and optimizations
 5. Feel like solving actual ${companyName} engineering challenges`;
     
-    const userMessage = `Generate exactly ${count} company-specific DSA problems for ${jobTitle} interviews at ${companyName}.
+    const userMessage = `Generate exactly ${count} company-specific DSA problems for ${jobTitle} interviews at ${companyName}.;
 
 🎯 COMPANY CONTEXT: ${companyName}
 ${companyProfile ? `
@@ -465,7 +465,7 @@ Return ONLY a valid JSON array:
     
     const companyProfile = this.companyProfiles.get(companyContext.toLowerCase());
     
-    const systemMessage = `You are a senior technical interviewer at ${companyContext} with deep knowledge of their engineering culture, technical standards, and hiring criteria.
+    const systemMessage = `You are a senior technical interviewer at ${companyContext} with deep knowledge of their engineering culture, technical standards, and hiring criteria.;
 
 COMPANY EVALUATION FRAMEWORK: ${companyContext}
 ${companyProfile ? `
@@ -478,7 +478,7 @@ ${companyProfile ? `
 
 Provide analysis that reflects ${companyContext}'s actual hiring standards and technical culture.`;
     
-    const userMessage = `Analyze this interview response using ${companyContext}'s evaluation criteria:
+    const userMessage = `Analyze this interview response using ${companyContext}'s evaluation criteria:;
 
 📋 INTERVIEW DETAILS:
 - Question Category: ${category}
@@ -560,17 +560,17 @@ Return ONLY valid JSON:
   private getInterviewTypeFocus(type: string, companyName: string, profile?: CompanyProfile): string {
     switch (type) {
       case 'technical':
-        return profile ? 
+        return profile ?;
           `Technical deep-dive focusing on ${profile.techStack.slice(0, 3).join(', ')}, real ${companyName} scenarios, and their engineering challenges: ${profile.commonChallenges.slice(0, 2).join(', ')}.` :
           `Technical skills assessment with practical coding scenarios and system design thinking.`;
       
       case 'behavioral':
-        return profile ?
+        return profile ?;
           `Behavioral assessment based on ${companyName}'s culture: ${profile.culture.slice(0, 3).join(', ')}. Focus on scenarios that demonstrate these values in action.` :
           `Leadership, teamwork, problem-solving approach, and cultural alignment assessment.`;
       
       case 'system_design':
-        return profile ?
+        return profile ?;
           `System design challenges reflecting ${companyName}'s scale and technical challenges: ${profile.commonChallenges.join(', ')}. Focus on their architecture patterns.` :
           `Scalable system architecture, design trade-offs, and technical decision-making.`;
       
@@ -591,7 +591,7 @@ Return ONLY valid JSON:
       'microsoft': 'Focus on enterprise-scale problems, integration challenges, productivity optimization, and collaborative algorithms.'
     };
 
-    return guidance[companyName.toLowerCase()] || 
+    return guidance[companyName.toLowerCase()] ||;
            `Focus on problems relevant to ${profile.industry} industry, especially: ${profile.commonChallenges.slice(0, 2).join(' and ')}.`;
   }
 

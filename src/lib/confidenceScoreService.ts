@@ -7,8 +7,8 @@
  * - Emotion detection
  */
 
-import type { EmotionData } from './emotionDetectionService'
-import type { BodyLanguageData } from './bodyLanguageService'
+import type { EmotionData } from './emotionDetectionService';
+import type { BodyLanguageData } from './bodyLanguageService';
 
 export interface ConfidenceMetrics {
   speechConfidence: number // 0-100
@@ -33,15 +33,15 @@ export interface ConfidenceHistory {
 export class ConfidenceScoreService {
   private static instance: ConfidenceScoreService
   private confidenceHistory: ConfidenceHistory[] = []
-  private readonly HISTORY_WINDOW = 50 // Keep last 50 data points
+  private readonly HISTORY_WINDOW = 50 // Keep last 50 data points;
 
   private constructor() {}
 
   public static getInstance(): ConfidenceScoreService {
     if (!ConfidenceScoreService.instance) {
-      ConfidenceScoreService.instance = new ConfidenceScoreService()
+      ConfidenceScoreService.instance = new ConfidenceScoreService();
     }
-    return ConfidenceScoreService.instance
+    return ConfidenceScoreService.instance;
   }
 
   /**
@@ -60,13 +60,13 @@ export class ConfidenceScoreService {
       params.responseTime || 0
     )
 
-    const bodyLanguageConfidence = params.bodyLanguageData?.confidence || 50
+    const bodyLanguageConfidence = params.bodyLanguageData?.confidence || 50;
 
     const emotionalConfidence = this.calculateEmotionalConfidence(
       params.emotionData
     )
 
-    const responseQualityConfidence = params.responseScore 
+    const responseQualityConfidence = params.responseScore;
       ? params.responseScore * 10 
       : 50
 
@@ -79,7 +79,7 @@ export class ConfidenceScoreService {
     )
 
     // Determine trend
-    const trend = this.calculateTrend(overallConfidence)
+    const trend = this.calculateTrend(overallConfidence);
 
     // Store in history
     this.addToHistory({
@@ -107,58 +107,58 @@ export class ConfidenceScoreService {
    * Calculate speech confidence based on response characteristics
    */
   private calculateSpeechConfidence(response: string, responseTime: number): number {
-    if (!response || response.trim().length === 0) return 0
+    if (!response || response.trim().length === 0) return 0;
 
-    let score = 50 // Base score
+    let score = 50 // Base score;
 
     // Word count analysis
-    const wordCount = response.split(/\s+/).length
+    const wordCount = response.split(/\s+/).length;
     if (wordCount >= 30 && wordCount <= 150) {
-      score += 15 // Good length
+      score += 15 // Good length;
     } else if (wordCount < 10) {
-      score -= 20 // Too short
+      score -= 20 // Too short;
     } else if (wordCount > 200) {
-      score -= 10 // Too long
+      score -= 10 // Too long;
     }
 
     // Response time analysis (assuming normal speaking pace)
-    const wordsPerSecond = responseTime > 0 ? wordCount / responseTime : 0
+    const wordsPerSecond = responseTime > 0 ? wordCount / responseTime : 0;
     if (wordsPerSecond >= 1.5 && wordsPerSecond <= 2.5) {
-      score += 10 // Good pace
+      score += 10 // Good pace;
     } else if (wordsPerSecond < 1) {
-      score -= 5 // Too slow (hesitant)
+      score -= 5 // Too slow (hesitant);
     } else if (wordsPerSecond > 3) {
-      score -= 5 // Too fast (nervous)
+      score -= 5 // Too fast (nervous);
     }
 
     // Filler word analysis
-    const fillerCount = this.countFillerWords(response)
-    const fillerRatio = fillerCount / Math.max(wordCount, 1)
+    const fillerCount = this.countFillerWords(response);
+    const fillerRatio = fillerCount / Math.max(wordCount, 1);
     if (fillerRatio < 0.05) {
-      score += 10 // Very few fillers
+      score += 10 // Very few fillers;
     } else if (fillerRatio > 0.15) {
-      score -= 15 // Too many fillers
+      score -= 15 // Too many fillers;
     }
 
     // Confidence keywords
     const confidenceKeywords = ['confident', 'definitely', 'certainly', 'absolutely', 'clearly']
     const uncertainKeywords = ['maybe', 'perhaps', 'i think', 'not sure', 'kind of', 'sort of']
     
-    const lowerResponse = response.toLowerCase()
+    const lowerResponse = response.toLowerCase();
     confidenceKeywords.forEach(word => {
-      if (lowerResponse.includes(word)) score += 3
+      if (lowerResponse.includes(word)) score += 3;
     })
     uncertainKeywords.forEach(word => {
-      if (lowerResponse.includes(word)) score -= 3
+      if (lowerResponse.includes(word)) score -= 3;
     })
 
     // Sentence structure (complete sentences indicate confidence)
-    const sentences = response.split(/[.!?]+/).filter(s => s.trim().length > 0)
+    const sentences = response.split(/[.!?]+/).filter(s => s.trim().length > 0);
     if (sentences.length >= 2) {
-      score += 5
+      score += 5;
     }
 
-    return Math.max(0, Math.min(100, score))
+    return Math.max(0, Math.min(100, score));
   }
 
   /**
@@ -176,10 +176,10 @@ export class ConfidenceScoreService {
       stressed: 30
     }
 
-    const baseScore = emotionScores[emotionData.emotion] || 50
-    const confidenceAdjustment = (emotionData.confidence - 0.5) * 20
+    const baseScore = emotionScores[emotionData.emotion] || 50;
+    const confidenceAdjustment = (emotionData.confidence - 0.5) * 20;
 
-    return Math.max(0, Math.min(100, baseScore + confidenceAdjustment))
+    return Math.max(0, Math.min(100, baseScore + confidenceAdjustment));
   }
 
   /**
@@ -191,16 +191,16 @@ export class ConfidenceScoreService {
       'actually', 'literally', 'sort of', 'kind of'
     ]
     
-    const lowerText = text.toLowerCase()
-    let count = 0
+    const lowerText = text.toLowerCase();
+    let count = 0;
 
     fillers.forEach(filler => {
-      const regex = new RegExp(`\\b${filler}\\b`, 'gi')
-      const matches = lowerText.match(regex)
-      if (matches) count += matches.length
+      const regex = new RegExp(`\\b${filler}\\b`, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) count += matches.length;
     })
 
-    return count
+    return count;
   }
 
   /**
@@ -209,14 +209,14 @@ export class ConfidenceScoreService {
   private calculateTrend(currentScore: number): 'improving' | 'stable' | 'declining' {
     if (this.confidenceHistory.length < 3) return 'stable'
 
-    const recentScores = this.confidenceHistory.slice(-5).map(h => h.score)
-    const average = recentScores.reduce((a, b) => a + b, 0) / recentScores.length
+    const recentScores = this.confidenceHistory.slice(-5).map(h => h.score);
+    const average = recentScores.reduce((a, b) => a + b, 0) / recentScores.length;
 
-    const difference = currentScore - average
+    const difference = currentScore - average;
 
     if (difference > 5) return 'improving'
     if (difference < -5) return 'declining'
-    return 'stable'
+    return 'stable';
   }
 
   /**
@@ -242,10 +242,10 @@ export class ConfidenceScoreService {
    * Get average confidence over time
    */
   public getAverageConfidence(): number {
-    if (this.confidenceHistory.length === 0) return 0
+    if (this.confidenceHistory.length === 0) return 0;
 
-    const sum = this.confidenceHistory.reduce((acc, h) => acc + h.score, 0)
-    return Math.round(sum / this.confidenceHistory.length)
+    const sum = this.confidenceHistory.reduce((acc, h) => acc + h.score, 0);
+    return Math.round(sum / this.confidenceHistory.length);
   }
 
   /**
@@ -262,7 +262,7 @@ export class ConfidenceScoreService {
     }
 
     const latest = this.confidenceHistory[this.confidenceHistory.length - 1]
-    return latest.factors
+    return latest.factors;
   }
 
   /**
@@ -318,4 +318,4 @@ export class ConfidenceScoreService {
   }
 }
 
-export default ConfidenceScoreService
+export default ConfidenceScoreService;

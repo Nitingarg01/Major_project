@@ -1,8 +1,8 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 import { 
   CheckCircle, 
   XCircle, 
@@ -39,7 +39,7 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
 
   useEffect(() => {
     fetchProviderStatus();
-    const interval = setInterval(fetchProviderStatus, 30000); // Update every 30 seconds
+    const interval = setInterval(fetchProviderStatus, 30000); // Update every 30 seconds;
     return () => clearInterval(interval);
   }, []);
 
@@ -277,7 +277,7 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
                     <div className="flex items-center">
                       <AlertCircle className="w-4 h-4 text-yellow-600 mr-2" />
                       <span className="text-sm text-yellow-700">
-                        {usagePercentage >= 95 
+                        {usagePercentage >= 95;
                           ? 'Rate limit almost reached - switching to backup provider'
                           : 'Approaching rate limit - prepare for provider switch'
                         }

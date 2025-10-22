@@ -154,7 +154,7 @@ export class EnhancedGroqDSAService {
   public async generateCompanySpecificDSAProblems(
     companyName: string,
     count: number = 5,
-    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid'
+    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
     const pattern = this.companyPatterns[company] || this.companyPatterns['Google'];
@@ -231,14 +231,14 @@ export class EnhancedGroqDSAService {
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
     
-    const systemMessage = `You are creating enhanced DSA problems for ${company} interviews. Focus on generating problems with:
+    const systemMessage = `You are creating enhanced DSA problems for ${company} interviews. Focus on generating problems with:;
     1. Comprehensive test cases (at least 5 per problem)
     2. Edge cases included
     3. Clear input/output formats
     4. Company-relevant scenarios
     5. Proper complexity analysis`;
     
-    const userMessage = `
+    const userMessage = `;
       Create ${count} enhanced DSA problems for ${company} with the following requirements:
       
       COMPANY: ${company}
@@ -252,7 +252,7 @@ export class EnhancedGroqDSAService {
       5. Problems should reflect ${company}'s interview style
       
       TEST CASE FORMAT REQUIREMENTS:
-      - Input format must be executable (e.g., "nums = [1,2,3], target = 4")
+      - Input format must be executable (e.g., "nums = [1,2,3], target = 4");
       - Expected output must be exact (e.g., "6" not "6.0" or "six")
       - Hidden test cases for comprehensive evaluation
       
@@ -267,7 +267,7 @@ export class EnhancedGroqDSAService {
             {
               "input": "nums = [2,7,11,15], target = 9",
               "output": "[0,1]",
-              "explanation": "nums[0] + nums[1] = 2 + 7 = 9, so we return [0, 1]"
+              "explanation": "nums[0] + nums[1] = 2 + 7 = 9, so we return [0, 1]";
             }
           ],
           "testCases": [
@@ -392,7 +392,7 @@ export class EnhancedGroqDSAService {
     difficulty: string,
     experienceLevel: string
   ): string {
-    return `
+    return `;
       Generate ${count} unique DSA problems specifically for ${company} interviews.
       
       COMPANY PROFILE:
@@ -410,7 +410,7 @@ export class EnhancedGroqDSAService {
       - Examples must demonstrate the solution clearly
       
       CRITICAL TEST CASE REQUIREMENTS:
-      1. Input format must be executable code (e.g., "nums = [1,2,3], target = 4")
+      1. Input format must be executable code (e.g., "nums = [1,2,3], target = 4");
       2. Expected output must be exact match (e.g., "7" not "7.0")
       3. Include both visible and hidden test cases
       4. Cover edge cases: empty arrays, single elements, maximum constraints
@@ -433,7 +433,7 @@ export class EnhancedGroqDSAService {
         id: `fallback-test-${i + 1}`,
         input: problem.examples?.[0]?.input || `input_${i + 1}`,
         expectedOutput: problem.examples?.[0]?.output || `output_${i + 1}`,
-        hidden: i >= 2 // First 2 visible, rest hidden
+        hidden: i >= 2 // First 2 visible, rest hidden;
       });
     }
     
@@ -461,7 +461,7 @@ export class EnhancedGroqDSAService {
           {
             input: 'nums = [2,7,11,15], target = 9',
             output: '[0,1]',
-            explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].'
+            explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].';
           }
         ],
         testCases: [

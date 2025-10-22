@@ -1,18 +1,18 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect, useState, useCallback } from 'react'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { Form } from './ui/form'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
-import QuestionAns from './QuestionAns'
-import { Button } from './ui/button'
-import { setAnswers } from '@/app/interview/[id]/perform/actions'
-import { Question } from '@/types/interview'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { Clock, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react'
-import { Badge } from './ui/badge'
-import { SubmittingLoadingSpinner } from './ui/loading-spinner'
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { Form } from './ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import QuestionAns from './QuestionAns';
+import { Button } from './ui/button';
+import { setAnswers } from '@/app/interview/[id]/perform/actions';
+import { Question } from '@/types/interview';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { Clock, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { SubmittingLoadingSpinner } from './ui/loading-spinner';
 
 const schema = z.object({
     submitted: z.array(z.record(z.string(), z.string().min(10, 'Please provide a more detailed answer')))
@@ -31,13 +31,13 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
     roundId,
     onRoundComplete 
 }) => {
-    const TOTAL_TIME = 30 * 60 // 30 minutes in seconds
+    const TOTAL_TIME = 30 * 60 // 30 minutes in seconds;
     
-    const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [currentQuestion, setCurrentQuestion] = useState(0)
-    const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set())
-    const [startTime] = useState(Date.now())
+    const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
+    const [startTime] = useState(Date.now());
 
     const form = useForm({
         resolver: zodResolver(schema),
@@ -46,32 +46,32 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
         }
     })
 
-    const router = useRouter()
+    const router = useRouter();
 
     const handleSubmit = useCallback(async (data: z.infer<typeof schema>) => {
         if (isSubmitting) return
 
-        setIsSubmitting(true)
+        setIsSubmitting(true);
         
         try {
-            const timeSpent = Math.floor((Date.now() - startTime) / 1000)
-            const answers = data.submitted.map(item => item.answer)
+            const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+            const answers = data.submitted.map(item => item.answer);
             
             // If this is part of a multi-round interview
             if (onRoundComplete) {
-                onRoundComplete(answers, timeSpent)
+                onRoundComplete(answers, timeSpent);
                 toast.success("Round completed! Moving to next round...")
                 return
             }
 
             // Traditional single round interview with timeout protection
             const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
+                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout;
             })
 
-            const submitPromise = setAnswers(data.submitted, id)
+            const submitPromise = setAnswers(data.submitted, id);
 
-            const result = await Promise.race([submitPromise, timeoutPromise])
+            const result = await Promise.race([submitPromise, timeoutPromise]);
             
             toast.success("Answers submitted successfully!")
             
@@ -104,45 +104,45 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
         } catch (error: any) {
             console.error('Submission error:', error)
             
-            let errorMessage = "Failed to submit answers. Please try again."
+            let errorMessage = "Failed to submit answers. Please try again.";
             if (error.message === 'Request timeout') {
-                errorMessage = "Submission is taking longer than expected. Please check your connection and try again."
+                errorMessage = "Submission is taking longer than expected. Please check your connection and try again.";
             } else if (error.response?.status === 500) {
-                errorMessage = "Server error occurred. Your answers may have been saved. Please check your interview status."
+                errorMessage = "Server error occurred. Your answers may have been saved. Please check your interview status.";
             }
             
             toast.error(errorMessage)
         } finally {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
         }
     }, [isSubmitting, onRoundComplete, id, router, startTime])
 
-    const onSubmit = form.handleSubmit(handleSubmit)
+    const onSubmit = form.handleSubmit(handleSubmit);
 
     // Auto-submit when time runs out
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft((prev: number) => {
                 if (prev <= 1) {
-                    clearInterval(timer)
+                    clearInterval(timer);
                     if (!isSubmitting) {
-                        const formData = form.getValues()
-                        handleSubmit(formData)
+                        const formData = form.getValues();
+                        handleSubmit(formData);
                     }
-                    return 0
+                    return 0;
                 }
-                return prev - 1
+                return prev - 1;
             })
         }, 1000)
 
-        return () => clearInterval(timer)
+        return () => clearInterval(timer);
     }, [form, handleSubmit, isSubmitting])
 
     // Check if current question is answered
     useEffect(() => {
         const watchForm = form.watch((value) => {
-            const currentAnswer = value.submitted?.[currentQuestion]?.answer || ''
-            const newCompleted = new Set(completedQuestions)
+            const currentAnswer = value.submitted?.[currentQuestion]?.answer || '';
+            const newCompleted = new Set(completedQuestions);
             
             if (currentAnswer.trim().length >= 10) {
                 newCompleted.add(currentQuestion)
@@ -150,25 +150,25 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
                 newCompleted.delete(currentQuestion)
             }
             
-            setCompletedQuestions(newCompleted)
+            setCompletedQuestions(newCompleted);
         })
         
-        return () => watchForm.unsubscribe()
+        return () => watchForm.unsubscribe();
     }, [form, currentQuestion, completedQuestions])
 
     const formatTime = (seconds: number) => {
-        const mins = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     }
 
     const getTimeColor = () => {
-        if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes
-        if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes
-        return 'text-green-600 bg-green-50 border-green-200'
+        if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes;
+        if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes;
+        return 'text-green-600 bg-green-50 border-green-200';
     }
 
-    const canSubmit = completedQuestions.size >= Math.ceil(questions.length * 0.7) // At least 70% answered
+    const canSubmit = completedQuestions.size >= Math.ceil(questions.length * 0.7) // At least 70% answered;
 
     return (
         <div className="w-full max-w-4xl mx-auto">
@@ -319,5 +319,5 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
     )
 }
 
-export default InterviewClientForm
+export default InterviewClientForm;
 

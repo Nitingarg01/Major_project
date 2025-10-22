@@ -1,10 +1,10 @@
 'use client'
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Progress } from './ui/progress'
-import { TrendingUp, TrendingDown, Minus, Activity } from 'lucide-react'
-import type { ConfidenceMetrics } from '@/lib/confidenceScoreService'
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
+import { TrendingUp, TrendingDown, Minus, Activity } from 'lucide-react';
+import type { ConfidenceMetrics } from '@/lib/confidenceScoreService';
 
 interface ConfidenceScoreDisplayProps {
   metrics: ConfidenceMetrics
@@ -15,7 +15,7 @@ interface ConfidenceScoreDisplayProps {
 const ConfidenceScoreDisplay: React.FC<ConfidenceScoreDisplayProps> = ({
   metrics,
   showDetails = true,
-  compact = false
+  compact = false;
 }) => {
   const getTrendIcon = () => {
     switch (metrics.trend) {
@@ -26,24 +26,24 @@ const ConfidenceScoreDisplay: React.FC<ConfidenceScoreDisplayProps> = ({
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 65) return 'text-blue-600'
-    if (score >= 50) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 80) return 'text-green-600';
+    if (score >= 65) return 'text-blue-600';
+    if (score >= 50) return 'text-yellow-600';
+    return 'text-red-600';
   }
 
   const getScoreBackground = (score: number) => {
-    if (score >= 80) return 'bg-green-100 border-green-300'
-    if (score >= 65) return 'bg-blue-100 border-blue-300'
-    if (score >= 50) return 'bg-yellow-100 border-yellow-300'
-    return 'bg-red-100 border-red-300'
+    if (score >= 80) return 'bg-green-100 border-green-300';
+    if (score >= 65) return 'bg-blue-100 border-blue-300';
+    if (score >= 50) return 'bg-yellow-100 border-yellow-300';
+    return 'bg-red-100 border-red-300';
   }
 
   if (compact) {
     return (
       <div 
         className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border-2 ${
-          getScoreBackground(metrics.overallConfidence)
+          getScoreBackground(metrics.overallConfidence);
         }`}
         data-testid="confidence-score-compact"
       >
@@ -135,15 +135,15 @@ const ConfidenceScoreDisplay: React.FC<ConfidenceScoreDisplayProps> = ({
         <div className="flex items-center justify-center pt-2">
           <Badge 
             className={`${
-              metrics.overallConfidence >= 80 ? 'bg-green-600' :
-              metrics.overallConfidence >= 65 ? 'bg-blue-600' :
-              metrics.overallConfidence >= 50 ? 'bg-yellow-600' :
+              metrics.overallConfidence >= 80 ? 'bg-green-600' :;
+              metrics.overallConfidence >= 65 ? 'bg-blue-600' :;
+              metrics.overallConfidence >= 50 ? 'bg-yellow-600' :;
               'bg-red-600'
             } text-white`}
           >
-            {metrics.overallConfidence >= 80 ? '🌟 Excellent Confidence!' :
-             metrics.overallConfidence >= 65 ? '👍 Good Confidence' :
-             metrics.overallConfidence >= 50 ? '💪 Stay Focused' :
+            {metrics.overallConfidence >= 80 ? '🌟 Excellent Confidence!' :;
+             metrics.overallConfidence >= 65 ? '👍 Good Confidence' :;
+             metrics.overallConfidence >= 50 ? '💪 Stay Focused' :;
              '📈 Building Confidence'}
           </Badge>
         </div>
@@ -152,4 +152,4 @@ const ConfidenceScoreDisplay: React.FC<ConfidenceScoreDisplayProps> = ({
   )
 }
 
-export default ConfidenceScoreDisplay
+export default ConfidenceScoreDisplay;

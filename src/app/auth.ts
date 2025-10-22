@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import client from "@/lib/db";
-import { compare } from "bcrypt-ts"
+import { compare } from "bcrypt-ts";
 import { DBUser } from "@/types/user";
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
@@ -47,24 +47,24 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 const password = credentials?.password as string | undefined;
 
                 if (!email || !password) {
-                    throw new Error("Please Enter Valid Credentials!")
+                    throw new Error("Please Enter Valid Credentials!");
                 }
 
                 const dbClient = client;
-                const db = dbClient.db("Cluster0")
+                const db = dbClient.db("Cluster0");
 
                 const user = await db.collection("users").findOne({ email: email });
                 if (!user) {
-                    throw new Error("Invalid Email or Password")
+                    throw new Error("Invalid Email or Password");
                 }
                 if (!user.password) {
-                    throw new Error("Please sign in with Google or reset your password")
+                    throw new Error("Please sign in with Google or reset your password");
                 }
 
-                const isMatch = await compare(password, user?.password)
+                const isMatch = await compare(password, user?.password);
 
                 if (!isMatch) {
-                    throw new Error("Invalid Email or Password")
+                    throw new Error("Invalid Email or Password");
                 }
 
                 return {
@@ -107,10 +107,10 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         signIn: async ({ user, account, profile }) => {
             try {
                 const dbClient = client;
-                const db = dbClient.db("Cluster0")
+                const db = dbClient.db("Cluster0");
 
                 if (account?.provider === 'google') {
-                    const { email, id, name } = user
+                    const { email, id, name } = user;
 
                     if (!email) {
                         console.error("No email provided by Google");

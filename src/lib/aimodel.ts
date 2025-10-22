@@ -45,7 +45,7 @@ class AIInterviewModel {
 
   async generateInterviewQuestions(params: QuestionGenerationParams): Promise<InterviewQuestion[]> {
     if (!this.model) {
-      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY')
+      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY');
     }
     const { 
       jobTitle, 
@@ -55,40 +55,40 @@ class AIInterviewModel {
       experienceLevel, 
       interviewType,
       resumeContent,
-      numberOfQuestions = 10
-    } = params
+      numberOfQuestions = 10;
+    } = params;
 
-    let prompt = ''
+    let prompt = '';
     
     // Different prompts based on interview type
     switch (interviewType) {
       case 'technical':
-        prompt = this.generateTechnicalPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions)
+        prompt = this.generateTechnicalPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions);
         break
       case 'behavioral':
-        prompt = this.generateBehavioralPrompt(jobTitle, companyName, jobDescription, experienceLevel, numberOfQuestions, resumeContent)
+        prompt = this.generateBehavioralPrompt(jobTitle, companyName, jobDescription, experienceLevel, numberOfQuestions, resumeContent);
         break
       case 'aptitude':
-        prompt = this.generateAptitudePrompt(jobTitle, companyName, numberOfQuestions)
+        prompt = this.generateAptitudePrompt(jobTitle, companyName, numberOfQuestions);
         break
       case 'dsa':
-        prompt = this.generateDSAPrompt(skills, experienceLevel, numberOfQuestions)
+        prompt = this.generateDSAPrompt(skills, experienceLevel, numberOfQuestions);
         break
       case 'mixed':
-        prompt = this.generateMixedPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions)
+        prompt = this.generateMixedPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions);
         break
       case 'system_design':
-        prompt = this.generateSystemDesignPrompt(jobTitle, companyName, skills, experienceLevel, numberOfQuestions)
+        prompt = this.generateSystemDesignPrompt(jobTitle, companyName, skills, experienceLevel, numberOfQuestions);
         break
     }
 
     try {
-      const result = await this.model.generateContent(prompt)
-      const response = await result.response
-      const text = response.text()
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
       
       // Parse the JSON response
-      const questions = extractJSON(text)
+      const questions = extractJSON(text);
       
       return questions.map((q: any, index: number) => ({
         id: `${interviewType}_${index + 1}`,
@@ -100,14 +100,14 @@ class AIInterviewModel {
       }))
     } catch (error) {
       console.error('Error generating questions:', error)
-      throw new Error('Failed to generate interview questions')
+      throw new Error('Failed to generate interview questions');
     }
   }
 
   private generateTechnicalPrompt(jobTitle: string, companyName: string, skills: string[], jobDescription: string, experienceLevel: string, resumeContent?: string, numberOfQuestions: number = 10): string {
     const skillCategories = this.categorizeSkills(skills);
     
-    return `You are an expert technical interviewer for ${companyName}. Generate ${numberOfQuestions} diverse technical interview questions for a ${experienceLevel} level ${jobTitle} position.
+    return `You are an expert technical interviewer for ${companyName}. Generate ${numberOfQuestions} diverse technical interview questions for a ${experienceLevel} level ${jobTitle} position.;
 
 Skills required: ${skills.join(', ')}
 Job Description: ${jobDescription}
@@ -145,7 +145,7 @@ Ensure questions are:
   }
 
   private generateBehavioralPrompt(jobTitle: string, companyName: string, jobDescription: string, experienceLevel: string, numberOfQuestions: number = 8, resumeContent?: string): string {
-    const resumeBasedQuestions = resumeContent ? `
+    const resumeBasedQuestions = resumeContent ? `;
 
 CANDIDATE'S BACKGROUND:
 ${resumeContent}
@@ -157,7 +157,7 @@ PERSONALIZATION INSTRUCTIONS:
 - Reference specific companies, technologies, or accomplishments from their background
 - Ask about lessons learned from their career progression as shown in their resume` : '';
 
-    return `You are an experienced HR interviewer at ${companyName}. Generate ${numberOfQuestions} behavioral interview questions for a ${experienceLevel} level ${jobTitle} position.
+    return `You are an experienced HR interviewer at ${companyName}. Generate ${numberOfQuestions} behavioral interview questions for a ${experienceLevel} level ${jobTitle} position.;
 
 Job Description: ${jobDescription}${resumeBasedQuestions}
 
@@ -187,7 +187,7 @@ Make questions relevant to ${companyName}'s work environment and values${resumeC
   }
 
   private generateAptitudePrompt(jobTitle: string, companyName: string, numberOfQuestions: number = 10): string {
-    return `Generate ${numberOfQuestions} aptitude and logical reasoning questions suitable for a ${jobTitle} interview at ${companyName}.
+    return `Generate ${numberOfQuestions} aptitude and logical reasoning questions suitable for a ${jobTitle} interview at ${companyName}.;
 
 Include mix of:
 1. Logical reasoning puzzles
@@ -214,7 +214,7 @@ Return ONLY a JSON array with this exact structure:
   }
 
   private generateDSAPrompt(skills: string[], experienceLevel: string, numberOfQuestions: number = 8): string {
-    return `Generate ${numberOfQuestions} Data Structures and Algorithms questions for a ${experienceLevel} level developer.
+    return `Generate ${numberOfQuestions} Data Structures and Algorithms questions for a ${experienceLevel} level developer.;
 
 Skills context: ${skills.join(', ')}
 
@@ -245,7 +245,7 @@ Return ONLY a JSON array with this exact structure:
   }
 
   private generateSystemDesignPrompt(jobTitle: string, companyName: string, skills: string[], experienceLevel: string, numberOfQuestions: number = 8): string {
-    return `Generate ${numberOfQuestions} system design interview questions for a ${experienceLevel} level ${jobTitle} at ${companyName}.
+    return `Generate ${numberOfQuestions} system design interview questions for a ${experienceLevel} level ${jobTitle} at ${companyName}.;
 
 Skills context: ${skills.join(', ')}
 
@@ -286,7 +286,7 @@ Focus on practical scenarios that test system thinking and architectural decisio
     const problemSolvingCount = Math.ceil(numberOfQuestions * 0.2);
     const dsaCount = numberOfQuestions - technicalCount - behavioralCount - problemSolvingCount;
 
-    return `Create a comprehensive ${numberOfQuestions}-question interview for a ${experienceLevel} level ${jobTitle} at ${companyName}.
+    return `Create a comprehensive ${numberOfQuestions}-question interview for a ${experienceLevel} level ${jobTitle} at ${companyName}.;
 
 EXACT QUESTION BREAKDOWN:
 - Technical Questions: ${technicalCount} (Skills: ${skills.join(', ')})
@@ -347,9 +347,9 @@ Ensure questions are progressive, realistic, and thoroughly test the candidate's
     skills: string[]
   ): Promise<any> {
     if (!this.model) {
-      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY')
+      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY');
     }
-    const prompt = `You are an expert interview assessor. Analyze this interview performance for a ${jobTitle} position requiring skills: ${skills.join(', ')}.
+    const prompt = `You are an expert interview assessor. Analyze this interview performance for a ${jobTitle} position requiring skills: ${skills.join(', ')}.;
 
 Questions and Answers Analysis:
 ${questions.map((q, index) => `
@@ -403,14 +403,14 @@ Evaluation Criteria:
 Focus on constructive feedback that helps the candidate improve while highlighting their strengths.`
 
     try {
-      const result = await this.model.generateContent(prompt)
-      const response = await result.response
-      const text = response.text()
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
       
-      return extractJSON(text)
+      return extractJSON(text);
     } catch (error) {
       console.error('Error analyzing performance:', error)
-      throw new Error('Failed to analyze interview performance')
+      throw new Error('Failed to analyze interview performance');
     }
   }
 
@@ -429,10 +429,10 @@ Focus on constructive feedback that helps the candidate improve while highlighti
     const databaseSkills = ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'Elasticsearch'];
     const cloudSkills = ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes'];
 
-    const primary = skills.filter(skill => 
+    const primary = skills.filter(skill =>;
       frontendSkills.includes(skill) || backendSkills.includes(skill)
     );
-    const secondary = skills.filter(skill => 
+    const secondary = skills.filter(skill =>;
       databaseSkills.includes(skill) || cloudSkills.includes(skill)
     );
 
@@ -468,14 +468,14 @@ Focus on constructive feedback that helps the candidate improve while highlighti
   // Public method to generate content
   async generateContent(prompt: string): Promise<any> {
     if (!this.model) {
-      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY')
+      throw new Error('Gemini API is not configured - please set GEMINI_API_KEY');
     }
     try {
-      const result = await this.model.generateContent(prompt)
-      return result
+      const result = await this.model.generateContent(prompt);
+      return result;
     } catch (error) {
       console.error('Error generating content:', error)
-      throw new Error('Failed to generate content')
+      throw new Error('Failed to generate content');
     }
   }
 
@@ -495,5 +495,5 @@ Focus on constructive feedback that helps the candidate improve while highlighti
   }
 }
 
-export const aiInterviewModel = new AIInterviewModel()
-export default AIInterviewModel
+export const aiInterviewModel = new AIInterviewModel();
+export default AIInterviewModel;

@@ -1,7 +1,7 @@
 'use client'
-import React, { createContext, useContext, useState } from 'react'
-import Navbar from './Navbar'
-import { usePathname } from 'next/navigation'
+import React, { createContext, useContext, useState } from 'react';
+import Navbar from './Navbar';
+import { usePathname } from 'next/navigation';
 
 // Create context for loading state
 const LoadingContext = createContext<{
@@ -34,7 +34,7 @@ const ClientNavbar = () => {
   
   // Show minimal navbar during any loading state on dashboard or protected routes
   const shouldShowMinimal = isLoading && (
-    pathname === '/dashboard' || 
+    pathname === '/dashboard' ||;
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/interview') ||
     pathname.startsWith('/create') ||

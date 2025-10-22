@@ -1,11 +1,11 @@
 // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
-import { MongoClient, ServerApiVersion } from "mongodb"
+import { MongoClient, ServerApiVersion } from "mongodb";
  
 if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
  
-const uri = process.env.MONGODB_URI
+const uri = process.env.MONGODB_URI;
 const options = {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -21,7 +21,7 @@ const options = {
   // bufferCommands: false, // This is for mongoose, not MongoDB driver
 }
  
-let client: MongoClient
+let client: MongoClient;
  
 if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
@@ -31,17 +31,17 @@ if (process.env.NODE_ENV === "development") {
   }
  
   if (!globalWithMongo._mongoClient) {
-    globalWithMongo._mongoClient = new MongoClient(uri, options)
+    globalWithMongo._mongoClient = new MongoClient(uri, options);
   }
-  client = globalWithMongo._mongoClient
+  client = globalWithMongo._mongoClient;
 } else {
   // In production mode, it's best to not use a global variable.
-  client = new MongoClient(uri, options)
+  client = new MongoClient(uri, options);
 }
  
 // Export a module-scoped MongoClient. By doing this in a
 // separate module, the client can be shared across functions.
-export default client
+export default client;
 
 // Export a connection function for Ollama routes
 export async function connectDB() {

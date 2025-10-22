@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
           success: true,
           session: updatedSession,
           roundResult,
-          isCompleted: updatedSession.sessionData.endTime !== undefined
+          isCompleted: updatedSession.sessionData.endTime !== undefined;
         });
 
       case 'finalize':

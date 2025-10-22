@@ -1,14 +1,14 @@
 'use client'
 import React, { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { createInterview, parsingResume } from "@/app/create/actions"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { createInterview, parsingResume } from "@/app/create/actions";
 import { LoaderFive } from "@/components/ui/loader";
 import { Badge } from "@/components/ui/badge";
 import { Search, Building2, Users, Briefcase, Upload, FileText, Sparkles, Brain, Zap, Target, Award } from "lucide-react";
@@ -37,7 +37,7 @@ const skillCategories = {
 };
 
 const EnhancedInterviewCreationForm = () => {
-    const router = useRouter()
+    const router = useRouter();
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
@@ -50,14 +50,14 @@ const EnhancedInterviewCreationForm = () => {
         }
     })
 
-    const [projectContext, setProjectContext] = useState<string[]>([])
-    const [workExDetails, setWorkExDetails] = useState<string[]>([])
-    const [loading, setLoading] = useState<boolean>(false)
-    const [input, setInput] = useState('')
-    const [uploading, setUploading] = useState<boolean>(false)
-    const [fileName, setFileName] = useState<string>('')
-    const [showSkillSuggestions, setShowSkillSuggestions] = useState(false)
-    const [selectedCompanyData, setSelectedCompanyData] = useState<any>(null)
+    const [projectContext, setProjectContext] = useState<string[]>([]);
+    const [workExDetails, setWorkExDetails] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [input, setInput] = useState('');
+    const [uploading, setUploading] = useState<boolean>(false);
+    const [fileName, setFileName] = useState<string>('');
+    const [showSkillSuggestions, setShowSkillSuggestions] = useState(false);
+    const [selectedCompanyData, setSelectedCompanyData] = useState<any>(null);
 
     const onSubmit = async (data: z.infer<typeof schema>) => {
         // Enhanced validation with better error messages
@@ -81,10 +81,10 @@ const EnhancedInterviewCreationForm = () => {
             return;
         }
 
-        setLoading(true)
+        setLoading(true);
         try {
             console.log('🚀 Creating enhanced interview with AI intelligence...')
-            const response = await createInterview(data, projectContext, workExDetails)
+            const response = await createInterview(data, projectContext, workExDetails);
             
             // Check if there's a specific error response
             if (response && !response.success && response.error) {
@@ -120,7 +120,7 @@ const EnhancedInterviewCreationForm = () => {
                 description: "Please check your inputs and try again"
             })
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
@@ -128,15 +128,15 @@ const EnhancedInterviewCreationForm = () => {
         toast("📄 AI is analyzing your resume...", {
             description: "Extracting skills and experience for personalized questions"
         })
-        setUploading(true)
+        setUploading(true);
         
         try {
             await new Promise((res) => setTimeout(res, 2500))
-            const { data } = await parsingResume(file)
-            const { skills, projects, workex } = data
+            const { data } = await parsingResume(file);
+            const { skills, projects, workex } = data;
 
             setProjectContext(prev => [...prev, projects]);
-            setWorkExDetails(prev => [...prev, workex])
+            setWorkExDetails(prev => [...prev, workex]);
             form.setValue("skills", skills)
             
             toast.success("✅ Resume Analysis Complete!", {
@@ -147,12 +147,12 @@ const EnhancedInterviewCreationForm = () => {
                 description: "Please try again or add skills manually"
             })
         } finally {
-            setUploading(false)
+            setUploading(false);
         }
     }
 
     const addSkillFromCategory = (skill: string) => {
-        const currentSkills = form.getValues("skills")
+        const currentSkills = form.getValues("skills");
         if (!currentSkills.includes(skill) && currentSkills.length < 20) {
             form.setValue("skills", [...currentSkills, skill])
             toast.success(`➕ Added ${skill} to your skill set`)
@@ -161,7 +161,7 @@ const EnhancedInterviewCreationForm = () => {
 
     const handleCompanySelect = (company: string, jobTitle: string, companyData?: any) => {
         form.setValue("companyName", company)
-        setSelectedCompanyData(companyData)
+        setSelectedCompanyData(companyData);
         
         if (companyData) {
             toast.success(`🎯 ${company} Selected!`, {
@@ -181,7 +181,7 @@ const EnhancedInterviewCreationForm = () => {
             'dsa': '⚡ Data structures, algorithms, and competitive programming problems',
             'system_design': '🏗️ Architecture and scalability design challenges for senior roles'
         }
-        return descriptions[type as keyof typeof descriptions] || 'Standard interview format'
+        return descriptions[type as keyof typeof descriptions] || 'Standard interview format';
     }
 
     return (
@@ -269,9 +269,9 @@ const EnhancedInterviewCreationForm = () => {
                                                     {selectedCompanyData.name} Intelligence
                                                 </h4>
                                                 <Badge className={`text-xs ${
-                                                    selectedCompanyData.metadata.difficultyLevel === 'High' 
+                                                    selectedCompanyData.metadata.difficultyLevel === 'High';
                                                         ? 'bg-red-100 text-red-700' 
-                                                        : selectedCompanyData.metadata.difficultyLevel === 'Medium'
+                                                        : selectedCompanyData.metadata.difficultyLevel === 'Medium';
                                                         ? 'bg-yellow-100 text-yellow-700'
                                                         : 'bg-green-100 text-green-700'
                                                 }`}>
@@ -364,7 +364,7 @@ const EnhancedInterviewCreationForm = () => {
                             <FormItem>
                                 <FormLabel className="font-semibold">
                                     Job Description<span className="text-red-500">*</span>
-                                    <span className="text-sm text-gray-500 ml-2">(More detail = Better AI questions)</span>
+                                    <span className="text-sm text-gray-500 ml-2">(More detail = Better AI questions)</span>;
                                 </FormLabel>
                                 <FormControl>
                                     <Textarea 
@@ -384,7 +384,7 @@ const EnhancedInterviewCreationForm = () => {
                         name="skills"
                         render={({ field }) => {
                             const addSkill = () => {
-                                const trimmed = input.trim()
+                                const trimmed = input.trim();
                                 if (trimmed && !field.value.includes(trimmed) && field.value.length < 20) {
                                     form.setValue("skills", [...field.value, trimmed]);
                                     setInput("");
@@ -393,7 +393,7 @@ const EnhancedInterviewCreationForm = () => {
                             }
 
                             const removeSkill = (skill: string) => {
-                                const newSkills = field.value.filter((s) => s !== skill)
+                                const newSkills = field.value.filter((s) => s !== skill);
                                 form.setValue("skills", newSkills)
                                 toast.info(`➖ Removed ${skill}`)
                             }
@@ -403,7 +403,7 @@ const EnhancedInterviewCreationForm = () => {
                                     <FormLabel className="font-semibold flex items-center justify-between">
                                         <span>
                                             Skills<span className="text-red-500">*</span>
-                                            <span className="text-sm text-gray-500 ml-2">({field.value.length}/20) - More skills = Better questions</span>
+                                            <span className="text-sm text-gray-500 ml-2">({field.value.length}/20) - More skills = Better questions</span>;
                                         </span>
                                         <Button 
                                             type="button" 
@@ -423,7 +423,7 @@ const EnhancedInterviewCreationForm = () => {
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
                                                     e.preventDefault()
-                                                    addSkill()
+                                                    addSkill();
                                                 }
                                             }}
                                             placeholder="Add a skill (e.g., React, Python, Machine Learning)"
@@ -597,8 +597,8 @@ const EnhancedInterviewCreationForm = () => {
                                         onChange={(e) => {
                                             const file = e.target.files?.[0]
                                             if (file) {
-                                                setFileName(file.name)
-                                                parseResume(file)
+                                                setFileName(file.name);
+                                                parseResume(file);
                                             }
                                         }}
                                         disabled={uploading}
@@ -645,4 +645,4 @@ const EnhancedInterviewCreationForm = () => {
     )
 }
 
-export default EnhancedInterviewCreationForm
+export default EnhancedInterviewCreationForm;

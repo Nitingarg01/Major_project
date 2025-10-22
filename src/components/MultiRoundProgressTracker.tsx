@@ -1,10 +1,10 @@
 'use client'
-import React from 'react'
-import { Card, CardContent } from './ui/card'
-import { Badge } from './ui/badge'
-import { Progress } from './ui/progress'
-import { Check, Circle, Lock } from 'lucide-react'
-import type { RoundProgress, InterviewRound } from '@/lib/multiRoundInterviewManager'
+import React from 'react';
+import { Card, CardContent } from './ui/card';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
+import { Check, Circle, Lock } from 'lucide-react';
+import type { RoundProgress, InterviewRound } from '@/lib/multiRoundInterviewManager';
 
 interface MultiRoundProgressTrackerProps {
   rounds: InterviewRound[]
@@ -19,11 +19,11 @@ const MultiRoundProgressTracker: React.FC<MultiRoundProgressTrackerProps> = ({
 }) => {
   const getStatusIcon = (status: RoundProgress['status'], index: number) => {
     if (status === 'completed') {
-      return <Check className="w-5 h-5 text-green-600" />
+      return <Check className="w-5 h-5 text-green-600" />;
     } else if (status === 'active') {
-      return <Circle className="w-5 h-5 text-blue-600 animate-pulse" />
+      return <Circle className="w-5 h-5 text-blue-600 animate-pulse" />;
     } else {
-      return <Lock className="w-5 h-5 text-gray-400" />
+      return <Lock className="w-5 h-5 text-gray-400" />;
     }
   }
 
@@ -35,7 +35,7 @@ const MultiRoundProgressTracker: React.FC<MultiRoundProgressTrackerProps> = ({
     }
   }
 
-  const overallProgress = (progress.filter(p => p.status === 'completed').length / rounds.length) * 100
+  const overallProgress = (progress.filter(p => p.status === 'completed').length / rounds.length) * 100;
 
   return (
     <Card className="border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50" data-testid="multi-round-tracker">
@@ -56,13 +56,13 @@ const MultiRoundProgressTracker: React.FC<MultiRoundProgressTrackerProps> = ({
           <div className="space-y-4">
             {rounds.map((round, index) => {
               const roundProgress = progress[index]
-              const isActive = index === currentRoundIndex
+              const isActive = index === currentRoundIndex;
 
               return (
                 <div
                   key={round.id}
                   className={`p-4 rounded-lg border-2 transition-all duration-300 ${
-                    getStatusColor(roundProgress.status)
+                    getStatusColor(roundProgress.status);
                   } ${isActive ? 'transform scale-[1.02]' : ''}`}
                   data-testid={`round-step-${round.type.toLowerCase()}`}
                 >
@@ -70,8 +70,8 @@ const MultiRoundProgressTracker: React.FC<MultiRoundProgressTrackerProps> = ({
                     {/* Icon */}
                     <div className="flex-shrink-0">
                       <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl ${
-                        roundProgress.status === 'completed' ? 'bg-green-200' :
-                        roundProgress.status === 'active' ? 'bg-blue-200' :
+                        roundProgress.status === 'completed' ? 'bg-green-200' :;
+                        roundProgress.status === 'active' ? 'bg-blue-200' :;
                         'bg-gray-200'
                       }`}>
                         {round.icon}
@@ -160,4 +160,4 @@ const MultiRoundProgressTracker: React.FC<MultiRoundProgressTrackerProps> = ({
   )
 }
 
-export default MultiRoundProgressTracker
+export default MultiRoundProgressTracker;

@@ -1,14 +1,14 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { handleForgotPassword } from './actions'
-import { toast } from 'sonner'
-import { Mail, CheckCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { handleForgotPassword } from './actions';
+import { toast } from 'sonner';
+import { Mail, CheckCircle } from 'lucide-react';
 
 const schema = z.object({
   email: z.string().min(6, "Please Enter a valid email.").refine(
@@ -20,8 +20,8 @@ const schema = z.object({
 })
 
 const ForgotPasswordForm = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [emailSent, setEmailSent] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -31,24 +31,24 @@ const ForgotPasswordForm = () => {
   })
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       formData.append("email", data.email)
       
-      const response = await handleForgotPassword(formData)
+      const response = await handleForgotPassword(formData);
       
       if (response?.success) {
-        setEmailSent(true)
+        setEmailSent(true);
         toast.success("Password reset email sent! Check your inbox.")
       } else {
         toast.error(response?.error || "Failed to send reset email")
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to send reset email"
+      const errorMessage = error instanceof Error ? error.message : "Failed to send reset email";
       toast.error(errorMessage)
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -116,4 +116,4 @@ const ForgotPasswordForm = () => {
   )
 }
 
-export default ForgotPasswordForm
+export default ForgotPasswordForm;

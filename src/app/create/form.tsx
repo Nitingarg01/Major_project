@@ -1,15 +1,15 @@
 'use client'
 import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { createInterview, parsingResume } from "./actions"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { createInterview, parsingResume } from "./actions";
 import { LoaderFive } from "@/components/ui/loader";
 import { Badge } from "@/components/ui/badge";
 import { Search, Building2, Users, Briefcase, Upload, FileText, Sparkles } from "lucide-react";
@@ -42,7 +42,7 @@ const skillCategories = {
 };
 
 const Createform = () => {
-    const router = useRouter()
+    const router = useRouter();
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
@@ -55,13 +55,13 @@ const Createform = () => {
         }
     })
 
-    const [projectContext, setProjectContext] = useState<string[]>([])
-    const [workExDetails, setWorkExDetails] = useState<string[]>([])
-    const [loading, setLoading] = useState<boolean>(false)
-    const [input, setInput] = useState('')
-    const [uploading, setUploading] = useState<boolean>(false)
-    const [fileName, setFileName] = useState<string>('')
-    const [showSkillSuggestions, setShowSkillSuggestions] = useState(false)
+    const [projectContext, setProjectContext] = useState<string[]>([]);
+    const [workExDetails, setWorkExDetails] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [input, setInput] = useState('');
+    const [uploading, setUploading] = useState<boolean>(false);
+    const [fileName, setFileName] = useState<string>('');
+    const [showSkillSuggestions, setShowSkillSuggestions] = useState(false);
 
     const onSubmit = async (data: z.infer<typeof schema>) => {
         // Validate required fields before submitting
@@ -85,42 +85,42 @@ const Createform = () => {
             return;
         }
 
-        setLoading(true)
+        setLoading(true);
         try {
-            const response = await createInterview(data, projectContext, workExDetails)
+            const response = await createInterview(data, projectContext, workExDetails);
             toast.success("🎉 Interview Created Successfully with Smart AI!")
             router.push('/dashboard')
         } catch (error) {
             console.error('Interview creation error:', error)
             toast.error("❌ Interview Creation Failed! Please try again.")
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
     const parseResume = async (file: File) => {
-        toast("📄 Parsing Your Resume...")
-        setUploading(true)
+        toast("📄 Parsing Your Resume...");
+        setUploading(true);
         
         try {
             await new Promise((res) => setTimeout(res, 2500))
-            const { data } = await parsingResume(file)
-            const { skills, projects, workex } = data
+            const { data } = await parsingResume(file);
+            const { skills, projects, workex } = data;
 
             setProjectContext(prev => [...prev, projects]);
-            setWorkExDetails(prev => [...prev, workex])
+            setWorkExDetails(prev => [...prev, workex]);
             form.setValue("skills", skills)
             
             toast.success("✅ Resume parsed and skills auto-filled!");
         } catch (error) {
             toast.error("❌ Failed to parse resume")
         } finally {
-            setUploading(false)
+            setUploading(false);
         }
     }
 
     const addSkillFromCategory = (skill: string) => {
-        const currentSkills = form.getValues("skills")
+        const currentSkills = form.getValues("skills");
         if (!currentSkills.includes(skill) && currentSkills.length < 15) {
             form.setValue("skills", [...currentSkills, skill])
         }
@@ -261,7 +261,7 @@ const Createform = () => {
                         name="skills"
                         render={({ field }) => {
                             const addSkill = () => {
-                                const trimmed = input.trim()
+                                const trimmed = input.trim();
                                 if (trimmed && !field.value.includes(trimmed) && field.value.length < 15) {
                                     form.setValue("skills", [...field.value, trimmed]);
                                     setInput("");
@@ -269,7 +269,7 @@ const Createform = () => {
                             }
 
                             const removeSkill = (skill: string) => {
-                                const newSkills = field.value.filter((s) => s !== skill)
+                                const newSkills = field.value.filter((s) => s !== skill);
                                 form.setValue("skills", newSkills)
                             }
 
@@ -277,7 +277,7 @@ const Createform = () => {
                                 <FormItem>
                                     <FormLabel className="font-semibold">
                                         Skills<span className="text-red-500">*</span>
-                                        <span className="text-sm text-gray-500 ml-2">({field.value.length}/15) - More skills = Better Smart AI questions</span>
+                                        <span className="text-sm text-gray-500 ml-2">({field.value.length}/15) - More skills = Better Smart AI questions</span>;
                                     </FormLabel>
                                     
                                     <div className="flex gap-2">
@@ -287,7 +287,7 @@ const Createform = () => {
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
                                                     e.preventDefault()
-                                                    addSkill()
+                                                    addSkill();
                                                 }
                                             }}
                                             placeholder="Add a skill (e.g., React, Python)"
@@ -301,7 +301,7 @@ const Createform = () => {
                                     {/* Skill Suggestions */}
                                     {showSkillSuggestions && (
                                         <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-sm text-gray-600 mb-3">Popular skills by category (more skills = better Smart AI questions):</p>
+                                            <p className="text-sm text-gray-600 mb-3">Popular skills by category (more skills = better Smart AI questions):</p>;
                                             <div className="space-y-3">
                                                 {Object.entries(skillCategories).map(([category, skills]) => (
                                                     <div key={category}>
@@ -424,8 +424,8 @@ const Createform = () => {
                                         onChange={(e) => {
                                             const file = e.target.files?.[0]
                                             if (file) {
-                                                setFileName(file.name)
-                                                parseResume(file)
+                                                setFileName(file.name);
+                                                parseResume(file);
                                             }
                                         }}
                                         disabled={uploading}
@@ -462,4 +462,4 @@ const Createform = () => {
     )
 }
 
-export default Createform
+export default Createform;

@@ -350,7 +350,7 @@ export class SmartAIService {
   }
 
   private async parseResumeWithGemini(resumeText: string): Promise<any> {
-    const prompt = `
+    const prompt = `;
       Parse this resume and extract structured information for interview preparation. Return as JSON:
       
       ${resumeText}
@@ -425,7 +425,7 @@ export class SmartAIService {
   }
 
   private async searchCompanyWithGemini(companyName: string): Promise<any> {
-    const prompt = `
+    const prompt = `;
       Provide comprehensive information about the company "${companyName}" for interview preparation. Return as JSON:
       
       {
@@ -694,9 +694,9 @@ export class SmartAIService {
       'Git', 'GitHub', 'GitLab', 'Linux', 'Bash', 'PowerShell'
     ];
     
-    return commonSkills.filter(skill => 
+    return commonSkills.filter(skill =>;
 
-    return commonSkills.filter(skill =>
+    return commonSkills.filter(skill =>;
       text.toLowerCase().includes(skill.toLowerCase())
     );
   }
@@ -834,7 +834,7 @@ export class SmartAIService {
     companyName: string,
     difficulty: string = 'medium',
     count: number = 3,
-    jobTitle: string = 'Software Engineer'
+    jobTitle: string = 'Software Engineer';
   ) {
     return this.processRequest({
       task: 'dsa_generation',
@@ -908,7 +908,7 @@ export class SmartAIService {
     difficulty: string = 'medium',
     count: number = 5,
     jobTitle: string = 'Software Engineer',
-    companyName: string = 'Technology Company'
+    companyName: string = 'Technology Company';
   ) {
     return this.processRequest({
       task: 'aptitude_generation',
@@ -926,7 +926,7 @@ export class SmartAIService {
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 5,
     jobTitle: string = 'Software Engineer',
-    companyName: string = 'Technology Company'
+    companyName: string = 'Technology Company';
   ) {
     const aptitudeTypes = ['numerical', 'logical', 'verbal', 'spatial', 'abstract'];
     const questions = [];
@@ -1018,7 +1018,7 @@ export class SmartAIService {
         correctAnswer,
         explanation,
         difficulty,
-        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'hard' ? 120 : 90
+        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'hard' ? 120 : 90;
       });
     }
 

@@ -1,9 +1,9 @@
 'use client'
-import React from 'react'
-import VirtualAIDemo from '@/components/VirtualAIDemo'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import React from 'react';
+import VirtualAIDemo from '@/components/VirtualAIDemo';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { 
   Brain, 
   ArrowLeft, 
@@ -14,7 +14,7 @@ import {
   MessageSquare,
   Star
 } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link';
 
 const VirtualAIDemoPage = () => {
   return (
@@ -246,4 +246,4 @@ const VirtualAIDemoPage = () => {
   )
 }
 
-export default VirtualAIDemoPage
+export default VirtualAIDemoPage;

@@ -1,9 +1,9 @@
 'use client'
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Button } from './ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Progress } from './ui/progress'
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
 import { 
   Mic, 
   MicOff, 
@@ -20,8 +20,8 @@ import {
   Pause,
   RotateCcw
 } from 'lucide-react'
-import { toast } from 'sonner'
-import AdvancedCameraFeed from './AdvancedCameraFeed'
+import { toast } from 'sonner';
+import AdvancedCameraFeed from './AdvancedCameraFeed';
 
 interface VirtualAIInterviewerProps {
   questions: any[]
@@ -61,7 +61,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   companyName = 'Company',
   jobTitle = 'Position',
   interviewType = 'Technical',
-  timeLimit = 45
+  timeLimit = 45;
 }) => {
   // Core state
   const [interviewState, setInterviewState] = useState<InterviewState>({
@@ -76,39 +76,39 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   })
 
   // UI state
-  const [isInterviewStarted, setIsInterviewStarted] = useState(false)
-  const [isInterviewPaused, setIsInterviewPaused] = useState(false)
-  const [timeRemaining, setTimeRemaining] = useState(timeLimit * 60)
-  const [cameraEnabled, setCameraEnabled] = useState(true)
-  const [micEnabled, setMicEnabled] = useState(true)
-  const [audioEnabled, setAudioEnabled] = useState(true)
+  const [isInterviewStarted, setIsInterviewStarted] = useState(false);
+  const [isInterviewPaused, setIsInterviewPaused] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(timeLimit * 60);
+  const [cameraEnabled, setCameraEnabled] = useState(true);
+  const [micEnabled, setMicEnabled] = useState(true);
+  const [audioEnabled, setAudioEnabled] = useState(true);
   
   // Technical state
-  const [speechRecognition, setSpeechRecognition] = useState<any>(null)
-  const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
-  const [isRecording, setIsRecording] = useState(false)
-  const [aiAvatarState, setAiAvatarState] = useState<'idle' | 'speaking' | 'listening' | 'thinking'>('idle')
+  const [speechRecognition, setSpeechRecognition] = useState<any>(null);
+  const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [aiAvatarState, setAiAvatarState] = useState<'idle' | 'speaking' | 'listening' | 'thinking'>('idle');
 
   // Refs
-  const questionStartTimeRef = useRef<Date | null>(null)
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const questionStartTimeRef = useRef<Date | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize speech services
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Initialize Speech Recognition
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognition) {
-        const recognition = new SpeechRecognition()
-        recognition.continuous = true
-        recognition.interimResults = true
-        recognition.lang = 'en-US'
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
         
         recognition.onresult = (event) => {
-          let finalTranscript = ''
+          let finalTranscript = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
             if (event.results[i].isFinal) {
-              finalTranscript += event.results[i][0].transcript
+              finalTranscript += event.results[i][0].transcript;
             }
           }
           
@@ -123,15 +123,15 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
         recognition.onerror = (event) => {
           console.error('Speech recognition error:', event.error)
           toast.error('Speech recognition error. Please try again.')
-          setInterviewState(prev => ({ ...prev, isListening: false }))
+          setInterviewState(prev => ({ ...prev, isListening: false }));
         }
 
-        setSpeechRecognition(recognition)
+        setSpeechRecognition(recognition);
       }
 
       // Initialize Speech Synthesis
       if (window.speechSynthesis) {
-        setSpeechSynthesis(window.speechSynthesis)
+        setSpeechSynthesis(window.speechSynthesis);
       }
     }
   }, [])
@@ -142,28 +142,28 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       timerRef.current = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev <= 1) {
-            handleInterviewComplete()
-            return 0
+            handleInterviewComplete();
+            return 0;
           }
-          return prev - 1
+          return prev - 1;
         })
       }, 1000)
     } else {
       if (timerRef.current) {
-        clearInterval(timerRef.current)
+        clearInterval(timerRef.current);
       }
     }
 
     return () => {
       if (timerRef.current) {
-        clearInterval(timerRef.current)
+        clearInterval(timerRef.current);
       }
     }
   }, [isInterviewStarted, isInterviewPaused])
 
   // AI Avatar Animation
   const updateAvatarState = useCallback((state: typeof aiAvatarState) => {
-    setAiAvatarState(state)
+    setAiAvatarState(state);
   }, [])
 
   // Speech-to-Text functions
@@ -171,8 +171,8 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     if (speechRecognition && micEnabled) {
       try {
         speechRecognition.start()
-        setInterviewState(prev => ({ ...prev, isListening: true }))
-        updateAvatarState('listening')
+        setInterviewState(prev => ({ ...prev, isListening: true }));
+        updateAvatarState('listening');
         toast.success('🎤 Listening... Speak your answer')
       } catch (error) {
         console.error('Error starting speech recognition:', error)
@@ -184,8 +184,8 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   const stopListening = useCallback(() => {
     if (speechRecognition) {
       speechRecognition.stop()
-      setInterviewState(prev => ({ ...prev, isListening: false }))
-      updateAvatarState('thinking')
+      setInterviewState(prev => ({ ...prev, isListening: false }));
+      updateAvatarState('thinking');
     }
   }, [speechRecognition, updateAvatarState])
 
@@ -195,31 +195,31 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       // Cancel any ongoing speech
       speechSynthesis.cancel()
       
-      const utterance = new SpeechSynthesisUtterance(text)
-      utterance.rate = 0.9
-      utterance.pitch = 1.1
-      utterance.volume = 0.8
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.pitch = 1.1;
+      utterance.volume = 0.8;
       
       // Try to use a professional voice
-      const voices = speechSynthesis.getVoices()
-      const preferredVoice = voices.find(voice => 
+      const voices = speechSynthesis.getVoices();
+      const preferredVoice = voices.find(voice =>;
         voice.name.includes('Google') || 
         voice.name.includes('Microsoft') ||
         voice.name.includes('Alex') ||
         voice.name.includes('Samantha')
       )
       if (preferredVoice) {
-        utterance.voice = preferredVoice
+        utterance.voice = preferredVoice;
       }
 
       utterance.onstart = () => {
-        setInterviewState(prev => ({ ...prev, isSpeaking: true }))
-        updateAvatarState('speaking')
+        setInterviewState(prev => ({ ...prev, isSpeaking: true }));
+        updateAvatarState('speaking');
       }
 
       utterance.onend = () => {
-        setInterviewState(prev => ({ ...prev, isSpeaking: false }))
-        updateAvatarState('idle')
+        setInterviewState(prev => ({ ...prev, isSpeaking: false }));
+        updateAvatarState('idle');
       }
 
       speechSynthesis.speak(utterance)
@@ -228,15 +228,15 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
   // Interview flow functions
   const startInterview = useCallback(() => {
-    setIsInterviewStarted(true)
+    setIsInterviewStarted(true);
     setInterviewState(prev => ({
       ...prev,
       startTime: new Date()
     }))
-    questionStartTimeRef.current = new Date()
+    questionStartTimeRef.current = new Date();
     
     // Welcome message
-    const welcomeMessage = `Hello! I'm your AI interviewer for the ${jobTitle} position at ${companyName}. This is a ${interviewType} interview. Let's begin with our first question.`
+    const welcomeMessage = `Hello! I'm your AI interviewer for the ${jobTitle} position at ${companyName}. This is a ${interviewType} interview. Let's begin with our first question.`;
     
     setInterviewState(prev => ({
       ...prev,
@@ -248,11 +248,11 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       }]
     }))
 
-    speakText(welcomeMessage)
+    speakText(welcomeMessage);
     
     // Ask first question after welcome
     setTimeout(() => {
-      askCurrentQuestion()
+      askCurrentQuestion();
     }, 3000)
 
     toast.success('🎬 Interview started! Good luck!')
@@ -262,7 +262,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     const currentQuestion = questions[interviewState.currentQuestionIndex]
     if (!currentQuestion) return
 
-    const questionText = `Question ${interviewState.currentQuestionIndex + 1}: ${currentQuestion.question}`
+    const questionText = `Question ${interviewState.currentQuestionIndex + 1}: ${currentQuestion.question}`;
     
     setInterviewState(prev => ({
       ...prev,
@@ -275,8 +275,8 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       }]
     }))
 
-    speakText(questionText)
-    questionStartTimeRef.current = new Date()
+    speakText(questionText);
+    questionStartTimeRef.current = new Date();
   }, [questions, interviewState.currentQuestionIndex, speakText])
 
   const submitResponse = useCallback(async () => {
@@ -286,7 +286,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     }
 
     const currentQuestion = questions[interviewState.currentQuestionIndex]
-    const responseTime = questionStartTimeRef.current 
+    const responseTime = questionStartTimeRef.current;
       ? Date.now() - questionStartTimeRef.current.getTime()
       : 0
 
@@ -307,10 +307,10 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       responseTime
     }
 
-    updateAvatarState('thinking')
+    updateAvatarState('thinking');
 
     // Generate AI follow-up or feedback
-    const followUpMessage = generateFollowUp(interviewState.userResponse, currentQuestion)
+    const followUpMessage = generateFollowUp(interviewState.userResponse, currentQuestion);
     
     const aiMessage = {
       speaker: 'ai' as const,
@@ -325,11 +325,11 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       userResponse: ''
     }))
 
-    speakText(followUpMessage)
+    speakText(followUpMessage);
 
     // Move to next question after follow-up
     setTimeout(() => {
-      moveToNextQuestion()
+      moveToNextQuestion();
     }, 4000)
 
   }, [interviewState.userResponse, interviewState.currentQuestionIndex, questions, speakText, updateAvatarState])
@@ -354,18 +354,18 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
         currentQuestionIndex: prev.currentQuestionIndex + 1
       }))
       setTimeout(() => {
-        askCurrentQuestion()
+        askCurrentQuestion();
       }, 1000)
     } else {
-      handleInterviewComplete()
+      handleInterviewComplete();
     }
   }, [interviewState.currentQuestionIndex, questions.length, askCurrentQuestion])
 
   const handleInterviewComplete = useCallback(() => {
-    setIsInterviewStarted(false)
+    setIsInterviewStarted(false);
     
-    const completionMessage = "Thank you for completing the interview. Your responses have been recorded and will be evaluated shortly."
-    speakText(completionMessage)
+    const completionMessage = "Thank you for completing the interview. Your responses have been recorded and will be evaluated shortly.";
+    speakText(completionMessage);
 
     // Calculate results
     const results = {
@@ -379,7 +379,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     }
 
     setTimeout(() => {
-      onComplete(results)
+      onComplete(results);
     }, 3000)
 
     toast.success('🎉 Interview completed successfully!')
@@ -387,36 +387,36 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
   // Format time display
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, '0')}`
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   }
 
   // AI Avatar Component
   const AIAvatar = () => (
     <div className="relative w-32 h-32 mx-auto mb-4">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-300 ${
-        aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse' :
-        aiAvatarState === 'listening' ? 'border-blue-400 animate-pulse' :
-        aiAvatarState === 'thinking' ? 'border-yellow-400 animate-spin' :
+        aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse' :;
+        aiAvatarState === 'listening' ? 'border-blue-400 animate-pulse' :;
+        aiAvatarState === 'thinking' ? 'border-yellow-400 animate-spin' :;
         'border-gray-300'
       } bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center`}>
         <Bot className={`w-16 h-16 text-white transition-transform duration-300 ${
-          aiAvatarState === 'speaking' ? 'scale-110' : 'scale-100'
+          aiAvatarState === 'speaking' ? 'scale-110' : 'scale-100';
         }`} />
       </div>
       
       {/* Status indicator */}
       <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
         <Badge variant={
-          aiAvatarState === 'speaking' ? 'default' :
-          aiAvatarState === 'listening' ? 'secondary' :
-          aiAvatarState === 'thinking' ? 'outline' :
+          aiAvatarState === 'speaking' ? 'default' :;
+          aiAvatarState === 'listening' ? 'secondary' :;
+          aiAvatarState === 'thinking' ? 'outline' :;
           'secondary'
         } className="text-xs">
-          {aiAvatarState === 'speaking' ? '🗣️ Speaking' :
-           aiAvatarState === 'listening' ? '👂 Listening' :
-           aiAvatarState === 'thinking' ? '🤔 Thinking' :
+          {aiAvatarState === 'speaking' ? '🗣️ Speaking' :;
+           aiAvatarState === 'listening' ? '👂 Listening' :;
+           aiAvatarState === 'thinking' ? '🤔 Thinking' :;
            '😊 Ready'}
         </Badge>
       </div>
@@ -601,7 +601,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
                 size="sm"
                 onClick={() => {
                   if (interviewState.aiResponse) {
-                    speakText(interviewState.aiResponse)
+                    speakText(interviewState.aiResponse);
                   }
                 }}
                 disabled={interviewState.isSpeaking}
@@ -697,7 +697,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
               >
                 <div
                   className={`max-w-[80%] p-3 rounded-lg ${
-                    entry.speaker === 'user'
+                    entry.speaker === 'user';
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-100 text-gray-800'
                   }`}
@@ -723,4 +723,4 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   )
 }
 
-export default VirtualAIInterviewer
+export default VirtualAIInterviewer;

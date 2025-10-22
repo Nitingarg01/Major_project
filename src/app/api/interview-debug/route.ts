@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/app/auth'
-import { connectToDatabase } from '@/lib/db'
-import { ObjectId } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/app/auth';
+import { connectToDatabase } from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const { searchParams } = new URL(request.url)
-    const interviewId = searchParams.get('interviewId')
+    const { searchParams } = new URL(request.url);
+    const interviewId = searchParams.get('interviewId');
     
     if (!interviewId) {
       return NextResponse.json(
@@ -24,9 +24,9 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const { db } = await connectToDatabase()
-    const userObjectId = new ObjectId(session.user.id)
-    const interviewObjectId = new ObjectId(interviewId)
+    const { db } = await connectToDatabase();
+    const userObjectId = new ObjectId(session.user.id);
+    const interviewObjectId = new ObjectId(interviewId);
 
     // Get interview details
     const interview = await db.collection('interviews')

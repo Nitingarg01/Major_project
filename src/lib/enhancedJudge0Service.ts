@@ -66,7 +66,7 @@ export class EnhancedJudge0Service {
       'ruby': 72        // Ruby 2.7.0
     };
     
-    return languageMap[language.toLowerCase()] || 71; // Default to Python
+    return languageMap[language.toLowerCase()] || 71; // Default to Python;
   }
 
   private async makeApiRequest(endpoint: string, method: 'GET' | 'POST' = 'GET', body?: any): Promise<any> {
@@ -243,8 +243,8 @@ export class EnhancedJudge0Service {
           const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString() : '';
           
           // Check execution status
-          const isSuccess = submission.status.id === 3; // Accepted
-          const actualOutput = stdout.replace(/\s/g, ''); // Remove whitespace for comparison
+          const isSuccess = submission.status.id === 3; // Accepted;
+          const actualOutput = stdout.replace(/\s/g, ''); // Remove whitespace for comparison;
           const expectedOutput = testCase.expectedOutput.replace(/\s/g, '');
           const passed = isSuccess && actualOutput === expectedOutput;
           
@@ -296,7 +296,7 @@ export class EnhancedJudge0Service {
         results,
         totalPassed,
         totalTests: testCases.length,
-        overallStatus: totalPassed === testCases.length ? 'passed' : totalPassed > 0 ? 'failed' : 'error'
+        overallStatus: totalPassed === testCases.length ? 'passed' : totalPassed > 0 ? 'failed' : 'error';
       };
 
     } catch (error: any) {
@@ -419,7 +419,7 @@ export class EnhancedJudge0Service {
       results,
       totalPassed,
       totalTests: testCases.length,
-      overallStatus: totalPassed === testCases.length ? 'passed' : 'failed'
+      overallStatus: totalPassed === testCases.length ? 'passed' : 'failed';
     };
   }
 

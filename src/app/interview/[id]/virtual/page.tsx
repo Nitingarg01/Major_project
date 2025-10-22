@@ -1,12 +1,12 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Loader2, AlertTriangle, ArrowLeft, Brain } from 'lucide-react'
-import { toast } from 'sonner'
-import VirtualInterviewWrapper from '@/components/VirtualInterviewWrapper'
+import React, { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, AlertTriangle, ArrowLeft, Brain } from 'lucide-react';
+import { toast } from 'sonner';
+import VirtualInterviewWrapper from '@/components/VirtualInterviewWrapper';
 
 interface Interview {
   _id: string
@@ -19,37 +19,37 @@ interface Interview {
 }
 
 const VirtualInterviewPage = () => {
-  const params = useParams()
-  const router = useRouter()
-  const interviewId = params.id as string
+  const params = useParams();
+  const router = useRouter();
+  const interviewId = params.id as string;
 
-  const [interview, setInterview] = useState<Interview | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [interview, setInterview] = useState<Interview | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (interviewId) {
-      fetchInterview()
+      fetchInterview();
     }
   }, [interviewId])
 
   const fetchInterview = async () => {
     try {
-      setLoading(true)
-      const response = await fetch(`/api/interviews/${interviewId}`)
+      setLoading(true);
+      const response = await fetch(`/api/interviews/${interviewId}`);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch interview')
+        throw new Error('Failed to fetch interview');
       }
 
-      const data = await response.json()
-      setInterview(data.interview)
+      const data = await response.json();
+      setInterview(data.interview);
     } catch (error) {
       console.error('Error fetching interview:', error)
-      setError('Failed to load interview. Please try again.')
+      setError('Failed to load interview. Please try again.');
       toast.error('Failed to load interview')
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -194,4 +194,4 @@ const VirtualInterviewPage = () => {
   )
 }
 
-export default VirtualInterviewPage
+export default VirtualInterviewPage;

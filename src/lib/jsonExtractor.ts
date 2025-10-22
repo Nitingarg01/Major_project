@@ -48,7 +48,7 @@ export function extractJSON(response: string): any {
   }
 
   function preprocess(input: string): string {
-    let s = input
+    let s = input;
       // Strip BOM
       .replace(/^\uFEFF/, '')
       // Normalize smart quotes to standard quotes
@@ -89,7 +89,7 @@ export function extractJSON(response: string): any {
         let jsonString = '';
         if (jsonObjectMatch && jsonArrayMatch) {
           // Choose the longer match (more likely to be complete)
-          jsonString = jsonObjectMatch[0].length > jsonArrayMatch[0].length 
+          jsonString = jsonObjectMatch[0].length > jsonArrayMatch[0].length;
             ? jsonObjectMatch[0] 
             : jsonArrayMatch[0];
         } else if (jsonObjectMatch) {

@@ -1,9 +1,9 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Progress } from './ui/progress'
-import { Badge } from './ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { 
   Building2, 
   TrendingUp, 
@@ -22,7 +22,7 @@ import {
   BookOpen,
   Zap
 } from 'lucide-react'
-import { Button } from './ui/button'
+import { Button } from './ui/button';
 
 interface CompanyInsights {
   companyName: string;
@@ -324,8 +324,8 @@ const CompanyPreparationDashboard = ({
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Difficulty Level:</span>
                     <Badge variant={
-                      companyInsights.interviewIntelligence.expectedDifficulty === 'hard' ? 'destructive' :
-                      companyInsights.interviewIntelligence.expectedDifficulty === 'medium' ? 'default' : 'secondary'
+                      companyInsights.interviewIntelligence.expectedDifficulty === 'hard' ? 'destructive' :;
+                      companyInsights.interviewIntelligence.expectedDifficulty === 'medium' ? 'default' : 'secondary';
                     }>
                       {companyInsights.interviewIntelligence.expectedDifficulty}
                     </Badge>

@@ -1,26 +1,26 @@
-import React from 'react'
-import { getInterviewDetails, getQuestions } from './perform/actions'
-import { auth } from '@/app/auth'
-import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Building2, Clock, Target, Users, Brain, ArrowRight, Play, FileText } from 'lucide-react'
-import CompanyIntelligenceService from '@/lib/companyIntelligence'
-import CompanyIntelligenceService from '@/lib/companyIntelligence'
-import InterviewPageClient from '@/components/InterviewPageClient'
+import React from 'react';
+import { getInterviewDetails, getQuestions } from './perform/actions';
+import { auth } from '@/app/auth';
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Building2, Clock, Target, Users, Brain, ArrowRight, Play, FileText } from 'lucide-react';
+import CompanyIntelligenceService from '@/lib/companyIntelligence';
+import CompanyIntelligenceService from '@/lib/companyIntelligence';
+import InterviewPageClient from '@/components/InterviewPageClient';
 
 const page = async ({params}:{
     params: Promise<{id:string}>
 }) => {
-    const session = await auth()
+    const session = await auth();
     if(!session?.user){
-        redirect('/login')
+        redirect('/login');
     }
 
-    const id = (await params).id
-    const interview = await getInterviewDetails(id)
-    const det = await getQuestions(id)
+    const id = (await params).id;
+    const interview = await getInterviewDetails(id);
+    const det = await getQuestions(id);
 
     if (!interview) {
         return (
@@ -34,7 +34,7 @@ const page = async ({params}:{
     }
 
     // Get company intelligence
-    const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName)
+    const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName);
 
     function capitalizeFirstWord(str: string) {
         if (!str) return "";
@@ -50,7 +50,7 @@ const page = async ({params}:{
         }
     }
 
-    const InterviewTypeIcon = getInterviewTypeIcon(interview.interviewType || 'mixed')
+    const InterviewTypeIcon = getInterviewTypeIcon(interview.interviewType || 'mixed');
 
     return (
         <div className="max-w-6xl mx-auto p-6 min-h-screen">
@@ -115,8 +115,8 @@ const page = async ({params}:{
                             <div className="space-y-4">
                                 <div>
                                     <Badge variant="outline" className={`
-                                        ${companyIntelligence.companyData.difficulty === 'hard' ? 'border-red-300 text-red-700' :
-                                        companyIntelligence.companyData.difficulty === 'medium' ? 'border-yellow-300 text-yellow-700' :
+                                        ${companyIntelligence.companyData.difficulty === 'hard' ? 'border-red-300 text-red-700' :;
+                                        companyIntelligence.companyData.difficulty === 'medium' ? 'border-yellow-300 text-yellow-700' :;
                                         'border-green-300 text-green-700'}
                                     `}>
                                         {companyIntelligence.companyData.difficulty.toUpperCase()} Difficulty
@@ -240,7 +240,7 @@ const page = async ({params}:{
     )
 }
 
-export default page
+export default page;
     return (
         <InterviewPageClient 
             interview={interview}
@@ -250,4 +250,4 @@ export default page
     )
 }
 
-export default page
+export default page;

@@ -12,7 +12,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 'md',
   className,
   text,
-  variant = 'default'
+  variant = 'default';
 }) => {
   const sizeClasses = {
     sm: 'w-4 h-4 border-2',
@@ -72,7 +72,7 @@ export default LoadingSpinner;
 
 // Professional Interview Loading Component
 export const InterviewLoadingSpinner: React.FC<{ message?: string }> = ({ 
-  message = "Preparing your interview experience..." 
+  message = "Preparing your interview experience...";
 }) => {
   return (
     <div className="flex items-center justify-center min-h-[400px] p-8">
@@ -105,7 +105,7 @@ export const InterviewLoadingSpinner: React.FC<{ message?: string }> = ({
 
 // Submitting Answers Loading Component
 export const SubmittingLoadingSpinner: React.FC<{ message?: string }> = ({ 
-  message = "Submitting your answers..." 
+  message = "Submitting your answers...";
 }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">

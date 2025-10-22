@@ -1,12 +1,12 @@
-import axios from "axios"
+import axios from "axios";
 import { auth } from "./auth";
 import client from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { Interview, InterviewCardProps } from "@/types/interview";
 
 export const getUserInterviews = async () => {
-        const session = await auth()
-        const userId = session?.user?.id
+        const session = await auth();
+        const userId = session?.user?.id;
 
         if (!userId) {
                 return []
@@ -16,22 +16,22 @@ export const getUserInterviews = async () => {
         const db = dbClient.db();
 
         const interviews = await db.collection("interviews").find({ userId: userId }).toArray() as unknown as Interview[];
-        return interviews
+        return interviews;
 }
 
 export const updateCreds = async (id: string) => {
        if(!id){
         return ;
        }
-       const db = client.db()
+       const db = client.db();
 
-       const user = await db.collection('users').findOne({_id:new ObjectId(id)})
+       const user = await db.collection('users').findOne({_id:new ObjectId(id)});
        return user?.credits;
 }
 
 export const getUserStats = async () => {
-        const session = await auth()
-        const userId = session?.user?.id
+        const session = await auth();
+        const userId = session?.user?.id;
 
         if (!userId) {
                 return {

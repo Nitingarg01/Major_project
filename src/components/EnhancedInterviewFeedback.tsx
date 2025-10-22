@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Progress } from './ui/progress'
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -19,7 +19,7 @@ import {
   BarChart3,
   Lightbulb
 } from 'lucide-react'
-import type { EmotionAnalytics } from '@/lib/emotionDetectionService'
+import type { EmotionAnalytics } from '@/lib/emotionDetectionService';
 
 interface InterviewResponse {
   questionIndex: number
@@ -61,13 +61,13 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
   companyName
 }) => {
   // Calculate aggregate metrics
-  const avgConfidence = responses.reduce((sum, r) => sum + (r.analysis?.confidence || 0), 0) / responses.length
-  const avgClarity = responses.reduce((sum, r) => sum + (r.analysis?.clarity || 0), 0) / responses.length
-  const avgRelevance = responses.reduce((sum, r) => sum + (r.analysis?.relevance || 0), 0) / responses.length
+  const avgConfidence = responses.reduce((sum, r) => sum + (r.analysis?.confidence || 0), 0) / responses.length;
+  const avgClarity = responses.reduce((sum, r) => sum + (r.analysis?.clarity || 0), 0) / responses.length;
+  const avgRelevance = responses.reduce((sum, r) => sum + (r.analysis?.relevance || 0), 0) / responses.length;
 
   // Collect all strengths and improvements
-  const allStrengths = responses.flatMap(r => r.analysis?.strengths || [])
-  const allImprovements = responses.flatMap(r => r.analysis?.improvements || [])
+  const allStrengths = responses.flatMap(r => r.analysis?.strengths || []);
+  const allImprovements = responses.flatMap(r => r.analysis?.improvements || []);
 
   // Get unique strengths and improvements
   const uniqueStrengths = [...new Set(allStrengths)]
@@ -81,13 +81,13 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
     return { text: 'Needs Improvement', color: 'bg-red-500', icon: <AlertCircle className="w-5 h-5" /> }
   }
 
-  const rating = getPerformanceRating(overallScore)
+  const rating = getPerformanceRating(overallScore);
 
   // Format time
   const formatTime = (ms: number) => {
-    const minutes = Math.floor(ms / 60000)
-    const seconds = Math.floor((ms % 60000) / 1000)
-    return `${minutes}m ${seconds}s`
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}m ${seconds}s`;
   }
 
   // Get emotion icon
@@ -100,7 +100,7 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
       confused: <AlertCircle className="w-4 h-4 text-yellow-500" />,
       stressed: <Frown className="w-4 h-4 text-red-500" />
     }
-    return icons[emotion] || icons.neutral
+    return icons[emotion] || icons.neutral;
   }
 
   return (
@@ -170,8 +170,8 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
             </div>
             <Progress value={avgConfidence * 10} className="mb-2" />
             <p className="text-sm text-gray-600">
-              {avgConfidence >= 7 ? 'Strong confidence in responses' : 
-               avgConfidence >= 5 ? 'Moderate confidence level' :
+              {avgConfidence >= 7 ? 'Strong confidence in responses' :;
+               avgConfidence >= 5 ? 'Moderate confidence level' :;
                'Work on building confidence'}
             </p>
           </CardContent>
@@ -190,8 +190,8 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
             </div>
             <Progress value={avgClarity * 10} className="mb-2" />
             <p className="text-sm text-gray-600">
-              {avgClarity >= 7 ? 'Clear and well-structured responses' :
-               avgClarity >= 5 ? 'Responses could be more concise' :
+              {avgClarity >= 7 ? 'Clear and well-structured responses' :;
+               avgClarity >= 5 ? 'Responses could be more concise' :;
                'Focus on clarity and structure'}
             </p>
           </CardContent>
@@ -210,8 +210,8 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
             </div>
             <Progress value={avgRelevance * 10} className="mb-2" />
             <p className="text-sm text-gray-600">
-              {avgRelevance >= 7 ? 'Highly relevant responses' :
-               avgRelevance >= 5 ? 'Mostly on-topic answers' :
+              {avgRelevance >= 7 ? 'Highly relevant responses' :;
+               avgRelevance >= 5 ? 'Mostly on-topic answers' :;
                'Stay focused on the question'}
             </p>
           </CardContent>
@@ -332,8 +332,8 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
                 {response.analysis && (
                   <Badge 
                     className={`${
-                      response.analysis.score >= 7 ? 'bg-green-500' :
-                      response.analysis.score >= 5 ? 'bg-yellow-500' :
+                      response.analysis.score >= 7 ? 'bg-green-500' :;
+                      response.analysis.score >= 5 ? 'bg-yellow-500' :;
                       'bg-red-500'
                     } text-white`}
                   >
@@ -377,4 +377,4 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
   )
 }
 
-export default EnhancedInterviewFeedback
+export default EnhancedInterviewFeedback;

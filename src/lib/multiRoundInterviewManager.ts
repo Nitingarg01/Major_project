@@ -41,7 +41,7 @@ export interface MultiRoundSession {
 
 export class MultiRoundInterviewManager {
   private static instance: MultiRoundInterviewManager
-  private currentSession: MultiRoundSession | null = null
+  private currentSession: MultiRoundSession | null = null;
 
   // Predefined round configurations
   private roundTemplates: InterviewRound[] = [
@@ -102,9 +102,9 @@ export class MultiRoundInterviewManager {
 
   public static getInstance(): MultiRoundInterviewManager {
     if (!MultiRoundInterviewManager.instance) {
-      MultiRoundInterviewManager.instance = new MultiRoundInterviewManager()
+      MultiRoundInterviewManager.instance = new MultiRoundInterviewManager();
     }
-    return MultiRoundInterviewManager.instance
+    return MultiRoundInterviewManager.instance;
   }
 
   /**
@@ -115,7 +115,7 @@ export class MultiRoundInterviewManager {
     jobTitle: string,
     rounds?: InterviewRound[]
   ): MultiRoundSession {
-    const sessionRounds = rounds || this.roundTemplates
+    const sessionRounds = rounds || this.roundTemplates;
     
     const progress: RoundProgress[] = sessionRounds.map(round => ({
       roundId: round.id,
@@ -138,7 +138,7 @@ export class MultiRoundInterviewManager {
     }
 
     console.log(`🎓 Multi-round interview initialized for ${companyName} - ${jobTitle}`)
-    return this.currentSession
+    return this.currentSession;
   }
 
   /**
@@ -147,14 +147,14 @@ export class MultiRoundInterviewManager {
   public startSession(): boolean {
     if (!this.currentSession) {
       console.error('No session initialized')
-      return false
+      return false;
     }
 
-    this.currentSession.status = 'in_progress'
-    this.currentSession.progress[0].status = 'active'
-    this.currentSession.progress[0].startedAt = new Date()
+    this.currentSession.status = 'in_progress';
+    this.currentSession.progress[0].status = 'active';
+    this.currentSession.progress[0].startedAt = new Date();
 
-    return true
+    return true;
   }
 
   /**
@@ -162,7 +162,7 @@ export class MultiRoundInterviewManager {
    */
   public getCurrentRound(): InterviewRound | null {
     if (!this.currentSession) return null
-    return this.currentSession.rounds[this.currentSession.currentRoundIndex] || null
+    return this.currentSession.rounds[this.currentSession.currentRoundIndex] || null;
   }
 
   /**
@@ -170,7 +170,7 @@ export class MultiRoundInterviewManager {
    */
   public getCurrentProgress(): RoundProgress | null {
     if (!this.currentSession) return null
-    return this.currentSession.progress[this.currentSession.currentRoundIndex] || null
+    return this.currentSession.progress[this.currentSession.currentRoundIndex] || null;
   }
 
   /**
@@ -191,13 +191,13 @@ export class MultiRoundInterviewManager {
   public completeCurrentRound(score: number): boolean {
     if (!this.currentSession) return false
 
-    const currentIndex = this.currentSession.currentRoundIndex
+    const currentIndex = this.currentSession.currentRoundIndex;
     const currentProgress = this.currentSession.progress[currentIndex]
 
     if (currentProgress) {
-      currentProgress.status = 'completed'
-      currentProgress.score = score
-      currentProgress.completedAt = new Date()
+      currentProgress.status = 'completed';
+      currentProgress.score = score;
+      currentProgress.completedAt = new Date();
     }
 
     // Check if there are more rounds
@@ -205,15 +205,15 @@ export class MultiRoundInterviewManager {
       // Move to next round
       this.currentSession.currentRoundIndex++
       const nextProgress = this.currentSession.progress[this.currentSession.currentRoundIndex]
-      nextProgress.status = 'active'
-      nextProgress.startedAt = new Date()
+      nextProgress.status = 'active';
+      nextProgress.startedAt = new Date();
       
       console.log(`➡️ Moving to ${nextProgress.roundName}`)
-      return true
+      return true;
     } else {
       // All rounds completed
       this.completeSession()
-      return false
+      return false;
     }
   }
 
@@ -224,11 +224,11 @@ export class MultiRoundInterviewManager {
     if (!this.currentSession) return
 
     // Calculate overall score
-    const totalScore = this.currentSession.progress.reduce((sum, p) => sum + p.score, 0)
-    this.currentSession.overallScore = totalScore / this.currentSession.progress.length
+    const totalScore = this.currentSession.progress.reduce((sum, p) => sum + p.score, 0);
+    this.currentSession.overallScore = totalScore / this.currentSession.progress.length;
 
-    this.currentSession.status = 'completed'
-    this.currentSession.completedAt = new Date()
+    this.currentSession.status = 'completed';
+    this.currentSession.completedAt = new Date();
 
     console.log(`✅ Multi-round interview completed! Overall score: ${this.currentSession.overallScore.toFixed(1)}/10`)
   }
@@ -247,9 +247,9 @@ export class MultiRoundInterviewManager {
   } | null {
     if (!this.currentSession) return null
 
-    const roundsCompleted = this.currentSession.progress.filter(p => p.status === 'completed').length
-    const totalTimeSpent = this.currentSession.progress.reduce((sum, p) => sum + p.timeSpent, 0)
-    const currentRound = this.getCurrentRound()
+    const roundsCompleted = this.currentSession.progress.filter(p => p.status === 'completed').length;
+    const totalTimeSpent = this.currentSession.progress.reduce((sum, p) => sum + p.timeSpent, 0);
+    const currentRound = this.getCurrentRound();
 
     return {
       completed: this.currentSession.status === 'completed',
@@ -271,22 +271,22 @@ export class MultiRoundInterviewManager {
   public getTransitionMessage(): string {
     if (!this.currentSession) return ''
 
-    const previousIndex = this.currentSession.currentRoundIndex - 1
-    const currentRound = this.getCurrentRound()
+    const previousIndex = this.currentSession.currentRoundIndex - 1;
+    const currentRound = this.getCurrentRound();
     
     if (!currentRound || previousIndex < 0) return ''
 
     const previousProgress = this.currentSession.progress[previousIndex]
-    const scoreText = previousProgress.score >= 7 ? 'excellent' : previousProgress.score >= 5 ? 'good' : 'fair'
+    const scoreText = previousProgress.score >= 7 ? 'excellent' : previousProgress.score >= 5 ? 'good' : 'fair';
 
-    return `Great job on the ${previousProgress.roundName}! You scored ${previousProgress.score.toFixed(1)}/10, which is ${scoreText}. Now, let's move to the ${currentRound.name}. ${currentRound.description}. Are you ready?`
+    return `Great job on the ${previousProgress.roundName}! You scored ${previousProgress.score.toFixed(1)}/10, which is ${scoreText}. Now, let's move to the ${currentRound.name}. ${currentRound.description}. Are you ready?`;
   }
 
   /**
    * Get welcome message for current round
    */
   public getRoundWelcomeMessage(): string {
-    const round = this.getCurrentRound()
+    const round = this.getCurrentRound();
     if (!round) return ''
 
     const messages = {
@@ -295,28 +295,28 @@ export class MultiRoundInterviewManager {
       Manager: `Welcome to the final round with the hiring manager! We'll discuss your leadership potential, team collaboration, and how you'd fit into our organization's future. Let's have an insightful discussion.`
     }
 
-    return messages[round.type] || 'Let\'s begin this round!'
+    return messages[round.type] || 'Let\'s begin this round!';
   }
 
   /**
    * Check if all rounds are completed
    */
   public isSessionCompleted(): boolean {
-    return this.currentSession?.status === 'completed' || false
+    return this.currentSession?.status === 'completed' || false;
   }
 
   /**
    * Get current session
    */
   public getCurrentSession(): MultiRoundSession | null {
-    return this.currentSession
+    return this.currentSession;
   }
 
   /**
    * Reset session
    */
   public reset(): void {
-    this.currentSession = null
+    this.currentSession = null;
   }
 
   /**
@@ -332,10 +332,10 @@ export class MultiRoundInterviewManager {
   public getProgressPercentage(): number {
     if (!this.currentSession) return 0
 
-    const completed = this.currentSession.progress.filter(p => p.status === 'completed').length
-    const total = this.currentSession.rounds.length
+    const completed = this.currentSession.progress.filter(p => p.status === 'completed').length;
+    const total = this.currentSession.rounds.length;
     
-    return (completed / total) * 100
+    return (completed / total) * 100;
   }
 
   /**
@@ -344,13 +344,13 @@ export class MultiRoundInterviewManager {
   public getEstimatedTimeRemaining(): number {
     if (!this.currentSession) return 0
 
-    let remainingTime = 0
+    let remainingTime = 0;
     for (let i = this.currentSession.currentRoundIndex; i < this.currentSession.rounds.length; i++) {
-      remainingTime += this.currentSession.rounds[i].duration
+      remainingTime += this.currentSession.rounds[i].duration;
     }
 
-    return remainingTime * 60 // Convert to seconds
+    return remainingTime * 60 // Convert to seconds;
   }
 }
 
-export default MultiRoundInterviewManager
+export default MultiRoundInterviewManager;

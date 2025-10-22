@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,9 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import Link from "next/link"
-import { Brain, Sparkles, ArrowLeft } from "lucide-react"
-import ForgotPasswordForm from "./form"
+import Link from "next/link";
+import { Brain, Sparkles, ArrowLeft } from "lucide-react";
+import ForgotPasswordForm from "./form";
 
 const ForgotPasswordPage = () => {
   return (
@@ -62,4 +62,4 @@ const ForgotPasswordPage = () => {
   )
 }
 
-export default ForgotPasswordPage
+export default ForgotPasswordPage;

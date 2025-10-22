@@ -1,10 +1,10 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { 
   Settings, 
   Key, 
@@ -16,39 +16,39 @@ import {
   Trash2,
   RefreshCw
 } from 'lucide-react'
-import { toast } from 'sonner'
-import ElevenLabsService from '@/lib/elevenlabsService'
-import Link from 'next/link'
+import { toast } from 'sonner';
+import ElevenLabsService from '@/lib/elevenlabsService';
+import Link from 'next/link';
 
 const SettingsPage = () => {
-  const [elevenLabsKey, setElevenLabsKey] = useState('')
-  const [isKeySet, setIsKeySet] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [usageStats, setUsageStats] = useState<any>(null)
+  const [elevenLabsKey, setElevenLabsKey] = useState('');
+  const [isKeySet, setIsKeySet] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [usageStats, setUsageStats] = useState<any>(null);
 
-  const elevenLabsService = ElevenLabsService.getInstance()
+  const elevenLabsService = ElevenLabsService.getInstance();
 
   useEffect(() => {
-    checkExistingKey()
+    checkExistingKey();
   }, [])
 
   const checkExistingKey = () => {
-    const isAvailable = elevenLabsService.isServiceAvailable()
-    setIsKeySet(isAvailable)
+    const isAvailable = elevenLabsService.isServiceAvailable();
+    setIsKeySet(isAvailable);
     if (isAvailable) {
-      loadUsageStats()
+      loadUsageStats();
     }
   }
 
   const loadUsageStats = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const stats = await elevenLabsService.getUsageStats()
-      setUsageStats(stats)
+      const stats = await elevenLabsService.getUsageStats();
+      setUsageStats(stats);
     } catch (error) {
       console.error('Error loading usage stats:', error)
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -60,10 +60,10 @@ const SettingsPage = () => {
 
     try {
       elevenLabsService.setApiKey(elevenLabsKey.trim())
-      setIsKeySet(true)
-      setElevenLabsKey('')
+      setIsKeySet(true);
+      setElevenLabsKey('');
       toast.success('✅ ElevenLabs API key saved successfully!')
-      loadUsageStats()
+      loadUsageStats();
     } catch (error) {
       toast.error('Failed to save API key')
     }
@@ -71,13 +71,13 @@ const SettingsPage = () => {
 
   const handleRemoveKey = () => {
     elevenLabsService.removeApiKey()
-    setIsKeySet(false)
-    setUsageStats(null)
+    setIsKeySet(false);
+    setUsageStats(null);
     toast.info('ElevenLabs API key removed')
   }
 
   const testVoice = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const result = await elevenLabsService.textToSpeech(
         'Hello! This is a test of the ElevenLabs AI voice. Your virtual interview will sound just like this.',
@@ -86,22 +86,22 @@ const SettingsPage = () => {
           onStart: () => toast.info('🎙️ Playing test voice...'),
           onEnd: () => {
             toast.success('✅ Voice test completed!')
-            setIsLoading(false)
+            setIsLoading(false);
           },
           onError: (error) => {
             toast.error('Voice test failed')
-            setIsLoading(false)
+            setIsLoading(false);
           }
         }
       )
 
       if (!result.success) {
         toast.error(result.error || 'Voice test failed')
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } catch (error) {
       toast.error('Voice test failed')
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -316,4 +316,4 @@ const SettingsPage = () => {
   )
 }
 
-export default SettingsPage
+export default SettingsPage;

@@ -1,10 +1,10 @@
 'use server'
 
-import { auth } from "../auth"
-import axios from 'axios'
-import { cookies } from 'next/headers'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { auth } from "../auth";
+import axios from 'axios';
+import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 type formD = {
   jobDesc: string,
@@ -78,7 +78,7 @@ export const createInterview = async (data: formD, projectContext: string[], wor
     })
 
     if (!fetchRes.ok) {
-      const errJson = await fetchRes.json().catch(() => ({}))
+      const errJson = await fetchRes.json().catch(() => ({}));
       console.log("❌ API error:", fetchRes.status, errJson)
       return {
         success: false,
@@ -86,12 +86,12 @@ export const createInterview = async (data: formD, projectContext: string[], wor
       }
     }
     // Robust body parsing (avoid "<!DOCTYPE" HTML redirect errors)
-    let resData: any = null
+    let resData: any = null;
     try {
-      resData = await fetchRes.clone().json()
+      resData = await fetchRes.clone().json();
     } catch (_err) {
-      const raw = await fetchRes.text()
-      const msg = fetchRes.ok
+      const raw = await fetchRes.text();
+      const msg = fetchRes.ok;
         ? 'Unexpected non-JSON response from server'
         : `Server error ${fetchRes.status}`
       return {
@@ -146,7 +146,7 @@ export const createInterview = async (data: formD, projectContext: string[], wor
 }
 
 export const parsingResume = async (file: File) => {
-  const formData = new FormData()
+  const formData = new FormData();
   formData.append("resume", file)
 
   for (const [key, value] of formData.entries()) {
@@ -171,7 +171,7 @@ export const parsingResume = async (file: File) => {
       // }
     })
     // console.log("reasponse aagya",res.data)
-    return res.data
+    return res.data;
   } catch (error: any) {
     console.log(error.message)
     return { error: error.message }

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -35,4 +35,4 @@ const FeedbackAccordion = ({advice}:{advice:Advice[]}) => {
   )
 }
 
-export default FeedbackAccordion
+export default FeedbackAccordion;

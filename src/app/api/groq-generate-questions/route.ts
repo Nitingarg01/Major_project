@@ -213,9 +213,9 @@ export async function POST(request: NextRequest) {
         providerBreakdown: getProviderBreakdown(allQuestions),
         companyIntelligenceUsed: !!enhancedCompanyData,
         interviewType: interview.interviewType,
-        enhancedFeatures: interview.interviewType === 'mixed' ? 
+        enhancedFeatures: interview.interviewType === 'mixed' ?;
           'Full comprehensive interview with Technical + Behavioral + Aptitude + DSA rounds' :
-          interview.interviewType === 'dsa' ? 
+          interview.interviewType === 'dsa' ?;
           'Focused DSA interview with 2 challenging problems' :
           `Specialized ${interview.interviewType} interview`
       },

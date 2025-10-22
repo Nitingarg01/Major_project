@@ -1,8 +1,8 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from './ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
+import React, { useState, useEffect } from 'react';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
 import { 
   Video, 
   MessageSquare, 
@@ -12,9 +12,9 @@ import {
   Info,
   CheckCircle
 } from 'lucide-react'
-import { toast } from 'sonner'
-import EnhancedVirtualAIInterviewer from './EnhancedVirtualAIInterviewer'
-import { EnhancedVirtualInterviewerAI } from '@/lib/enhancedVirtualInterviewerAI'
+import { toast } from 'sonner';
+import EnhancedVirtualAIInterviewer from './EnhancedVirtualAIInterviewer';
+import { EnhancedVirtualInterviewerAI } from '@/lib/enhancedVirtualInterviewerAI';
 
 interface VirtualInterviewWrapperProps {
   interviewId: string
@@ -35,26 +35,26 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
   onComplete,
   onBack
 }) => {
-  const [isReady, setIsReady] = useState(false)
-  const [showPreparation, setShowPreparation] = useState(true)
+  const [isReady, setIsReady] = useState(false);
+  const [showPreparation, setShowPreparation] = useState(true);
   const [systemChecks, setSystemChecks] = useState({
     camera: false,
     microphone: false,
     speakers: false,
     browser: false
   })
-  const [virtualAI] = useState(() => EnhancedVirtualInterviewerAI.getInstance())
+  const [virtualAI] = useState(() => EnhancedVirtualInterviewerAI.getInstance());
 
   // System compatibility checks
   useEffect(() => {
-    performSystemChecks()
+    performSystemChecks();
   }, [])
 
   const performSystemChecks = async () => {
     const checks = { ...systemChecks }
 
     // Check browser compatibility
-    checks.browser = !!(navigator.mediaDevices && window.SpeechRecognition || window.webkitSpeechRecognition)
+    checks.browser = !!(navigator.mediaDevices && window.SpeechRecognition || window.webkitSpeechRecognition);
     
     // Check camera and microphone
     try {
@@ -62,8 +62,8 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
         video: true, 
         audio: true 
       })
-      checks.camera = true
-      checks.microphone = true
+      checks.camera = true;
+      checks.microphone = true;
       
       // Stop the stream after checking
       stream.getTracks().forEach(track => track.stop())
@@ -73,26 +73,26 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
     }
 
     // Check speakers (basic check)
-    checks.speakers = !!(window.speechSynthesis)
+    checks.speakers = !!(window.speechSynthesis);
 
-    setSystemChecks(checks)
-    setIsReady(Object.values(checks).every(check => check))
+    setSystemChecks(checks);
+    setIsReady(Object.values(checks).every(check => check));
   }
 
   const handleInterviewComplete = async (results: any) => {
     try {
       // Process results with AI analysis
-      const enhancedResults = await processInterviewResults(results)
+      const enhancedResults = await processInterviewResults(results);
       
       // Save to backend
       await saveInterviewResults(interviewId, enhancedResults)
       
-      onComplete(enhancedResults)
+      onComplete(enhancedResults);
       toast.success('🎉 Virtual interview completed successfully!')
     } catch (error) {
       console.error('Error processing interview results:', error)
       toast.error('Error saving interview results')
-      onComplete(results) // Fallback to original results
+      onComplete(results) // Fallback to original results;
     }
   }
 
@@ -117,12 +117,12 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
       }
     })
 
-    const analyzedResponses = await Promise.all(analysisPromises)
+    const analyzedResponses = await Promise.all(analysisPromises);
     
     // Calculate overall metrics
-    const overallScore = analyzedResponses.reduce((sum, r) => sum + r.analysis.score, 0) / analyzedResponses.length
-    const totalStrengths = analyzedResponses.flatMap(r => r.analysis.strengths)
-    const totalImprovements = analyzedResponses.flatMap(r => r.analysis.improvements)
+    const overallScore = analyzedResponses.reduce((sum, r) => sum + r.analysis.score, 0) / analyzedResponses.length;
+    const totalStrengths = analyzedResponses.flatMap(r => r.analysis.strengths);
+    const totalImprovements = analyzedResponses.flatMap(r => r.analysis.improvements);
 
     return {
       ...results,
@@ -156,11 +156,11 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
       })
 
       if (!response.ok) {
-        throw new Error('Failed to save results')
+        throw new Error('Failed to save results');
       }
     } catch (error) {
       console.error('Error saving interview results:', error)
-      throw error
+      throw error;
     }
   }
 
@@ -401,4 +401,4 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
   )
 }
 
-export default VirtualInterviewWrapper
+export default VirtualInterviewWrapper;

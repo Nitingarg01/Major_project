@@ -1,15 +1,15 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { handleSignUp } from './actions'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { Eye, EyeOff } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { handleSignUp } from './actions';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 
 const schema = z.object({
   name: z.string().min(3, "Please Enter Valid Name!"),
@@ -27,11 +27,11 @@ const schema = z.object({
 })
 
 const CreateSignUp = () => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
-  const router = useRouter()
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -43,14 +43,14 @@ const CreateSignUp = () => {
   })
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       formData.append("name", data.name)
       formData.append("email", data.email)
       formData.append("password", data.password)
       
-      const response = await handleSignUp(formData)
+      const response = await handleSignUp(formData);
       if (response.status === 'success') {
         toast.success("Account created successfully! You can now sign in.")
         router.push('/login')
@@ -60,7 +60,7 @@ const CreateSignUp = () => {
     } catch (error) {
       toast.error("Something went wrong. Please try again!")
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -196,4 +196,4 @@ const CreateSignUp = () => {
   )
 }
 
-export default CreateSignUp
+export default CreateSignUp;

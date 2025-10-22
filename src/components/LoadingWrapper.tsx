@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React from 'react';
 
 interface LoadingWrapperProps {
   children: React.ReactNode
@@ -12,7 +12,7 @@ const LoadingWrapper: React.FC<LoadingWrapperProps> = ({
   children, 
   isLoading, 
   loadingMessage = "Loading your dashboard...",
-  loadingSubMessage = "Please wait while we fetch your data"
+  loadingSubMessage = "Please wait while we fetch your data";
 }) => {
   if (isLoading) {
     return (
@@ -41,7 +41,7 @@ const LoadingWrapper: React.FC<LoadingWrapperProps> = ({
     )
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
 
-export default LoadingWrapper
+export default LoadingWrapper;

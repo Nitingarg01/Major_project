@@ -1,7 +1,7 @@
 'use client'
-import React from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
   Home, 
   PlusCircle, 
@@ -13,7 +13,7 @@ import {
   BarChart3,
   Zap
 } from 'lucide-react'
-import { signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react';
 
 interface SidebarProps {
   isOpen: boolean
@@ -21,20 +21,20 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navigation = [
     {
       name: 'Dashboard',
       href: '/dashboard',
       icon: Home,
-      current: pathname === '/dashboard'
+      current: pathname === '/dashboard';
     },
     {
       name: 'Create Interview',
       href: '/create',
       icon: PlusCircle,
-      current: pathname === '/create'
+      current: pathname === '/create';
     },
     {
       name: 'Resume Analyzer',
@@ -46,22 +46,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       name: 'Analytics',
       href: '/analytics',
       icon: BarChart3,
-      current: pathname === '/analytics'
+      current: pathname === '/analytics';
     },
     {
       name: 'Profile',
       href: '/profile',
       icon: User,
-      current: pathname === '/profile'
+      current: pathname === '/profile';
     }
   ]
 
   const handleSignOut = () => {
-    signOut({ callbackUrl: '/' })
+    signOut({ callbackUrl: '/' });
   }
 
   const handleLinkClick = () => {
-    onClose()
+    onClose();
   }
 
   return (
@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           {/* Navigation */}
           <nav className="flex-1 px-4 py-4 space-y-2">
             {navigation.map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
@@ -158,4 +158,4 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   )
 }
 
-export default Sidebar
+export default Sidebar;

@@ -106,7 +106,7 @@ export class ReliableAIService {
   public async generateDSAProblems(
     companyName: string,
     difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 6
+    count: number = 6;
   ): Promise<DSAProblem[]> {
     try {
       // Use Smart AI for DSA problem generation
@@ -160,7 +160,7 @@ export class ReliableAIService {
     userAnswer: string,
     expectedAnswer: string,
     category: string,
-    companyContext: string = 'Technology Company'
+    companyContext: string = 'Technology Company';
   ): Promise<{
     score: number;
     feedback: string;

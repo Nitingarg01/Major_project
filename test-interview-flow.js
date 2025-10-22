@@ -11,7 +11,7 @@ async function testInterviewFlow() {
     console.log('🧪 Starting interview flow test...');
     
     // Create a test user ID (you should replace this with actual user ID)
-    const testUserId = new ObjectId('676c9d5f4b47b7cf15b81901'); // Replace with real user ID
+    const testUserId = new ObjectId('676c9d5f4b47b7cf15b81901'); // Replace with real user ID;
     
     console.log('👤 Test User ID:', testUserId);
     

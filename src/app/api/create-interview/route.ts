@@ -154,7 +154,7 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
                 examples: [{
                     input: 'nums = [2,7,11,15], target = 9',
                     output: '[0,1]',
-                    explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].'
+                    explanation: 'Because nums[0] + nums[1] = 2 + 7 = 9, we return [0, 1].';
                 }],
                 testCases: [
                     { id: 'test1', input: 'nums = [2,7,11,15], target = 9', expectedOutput: '[0,1]' },
@@ -469,7 +469,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             {
                 error: isAuthError ? "Authentication error" : "Failed to create enhanced interview",
-                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined;
             },
             { status: isAuthError ? 401 : 500 }
         )

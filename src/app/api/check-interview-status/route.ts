@@ -1,24 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/app/auth'
-import { connectToDatabase } from '@/lib/db'
-import { ObjectId } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/app/auth';
+import { connectToDatabase } from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
     
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url)
-    const interviewId = searchParams.get('id')
+    const { searchParams } = new URL(request.url);
+    const interviewId = searchParams.get('id');
     
     if (!interviewId) {
-      return NextResponse.json({ error: 'Interview ID required' }, { status: 400 })
+      return NextResponse.json({ error: 'Interview ID required' }, { status: 400 });
     }
 
-    const { db } = await connectToDatabase()
+    const { db } = await connectToDatabase();
     
     // Get interview details
     const interview = await db.collection('interviews').findOne({
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     })
     
     if (!interview) {
-      return NextResponse.json({ error: 'Interview not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Interview not found' }, { status: 404 });
     }
     
     // Check if performance data exists

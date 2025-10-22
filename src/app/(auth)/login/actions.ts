@@ -6,7 +6,7 @@ export const handleLogin = async (formData: FormData) => {
    const password = formData.get("password")?.toString();
    
    if (!email || !password) {
-     throw new Error("Please provide all the fields!")
+     throw new Error("Please provide all the fields!");
    }
 
    try {
@@ -17,7 +17,7 @@ export const handleLogin = async (formData: FormData) => {
      })
 
      if (result?.error) {
-       throw new Error("Invalid email or password")
+       throw new Error("Invalid email or password");
      }
 
      // Return success indicator instead of redirecting here
@@ -25,7 +25,7 @@ export const handleLogin = async (formData: FormData) => {
    } catch (error) {
      console.error('Login error:', error)
      // Re-throw the error so it can be handled by the client
-     throw error
+     throw error;
    }
 }
 

@@ -34,7 +34,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
   const [lastActivityCheck, setLastActivityCheck] = useState<Date>(new Date());
 
   const addActivityAlert = useCallback((alert: ActivityAlert) => {
-    setActivityAlerts(prev => [...prev.slice(-4), alert]); // Keep last 5 alerts
+    setActivityAlerts(prev => [...prev.slice(-4), alert]); // Keep last 5 alerts;
     onActivityDetected?.(alert);
   }, [onActivityDetected]);
 
@@ -236,7 +236,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
   useEffect(() => {
     if (!isMonitoring || !isInterviewActive) return;
 
-    const interval = setInterval(performFaceMonitoring, 15000); // Check every 15 seconds
+    const interval = setInterval(performFaceMonitoring, 15000); // Check every 15 seconds;
     return () => clearInterval(interval);
   }, [isMonitoring, isInterviewActive, performFaceMonitoring]);
 

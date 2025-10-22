@@ -356,10 +356,10 @@ function determineOverallStatus(groq: any, compiler: any, smart: any): string {
 function calculateHealthScore(groq: any, compiler: any, smart: any): number {
   let score = 0;
   
-  if (groq.groqAvailable) score += 40; // Most important service
-  if (smart.geminiAvailable) score += 25; // Secondary service
-  if (compiler.judge0Available) score += 20; // Code execution
-  if (smart.fallbackAvailable) score += 15; // Redundancy
+  if (groq.groqAvailable) score += 40; // Most important service;
+  if (smart.geminiAvailable) score += 25; // Secondary service;
+  if (compiler.judge0Available) score += 20; // Code execution;
+  if (smart.fallbackAvailable) score += 15; // Redundancy;
   
   return Math.min(100, score);
 }

@@ -34,7 +34,7 @@ async function testPerformanceDashboard() {
         
         // Step 2: Create test performance analyses
         const performanceAnalyses = [];
-        for (let i = 0; i < 3; i++) { // Only for completed interviews
+        for (let i = 0; i < 3; i++) { // Only for completed interviews;
             const analysis = {
                 _id: new ObjectId(),
                 userId: testUserId,

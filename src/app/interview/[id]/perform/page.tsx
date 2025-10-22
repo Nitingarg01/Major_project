@@ -1,5 +1,5 @@
-import React from 'react'
-import { getInterviewDetails, getQuestions } from './actions'
+import React from 'react';
+import { getInterviewDetails, getQuestions } from './actions';
 import NewInterviewWrapper from '@/components/NewInterviewWrapper';
 import { auth } from '@/app/auth';
 import { redirect } from 'next/navigation';
@@ -14,16 +14,16 @@ function capitalizeFirstWord(str: string) {
 }
 
 const page = async ({ params }: PageProps) => {
-  const session = await auth()
+  const session = await auth();
   if(!session?.user){
-    redirect('/login')
+    redirect('/login');
   }
 
-  const id = (await params).id as string
+  const id = (await params).id as string;
   console.log('Interview ID:', id)
 
-  const interview = await getInterviewDetails(id)
-  const det = await getQuestions(id)
+  const interview = await getInterviewDetails(id);
+  const det = await getQuestions(id);
 
   if (!interview) {
     return (
@@ -79,4 +79,4 @@ const page = async ({ params }: PageProps) => {
   )
 }
 
-export default page
+export default page;

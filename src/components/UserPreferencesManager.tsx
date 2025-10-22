@@ -32,7 +32,7 @@ interface UserPreferencesManagerProps {
 const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
   onPreferencesUpdated,
   showTitle = true,
-  compact = false
+  compact = false;
 }) => {
   const [preferences, setPreferences] = useState<UserInterviewPreferences | null>(null);
   const [loading, setLoading] = useState(false);
@@ -153,7 +153,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
       newDistribution[category as keyof typeof newDistribution] = value;
       
       // Distribute remaining percentage among other categories
-      const currentOthersTotal = otherCategories.reduce((sum, key) => 
+      const currentOthersTotal = otherCategories.reduce((sum, key) =>;
         sum + newDistribution[key as keyof typeof newDistribution], 0);
       
       if (currentOthersTotal > 0) {

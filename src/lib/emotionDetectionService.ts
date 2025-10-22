@@ -4,7 +4,7 @@
  * Provides real-time emotion feedback during interviews
  */
 
-export type EmotionType = 'neutral' | 'happy' | 'focused' | 'confused' | 'stressed' | 'engaged'
+export type EmotionType = 'neutral' | 'happy' | 'focused' | 'confused' | 'stressed' | 'engaged';
 
 export interface EmotionData {
   emotion: EmotionType
@@ -27,17 +27,17 @@ export interface EmotionAnalytics {
 
 export class EmotionDetectionService {
   private static instance: EmotionDetectionService
-  private previousFrame: ImageData | null = null
+  private previousFrame: ImageData | null = null;
   private emotionHistory: EmotionData[] = []
-  private detectionInterval: number = 2000 // Analyze every 2 seconds
+  private detectionInterval: number = 2000 // Analyze every 2 seconds;
   
   private constructor() {}
 
   public static getInstance(): EmotionDetectionService {
     if (!EmotionDetectionService.instance) {
-      EmotionDetectionService.instance = new EmotionDetectionService()
+      EmotionDetectionService.instance = new EmotionDetectionService();
     }
-    return EmotionDetectionService.instance
+    return EmotionDetectionService.instance;
   }
 
   /**
@@ -45,28 +45,28 @@ export class EmotionDetectionService {
    */
   public async analyzeFrame(video: HTMLVideoElement): Promise<EmotionData> {
     try {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Canvas not supported')
 
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0)
 
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       
       // Analyze frame metrics
-      const metrics = this.analyzeImageMetrics(imageData)
+      const metrics = this.analyzeImageMetrics(imageData);
       
       // Detect movement if we have previous frame
-      const movement = this.previousFrame 
+      const movement = this.previousFrame;
         ? this.calculateMovement(this.previousFrame, imageData)
         : 0
       
-      this.previousFrame = imageData
+      this.previousFrame = imageData;
       
       // Determine emotion based on heuristics
-      const emotion = this.determineEmotion(metrics, movement)
+      const emotion = this.determineEmotion(metrics, movement);
       
       const emotionData: EmotionData = {
         emotion: emotion.type,
@@ -87,11 +87,11 @@ export class EmotionDetectionService {
         this.emotionHistory.shift()
       }
       
-      return emotionData
+      return emotionData;
       
     } catch (error) {
       console.error('Emotion analysis error:', error)
-      return this.getDefaultEmotion()
+      return this.getDefaultEmotion();
     }
   }
 
@@ -104,33 +104,33 @@ export class EmotionDetectionService {
     facePresent: boolean
     colorVariance: number
   } {
-    const data = imageData.data
-    let totalBrightness = 0
-    let totalContrast = 0
-    let nonZeroPixels = 0
+    const data = imageData.data;
+    let totalBrightness = 0;
+    let totalContrast = 0;
+    let nonZeroPixels = 0;
     const colorValues: number[] = []
 
     for (let i = 0; i < data.length; i += 4) {
       const r = data[i]
       const g = data[i + 1]
       const b = data[i + 2]
-      const brightness = (r + g + b) / 3
+      const brightness = (r + g + b) / 3;
       
       if (brightness > 10) {
-        totalBrightness += brightness
+        totalBrightness += brightness;
         colorValues.push(brightness)
         nonZeroPixels++
       }
     }
 
-    const avgBrightness = nonZeroPixels > 0 ? totalBrightness / nonZeroPixels : 0
+    const avgBrightness = nonZeroPixels > 0 ? totalBrightness / nonZeroPixels : 0;
     
     // Calculate variance for contrast
-    let variance = 0
+    let variance = 0;
     colorValues.forEach(val => {
-      variance += Math.pow(val - avgBrightness, 2)
+      variance += Math.pow(val - avgBrightness, 2);
     })
-    const colorVariance = colorValues.length > 0 ? variance / colorValues.length : 0
+    const colorVariance = colorValues.length > 0 ? variance / colorValues.length : 0;
     
     return {
       brightness: avgBrightness,
@@ -144,10 +144,10 @@ export class EmotionDetectionService {
    * Calculate movement between frames
    */
   private calculateMovement(prevFrame: ImageData, currentFrame: ImageData): number {
-    if (prevFrame.data.length !== currentFrame.data.length) return 0
+    if (prevFrame.data.length !== currentFrame.data.length) return 0;
     
-    let diff = 0
-    const sampleRate = 4 // Sample every 4th pixel for performance
+    let diff = 0;
+    const sampleRate = 4 // Sample every 4th pixel for performance;
     
     for (let i = 0; i < prevFrame.data.length; i += sampleRate * 4) {
       const r1 = prevFrame.data[i]
@@ -158,11 +158,11 @@ export class EmotionDetectionService {
       const g2 = currentFrame.data[i + 1]
       const b2 = currentFrame.data[i + 2]
       
-      diff += Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2)
+      diff += Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
     }
     
-    const avgDiff = diff / (prevFrame.data.length / sampleRate)
-    return Math.min(avgDiff / 255, 1) // Normalize to 0-1
+    const avgDiff = diff / (prevFrame.data.length / sampleRate);
+    return Math.min(avgDiff / 255, 1) // Normalize to 0-1;
   }
 
   /**
@@ -236,15 +236,15 @@ export class EmotionDetectionService {
       engaged: 0
     }
 
-    let totalConfidence = 0
+    let totalConfidence = 0;
 
     this.emotionHistory.forEach(data => {
       emotionCounts[data.emotion]++
-      totalConfidence += data.confidence
+      totalConfidence += data.confidence;
     })
 
     // Calculate percentages
-    const total = this.emotionHistory.length
+    const total = this.emotionHistory.length;
     const emotionDistribution: Record<EmotionType, number> = {
       neutral: (emotionCounts.neutral / total) * 100,
       happy: (emotionCounts.happy / total) * 100,
@@ -255,7 +255,7 @@ export class EmotionDetectionService {
     }
 
     // Find dominant emotion
-    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) => 
+    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>;
       emotionCounts[a[0] as EmotionType] > emotionCounts[b[0] as EmotionType] ? a : b
     )[0] as EmotionType
 
@@ -309,7 +309,7 @@ export class EmotionDetectionService {
    */
   public reset(): void {
     this.emotionHistory = []
-    this.previousFrame = null
+    this.previousFrame = null;
   }
 
   /**
@@ -332,10 +332,10 @@ export class EmotionDetectionService {
    * Get current emotion state
    */
   public getCurrentEmotion(): EmotionData | null {
-    return this.emotionHistory.length > 0 
+    return this.emotionHistory.length > 0;
       ? this.emotionHistory[this.emotionHistory.length - 1]
       : null
   }
 }
 
-export default EmotionDetectionService
+export default EmotionDetectionService;

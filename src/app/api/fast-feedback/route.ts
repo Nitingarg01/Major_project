@@ -6,10 +6,10 @@ import GroqAIService from '@/lib/groqAIService';
 // Enhanced fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
-  const meaningfulAnswers = answers.filter(answer => 
+  const meaningfulAnswers = answers.filter(answer =>;
     answer && 
     answer.trim().length > 10 && 
-    answer !== 'No answer provided' &&
+    answer !== 'No answer provided' &&;
     !answer.toLowerCase().includes('no answer')
   );
   const answeredQuestions = meaningfulAnswers.length;
@@ -20,9 +20,9 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
   const avgWordCount = meaningfulAnswers.reduce((sum, answer) => sum + (answer?.split(' ').length || 0), 0) / Math.max(meaningfulAnswers.length, 1);
   
   // More sophisticated scoring algorithm
-  const lengthScore = Math.min(10, Math.max(2, (avgAnswerLength / 150) * 8 + 2)); // Based on char length
-  const wordCountScore = Math.min(10, Math.max(2, (avgWordCount / 30) * 8 + 2)); // Based on word count
-  const completionScore = Math.min(10, Math.max(1, answerQuality * 9 + 1)); // Based on completion rate
+  const lengthScore = Math.min(10, Math.max(2, (avgAnswerLength / 150) * 8 + 2)); // Based on char length;
+  const wordCountScore = Math.min(10, Math.max(2, (avgWordCount / 30) * 8 + 2)); // Based on word count;
+  const completionScore = Math.min(10, Math.max(1, answerQuality * 9 + 1)); // Based on completion rate;
   
   // Calculate individual parameter scores
   const technicalScore = Math.round(((lengthScore + wordCountScore) / 2) * 10) / 10;
@@ -98,7 +98,7 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
         "Good response - consider adding more specific technical details and real-world examples" :
         "Provide a more comprehensive answer with specific examples and technical depth"
     })),
-    summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`
+    summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`;
   }
 }
 
@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if this is a DSA interview and handle accordingly
-    const isDSAInterview = interview.jobTitle?.toLowerCase().includes('dsa') || 
+    const isDSAInterview = interview.jobTitle?.toLowerCase().includes('dsa') ||;
                           questionsDoc.questions?.some((q: any) => q.category === 'dsa' || q.dsaProblem);
 
     console.log('🔍 Interview type analysis:', {
@@ -209,7 +209,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Check if answers exist in any format
-    let hasValidAnswers = questionsDoc.answers && 
+    let hasValidAnswers = questionsDoc.answers &&;
       (Array.isArray(questionsDoc.answers) && questionsDoc.answers.length > 0) ||
       (typeof questionsDoc.answers === 'object' && Object.keys(questionsDoc.answers).length > 0);
 
@@ -236,8 +236,8 @@ export async function POST(request: NextRequest) {
         hasValidAnswers = true;
         // Convert DSA executions to answer format
         dsaAnswers = questionsDoc.questions?.map((question: any) => {
-          const execution = dsaExecutions.find(exec => 
-            exec.problemId === question.id || exec.problemId === question.dsaProblem?.id
+          const execution = dsaExecutions.find(exec =>;
+            exec.problemId === question.id || exec.problemId === question.dsaProblem?.id;
           );
           const response = interviewResponses.find((r: any) => r.questionId === question.id);
           
@@ -436,10 +436,10 @@ Execution Time: ${execution.executionTime}ms`;
     const questions = questionsDoc.questions || [];
 
     // Final validation - ensure we have meaningful answers
-    const meaningfulAnswers = answers.filter(answer => 
+    const meaningfulAnswers = answers.filter(answer =>;
       answer && 
-      answer.trim() !== '' && 
-      answer !== 'No answer provided' && 
+      answer.trim() !== '' &&;
+      answer !== 'No answer provided' &&;
       answer.trim().length > 0
     );
     

@@ -6,7 +6,7 @@ const testLLMProviders = async () => {
   
   try {
     // Test the FreeLLMService health check endpoint
-    const testCode = `
+    const testCode = `;
       import FreeLLMService from './src/lib/freeLLMService.ts';
       
       const service = FreeLLMService.getInstance();

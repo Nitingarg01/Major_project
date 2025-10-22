@@ -1,6 +1,6 @@
 'use client'
-import React, { useState } from 'react'
-import { Trash2, AlertTriangle, Loader2 } from 'lucide-react'
+import React, { useState } from 'react';
+import { Trash2, AlertTriangle, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -15,22 +15,22 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import axios from 'axios'
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 interface DeleteInterviewButtonProps {
   interviewId: string
 }
 
 const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
   const handleDelete = async () => {
-    setIsDeleting(true)
+    setIsDeleting(true);
     try {
       const response = await axios.delete('/api/delete-interview', {
         data: { interviewId }
@@ -38,7 +38,7 @@ const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
 
       if (response.data.success) {
         toast.success('🗑️ Interview deleted successfully!')
-        setIsOpen(false)
+        setIsOpen(false);
         // Refresh the page to show updated list
         router.refresh()
       } else {
@@ -46,10 +46,10 @@ const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
       }
     } catch (error: any) {
       console.error('Delete error:', error)
-      const errorMessage = error.response?.data?.error || 'Failed to delete interview'
+      const errorMessage = error.response?.data?.error || 'Failed to delete interview';
       toast.error(errorMessage)
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
     }
   }
 
@@ -127,4 +127,4 @@ const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
   )
 }
 
-export default DeleteInterviewButton
+export default DeleteInterviewButton;

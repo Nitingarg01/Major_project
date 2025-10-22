@@ -47,8 +47,8 @@ export async function GET(request: NextRequest) {
     console.log('Running optimized database queries for user:', userObjectId)
     
     // Add timeout wrapper for database operations
-    const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Database query timeout')), 12000)
+    const timeout = new Promise((_, reject) =>;
+      setTimeout(() => reject(new Error('Database query timeout')), 12000);
     )
     
     // Use aggregation pipeline for better performance
@@ -62,8 +62,8 @@ export async function GET(request: NextRequest) {
     console.log('Running database queries for user:', userId)
     
     // Add timeout wrapper for database operations
-    const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Database query timeout')), 8000)
+    const timeout = new Promise((_, reject) =>;
+      setTimeout(() => reject(new Error('Database query timeout')), 8000);
     )
     
     const dbQueries = Promise.all([
@@ -172,7 +172,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       { 
         error: errorMessage,
-        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined;
       },
       { status: 500 }
     );

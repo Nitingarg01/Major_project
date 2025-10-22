@@ -1,10 +1,10 @@
 'use client'
-import React from 'react'
-import { Card, CardContent } from './ui/card'
-import { Button } from './ui/button'
-import { Badge } from './ui/badge'
-import { MessageSquare, Bot, Sparkles, Clock, Brain, User } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import React from 'react';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { MessageSquare, Bot, Sparkles, Clock, Brain, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface InterviewModeSelectorProps {
   interviewId: string
@@ -19,11 +19,11 @@ const InterviewModeSelector: React.FC<InterviewModeSelectorProps> = ({
   jobTitle,
   onModeSelect
 }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleModeSelection = (mode: 'traditional' | 'virtual') => {
     if (onModeSelect) {
-      onModeSelect(mode)
+      onModeSelect(mode);
     } else {
       // Navigate to interview with mode parameter
       router.push(`/interview/${interviewId}/perform?mode=${mode}`)
@@ -200,4 +200,4 @@ const InterviewModeSelector: React.FC<InterviewModeSelectorProps> = ({
   )
 }
 
-export default InterviewModeSelector
+export default InterviewModeSelector;

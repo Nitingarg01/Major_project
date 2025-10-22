@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Info } from 'lucide-react';
 import { MessageSquareWarning } from 'lucide-react';
 import { TriangleAlert } from 'lucide-react';
@@ -22,4 +22,4 @@ const InfoDivs = ({message,type}:{message:string,type:InfoType}) => {
   )
 }
 
-export default InfoDivs
+export default InfoDivs;

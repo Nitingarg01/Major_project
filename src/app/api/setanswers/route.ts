@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
-        const body = await request.json()
-        const { data, id } = body
+        const body = await request.json();
+        const { data, id } = body;
 
         // Validate input data
         if (!data || !Array.isArray(data) || !id) {
@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const objid = new ObjectId(id)
-        const db = client.db()
+        const objid = new ObjectId(id);
+        const db = client.db();
 
         console.log(`📝 Saving ${data.length} answers for interview ${id}`)
         console.log('📄 Answer data format:', {

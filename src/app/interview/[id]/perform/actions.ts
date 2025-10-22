@@ -14,8 +14,8 @@ export const getInterviewDetails = async (id:string)=>{
         await dbClient.connect(); // Ensure connection is established
         const db = dbClient.db();
 
-        const interview = await db.collection("interviews").findOne({_id:new ObjectId(id)})
-        return interview
+        const interview = await db.collection("interviews").findOne({_id:new ObjectId(id)});
+        return interview;
     } catch (error) {
         console.error('❌ MongoDB connection error in getInterviewDetails:', error);
         throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -30,13 +30,13 @@ export const getQuestions = async (interviewId:string)=>{
     try {
         const dbClient = client;
         await dbClient.connect(); // Ensure connection is established
-        const db = dbClient.db()
+        const db = dbClient.db();
 
-        const interviewQuestions = await db.collection("questions").findOne({interviewId:interviewId})
+        const interviewQuestions = await db.collection("questions").findOne({interviewId:interviewId});
         if(!interviewQuestions){
-            return null
+            return null;
         }
-        return interviewQuestions
+        return interviewQuestions;
     } catch (error) {
         console.error('❌ MongoDB connection error in getQuestions:', error);
         throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -95,7 +95,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
     console.log('🚀 Starting fast feedback generation with Groq AI...');
     const startTime = Date.now();
     
-    const questionsDoc = await db.collection("questions").findOne({interviewId:interviewId})
+    const questionsDoc = await db.collection("questions").findOne({interviewId:interviewId});
     
     if (!questionsDoc || !questionsDoc.answers || questionsDoc.answers.length === 0) {
         throw new Error('No answers found for analysis');

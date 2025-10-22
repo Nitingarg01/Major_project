@@ -1,8 +1,8 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from './ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
+import React, { useState, useEffect } from 'react';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
 import { 
   Bot, 
   Mic, 
@@ -16,14 +16,14 @@ import {
   Video,
   Zap
 } from 'lucide-react'
-import { toast } from 'sonner'
+import { toast } from 'sonner';
 
 const VirtualAIDemo: React.FC = () => {
-  const [isActive, setIsActive] = useState(false)
-  const [aiState, setAiState] = useState<'idle' | 'speaking' | 'listening' | 'thinking'>('idle')
-  const [isListening, setIsListening] = useState(false)
-  const [isSpeaking, setIsSpeaking] = useState(false)
-  const [currentMessage, setCurrentMessage] = useState('')
+  const [isActive, setIsActive] = useState(false);
+  const [aiState, setAiState] = useState<'idle' | 'speaking' | 'listening' | 'thinking'>('idle');
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState('');
   const [conversation, setConversation] = useState<Array<{
     speaker: 'ai' | 'user'
     message: string
@@ -40,24 +40,24 @@ const VirtualAIDemo: React.FC = () => {
     "Excellent! Do you have any questions for me about the role or company?"
   ]
 
-  const [messageIndex, setMessageIndex] = useState(0)
+  const [messageIndex, setMessageIndex] = useState(0);
 
   // Initialize speech synthesis
   const speakMessage = (message: string) => {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(message)
-      utterance.rate = 0.9
-      utterance.pitch = 1.1
-      utterance.volume = 0.8
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.rate = 0.9;
+      utterance.pitch = 1.1;
+      utterance.volume = 0.8;
       
       utterance.onstart = () => {
-        setIsSpeaking(true)
-        setAiState('speaking')
+        setIsSpeaking(true);
+        setAiState('speaking');
       }
       
       utterance.onend = () => {
-        setIsSpeaking(false)
-        setAiState('idle')
+        setIsSpeaking(false);
+        setAiState('idle');
       }
       
       window.speechSynthesis.speak(utterance)
@@ -66,14 +66,14 @@ const VirtualAIDemo: React.FC = () => {
 
   // Start demo conversation
   const startDemo = () => {
-    setIsActive(true)
-    setMessageIndex(0)
-    setConversation([])
+    setIsActive(true);
+    setMessageIndex(0);
+    setConversation([]);
     
     // Welcome message
     const welcomeMsg = demoMessages[0]
-    setCurrentMessage(welcomeMsg)
-    speakMessage(welcomeMsg)
+    setCurrentMessage(welcomeMsg);
+    speakMessage(welcomeMsg);
     
     setConversation([{
       speaker: 'ai',
@@ -104,14 +104,14 @@ const VirtualAIDemo: React.FC = () => {
       }])
       
       // AI thinking state
-      setAiState('thinking')
+      setAiState('thinking');
       
       // After a delay, AI responds
       setTimeout(() => {
         if (messageIndex + 1 < demoMessages.length) {
           const nextAiMsg = demoMessages[messageIndex + 1]
-          setCurrentMessage(nextAiMsg)
-          speakMessage(nextAiMsg)
+          setCurrentMessage(nextAiMsg);
+          speakMessage(nextAiMsg);
           
           setConversation(prev => [...prev, {
             speaker: 'ai',
@@ -119,12 +119,12 @@ const VirtualAIDemo: React.FC = () => {
             timestamp: new Date()
           }])
           
-          setMessageIndex(prev => prev + 1)
+          setMessageIndex(prev => prev + 1);
         } else {
           // End of demo
-          const endMsg = "Thank you for this great conversation! This concludes our demo interview."
-          setCurrentMessage(endMsg)
-          speakMessage(endMsg)
+          const endMsg = "Thank you for this great conversation! This concludes our demo interview.";
+          setCurrentMessage(endMsg);
+          speakMessage(endMsg);
           
           setConversation(prev => [...prev, {
             speaker: 'ai',
@@ -133,7 +133,7 @@ const VirtualAIDemo: React.FC = () => {
           }])
           
           setTimeout(() => {
-            setIsActive(false)
+            setIsActive(false);
             toast.success('🎉 Demo completed! Ready to try the real Virtual AI Interview?')
           }, 3000)
         }
@@ -144,24 +144,24 @@ const VirtualAIDemo: React.FC = () => {
   // Simulate listening
   const toggleListening = () => {
     if (!isListening) {
-      setIsListening(true)
-      setAiState('listening')
+      setIsListening(true);
+      setAiState('listening');
       toast.info('🎤 AI is listening... (Demo mode - click "Simulate Response")')
     } else {
-      setIsListening(false)
-      setAiState('idle')
+      setIsListening(false);
+      setAiState('idle');
     }
   }
 
   // Stop demo
   const stopDemo = () => {
-    setIsActive(false)
-    setAiState('idle')
-    setIsListening(false)
-    setIsSpeaking(false)
-    setCurrentMessage('')
-    setConversation([])
-    setMessageIndex(0)
+    setIsActive(false);
+    setAiState('idle');
+    setIsListening(false);
+    setIsSpeaking(false);
+    setCurrentMessage('');
+    setConversation([]);
+    setMessageIndex(0);
     
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel()
@@ -174,14 +174,14 @@ const VirtualAIDemo: React.FC = () => {
   const AIAvatar = () => (
     <div className="relative w-40 h-40 mx-auto mb-6">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-500 ${
-        aiState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :
-        aiState === 'listening' ? 'border-blue-400 animate-pulse shadow-lg shadow-blue-200' :
-        aiState === 'thinking' ? 'border-yellow-400 animate-spin shadow-lg shadow-yellow-200' :
+        aiState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :;
+        aiState === 'listening' ? 'border-blue-400 animate-pulse shadow-lg shadow-blue-200' :;
+        aiState === 'thinking' ? 'border-yellow-400 animate-spin shadow-lg shadow-yellow-200' :;
         'border-purple-300 shadow-lg shadow-purple-100'
       } bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 flex items-center justify-center`}>
         <Bot className={`w-20 h-20 text-white transition-all duration-300 ${
-          aiState === 'speaking' ? 'scale-110 animate-bounce' : 
-          aiState === 'thinking' ? 'animate-pulse' :
+          aiState === 'speaking' ? 'scale-110 animate-bounce' :;
+          aiState === 'thinking' ? 'animate-pulse' :;
           'scale-100'
         }`} />
       </div>
@@ -197,19 +197,19 @@ const VirtualAIDemo: React.FC = () => {
       {/* Status indicator */}
       <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
         <Badge variant={
-          aiState === 'speaking' ? 'default' :
-          aiState === 'listening' ? 'secondary' :
-          aiState === 'thinking' ? 'outline' :
+          aiState === 'speaking' ? 'default' :;
+          aiState === 'listening' ? 'secondary' :;
+          aiState === 'thinking' ? 'outline' :;
           'secondary'
         } className={`text-sm px-3 py-1 ${
-          aiState === 'speaking' ? 'bg-green-500 animate-pulse' :
-          aiState === 'listening' ? 'bg-blue-500 animate-pulse' :
-          aiState === 'thinking' ? 'bg-yellow-500 animate-pulse' :
+          aiState === 'speaking' ? 'bg-green-500 animate-pulse' :;
+          aiState === 'listening' ? 'bg-blue-500 animate-pulse' :;
+          aiState === 'thinking' ? 'bg-yellow-500 animate-pulse' :;
           'bg-purple-500'
         }`}>
-          {aiState === 'speaking' ? '🗣️ Speaking' :
-           aiState === 'listening' ? '👂 Listening' :
-           aiState === 'thinking' ? '🤔 Thinking' :
+          {aiState === 'speaking' ? '🗣️ Speaking' :;
+           aiState === 'listening' ? '👂 Listening' :;
+           aiState === 'thinking' ? '🤔 Thinking' :;
            '😊 Ready'}
         </Badge>
       </div>
@@ -349,7 +349,7 @@ const VirtualAIDemo: React.FC = () => {
                 >
                   <div
                     className={`max-w-[80%] p-3 rounded-lg ${
-                      entry.speaker === 'user'
+                      entry.speaker === 'user';
                         ? 'bg-blue-500 text-white'
                         : 'bg-purple-100 text-purple-800'
                     }`}
@@ -376,4 +376,4 @@ const VirtualAIDemo: React.FC = () => {
   )
 }
 
-export default VirtualAIDemo
+export default VirtualAIDemo;

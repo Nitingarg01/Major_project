@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { query } = await request.json()
+    const { query } = await request.json();
 
     if (!query || query.length < 2) {
-      return NextResponse.json({ success: false, error: 'Query too short' }, { status: 400 })
+      return NextResponse.json({ success: false, error: 'Query too short' }, { status: 400 });
     }
 
-    const groqApiKey = process.env.GROQ_API_KEY
+    const groqApiKey = process.env.GROQ_API_KEY;
     if (!groqApiKey) {
       // Fallback to basic suggestions if no API key
       return NextResponse.json({ 
@@ -42,11 +42,11 @@ export async function POST(request: NextRequest) {
       })
 
       if (!response.ok) {
-        throw new Error(`Groq API error: ${response.status}`)
+        throw new Error(`Groq API error: ${response.status}`);
       }
 
-      const data = await response.json()
-      const content = data.choices[0]?.message?.content
+      const data = await response.json();
+      const content = data.choices[0]?.message?.content;
 
       if (!content) {
         return NextResponse.json({ 
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       }
 
       try {
-        const parsed = JSON.parse(content)
+        const parsed = JSON.parse(content);
         const companies = parsed.companies || []
         
         return NextResponse.json({ 

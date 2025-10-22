@@ -1,9 +1,9 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { 
   ArrowLeft,
   TrendingUp,
@@ -23,11 +23,11 @@ import {
   Search,
   Eye
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { toast } from 'sonner'
-import LoadingWrapper from '@/components/LoadingWrapper'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
+import LoadingWrapper from '@/components/LoadingWrapper';
 
 interface PerformanceData {
   _id: string
@@ -78,8 +78,8 @@ interface PerformanceStats {
   ThumbsDown,
   FileText
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface PerformanceData {
   totalInterviews: number
@@ -104,21 +104,21 @@ interface FeedbackItem {
 }
 
 export default function PerformancePage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [performanceData, setPerformanceData] = useState<PerformanceData[]>([])
-  const [stats, setStats] = useState<PerformanceStats | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedInterview, setSelectedInterview] = useState<PerformanceData | null>(null)
-  const [filterType, setFilterType] = useState<string>('all')
-  const [searchTerm, setSearchTerm] = useState('')
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [performanceData, setPerformanceData] = useState<PerformanceData[]>([]);
+  const [stats, setStats] = useState<PerformanceStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedInterview, setSelectedInterview] = useState<PerformanceData | null>(null);
+  const [filterType, setFilterType] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    if (status === 'loading') return
+    if (status === 'loading') return;
     
-  const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null)
-  const [selectedFeedback, setSelectedFeedback] = useState<FeedbackItem | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null);
+  const [selectedFeedback, setSelectedFeedback] = useState<FeedbackItem | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -127,27 +127,27 @@ export default function PerformancePage() {
     }
 
     if (status === 'authenticated') {
-      fetchPerformanceData()
+      fetchPerformanceData();
     }
   }, [status, router])
 
   const fetchPerformanceData = async () => {
     try {
-      const response = await fetch('/api/performance-stats')
-      const data = await response.json()
+      const response = await fetch('/api/performance-stats');
+      const data = await response.json();
 
       if (data.success) {
-        setPerformanceData(data.performances || [])
-        setStats(data.stats || null)
+        setPerformanceData(data.performances || []);
+        setStats(data.stats || null);
       } else {
-        throw new Error(data.error || 'Failed to fetch performance data')
+        throw new Error(data.error || 'Failed to fetch performance data');
       }
     } catch (error: any) {
-      const response = await fetch('/api/user-performance')
-      const data = await response.json()
+      const response = await fetch('/api/user-performance');
+      const data = await response.json();
 
       if (data.success) {
-        setPerformanceData(data.performance)
+        setPerformanceData(data.performance);
       } else {
         // Create mock data for demo if API doesn't exist yet
         setPerformanceData({
@@ -187,37 +187,37 @@ export default function PerformancePage() {
       console.error('Error fetching performance data:', error)
       toast.error('Failed to load performance data')
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   const filteredData = performanceData.filter(item => {
-    const matchesType = filterType === 'all' || item.interviewType === filterType
-    const matchesSearch = searchTerm === '' || 
+    const matchesType = filterType === 'all' || item.interviewType === filterType;
+    const matchesSearch = searchTerm === '' ||;
       item.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.companyName.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesType && matchesSearch
+    return matchesType && matchesSearch;
   })
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600 bg-green-100'
-    if (score >= 60) return 'text-yellow-600 bg-yellow-100'
-    return 'text-red-600 bg-red-100'
+    if (score >= 80) return 'text-green-600 bg-green-100';
+    if (score >= 60) return 'text-yellow-600 bg-yellow-100';
+    return 'text-red-600 bg-red-100';
   }
 
   const getScoreIcon = (score: number) => {
-    if (score >= 80) return <TrendingUp className="w-4 h-4" />
-    if (score >= 60) return <Target className="w-4 h-4" />
-    return <TrendingDown className="w-4 h-4" />
+    if (score >= 80) return <TrendingUp className="w-4 h-4" />;
+    if (score >= 60) return <Target className="w-4 h-4" />;
+    return <TrendingDown className="w-4 h-4" />;
   }
 
   const formatDuration = (minutes: number) => {
-    const hours = Math.floor(minutes / 60)
-    const mins = minutes % 60
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
     if (hours > 0) {
-      return `${hours}h ${mins}m`
+      return `${hours}h ${mins}m`;
     }
-    return `${mins}m`
+    return `${mins}m`;
   }
 
   const formatDate = (dateString: string) => {
@@ -244,11 +244,11 @@ export default function PerformancePage() {
       ].join(','))
     ].join('\\n')
 
-    const blob = new Blob([csvContent], { type: 'text/csv' })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'interview-performance.csv'
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'interview-performance.csv';
     a.click()
     window.URL.revokeObjectURL(url)
   }
@@ -262,7 +262,7 @@ export default function PerformancePage() {
   }
 
   if (status === 'unauthenticated') {
-    return null
+    return null;
   }
 
   return (
