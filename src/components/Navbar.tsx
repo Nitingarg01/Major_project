@@ -68,7 +68,6 @@ const Navbar = ({ minimal = false }: NavbarProps) => {
           <NavigationMenuList className='flex-row space-x-7 '>
 
             <NavigationMenuItem>
-              <Link className='font-bold text-xl' href='/'>AI Interview App</Link>
               <Link className='font-bold text-xl' href='/'>Interview AI</Link>
             </NavigationMenuItem>
 
