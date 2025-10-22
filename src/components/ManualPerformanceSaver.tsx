@@ -51,7 +51,7 @@ export default function ManualPerformanceSaver({
           case 'dsa': return 'dsa'
           case 'aptitude': return 'aptitude'
           case 'mixed': return 'mixed'
-          default: return 'mixed'
+          default: return 'mixed';
         }
       }
 

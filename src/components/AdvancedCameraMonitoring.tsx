@@ -369,8 +369,8 @@ const AdvancedCameraMonitoring = ({
     switch (severity) {
       case 'high': return 'bg-red-500 border-red-600';
       case 'medium': return 'bg-yellow-500 border-yellow-600';
-      case 'low': return 'bg-blue-500 border-blue-600',
-      default: return 'bg-gray-500 border-gray-600'
+      case 'low': return 'bg-blue-500 border-blue-600';
+      default: return 'bg-gray-500 border-gray-600';
     }
   };
 
@@ -380,8 +380,8 @@ const AdvancedCameraMonitoring = ({
       case 'no_face': return 'text-red-500';
       case 'multiple_faces': return 'text-red-500';
       case 'detecting': return 'text-yellow-500';
-      case 'error': return 'text-red-500',
-      default: return 'text-gray-500'
+      case 'error': return 'text-red-500';
+      default: return 'text-gray-500';
     }
   };
 

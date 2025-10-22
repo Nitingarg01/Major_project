@@ -380,8 +380,8 @@ export class EnhancedGroqDSAService {
   ): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
       case 'entry': return Math.random() < 0.7 ? 'easy' : 'medium';
-      case 'senior': return Math.random() < 0.6 ? 'hard' : 'medium',
-      default: return 'medium'
+      case 'senior': return Math.random() < 0.6 ? 'hard' : 'medium';
+      default: return 'medium';
     }
   }
 

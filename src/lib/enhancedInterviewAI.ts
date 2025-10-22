@@ -198,8 +198,8 @@ export class EnhancedInterviewAI {
   private getDifficultyForLevel(level: string): 'easy' | 'medium' | 'hard' {
     switch (level) {
       case 'entry': return 'easy';
-      case 'senior': return 'hard',
-      default: return 'medium'
+      case 'senior': return 'hard';
+      default: return 'medium';
     }
   }
 

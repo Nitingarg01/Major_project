@@ -84,8 +84,8 @@ const PerformanceAnalytics = ({
       case 'technical': return <Code className="w-5 h-5" />;
       case 'behavioral': return <Users className="w-5 h-5" />;
       case 'aptitude': return <Brain className="w-5 h-5" />;
-      case 'dsa': return <Lightbulb className="w-5 h-5" />,
-      default: return <Target className="w-5 h-5" />
+      case 'dsa': return <Lightbulb className="w-5 h-5" />;
+      default: return <Target className="w-5 h-5" />;
     }
   };
 

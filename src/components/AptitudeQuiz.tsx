@@ -114,7 +114,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       case 'logical': return Brain
       case 'spatial': return Zap
       case 'abstract': return AlertTriangle
-      default: return Brain
+      default: return Brain;
     }
   }
 
@@ -125,7 +125,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       case 'logical': return 'bg-purple-100 text-purple-800'
       case 'spatial': return 'bg-orange-100 text-orange-800'
       case 'abstract': return 'bg-pink-100 text-pink-800'
-      default: return 'bg-gray-100 text-gray-800'
+      default: return 'bg-gray-100 text-gray-800';
     }
   }
 
@@ -134,7 +134,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       case 'easy': return 'bg-green-100 text-green-800'
       case 'medium': return 'bg-yellow-100 text-yellow-800'
       case 'hard': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      default: return 'bg-gray-100 text-gray-800';
     }
   }
 

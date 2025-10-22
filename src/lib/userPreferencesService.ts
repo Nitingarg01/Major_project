@@ -230,8 +230,8 @@ export class UserPreferencesService {
   private getStandardDifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
       case 'entry': return 'easy';
-      case 'senior': return 'hard',
-      default: return 'medium'
+      case 'senior': return 'hard';
+      default: return 'medium';
     }
   }
 

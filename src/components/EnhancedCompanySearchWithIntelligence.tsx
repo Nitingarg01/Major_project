@@ -240,7 +240,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       case 'High': return 'bg-red-100 text-red-700 border-red-200'
       case 'Medium': return 'bg-yellow-100 text-yellow-700 border-yellow-200'
       case 'Low': return 'bg-green-100 text-green-700 border-green-200'
-      default: return 'bg-gray-100 text-gray-700 border-gray-200'
+      default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   }
 
@@ -249,7 +249,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       case 'trending': return <TrendingUp className="w-3 h-3 text-purple-500" />
       case 'hot': return <Zap className="w-3 h-3 text-red-500" />
       case 'stable': return <Star className="w-3 h-3 text-blue-500" />
-      default: return <Building2 className="w-3 h-3 text-gray-500" />
+      default: return <Building2 className="w-3 h-3 text-gray-500" />;
     }
   }
 

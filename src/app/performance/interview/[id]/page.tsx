@@ -124,7 +124,7 @@ export default function InterviewPerformancePage() {
       case 'aptitude': return <Brain className="w-5 h-5" />
       case 'dsa': return <Lightbulb className="w-5 h-5" />
       case 'system_design': return <Target className="w-5 h-5" />
-      default: return <MessageSquare className="w-5 h-5" />
+      default: return <MessageSquare className="w-5 h-5" />;
     }
   }
 

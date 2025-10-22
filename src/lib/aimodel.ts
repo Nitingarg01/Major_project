@@ -419,7 +419,7 @@ Focus on constructive feedback that helps the candidate improve while highlighti
       case 'easy': return 5
       case 'medium': return 8
       case 'hard': return 12
-      default: return 8
+      default: return 8;
     }
   }
 

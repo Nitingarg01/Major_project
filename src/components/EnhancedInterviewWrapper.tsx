@@ -671,7 +671,7 @@ const EnhancedInterviewWrapper = ({
       case 'behavioral': return 40
       case 'dsa': return 90
       case 'aptitude': return 35
-      default: return 60
+      default: return 60;
     }
   }
 
@@ -681,7 +681,7 @@ const EnhancedInterviewWrapper = ({
       case 'behavioral': return 6
       case 'dsa': return 3
       case 'aptitude': return 15
-      default: return 8
+      default: return 8;
     }
   }
 

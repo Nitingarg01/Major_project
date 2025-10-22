@@ -31,7 +31,7 @@ const InterviewPageClient: React.FC<InterviewPageClientProps> = ({
       case 'technical': return Brain
       case 'behavioral': return Users  
       case 'mixed': return Target
-      default: return Target
+      default: return Target;
     }
   }
 

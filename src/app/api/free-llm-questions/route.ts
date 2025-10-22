@@ -254,7 +254,7 @@ function getQuestionCount(interviewType: string): number {
     case 'behavioral': return 15; // Increased
     case 'aptitude': return 20; // Increased
     case 'dsa': return 10; // Increased
-    default: return 18
+    default: return 18;
   }
 }
 
@@ -263,7 +263,7 @@ function getDSAPoints(difficulty: string): number {
     case 'easy': return 20; // Increased points
     case 'medium': return 35; // Increased points
     case 'hard': return 50; // Increased points for hard questions
-    default: return 35
+    default: return 35;
   }
 }
 

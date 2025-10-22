@@ -396,7 +396,7 @@ export class EnhancedDSAService {
       case 'entry':
         return Math.random() < 0.7 ? 'easy' : 'medium';
       case 'senior':
-        return Math.random() < 0.6 ? 'hard' : 'medium',
+        return Math.random() < 0.6 ? 'hard' : 'medium';
       default: // mid
         const rand = Math.random() * 100;
         if (rand < pattern.difficultyDistribution.easy) return 'easy';

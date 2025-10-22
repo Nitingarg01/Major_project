@@ -40,7 +40,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
       case 'behavioral': return Users
       case 'aptitude': return Calculator
       case 'dsa': return Brain
-      default: return Circle
+      default: return Circle;
     }
   }
 
@@ -50,7 +50,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
       case 'behavioral': return 'from-green-500 to-emerald-500'
       case 'aptitude': return 'from-purple-500 to-pink-500'
       case 'dsa': return 'from-orange-500 to-red-500'
-      default: return 'from-gray-500 to-gray-600'
+      default: return 'from-gray-500 to-gray-600';
     }
   }
 
@@ -59,7 +59,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
       case 'completed': return CheckCircle
       case 'in-progress': return Play
       case 'pending': return Circle
-      default: return Circle
+      default: return Circle;
     }
   }
 
@@ -68,7 +68,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
       case 'completed': return 'text-green-600'
       case 'in-progress': return 'text-blue-600'
       case 'pending': return 'text-gray-400'
-      default: return 'text-gray-400'
+      default: return 'text-gray-400';
     }
   }
 

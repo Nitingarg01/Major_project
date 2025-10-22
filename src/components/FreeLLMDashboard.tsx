@@ -90,8 +90,8 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
     switch (status) {
       case 'active': return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'limited': return <Clock className="w-4 h-4 text-yellow-500" />;
-      case 'error': return <XCircle className="w-4 h-4 text-red-500" />,
-      default: return <AlertCircle className="w-4 h-4 text-gray-500" />
+      case 'error': return <XCircle className="w-4 h-4 text-red-500" />;
+      default: return <AlertCircle className="w-4 h-4 text-gray-500" />;
     }
   };
 
@@ -99,8 +99,8 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800 border-green-300';
       case 'limited': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case 'error': return 'bg-red-100 text-red-800 border-red-300',
-      default: return 'bg-gray-100 text-gray-800 border-gray-300'
+      case 'error': return 'bg-red-100 text-red-800 border-red-300';
+      default: return 'bg-gray-100 text-gray-800 border-gray-300';
     }
   };
 

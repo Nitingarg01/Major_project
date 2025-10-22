@@ -588,8 +588,8 @@ Return ONLY valid JSON array:
     switch (difficulty) {
       case 'easy': return 15;
       case 'medium': return 25;
-      case 'hard': return 40,
-      default: return 20
+      case 'hard': return 40;
+      default: return 20;
     }
   }
 
@@ -597,8 +597,8 @@ Return ONLY valid JSON array:
     switch (difficulty) {
       case 'easy': return 20;
       case 'medium': return 35;
-      case 'hard': return 50,
-      default: return 30
+      case 'hard': return 50;
+      default: return 30;
     }
   }
 

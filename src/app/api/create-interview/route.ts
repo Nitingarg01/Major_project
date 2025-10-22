@@ -11,7 +11,7 @@ function getQuestionCountForType(interviewType: string): number {
     case 'behavioral': return 10; // Behavioral focus
     case 'aptitude': return 15; // Aptitude focus
     case 'dsa': return 2; // Exactly 2 DSA problems
-    default: return 12
+    default: return 12;
   }
 }
 
@@ -484,7 +484,7 @@ function calculateEstimatedDuration(interviewType: string): number {
         case 'technical': return 60; // 1 hour for technical
         case 'behavioral': return 50; // 50 minutes for behavioral
         case 'aptitude': return 75; // 1.25 hours for aptitude
-        default: return 60
+        default: return 60;
     }
 }
 
