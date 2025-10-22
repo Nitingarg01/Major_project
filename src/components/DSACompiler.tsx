@@ -132,7 +132,7 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [
     constraints: [
       '1 <= intervals.length <= 10^4',
       'intervals[i].length == 2',
-      '0 <= starti <= endi <= 10^4';
+      '0 <= starti <= endi <= 10^4'
     ],
     topics: ['Array', 'Sorting'],
     hints: [
