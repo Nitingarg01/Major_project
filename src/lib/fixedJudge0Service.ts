@@ -4,38 +4,38 @@
  */
 
 interface TestCase {
-  id: string;
-  input: string;
-  expectedOutput: string;
-  description?: string;
+  id: string,
+  input: string,
+  expectedOutput: string,
+  description?: string,
   hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean;
-  input: string;
-  expected: string;
-  actual: string;
-  executionTime: string;
-  status: string;
-  error?: string;
+  passed: boolean,
+  input: string,
+  expected: string,
+  actual: string,
+  executionTime: string,
+  status: string,
+  error?: string,
   memory?: number
 }
 
 interface ExecutionResponse {
-  success: boolean;
-  results: CodeExecutionResult[];
-  totalPassed: number;
-  totalTests: number;
-  compilationError?: string;
+  success: boolean,
+  results: CodeExecutionResult[],
+  totalPassed: number,
+  totalTests: number,
+  compilationError?: string,
   runtimeError?: string
 }
 
 export class FixedJudge0Service {
-  private static instance: FixedJudge0Service;
-  private apiKey: string;
-  private apiHost: string;
-  private baseUrl: string;
+  private static instance: FixedJudge0Service,
+  private apiKey: string,
+  private apiHost: string,
+  private baseUrl: string,
 
   private constructor() {
     this.apiKey = process.env.JUDGE0_API_KEY || process.env.NEXT_PUBLIC_JUDGE0_API_KEY || '';
@@ -43,8 +43,8 @@ export class FixedJudge0Service {
     this.baseUrl = `https://${this.apiHost}`
     
     console.log('🔧 Fixed Judge0Service initialized:', {
-      hasKey: !!this.apiKey;
-      host: this.apiHost;
+      hasKey: !!this.apiKey,
+      host: this.apiHost,
       baseUrl: this.baseUrl
     });
   }
@@ -106,7 +106,7 @@ export class FixedJudge0Service {
     if (language === 'python') {
       // Extract function name from user code
       const functionMatch = userCode.match(/def\s+(\w+)\s*\(/);
-      const functionName = functionMatch ? functionMatch[1] : 'solution';
+      const functionName = functionMatch ? functionMatch[1] : 'solution',
       
       // Parse test case input to extract parameters
       const testInput = this.parseTestInput(testCase.input);
@@ -133,7 +133,7 @@ except Exception as e:
     
     if (language === 'javascript') {
       const functionMatch = userCode.match(/function\s+(\w+)\s*\(|const\s+(\w+)\s*=|let\s+(\w+)\s*=/);
-      const functionName = functionMatch ? (functionMatch[1] || functionMatch[2] || functionMatch[3]) : 'solution';
+      const functionName = functionMatch ? (functionMatch[1] || functionMatch[2] || functionMatch[3]) : 'solution',
       
       const testInput = this.parseTestInput(testCase.input);
       
@@ -163,7 +163,7 @@ try {
       // For Java, we need to modify the class structure
       const className = 'Solution';
       const methodMatch = userCode.match(/public\s+static\s+\w+\s+(\w+)\s*\(/);
-      const methodName = methodMatch ? methodMatch[1] : 'solution';
+      const methodName = methodMatch ? methodMatch[1] : 'solution',
       
       const testInput = this.parseTestInput(testCase.input);
       
@@ -227,8 +227,8 @@ int main() {
 
   private parseTestInput(input: string): { assignments: string; parameters: string } {
     // Parse input like "nums = [2,7,11,15], target = 9"
-    const assignments: string[] = [];
-    const parameters: string[] = [];
+    const assignments: string[] = [],
+    const parameters: string[] = [],
     
     const parts = input.split(',').map(part => part.trim());
     
@@ -249,9 +249,9 @@ int main() {
   private async submitCode(sourceCode: string, languageId: number, stdin?: string): Promise<string> {
     const submission = {
       source_code: Buffer.from(sourceCode).toString('base64'),
-      language_id: languageId;
+      language_id: languageId,
       stdin: stdin ? Buffer.from(stdin).toString('base64') : undefined,
-      wait: false;
+      wait: false,
       cpu_time_limit: 5, // Increased timeout
       memory_limit: 256000, // Increased memory limit
       wall_time_limit: 10
@@ -296,7 +296,7 @@ int main() {
       }
 
       const languageId = this.getLanguageId(language);
-      const results: CodeExecutionResult[] = [];
+      const results: CodeExecutionResult[] = [],
       let totalPassed = 0;
 
       console.log(`🚀 Executing ${testCases.length} test cases for ${language} (Language ID: ${languageId})`);
@@ -307,7 +307,7 @@ int main() {
         
         try {
           console.log(`🧪 Running test case ${i + 1}/${testCases.length}:`, {
-            input: testCase.input;
+            input: testCase.input,
             expected: testCase.expectedOutput
           });
 
@@ -322,9 +322,9 @@ int main() {
           const submission = await this.getSubmissionResult(token);
           
           // Decode outputs
-          const stdout = submission.stdout ? Buffer.from(submission.stdout, 'base64').toString().trim() : '';
-          const stderr = submission.stderr ? Buffer.from(submission.stderr, 'base64').toString().trim() : '';
-          const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString().trim() : '';
+          const stdout = submission.stdout ? Buffer.from(submission.stdout, 'base64').toString().trim() : '',
+          const stderr = submission.stderr ? Buffer.from(submission.stderr, 'base64').toString().trim() : '',
+          const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString().trim() : '',
           
           const statusId = submission.status.id;
           const statusDescription = submission.status.description;
@@ -343,7 +343,7 @@ int main() {
           const expectedOutput = testCase.expectedOutput.trim();
           
           // Normalize outputs for comparison
-          const normalizeOutput = (output: string) => output.trim().replace(/\s+/g, '').toLowerCase();
+          const normalizeOutput = (output: string) => output.trim().replace(/\s+/g, '').toLowerCase(),
           const passed = isAccepted && normalizeOutput(actualOutput) === normalizeOutput(expectedOutput);
           
           if (passed) {
@@ -353,30 +353,30 @@ int main() {
           // Handle compilation errors
           if (statusId === 6 && i === 0) { // Compilation Error on first test case
             return {
-              success: false;
+              success: false,
               results: [{
-                passed: false;
-                input: testCase.input;
-                expected: expectedOutput;
-                actual: actualOutput;
+                passed: false,
+                input: testCase.input,
+                expected: expectedOutput,
+                actual: actualOutput,
                 executionTime: `${submission.time || 0}s`,
-                status: statusDescription;
-                error: compileOutput || stderr || 'Compilation failed';
+                status: statusDescription,
+                error: compileOutput || stderr || 'Compilation failed',
                 memory: submission.memory
               }],
-              totalPassed: 0;
-              totalTests: testCases.length;
+              totalPassed: 0,
+              totalTests: testCases.length,
               compilationError: compileOutput || stderr || 'Compilation failed'
             };
           }
 
           results.push({
             passed,
-            input: testCase.input;
-            expected: expectedOutput;
-            actual: actualOutput;
+            input: testCase.input,
+            expected: expectedOutput,
+            actual: actualOutput,
             executionTime: `${submission.time || 0}s`,
-            status: statusDescription;
+            status: statusDescription,
             error: (stderr || compileOutput) || undefined,
             memory: submission.memory
           });
@@ -384,12 +384,12 @@ int main() {
         } catch (error: any) {
           console.error(`❌ Test case ${i + 1} execution error:`, error);
           results.push({
-            passed: false;
-            input: testCase.input;
-            expected: testCase.expectedOutput;
-            actual: '';
-            executionTime: '0s';
-            status: 'Execution Error';
+            passed: false,
+            input: testCase.input,
+            expected: testCase.expectedOutput,
+            actual: '',
+            executionTime: '0s',
+            status: 'Execution Error',
             error: error.message
           });
         }
@@ -398,7 +398,7 @@ int main() {
       console.log(`✅ Code execution completed: ${totalPassed}/${testCases.length} passed`);
 
       return {
-        success: totalPassed > 0;
+        success: totalPassed > 0,
         results,
         totalPassed,
         totalTests: testCases.length
@@ -408,10 +408,10 @@ int main() {
       console.error('❌ Judge0 execution error:', error);
       
       return {
-        success: false;
-        results: [];
-        totalPassed: 0;
-        totalTests: testCases.length;
+        success: false,
+        results: [],
+        totalPassed: 0,
+        totalTests: testCases.length,
         runtimeError: error.message
       };
     }
@@ -448,11 +448,11 @@ int main() {
       
       return {
         passed,
-        input: testCase.input;
-        expected: testCase.expectedOutput;
+        input: testCase.input,
+        expected: testCase.expectedOutput,
         actual: passed ? testCase.expectedOutput : `mock_output_${index}_${Math.random().toString(36).substr(2, 4)}`,
         executionTime: `${(Math.random() * 0.8 + 0.1).toFixed(3)}s`,
-        status: passed ? 'Accepted' : 'Wrong Answer';
+        status: passed ? 'Accepted' : 'Wrong Answer',
         memory: Math.floor(Math.random() * 50 + 10) // 10-60 KB
       };
     });
@@ -460,7 +460,7 @@ int main() {
     const totalPassed = results.filter(r => r.passed).length;
 
     return {
-      success: totalPassed > 0;
+      success: totalPassed > 0,
       results,
       totalPassed,
       totalTests: testCases.length
@@ -486,20 +486,20 @@ int main() {
       const languages = await this.makeApiRequest('/languages');
       return { 
         status: 'healthy', 
-        judge0Available: true;
+        judge0Available: true,
         details: {
-          languagesCount: languages.length;
-          apiKey: !!this.apiKey;
+          languagesCount: languages.length,
+          apiKey: !!this.apiKey,
           baseUrl: this.baseUrl
         }
       };
     } catch (error: any) {
       return { 
         status: 'fallback', 
-        judge0Available: false;
+        judge0Available: false,
         details: {
-          error: error.message;
-          apiKey: !!this.apiKey;
+          error: error.message,
+          apiKey: !!this.apiKey,
           baseUrl: this.baseUrl
         }
       };

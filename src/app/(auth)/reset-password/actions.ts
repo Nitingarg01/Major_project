@@ -16,7 +16,7 @@ export const handleResetPassword = async (token: string, newPassword: string) =>
     
     // Find user with valid reset token
     const user = await db.collection("users").findOne({
-      resetToken: token;
+      resetToken: token,
       resetTokenExpiry: { $gt: new Date() }
     });
     
@@ -35,11 +35,11 @@ export const handleResetPassword = async (token: string, newPassword: string) =>
       { _id: user._id },
       {
         $set: {
-          password: hashedPassword;
+          password: hashedPassword,
           updatedAt: new Date()
         },
         $unset: {
-          resetToken: "";
+          resetToken: "",
           resetTokenExpiry: ""
         }
       }

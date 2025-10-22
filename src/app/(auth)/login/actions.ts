@@ -31,7 +31,7 @@ export const handleLogin = async (formData: FormData) => {
 
 export const handleLogout = async () => {
     await signOut({
-        redirect: true;
+        redirect: true,
         redirectTo: "/login"
     });
 }

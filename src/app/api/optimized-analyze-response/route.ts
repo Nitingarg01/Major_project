@@ -36,15 +36,15 @@ export async function POST(request: NextRequest) {
     );
 
     const responseData = {
-      success: true;
+      success: true,
       analysis,
       metadata: {
-        provider: 'emergent-anthropic';
-        model: 'claude-3-5-sonnet-20241022';
+        provider: 'emergent-anthropic',
+        model: 'claude-3-5-sonnet-20241022',
         timestamp: new Date().toISOString(),
-        processingTime: 'high-speed-api';
-        companyContext: companyContext || 'General';
-        performanceImprovement: '8x faster than Ollama';
+        processingTime: 'high-speed-api',
+        companyContext: companyContext || 'General',
+        performanceImprovement: '8x faster than Ollama',
         analysisQuality: 'professional-grade'
       }
     };
@@ -77,14 +77,14 @@ export async function POST(request: NextRequest) {
     };
 
     return NextResponse.json({
-      success: false;
-      analysis: fallbackAnalysis;
-      error: 'AI analysis service temporarily unavailable';
-      details: error.message;
-      suggestion: 'Check EMERGENT_LLM_KEY and GEMINI_API_KEY configuration';
+      success: false,
+      analysis: fallbackAnalysis,
+      error: 'AI analysis service temporarily unavailable',
+      details: error.message,
+      suggestion: 'Check EMERGENT_LLM_KEY and GEMINI_API_KEY configuration',
       metadata: {
-        provider: 'optimized_fallback';
-        model: 'enhanced-fallback-analysis';
+        provider: 'optimized_fallback',
+        model: 'enhanced-fallback-analysis',
         timestamp: new Date().toISOString(),
         processingTime: 'instant'
       }

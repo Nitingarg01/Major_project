@@ -7,11 +7,11 @@ import { Camera, CameraOff, AlertTriangle, Shield, Eye, EyeOff, Activity } from 
 import * as faceapi from 'face-api.js';
 
 interface AdvancedCameraFeedProps {
-  isRecording: boolean;
-  onRecordingChange: (recording: boolean) => void;
-  onAnomalyDetected?: (anomaly: string) => void;
-  enableFaceDetection?: boolean;
-  enableMisbehaviorDetection?: boolean;
+  isRecording: boolean,
+  onRecordingChange: (recording: boolean) => void,
+  onAnomalyDetected?: (anomaly: string) => void,
+  enableFaceDetection?: boolean,
+  enableMisbehaviorDetection?: boolean,
   className?: string;
 }
 
@@ -135,7 +135,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       setCameraError(
         error.name === 'NotAllowedError';
           ? 'Camera permission denied. Please allow camera access and refresh.'
-          : error.name === 'NotFoundError';
+          : error.name === 'NotFoundError',
           ? 'No camera found. Please connect a camera device.'
           : 'Camera initialization failed. Please check your camera settings.'
       );
@@ -278,7 +278,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
         }
       }
 
-      const avgBrightness = nonZeroPixels > 0 ? totalBrightness / nonZeroPixels : 0;
+      const avgBrightness = nonZeroPixels > 0 ? totalBrightness / nonZeroPixels : 0,
       
       // Basic heuristic: if there's sufficient variation and brightness, assume face present
       return avgBrightness > 30 && nonZeroPixels > (canvas.width * canvas.height * 0.1);

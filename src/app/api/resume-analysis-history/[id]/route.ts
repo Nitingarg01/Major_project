@@ -3,7 +3,7 @@ import { auth } from "@/app/auth";
 import client from "@/lib/db";
 
 export async function DELETE(
-  request: NextRequest;
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -22,7 +22,7 @@ export async function DELETE(
 
     // Delete the analysis (ensure it belongs to the authenticated user)
     const result = await db.collection("resumeAnalyses").deleteOne({
-      id: id;
+      id: id,
       userId: session.user.id
     });
 
@@ -35,14 +35,14 @@ export async function DELETE(
     console.log(`✅ Resume analysis deleted: ${id}`);
 
     return NextResponse.json({ 
-      message: "Analysis deleted successfully";
+      message: "Analysis deleted successfully",
       deletedId: id
     }, { status: 200 });
     
   } catch (error) {
     console.error("❌ Error deleting resume analysis:", error);
     return NextResponse.json({
-      error: "Failed to delete analysis";
+      error: "Failed to delete analysis",
       details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }

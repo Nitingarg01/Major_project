@@ -47,8 +47,8 @@ export class EnhancedVirtualInterviewerAI {
   private static instance: EnhancedVirtualInterviewerAI
   private smartAI: SmartAIService
   private elevenLabs: ElevenLabsService
-  private currentAudio: HTMLAudioElement | null = null;
-  private currentUtterance: SpeechSynthesisUtterance | null = null;
+  private currentAudio: HTMLAudioElement | null = null,
+  private currentUtterance: SpeechSynthesisUtterance | null = null,
 
   private constructor() {
     this.smartAI = SmartAIService.getInstance();
@@ -77,8 +77,8 @@ export class EnhancedVirtualInterviewerAI {
       try {
         const result = await this.elevenLabs.textToSpeech(text, {
           personality,
-          onStart: options?.onStart;
-          onEnd: options?.onEnd;
+          onStart: options?.onStart,
+          onEnd: options?.onEnd,
           onError: (error) => {
             console.warn('ElevenLabs failed, falling back to browser TTS:', error);
             // Fallback to browser TTS on error
@@ -136,7 +136,7 @@ export class EnhancedVirtualInterviewerAI {
    * Configure browser voice based on personality
    */
   private configureBrowserVoice(
-    utterance: SpeechSynthesisUtterance;
+    utterance: SpeechSynthesisUtterance,
     personality: string
   ): void {
     const voices = window.speechSynthesis.getVoices();
@@ -249,9 +249,9 @@ export class EnhancedVirtualInterviewerAI {
 
     return {
       message,
-      type: 'question';
-      emotion: personality === 'encouraging' ? 'encouraging' : 'neutral';
-      shouldSpeak: true;
+      type: 'question',
+      emotion: personality === 'encouraging' ? 'encouraging' : 'neutral',
+      shouldSpeak: true,
       nextAction: 'wait_for_response'
     }
   }
@@ -260,8 +260,8 @@ export class EnhancedVirtualInterviewerAI {
    * Generate follow-up questions with better context
    */
   public async generateFollowUp(
-    userResponse: string;
-    originalQuestion: string;
+    userResponse: string,
+    originalQuestion: string,
     context: ConversationContext
   ): Promise<AIResponse> {
     const personality = context.personality || 'professional';
@@ -269,12 +269,12 @@ export class EnhancedVirtualInterviewerAI {
     try {
       // Use SmartAI for intelligent follow-ups
       const result = await this.smartAI.processRequest({
-        task: 'response_analysis';
+        task: 'response_analysis',
         context: {
-          question: originalQuestion;
-          userAnswer: userResponse;
-          interviewType: context.interviewType;
-          companyName: context.companyName;
+          question: originalQuestion,
+          userAnswer: userResponse,
+          interviewType: context.interviewType,
+          companyName: context.companyName,
           jobTitle: context.jobTitle
         }
       })
@@ -286,10 +286,10 @@ export class EnhancedVirtualInterviewerAI {
         )
         
         return {
-          message: followUp;
-          type: 'followup';
-          emotion: 'probing';
-          shouldSpeak: true;
+          message: followUp,
+          type: 'followup',
+          emotion: 'probing',
+          shouldSpeak: true,
           nextAction: 'wait_for_response'
         }
       }
@@ -305,8 +305,8 @@ export class EnhancedVirtualInterviewerAI {
    * Analyze response with detailed feedback
    */
   public async analyzeResponse(
-    userResponse: string;
-    question: string;
+    userResponse: string,
+    question: string,
     context: ConversationContext
   ): Promise<{
     score: number
@@ -319,22 +319,22 @@ export class EnhancedVirtualInterviewerAI {
   }> {
     try {
       const result = await this.smartAI.processRequest({
-        task: 'response_analysis';
+        task: 'response_analysis',
         context: {
           question,
-          userAnswer: userResponse;
-          expectedAnswer: 'Comprehensive response with examples';
-          interviewType: context.interviewType;
+          userAnswer: userResponse,
+          expectedAnswer: 'Comprehensive response with examples',
+          interviewType: context.interviewType,
           companyName: context.companyName
         }
       })
 
       if (result.success && result.data) {
         return {
-          score: result.data.score || 7;
-          strengths: result.data.strengths || ['Clear communication'];
-          improvements: result.data.improvements || ['Add more examples'];
-          feedback: result.data.feedback || 'Good response';
+          score: result.data.score || 7,
+          strengths: result.data.strengths || ['Clear communication'],
+          improvements: result.data.improvements || ['Add more examples'],
+          feedback: result.data.feedback || 'Good response',
           confidence: this.calculateConfidence(userResponse),
           clarity: this.calculateClarity(userResponse),
           relevance: this.calculateRelevance(userResponse, question)
@@ -351,8 +351,8 @@ export class EnhancedVirtualInterviewerAI {
    * Generate transition with personality
    */
   public generateTransition(
-    currentQuestionIndex: number;
-    totalQuestions: number;
+    currentQuestionIndex: number,
+    totalQuestions: number,
     context: ConversationContext
   ): AIResponse {
     const personality = context.personality || 'professional';
@@ -360,17 +360,17 @@ export class EnhancedVirtualInterviewerAI {
     
     if (isLastQuestion) {
       const closingMessages = {
-        professional: "Thank you for your responses. We've completed all questions. Do you have any questions about the role?";
-        friendly: "That was great! We've finished all the questions. Anything you'd like to ask me?";
-        strict: "Interview concluded. Questions from your side?";
+        professional: "Thank you for your responses. We've completed all questions. Do you have any questions about the role?",
+        friendly: "That was great! We've finished all the questions. Anything you'd like to ask me?",
+        strict: "Interview concluded. Questions from your side?",
         encouraging: "You did wonderfully! We've covered everything. What questions do you have for me?"
       }
       
       return {
-        message: closingMessages[personality];
-        type: 'closing';
-        emotion: 'supportive';
-        shouldSpeak: true;
+        message: closingMessages[personality],
+        type: 'closing',
+        emotion: 'supportive',
+        shouldSpeak: true,
         nextAction: 'end_interview'
       }
     }
@@ -387,9 +387,9 @@ export class EnhancedVirtualInterviewerAI {
 
     return {
       message,
-      type: 'transition';
-      emotion: 'neutral';
-      shouldSpeak: true;
+      type: 'transition',
+      emotion: 'neutral',
+      shouldSpeak: true,
       nextAction: 'move_to_next'
     }
   }
@@ -430,8 +430,8 @@ export class EnhancedVirtualInterviewerAI {
   }
 
   private generateFallbackFollowUp(
-    userResponse: string;
-    originalQuestion: string;
+    userResponse: string,
+    originalQuestion: string,
     context: ConversationContext
   ): AIResponse {
     const personality = context.personality || 'professional';
@@ -447,9 +447,9 @@ export class EnhancedVirtualInterviewerAI {
         followUps[Math.floor(Math.random() * followUps.length)],
         personality
       ),
-      type: 'followup';
-      emotion: 'probing';
-      shouldSpeak: true;
+      type: 'followup',
+      emotion: 'probing',
+      shouldSpeak: true,
       nextAction: 'wait_for_response'
     }
   }
@@ -503,8 +503,8 @@ export class EnhancedVirtualInterviewerAI {
     const hasExamples = /example|instance|time when|once|previously/i.test(userResponse);
 
     let score = 5;
-    const strengths: string[] = [];
-    const improvements: string[] = [];
+    const strengths: string[] = [],
+    const improvements: string[] = [],
 
     if (wordCount > 50) {
       score += 2;

@@ -51,21 +51,21 @@ export async function GET(request: NextRequest) {
     const companyPerformance = getCompanyPerformanceBreakdown(performanceAnalyses);
 
     const dashboardData = {
-      totalInterviews: interviews.length;
+      totalInterviews: interviews.length,
       completedInterviews: interviews.filter(i => i.status === 'completed').length,
       inProgressInterviews: interviews.filter(i => i.status === 'in-progress').length,
-      averageScore: stats.averageScore;
-      bestScore: stats.bestScore;
-      recentScore: stats.recentScore;
-      strongAreas: skillAnalysis.strengths;
-      improvementAreas: skillAnalysis.improvements;
+      averageScore: stats.averageScore,
+      bestScore: stats.bestScore,
+      recentScore: stats.recentScore,
+      strongAreas: skillAnalysis.strengths,
+      improvementAreas: skillAnalysis.improvements,
       recentFeedback,
       performanceTrend,
       companyPerformance,
       statistics: {
         ...stats,
-        totalQuestionsAnswered: stats.totalResponses;
-        averageInterviewDuration: stats.averageDuration;
+        totalQuestionsAnswered: stats.totalResponses,
+        averageInterviewDuration: stats.averageDuration,
         improvementRate: stats.improvementRate
       },
       lastUpdated: new Date()
@@ -74,8 +74,8 @@ export async function GET(request: NextRequest) {
     console.log(`✅ Performance dashboard data compiled successfully`);
 
     return NextResponse.json({
-      success: true;
-      performance: dashboardData;
+      success: true,
+      performance: dashboardData,
       message: 'Performance data retrieved successfully'
     });
 
@@ -84,8 +84,8 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to fetch performance data';
-        details: error.message;
+        error: 'Failed to fetch performance data',
+        details: error.message,
         timestamp: new Date().toISOString()
       },
       { status: 500 }
@@ -111,15 +111,15 @@ const calculateUserStats = (interviews: any[], performanceAnalyses: any[]) => {
   if (scores.length >= 2) {
     const recentScores = scores.slice(0, 3);
     const earlierScores = scores.slice(-3);
-    const recentAvg = recentScores.reduce((sum: number, score: number) => sum + score, 0) / recentScores.length;
-    const earlierAvg = earlierScores.reduce((sum: number, score: number) => sum + score, 0) / earlierScores.length;
+    const recentAvg = recentScores.reduce((sum: number, score: number) => sum + score, 0) / recentScores.length,
+    const earlierAvg = earlierScores.reduce((sum: number, score: number) => sum + score, 0) / earlierScores.length,
     improvementRate = Math.round(((recentAvg - earlierAvg) / earlierAvg) * 100);
   }
   
   return {
     averageScore: scores.length > 0 ? Math.round(scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length) : 0,
     bestScore: scores.length > 0 ? Math.max(...scores) : 0,
-    recentScore: scores.length > 0 ? scores[0] : 0;
+    recentScore: scores.length > 0 ? scores[0] : 0,
     totalResponses,
     averageDuration,
     improvementRate,
@@ -131,21 +131,21 @@ const getRecentFeedback = (performanceAnalyses: any[]) => {
   return performanceAnalyses
     .slice(0, 5) // Get last 5 performance analyses
     .map(analysis => ({
-      _id: analysis._id;
-      interviewId: analysis.interviewId;
-      companyName: analysis.companyName;
-      jobTitle: analysis.jobTitle;
+      _id: analysis._id,
+      interviewId: analysis.interviewId,
+      companyName: analysis.companyName,
+      jobTitle: analysis.jobTitle,
       score: Math.round(analysis.performance?.overallScore || 0),
-      feedback: analysis.performance?.overallVerdict || 'Performance analysis completed';
-      strengths: analysis.performance?.strengths || ['Professional approach'];
-      improvements: analysis.performance?.improvements || ['Continue practicing'];
+      feedback: analysis.performance?.overallVerdict || 'Performance analysis completed',
+      strengths: analysis.performance?.strengths || ['Professional approach'],
+      improvements: analysis.performance?.improvements || ['Continue practicing'],
       createdAt: analysis.createdAt
     }));
 };
 
 const analyzeSkillsAcrossInterviews = (performanceAnalyses: any[]) => {
-  const allStrengths: string[] = [];
-  const allImprovements: string[] = [];
+  const allStrengths: string[] = [],
+  const allImprovements: string[] = [],
   
   performanceAnalyses.forEach(analysis => {
     if (analysis.performance?.strengths) {
@@ -214,8 +214,8 @@ const getCompanyPerformanceBreakdown = (performanceAnalyses: any[]) => {
   return Object.entries(companyStats)
     .map(([company, stats]) => ({
       company,
-      attempts: stats.count;
-      averageScore: stats.average;
+      attempts: stats.count,
+      averageScore: stats.average,
       totalScore: stats.totalScore
     }))
     .sort((a, b) => b.averageScore - a.averageScore)

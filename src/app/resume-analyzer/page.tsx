@@ -74,7 +74,7 @@ const ResumeAnalyzer = () => {
       formData.append('targetRole', targetRole);
 
       const response = await fetch('/api/analyze-resume', {
-        method: 'POST';
+        method: 'POST',
         body: formData
       })
 

@@ -5,8 +5,8 @@ import { searchCompanyAndRole, parseJobQuery } from '@/lib/companyIntelligence';
 import { Badge } from './ui/badge';
 
 interface CompanyAutofillProps {
-  onSelect: (company: string, jobTitle: string, companyData?: any) => void;
-  placeholder?: string;
+  onSelect: (company: string, jobTitle: string, companyData?: any) => void,
+  placeholder?: string,
   className?: string
 }
 
@@ -67,7 +67,7 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
   useEffect(() => {
     if (suggestionRefs.current[selectedIndex]) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
-        block: 'nearest';
+        block: 'nearest',
         behavior: 'smooth'
       })
     }

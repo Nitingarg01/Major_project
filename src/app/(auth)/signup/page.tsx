@@ -10,9 +10,9 @@ import { toast } from 'sonner';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
-    name: '';
-    email: '';
-    password: '';
+    name: '',
+    email: '',
+    password: '',
     confirmPassword: ''
   })
   const [showPassword, setShowPassword] = useState(false);
@@ -37,13 +37,13 @@ export default function SignUpPage() {
 
     try {
       const response = await fetch('/api/auth/signup', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name;
-          email: formData.email;
+          name: formData.name,
+          email: formData.email,
           password: formData.password;
         }),
       })
@@ -55,8 +55,8 @@ export default function SignUpPage() {
         
         // Auto sign in after successful signup
         const result = await signIn('credentials', {
-          email: formData.email;
-          password: formData.password;
+          email: formData.email,
+          password: formData.password,
           redirect: false;
         })
 

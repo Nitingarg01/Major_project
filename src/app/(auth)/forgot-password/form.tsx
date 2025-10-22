@@ -45,7 +45,7 @@ const ForgotPasswordForm = () => {
         toast.error(response?.error || "Failed to send reset email");
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to send reset email";
+      const errorMessage = error instanceof Error ? error.message : "Failed to send reset email",
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);

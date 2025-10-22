@@ -18,27 +18,27 @@ import CompanyIntelligenceService from '@/lib/companyIntelligence';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
   timestamp: Date
 }
 
 interface SuperEnhancedInterviewWrapperProps {
-  questions: Question[];
-  id: string;
-  interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
-  rounds?: InterviewRound[];
-  companyName?: string;
+  questions: Question[],
+  id: string,
+  interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed',
+  rounds?: InterviewRound[],
+  companyName?: string,
   jobTitle?: string
 }
 
 // Sample DSA problems for the DSA round
 const sampleDSAProblems = [;
   {
-    id: 'two-sum';
-    title: 'Two Sum';
-    difficulty: 'easy' as const;
+    id: 'two-sum',
+    title: 'Two Sum',
+    difficulty: 'easy' as const,
     description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
     examples: [
       {
@@ -69,48 +69,48 @@ const sampleDSAProblems = [;
 // Sample aptitude questions
 const sampleAptitudeQuestions = [;
   {
-    id: 'verbal-1';
-    type: 'verbal' as const;
-    question: 'Choose the word that best completes the sentence: "The new policy will _____ significant changes in the workflow."';
+    id: 'verbal-1',
+    type: 'verbal' as const,
+    question: 'Choose the word that best completes the sentence: "The new policy will _____ significant changes in the workflow."',
     options: ['necessitate', 'alleviate', 'deteriorate', 'fabricate'],
-    correctAnswer: 0;
+    correctAnswer: 0,
     explanation: 'Necessitate means to make necessary as a result or consequence, which fits the context.',
-    difficulty: 'medium' as const;
+    difficulty: 'medium' as const,
     timeLimit: 60
   },
   {
-    id: 'numerical-1';
-    type: 'numerical' as const;
+    id: 'numerical-1',
+    type: 'numerical' as const,
     question: 'If a product costs $80 after a 20% discount, what was the original price?',
     options: ['$96', '$100', '$104', '$120'],
-    correctAnswer: 1;
+    correctAnswer: 1,
     explanation: 'If $80 is 80% of the original price, then original price = $80 ÷ 0.8 = $100',
-    difficulty: 'medium' as const;
+    difficulty: 'medium' as const,
     timeLimit: 90
   },
   {
-    id: 'logical-1';
-    type: 'logical' as const;
-    question: 'All roses are flowers. Some flowers fade quickly. Therefore:';
+    id: 'logical-1',
+    type: 'logical' as const,
+    question: 'All roses are flowers. Some flowers fade quickly. Therefore:',
     options: [
       'All roses fade quickly',
       'Some roses fade quickly',
       'No roses fade quickly',
       'Cannot be determined'
     ],
-    correctAnswer: 3;
-    explanation: 'We cannot determine if roses specifically fade quickly based on the given information.';
-    difficulty: 'medium' as const;
+    correctAnswer: 3,
+    explanation: 'We cannot determine if roses specifically fade quickly based on the given information.',
+    difficulty: 'medium' as const,
     timeLimit: 75
   },
   {
-    id: 'spatial-1';
-    type: 'spatial' as const;
+    id: 'spatial-1',
+    type: 'spatial' as const,
     question: 'Which shape comes next in the sequence: Circle, Square, Triangle, Circle, Square, ?',
     options: ['Circle', 'Square', 'Triangle', 'Pentagon'],
-    correctAnswer: 2;
+    correctAnswer: 2,
     explanation: 'The pattern repeats every 3 shapes: Circle, Square, Triangle.',
-    difficulty: 'easy' as const;
+    difficulty: 'easy' as const,
     timeLimit: 45
   }
 ]
@@ -166,41 +166,41 @@ const SuperEnhancedInterviewWrapper = ({
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // Create enhanced rounds based on interview type
-    const enhancedRounds: InterviewRound[] = [];
+    const enhancedRounds: InterviewRound[] = [],
     
     if (interviewType === 'mixed') {
       // Technical Round
       enhancedRounds.push({
-        id: 'technical-round';
-        type: 'technical';
-        status: 'pending';
+        id: 'technical-round',
+        type: 'technical',
+        status: 'pending',
         questions: questions.filter(q => q.category === 'technical').slice(0, 5),
         duration: 45
       })
       
       // DSA Round
       enhancedRounds.push({
-        id: 'dsa-round';
-        type: 'dsa';
-        status: 'pending';
+        id: 'dsa-round',
+        type: 'dsa',
+        status: 'pending',
         questions: [], // DSA uses problem format
         duration: 60
       })
       
       // Behavioral Round
       enhancedRounds.push({
-        id: 'behavioral-round';
-        type: 'behavioral';
-        status: 'pending';
+        id: 'behavioral-round',
+        type: 'behavioral',
+        status: 'pending',
         questions: questions.filter(q => q.category === 'behavioral').slice(0, 4),
         duration: 30
       })
       
       // Aptitude Round
       enhancedRounds.push({
-        id: 'aptitude-round';
-        type: 'aptitude';
-        status: 'pending';
+        id: 'aptitude-round',
+        type: 'aptitude',
+        status: 'pending',
         questions: [], // Aptitude uses quiz format
         duration: 25
       })
@@ -208,8 +208,8 @@ const SuperEnhancedInterviewWrapper = ({
       // Single round based on type
       enhancedRounds.push({
         id: `${interviewType}-round`,
-        type: interviewType;
-        status: 'pending';
+        type: interviewType,
+        status: 'pending',
         questions: questions.slice(0, 8),
         duration: 60
       })
@@ -217,23 +217,23 @@ const SuperEnhancedInterviewWrapper = ({
 
     return {
       sessionId,
-      userId: 'current-user-id';
-      interviewId: id;
+      userId: 'current-user-id',
+      interviewId: id,
       companyName,
       jobTitle,
-      rounds: enhancedRounds;
-      currentRound: 0;
+      rounds: enhancedRounds,
+      currentRound: 0,
       sessionData: {
         startTime: new Date(),
-        totalTimeSpent: 0;
+        totalTimeSpent: 0,
         overallProgress: 0
       },
-      roundResults: [];
-      companyIntelligence: intelligence;
+      roundResults: [],
+      companyIntelligence: intelligence,
       sessionMetadata: {
-        userAgent: navigator.userAgent;
-        ipAddress: '';
-        cameraEnabled: cameraOn;
+        userAgent: navigator.userAgent,
+        ipAddress: '',
+        cameraEnabled: cameraOn,
         suspiciousActivity: []
       }
     }
@@ -261,7 +261,7 @@ const SuperEnhancedInterviewWrapper = ({
     if (interviewSession) {
       // Here you would save progress to backend
       console.log('Auto-saving progress...', {
-        sessionId: interviewSession.sessionId;
+        sessionId: interviewSession.sessionId,
         currentRound,
         timeElapsed,
         activityAlerts: activityAlerts.length

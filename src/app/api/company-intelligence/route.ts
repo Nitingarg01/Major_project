@@ -23,12 +23,12 @@ export async function POST(request: NextRequest) {
     
     // Enhance suggestions with additional intelligence
     const enhancedSuggestions = suggestions.slice(0, limit).map(company => ({
-      name: company;
+      name: company,
       industry: getCompanyIndustry(company),
       description: `Leading company in ${getCompanyIndustry(company).toLowerCase()}`,
       relevanceScore: calculateRelevanceScore(company, query),
       metadata: {
-        hasSpecificQuestions: true;
+        hasSpecificQuestions: true,
         difficultyLevel: getDifficultyLevel(company),
         popularRoles: getPopularRoles(company),
         techStack: getTechStack(company)
@@ -42,19 +42,19 @@ export async function POST(request: NextRequest) {
     const serviceHealth = await hybridAIService.getServiceHealth();
 
     return NextResponse.json({
-      success: true;
+      success: true,
       query,
-      companies: enhancedSuggestions;
-      totalFound: enhancedSuggestions.length;
+      companies: enhancedSuggestions,
+      totalFound: enhancedSuggestions.length,
       serviceInfo: {
-        primary: serviceHealth.primary;
-        enhancedIntelligence: true;
+        primary: serviceHealth.primary,
+        enhancedIntelligence: true,
         companyDatabase: true
       },
       features: {
-        companySpecificQuestions: true;
-        industryContext: true;
-        difficultyAdaptation: true;
+        companySpecificQuestions: true,
+        industryContext: true,
+        difficultyAdaptation: true,
         techStackAwareness: true
       }
     });
@@ -64,8 +64,8 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to get company intelligence';
-        details: error.message;
+        error: 'Failed to get company intelligence',
+        details: error.message,
         timestamp: new Date().toISOString()
       },
       { status: 500 }
@@ -96,9 +96,9 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      success: true;
+      success: true,
       type,
-      data: responseData;
+      data: responseData,
       lastUpdated: new Date()
     });
 
@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
     console.error('❌ Error getting company data:', error);
     return NextResponse.json(
       { 
-        error: 'Failed to fetch company data';
+        error: 'Failed to fetch company data',
         details: error.message
       },
       { status: 500 }

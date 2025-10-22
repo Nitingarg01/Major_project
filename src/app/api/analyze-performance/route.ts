@@ -55,14 +55,14 @@ export async function POST(req: NextRequest) {
       // Prepare questions with enhanced metadata
       const enhancedQuestions = questions.map((q, index) => ({
         ...q,
-        userAnswer: answers[index] || '';
+        userAnswer: answers[index] || '',
         answerLength: (answers[index] || '').length,
         wordCount: (answers[index] || '').split(' ').length
       }));
 
       // Calculate basic statistics
       const stats = {
-        totalQuestions: questions.length;
+        totalQuestions: questions.length,
         answeredQuestions: answers.filter(ans => ans && ans.trim().length > 0).length,
         averageAnswerLength: answers.reduce((sum, ans) => sum + (ans || '').length, 0) / answers.length,
         averageWordCount: answers.reduce((sum, ans) => sum + (ans || '').split(' ').length, 0) / answers.length,
@@ -91,8 +91,8 @@ export async function POST(req: NextRequest) {
             );
             
             individualAnalyses.push({
-              questionIndex: i;
-              questionId: questions[i].id;
+              questionIndex: i,
+              questionId: questions[i].id,
               analysis: analysis
             });
           } catch (analysisError) {
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
         totalStrengths: [...new Set(individualAnalyses.flatMap(a => a.analysis.strengths))],
         totalImprovements: [...new Set(individualAnalyses.flatMap(a => a.analysis.improvements))],
         allSuggestions: [...new Set(individualAnalyses.flatMap(a => a.analysis.suggestions))]
-      } : null;
+      } : null,
 
       // Generate comprehensive overall analysis
       const overallAnalysis = await generateOverallAnalysis(;
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       try {
         const { db } = await connectToDatabase();
         const performanceData = {
-          userId: session.user?.email || session.user?.name;
+          userId: session.user?.email || session.user?.name,
           jobTitle,
           companyName,
           skills,
@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
           overallAnalysis,
           stats,
           createdAt: new Date(),
-          aiProvider: 'enhanced-groq';
+          aiProvider: 'enhanced-groq',
           version: '2.0'
         };
 
@@ -153,12 +153,12 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json({
-        success: true;
+        success: true,
         analysis: {
-          overall: overallAnalysis;
-          individual: individualAnalyses;
-          statistics: stats;
-          aggregate: aggregateScores;
+          overall: overallAnalysis,
+          individual: individualAnalyses,
+          statistics: stats,
+          aggregate: aggregateScores,
           metadata: {
             jobTitle,
             companyName,
@@ -166,9 +166,9 @@ export async function POST(req: NextRequest) {
             interviewType,
             experienceLevel,
             analyzedAt: new Date().toISOString(),
-            aiProvider: 'enhanced-groq';
-            analysisVersion: '2.0';
-            totalQuestions: questions.length;
+            aiProvider: 'enhanced-groq',
+            analysisVersion: '2.0',
+            totalQuestions: questions.length,
             questionsAnalyzed: individualAnalyses.length
           }
         }
@@ -187,12 +187,12 @@ export async function POST(req: NextRequest) {
       );
 
       return NextResponse.json({
-        success: true;
+        success: true,
         analysis: {
-          overall: fallbackAnalysis;
-          individual: [];
+          overall: fallbackAnalysis,
+          individual: [],
           statistics: {
-            totalQuestions: questions.length;
+            totalQuestions: questions.length,
             answeredQuestions: answers.filter(ans => ans && ans.trim().length > 0).length,
             averageAnswerLength: answers.reduce((sum, ans) => sum + (ans || '').length, 0) / answers.length,
             averageWordCount: answers.reduce((sum, ans) => sum + (ans || '').split(' ').length, 0) / answers.length
@@ -204,7 +204,7 @@ export async function POST(req: NextRequest) {
             interviewType,
             experienceLevel,
             analyzedAt: new Date().toISOString(),
-            aiProvider: 'fallback';
+            aiProvider: 'fallback',
             note: 'Generated using fallback due to AI service unavailability'
           }
         }
@@ -217,7 +217,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Failed to analyze performance', 
-        details: error instanceof Error ? error.message : 'Unknown error';
+        details: error instanceof Error ? error.message : 'Unknown error',
         aiProvider: 'enhanced-groq'
       },
       { status: 500 }
@@ -227,13 +227,13 @@ export async function POST(req: NextRequest) {
 
 // Helper function to generate comprehensive overall analysis
 async function generateOverallAnalysis(
-  questions: any[];
-  answers: string[];
-  jobTitle: string;
-  companyName: string;
-  skills: string[];
-  stats: any;
-  aggregateScores: any;
+  questions: any[],
+  answers: string[],
+  jobTitle: string,
+  companyName: string,
+  skills: string[],
+  stats: any,
+  aggregateScores: any,
   aiService: EnhancedGroqAIService
 ) {
   try {
@@ -297,7 +297,7 @@ Return ONLY valid JSON:
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
       ],
-      max_tokens: 6000;
+      max_tokens: 6000,
       temperature: 0.3
     });
 
@@ -306,8 +306,8 @@ Return ONLY valid JSON:
     return {
       ...analysis,
       metadata: {
-        analysisMethod: 'enhanced-groq';
-        individualQuestionsAnalyzed: aggregateScores ? true : false;
+        analysisMethod: 'enhanced-groq',
+        individualQuestionsAnalyzed: aggregateScores ? true : false,
         aggregateScoresUsed: !!aggregateScores
       }
     };
@@ -320,10 +320,10 @@ Return ONLY valid JSON:
 
 // Fallback analysis generation
 function generateFallbackAnalysis(
-  questions: any[];
-  answers: string[];
-  jobTitle: string;
-  companyName: string;
+  questions: any[],
+  answers: string[],
+  jobTitle: string,
+  companyName: string,
   skills: string[]
 ) {
   const avgWordCount = answers.reduce((sum, ans) => sum + (ans || '').split(' ').length, 0) / answers.length;
@@ -360,7 +360,7 @@ function generateFallbackAnalysis(
       `Practice technical interviews focusing on ${skills.slice(0, 3).join(', ')}`,
       'Work on communication skills for technical concepts'
     ],
-    hiringRecommendation: score >= 7 ? 'Hire' : score >= 5 ? 'Maybe' : 'No Hire';
+    hiringRecommendation: score >= 7 ? 'Hire' : score >= 5 ? 'Maybe' : 'No Hire',
     confidenceLevel: 6
   };
 }
@@ -370,7 +370,7 @@ function generateFallbackOverallAnalysis(questions: any[], answers: string[], co
   const score = Math.min(10, Math.max(4, avgWordCount / 20));
   
   return {
-    overallScore: score;
+    overallScore: score,
     parameterScores: {
       "Technical Knowledge": Math.min(10, score + 1),
       "Problem Solving": score,
@@ -379,19 +379,19 @@ function generateFallbackOverallAnalysis(questions: any[], answers: string[], co
       "Practical Application": score
     },
     overallVerdict: `Performance analysis completed. ${score >= 7 ? 'Strong candidate' : score >= 5 ? 'Acceptable performance' : 'Needs improvement'} for ${companyName} standards.`,
-    adviceForImprovement: [];
+    adviceForImprovement: [],
     strengths: ['Completed interview', 'Professional engagement'],
     improvements: ['Technical depth', 'Communication clarity'],
     recommendations: ['Continue practicing', 'Study company requirements'],
-    hiringRecommendation: score >= 6 ? 'Consider' : 'Review';
+    hiringRecommendation: score >= 6 ? 'Consider' : 'Review',
     confidenceLevel: 5
   };
 }
 
 export async function GET() {
   return NextResponse.json({
-    message: 'Enhanced Overall Performance Analysis API';
-    aiProvider: 'enhanced-groq';
+    message: 'Enhanced Overall Performance Analysis API',
+    aiProvider: 'enhanced-groq',
     features: [
       'Comprehensive interview evaluation',
       'Company-specific assessment criteria',

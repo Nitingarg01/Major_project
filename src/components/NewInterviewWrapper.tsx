@@ -23,43 +23,43 @@ import SmartAIService from '@/lib/smartAIService';
 import { Question, InterviewRound } from '@/types/interview';
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
   timestamp: Date
 }
 
 interface InterviewRoundConfig {
-  id: string;
-  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  name: string;
-  duration: number;
-  questionCount: number;
-  enabled: boolean;
-  order: number;
-  icon: React.ComponentType<any>;
-  description: string;
+  id: string,
+  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  name: string,
+  duration: number,
+  questionCount: number,
+  enabled: boolean,
+  order: number,
+  icon: React.ComponentType<any>,
+  description: string,
   color: string
 }
 
 interface NewInterviewWrapperProps {
-  questions: Question[];
-  id: string;
-  interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
-  companyName?: string;
-  jobTitle?: string;
-  experienceLevel?: 'entry' | 'mid' | 'senior';
-  skills?: string[];
+  questions: Question[],
+  id: string,
+  interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed',
+  companyName?: string,
+  jobTitle?: string,
+  experienceLevel?: 'entry' | 'mid' | 'senior',
+  skills?: string[],
   userSelectedRounds?: string[]; // Array of round types user selected during creation
 }
 
 // Enhanced fallback DSA problems generator
 const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: string, count: number) => {
-  const difficultyLevel = experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium';
+  const difficultyLevel = experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
   
   const dsaTemplates = [;
     {
-      title: "Two Sum";
+      title: "Two Sum",
       description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
       examples: [
         { input: "nums = [2,7,11,15], target = 9", output: "[0,1]", explanation: "Because nums[0] + nums[1] == 9" }
@@ -73,7 +73,7 @@ const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: strin
       topics: ["Array", "Hash Table", "Two Pointers"]
     },
     {
-      title: "Valid Parentheses";
+      title: "Valid Parentheses",
       description: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
       examples: [
         { input: 's = "()"', output: "true", explanation: "Valid parentheses structure" }
@@ -87,8 +87,8 @@ const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: strin
       topics: ["String", "Stack"]
     },
     {
-      title: "Merge Two Sorted Lists";
-      description: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list.";
+      title: "Merge Two Sorted Lists",
+      description: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list.",
       examples: [
         { input: "list1 = [1,2,4], list2 = [1,3,4]", output: "[1,1,2,3,4,4]", explanation: "Merged sorted lists" }
       ],
@@ -101,7 +101,7 @@ const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: strin
       topics: ["Linked List", "Recursion"]
     },
     {
-      title: "Maximum Subarray";
+      title: "Maximum Subarray",
       description: "Given an integer array nums, find the subarray with the largest sum, and return its sum.",
       examples: [
         { input: "nums = [-2,1,-3,4,-1,2,1,-5,4]", output: "6", explanation: "Subarray [4,-1,2,1] has sum 6" }
@@ -115,7 +115,7 @@ const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: strin
       topics: ["Array", "Dynamic Programming", "Kadane's Algorithm"]
     },
     {
-      title: "Binary Tree Inorder Traversal";
+      title: "Binary Tree Inorder Traversal",
       description: "Given the root of a binary tree, return the inorder traversal of its nodes' values.",
       examples: [
         { input: "root = [1,null,2,3]", output: "[1,3,2]", explanation: "Inorder traversal: left, root, right" }
@@ -133,12 +133,12 @@ const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: strin
   return dsaTemplates.slice(0, count).map((template, index) => ({
     id: `enhanced-dsa-${companyName.toLowerCase().replace(/\s+/g, '-')}-${index}-${Date.now()}`,
     title: `${template.title} - ${companyName} Challenge`,
-    difficulty: difficultyLevel;
+    difficulty: difficultyLevel,
     description: `${template.description}\n\n💡 This problem is commonly asked at ${companyName} for ${experienceLevel} level positions.`,
-    examples: template.examples;
-    testCases: template.testCases;
-    constraints: template.constraints;
-    topics: template.topics;
+    examples: template.examples,
+    testCases: template.testCases,
+    constraints: template.constraints,
+    topics: template.topics,
     hints: [
       `Think about the optimal approach for this ${template.topics[0].toLowerCase()} problem`,
       `Consider time and space complexity requirements at ${companyName}`,
@@ -147,57 +147,57 @@ const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: strin
     timeComplexity: template.topics.includes('Array') ? 'O(n)' : 'O(n log n)',
     spaceComplexity: 'O(1) to O(n)',
     companyContext: `Popular problem type at ${companyName}`,
-    provider: 'enhanced-fallback';
+    provider: 'enhanced-fallback',
     generated: new Date().toISOString()
   }));
 };
 
-const DEFAULT_ROUND_CONFIGS: InterviewRoundConfig[] = [;
+const DEFAULT_ROUND_CONFIGS: InterviewRoundConfig[] = [,
   {
-    id: 'technical';
-    type: 'technical';
-    name: 'Technical Interview';
-    duration: 45;
-    questionCount: 6;
-    enabled: true;
-    order: 1;
-    icon: Code;
+    id: 'technical',
+    type: 'technical',
+    name: 'Technical Interview',
+    duration: 45,
+    questionCount: 6,
+    enabled: true,
+    order: 1,
+    icon: Code,
     description: 'Technical questions about programming, systems, and problem-solving',
     color: 'from-blue-500 to-blue-600'
   },
   {
-    id: 'dsa';
-    type: 'dsa';
-    name: 'DSA & Coding';
-    duration: 60;
-    questionCount: 2;
-    enabled: true;
-    order: 2;
-    icon: Calculator;
+    id: 'dsa',
+    type: 'dsa',
+    name: 'DSA & Coding',
+    duration: 60,
+    questionCount: 2,
+    enabled: true,
+    order: 2,
+    icon: Calculator,
     description: 'Data structures, algorithms, and live coding challenges',
     color: 'from-green-500 to-green-600'
   },
   {
-    id: 'behavioral';
-    type: 'behavioral';
-    name: 'Behavioral';
-    duration: 30;
-    questionCount: 5;
-    enabled: true;
-    order: 3;
-    icon: Users;
+    id: 'behavioral',
+    type: 'behavioral',
+    name: 'Behavioral',
+    duration: 30,
+    questionCount: 5,
+    enabled: true,
+    order: 3,
+    icon: Users,
     description: 'Communication, teamwork, and cultural fit questions',
     color: 'from-purple-500 to-purple-600'
   },
   {
-    id: 'aptitude';
-    type: 'aptitude';
-    name: 'Aptitude Test';
-    duration: 25;
-    questionCount: 10;
-    enabled: true;
-    order: 4;
-    icon: Brain;
+    id: 'aptitude',
+    type: 'aptitude',
+    name: 'Aptitude Test',
+    duration: 25,
+    questionCount: 10,
+    enabled: true,
+    order: 4,
+    icon: Brain,
     description: 'Logical reasoning, verbal, and numerical aptitude',
     color: 'from-orange-500 to-orange-600'
   }
@@ -258,8 +258,8 @@ const NewInterviewWrapper = ({
         if (singleRound) {
           setRoundConfigs([{
             ...singleRound,
-            duration: 60;
-            questionCount: 8;
+            duration: 60,
+            questionCount: 8,
             order: 1
           }])
         }
@@ -293,12 +293,12 @@ const NewInterviewWrapper = ({
               console.log(`🧮 Generating ${round.questionCount} DSA problems for ${companyName}...`);
               
               const result = await smartAIService.processRequest({
-                task: 'dsa_generation';
+                task: 'dsa_generation',
                 context: {
                   companyName,
                   jobTitle,
-                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium';
-                  count: round.questionCount;
+                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                  count: round.questionCount,
                   experienceLevel
                 }
               });
@@ -317,14 +317,14 @@ const NewInterviewWrapper = ({
                 {
                   id: `aptitude-1-${Date.now()}`,
                   question: `Aptitude Question 1: If a car travels 60 miles per hour for 2 hours, how far does it travel?`,
-                  expectedAnswer: '120 miles';
-                  category: 'aptitude';
-                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium';
-                  points: 10;
-                  timeLimit: 5;
+                  expectedAnswer: '120 miles',
+                  category: 'aptitude',
+                  difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                  points: 10,
+                  timeLimit: 5,
                   evaluationCriteria: ['Mathematical accuracy', 'Problem-solving approach'],
                   tags: ['aptitude', 'mathematics'],
-                  hints: ['Use the formula: Distance = Speed × Time'];
+                  hints: ['Use the formula: Distance = Speed × Time'],
                   companyRelevance: 5
                 }
               ];
@@ -332,10 +332,10 @@ const NewInterviewWrapper = ({
               // Generate aptitude questions using SmartAI
               try {
                 const result = await smartAIService.processRequest({
-                  task: 'aptitude_generation';
+                  task: 'aptitude_generation',
                   context: {
-                    difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium';
-                    count: round.questionCount;
+                    difficulty: experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
+                    count: round.questionCount,
                     jobTitle,
                     companyName
                   }
@@ -353,30 +353,30 @@ const NewInterviewWrapper = ({
                 const aptitudeQuestions = [;
                   {
                     id: `aptitude-1-${Date.now()}`,
-                    type: 'numerical' as const;
+                    type: 'numerical' as const,
                     question: `If a car travels 60 miles per hour for 2 hours, how far does it travel?`,
                     options: ['100 miles', '120 miles', '140 miles', '160 miles'],
-                    correctAnswer: 1;
-                    explanation: 'Distance = Speed × Time = 60 mph × 2 hours = 120 miles';
+                    correctAnswer: 1,
+                    explanation: 'Distance = Speed × Time = 60 mph × 2 hours = 120 miles',
                     difficulty: (experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium') as const,
                     timeLimit: 60
                   },
                   {
                     id: `aptitude-2-${Date.now()}`,
-                    type: 'logical' as const;
+                    type: 'logical' as const,
                     question: `If all roses are flowers and some flowers are red, which statement is definitely true?`,
                     options: ['All roses are red', 'Some roses are red', 'No roses are red', 'Some roses may be red'],
-                    correctAnswer: 3;
+                    correctAnswer: 3,
                     explanation: 'We cannot determine the color of roses from the given information, so some roses may be red.',
                     difficulty: (experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium') as const,
                     timeLimit: 90
                   },
                   {
                     id: `aptitude-3-${Date.now()}`,
-                    type: 'verbal' as const;
-                    question: `Choose the word that is most similar in meaning to "METICULOUS":`;
+                    type: 'verbal' as const,
+                    question: `Choose the word that is most similar in meaning to "METICULOUS":`,
                     options: ['Careless', 'Detailed', 'Quick', 'Lazy'],
-                    correctAnswer: 1;
+                    correctAnswer: 1,
                     explanation: 'Meticulous means showing great attention to detail; very careful and precise.',
                     difficulty: (experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium') as const,
                     timeLimit: 45
@@ -531,7 +531,7 @@ const NewInterviewWrapper = ({
   const calculateProgress = () => {
     const totalRounds = roundConfigs.length;
     const completedCount = completedRounds.size;
-    const currentProgress = currentRound < totalRounds ? (currentRound / totalRounds) * 100 : 100;
+    const currentProgress = currentRound < totalRounds ? (currentRound / totalRounds) * 100 : 100,
     return Math.min(100, currentProgress + (completedCount / totalRounds) * 100);
   }
 
@@ -548,7 +548,7 @@ const NewInterviewWrapper = ({
         case 'dsa':
           // Ensure we have DSA problems and pass the first one to DSACompiler
           const dsaProblems = currentRoundQuestions || [];
-        let dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null;
+        let dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null,
         
         // Debug logging to identify the issue
         console.log('DSA Problems:', dsaProblems);
@@ -594,7 +594,7 @@ const NewInterviewWrapper = ({
       case 'dsa':
         // Ensure we have DSA problems and pass the first one to DSACompiler
         const dsaProblems = currentRoundQuestions || [];
-        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null;
+        const dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null,
         
         return (
           <DSACompiler
@@ -679,10 +679,10 @@ const NewInterviewWrapper = ({
         interviewType={interviewType}
         estimatedDuration={roundConfigs.reduce((sum, round) => sum + round.duration, 0)}
         rounds={roundConfigs.map(config => ({
-          id: config.id;
-          type: config.type;
-          status: 'pending' as const;
-          questions: generatedQuestions[config.type] || [];
+          id: config.id,
+          type: config.type,
+          status: 'pending' as const,
+          questions: generatedQuestions[config.type] || [],
           duration: config.duration
         }))}
         companyIntelligence={companyData}

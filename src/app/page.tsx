@@ -4,60 +4,60 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Interview AI - Advanced AI Interview Platform';
+  title: 'Interview AI - Advanced AI Interview Platform',
   description: 'Master your interview skills with AI-powered mock interviews, real-time feedback, and personalized coaching.',
 };
 
 const features = [;
   {
-    icon: <Zap className="w-6 h-6" />;
-    title: 'AI-Powered Questions';
+    icon: <Zap className="w-6 h-6" />,
+    title: 'AI-Powered Questions',
     description: 'Smart question generation based on job roles, companies, and recent industry trends'
   },
   {
-    icon: <Target className="w-6 h-6" />;
-    title: 'Company Intelligence';
+    icon: <Target className="w-6 h-6" />,
+    title: 'Company Intelligence',
     description: 'Real-time company data, recent news, and culture insights for targeted preparation'
   },
   {
-    icon: <Users className="w-6 h-6" />;
-    title: 'Performance Analytics';
+    icon: <Users className="w-6 h-6" />,
+    title: 'Performance Analytics',
     description: 'Detailed feedback on your responses with improvement suggestions and scoring'
   },
   {
-    icon: <Shield className="w-6 h-6" />;
-    title: 'Realistic Simulation';
+    icon: <Shield className="w-6 h-6" />,
+    title: 'Realistic Simulation',
     description: 'Camera monitoring, time tracking, and authentic interview environment'
   },
   {
-    icon: <Clock className="w-6 h-6" />;
-    title: 'Multi-Format Support';
+    icon: <Clock className="w-6 h-6" />,
+    title: 'Multi-Format Support',
     description: 'Technical, behavioral, DSA coding, and mixed interview formats'
   },
   {
-    icon: <CheckCircle className="w-6 h-6" />;
-    title: 'Instant Results';
+    icon: <CheckCircle className="w-6 h-6" />,
+    title: 'Instant Results',
     description: 'Get immediate feedback and detailed performance reports after each session'
   }
 ]
 
 const testimonials = [;
   {
-    name: 'Sarah Chen';
-    role: 'Software Engineer at Google';
-    content: 'Interview AI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!';
+    name: 'Sarah Chen',
+    role: 'Software Engineer at Google',
+    content: 'Interview AI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
     rating: 5
   },
   {
-    name: 'Michael Rodriguez';
-    role: 'Product Manager at Microsoft';
-    content: 'The real-time feedback and performance analytics made all the difference in my interview preparation.';
+    name: 'Michael Rodriguez',
+    role: 'Product Manager at Microsoft',
+    content: 'The real-time feedback and performance analytics made all the difference in my interview preparation.',
     rating: 5
   },
   {
-    name: 'Emily Johnson';
-    role: 'Data Scientist at Amazon';
-    content: 'I love how the platform adapts to different companies and roles. Got my dream job after practicing here!';
+    name: 'Emily Johnson',
+    role: 'Data Scientist at Amazon',
+    content: 'I love how the platform adapts to different companies and roles. Got my dream job after practicing here!',
     rating: 5
   }
 ]

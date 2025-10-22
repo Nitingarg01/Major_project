@@ -93,9 +93,9 @@ export const handleForgotPassword = async (formData: FormData) => {
     </html>`;
 
     await resend.emails.send({
-      from: 'AI Interview <onboarding@resend.dev>';
-      to: [email];
-      subject: '🔑 Reset Your AI Interview Password';
+      from: 'AI Interview <onboarding@resend.dev>',
+      to: [email],
+      subject: '🔑 Reset Your AI Interview Password',
       html: emailHtml;
     });
 

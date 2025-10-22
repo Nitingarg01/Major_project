@@ -41,11 +41,11 @@ const EnhancedInterviewCreationForm = () => {
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-            jobTitle: '';
-            jobDesc: '';
-            skills: [];
-            companyName: '';
-            experienceLevel: 'mid';
+            jobTitle: '',
+            jobDesc: '',
+            skills: [],
+            companyName: '',
+            experienceLevel: 'mid',
             interviewType: 'mixed'
         }
     })
@@ -91,9 +91,9 @@ const EnhancedInterviewCreationForm = () => {
                 // Handle duplicate company error
                 if (response.error.includes('already completed an interview')) {
                     toast.error("🏢 Duplicate Company Interview", {
-                        description: response.error;
+                        description: response.error,
                         action: {
-                            label: "View Performance Stats";
+                            label: "View Performance Stats",
                             onClick: () => router.push('/performance')
                         }
                     })
@@ -271,7 +271,7 @@ const EnhancedInterviewCreationForm = () => {
                                                 <Badge className={`text-xs ${
                                                     selectedCompanyData.metadata.difficultyLevel === 'High';
                                                         ? 'bg-red-100 text-red-700' 
-                                                        : selectedCompanyData.metadata.difficultyLevel === 'Medium';
+                                                        : selectedCompanyData.metadata.difficultyLevel === 'Medium',
                                                         ? 'bg-yellow-100 text-yellow-700'
                                                         : 'bg-green-100 text-green-700'
                                                 }`}>

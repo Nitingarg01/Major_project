@@ -34,10 +34,10 @@ export interface JobRole {
 
 export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   'google': {
-    name: 'Google';
-    industry: 'Technology';
-    size: 'enterprise';
-    difficulty: 'hard';
+    name: 'Google',
+    industry: 'Technology',
+    size: 'enterprise',
+    difficulty: 'hard',
     techStack: ['Python', 'Java', 'C++', 'Go', 'JavaScript', 'TypeScript', 'Kubernetes', 'TensorFlow', 'BigQuery', 'Cloud Platform'],
     culture: ['Innovation', 'Collaboration', 'Data-driven', 'User-focused', 'Learning'],
     values: ['Focus on the user', 'Think big', 'Strive for excellence', 'Take ownership'],
@@ -56,11 +56,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'Tell me about a time you had to learn something quickly',
       'How would you handle a system with billions of users?'
     ],
-    interviewStyle: 'technical-heavy';
-    averageRounds: 5;
+    interviewStyle: 'technical-heavy',
+    averageRounds: 5,
     salaryRange: {
-      junior: '$120k-150k';
-      mid: '$180k-250k';
+      junior: '$120k-150k',
+      mid: '$180k-250k',
       senior: '$280k-400k'
     },
     locations: ['Mountain View', 'San Francisco', 'Seattle', 'New York', 'Austin'],
@@ -69,10 +69,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'meta': {
-    name: 'Meta';
-    industry: 'Social Media';
-    size: 'enterprise';
-    difficulty: 'hard';
+    name: 'Meta',
+    industry: 'Social Media',
+    size: 'enterprise',
+    difficulty: 'hard',
     techStack: ['React', 'JavaScript', 'Python', 'PHP', 'Hack', 'C++', 'PyTorch', 'GraphQL', 'MySQL', 'Cassandra'],
     culture: ['Move fast', 'Be bold', 'Focus on impact', 'Be open', 'Build social value'],
     values: ['Connect people', 'Give people voice', 'Bring the world closer'],
@@ -91,11 +91,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'How would you improve Instagram Stories?',
       'Design a content moderation system'
     ],
-    interviewStyle: 'mixed';
-    averageRounds: 4;
+    interviewStyle: 'mixed',
+    averageRounds: 4,
     salaryRange: {
-      junior: '$125k-160k';
-      mid: '$190k-270k';
+      junior: '$125k-160k',
+      mid: '$190k-270k',
       senior: '$300k-450k'
     },
     locations: ['Menlo Park', 'Seattle', 'New York', 'Austin', 'London'],
@@ -104,10 +104,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'amazon': {
-    name: 'Amazon';
-    industry: 'E-commerce & Cloud';
-    size: 'enterprise';
-    difficulty: 'hard';
+    name: 'Amazon',
+    industry: 'E-commerce & Cloud',
+    size: 'enterprise',
+    difficulty: 'hard',
     techStack: ['Java', 'Python', 'JavaScript', 'AWS', 'DynamoDB', 'Lambda', 'S3', 'EC2', 'React', 'Node.js'],
     culture: ['Customer obsession', 'Ownership', 'Invent and simplify', 'Learn and be curious'],
     values: ['Customer first', 'Long-term thinking', 'Innovation', 'Operational excellence'],
@@ -126,11 +126,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'Describe a time you had to make a decision with incomplete information',
       'Design a cloud storage system like S3'
     ],
-    interviewStyle: 'culture-fit';
-    averageRounds: 5;
+    interviewStyle: 'culture-fit',
+    averageRounds: 5,
     salaryRange: {
-      junior: '$110k-140k';
-      mid: '$160k-220k';
+      junior: '$110k-140k',
+      mid: '$160k-220k',
       senior: '$250k-350k'
     },
     locations: ['Seattle', 'San Francisco', 'Austin', 'New York', 'Boston'],
@@ -139,10 +139,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'microsoft': {
-    name: 'Microsoft';
-    industry: 'Technology';
-    size: 'enterprise';
-    difficulty: 'medium';
+    name: 'Microsoft',
+    industry: 'Technology',
+    size: 'enterprise',
+    difficulty: 'medium',
     techStack: ['C#', '.NET', 'Azure', 'TypeScript', 'Python', 'React', 'SQL Server', 'Power Platform', 'Office 365'],
     culture: ['Respect', 'Integrity', 'Accountability', 'Inclusive', 'Growth mindset'],
     values: ['Empower every person', 'Achieve more', 'Diverse and inclusive'],
@@ -161,11 +161,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'Design a real-time multiplayer game system',
       'How would you handle scaling Office 365?'
     ],
-    interviewStyle: 'mixed';
-    averageRounds: 4;
+    interviewStyle: 'mixed',
+    averageRounds: 4,
     salaryRange: {
-      junior: '$100k-130k';
-      mid: '$140k-190k';
+      junior: '$100k-130k',
+      mid: '$140k-190k',
       senior: '$220k-300k'
     },
     locations: ['Redmond', 'San Francisco', 'Austin', 'Atlanta', 'Dublin'],
@@ -174,10 +174,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'apple': {
-    name: 'Apple';
-    industry: 'Consumer Electronics';
-    size: 'enterprise';
-    difficulty: 'hard';
+    name: 'Apple',
+    industry: 'Consumer Electronics',
+    size: 'enterprise',
+    difficulty: 'hard',
     techStack: ['Swift', 'Objective-C', 'C++', 'JavaScript', 'Python', 'iOS', 'macOS', 'Metal', 'Core ML'],
     culture: ['Innovation', 'Excellence', 'Privacy', 'Environmental responsibility', 'Accessibility'],
     values: ['Privacy is a human right', 'Simplicity is sophistication', 'Think different'],
@@ -196,11 +196,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'How would you optimize battery life for iPhone?',
       'Design a payment system like Apple Pay'
     ],
-    interviewStyle: 'technical-heavy';
-    averageRounds: 6;
+    interviewStyle: 'technical-heavy',
+    averageRounds: 6,
     salaryRange: {
-      junior: '$130k-160k';
-      mid: '$180k-240k';
+      junior: '$130k-160k',
+      mid: '$180k-240k',
       senior: '$280k-400k'
     },
     locations: ['Cupertino', 'San Francisco', 'Austin', 'Seattle', 'Munich'],
@@ -209,10 +209,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'netflix': {
-    name: 'Netflix';
-    industry: 'Entertainment';
-    size: 'large';
-    difficulty: 'hard';
+    name: 'Netflix',
+    industry: 'Entertainment',
+    size: 'large',
+    difficulty: 'hard',
     techStack: ['Java', 'Python', 'JavaScript', 'React', 'Node.js', 'AWS', 'Microservices', 'Kafka', 'Cassandra'],
     culture: ['Freedom and responsibility', 'High performance', 'Context not control', 'Keeper test'],
     values: ['Entertainment the world', 'Courage', 'Selflessness', 'Innovation'],
@@ -231,11 +231,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'Tell me about a time you took ownership of a problem',
       'How would you detect and prevent account sharing?'
     ],
-    interviewStyle: 'technical-heavy';
-    averageRounds: 4;
+    interviewStyle: 'technical-heavy',
+    averageRounds: 4,
     salaryRange: {
-      junior: '$150k-180k';
-      mid: '$200k-280k';
+      junior: '$150k-180k',
+      mid: '$200k-280k',
       senior: '$350k-500k'
     },
     locations: ['Los Gatos', 'Los Angeles', 'New York', 'Amsterdam', 'Singapore'],
@@ -244,10 +244,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'uber': {
-    name: 'Uber';
-    industry: 'Transportation';
-    size: 'large';
-    difficulty: 'medium';
+    name: 'Uber',
+    industry: 'Transportation',
+    size: 'large',
+    difficulty: 'medium',
     techStack: ['Go', 'Java', 'Python', 'React', 'Node.js', 'Kafka', 'Redis', 'PostgreSQL', 'Kubernetes'],
     culture: ['Move fast', 'Build globally', 'Customer obsession', 'Celebrate differences'],
     values: ['We build globally', 'We are customer obsessed', 'We celebrate differences'],
@@ -266,11 +266,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'How would you handle surge pricing?',
       'Design UberEats delivery optimization'
     ],
-    interviewStyle: 'mixed';
-    averageRounds: 4;
+    interviewStyle: 'mixed',
+    averageRounds: 4,
     salaryRange: {
-      junior: '$120k-150k';
-      mid: '$160k-220k';
+      junior: '$120k-150k',
+      mid: '$160k-220k',
       senior: '$240k-350k'
     },
     locations: ['San Francisco', 'New York', 'Seattle', 'Chicago', 'Amsterdam'],
@@ -279,10 +279,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'airbnb': {
-    name: 'Airbnb';
-    industry: 'Travel & Hospitality';
-    size: 'large';
-    difficulty: 'medium';
+    name: 'Airbnb',
+    industry: 'Travel & Hospitality',
+    size: 'large',
+    difficulty: 'medium',
     techStack: ['Ruby on Rails', 'JavaScript', 'React', 'Java', 'Python', 'AWS', 'MySQL', 'Redis', 'Kafka'],
     culture: ['Belong anywhere', 'Champion the mission', 'Be a host', 'Embrace the adventure'],
     values: ['Belong anywhere', 'Create a world where anyone can belong anywhere'],
@@ -301,11 +301,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'How would you handle fraud prevention?',
       'Design a pricing optimization system'
     ],
-    interviewStyle: 'mixed';
-    averageRounds: 4;
+    interviewStyle: 'mixed',
+    averageRounds: 4,
     salaryRange: {
-      junior: '$130k-160k';
-      mid: '$170k-230k';
+      junior: '$130k-160k',
+      mid: '$170k-230k',
       senior: '$260k-380k'
     },
     locations: ['San Francisco', 'Seattle', 'New York', 'Dublin', 'Singapore'],
@@ -314,10 +314,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'stripe': {
-    name: 'Stripe';
-    industry: 'Fintech';
-    size: 'large';
-    difficulty: 'hard';
+    name: 'Stripe',
+    industry: 'Fintech',
+    size: 'large',
+    difficulty: 'hard',
     techStack: ['Ruby', 'JavaScript', 'Scala', 'Go', 'React', 'Kafka', 'MongoDB', 'PostgreSQL'],
     culture: ['Move fast', 'Think rigorously', 'Trust and transparency', 'Global mindset'],
     values: ['Increase the GDP of the internet', 'Users first', 'Think big'],
@@ -336,11 +336,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'How would you ensure PCI compliance?',
       'Design a subscription billing system'
     ],
-    interviewStyle: 'technical-heavy';
-    averageRounds: 5;
+    interviewStyle: 'technical-heavy',
+    averageRounds: 5,
     salaryRange: {
-      junior: '$140k-170k';
-      mid: '$190k-260k';
+      junior: '$140k-170k',
+      mid: '$190k-260k',
       senior: '$300k-450k'
     },
     locations: ['San Francisco', 'Seattle', 'New York', 'Dublin', 'Singapore'],
@@ -349,10 +349,10 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
   },
 
   'spotify': {
-    name: 'Spotify';
-    industry: 'Music Streaming';
-    size: 'large';
-    difficulty: 'medium';
+    name: 'Spotify',
+    industry: 'Music Streaming',
+    size: 'large',
+    difficulty: 'medium',
     techStack: ['Java', 'Python', 'JavaScript', 'React', 'Kafka', 'Cassandra', 'PostgreSQL', 'GCP'],
     culture: ['Innovation', 'Collaboration', 'Passion', 'Playfulness', 'Sincerity'],
     values: ['We are here to democratize music', 'We believe in the power of music'],
@@ -371,11 +371,11 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
       'How would you handle offline music downloads?',
       'Design a collaborative playlist feature'
     ],
-    interviewStyle: 'mixed';
-    averageRounds: 4;
+    interviewStyle: 'mixed',
+    averageRounds: 4,
     salaryRange: {
-      junior: '$90k-120k';
-      mid: '$130k-180k';
+      junior: '$90k-120k',
+      mid: '$130k-180k',
       senior: '$200k-280k'
     },
     locations: ['Stockholm', 'New York', 'Boston', 'London', 'Berlin'],
@@ -386,9 +386,9 @@ export const ENHANCED_COMPANIES: { [key: string]: CompanyData } = {
 
 export const JOB_ROLES: { [key: string]: JobRole } = {
   'software-engineer': {
-    title: 'Software Engineer';
-    level: 'mid';
-    category: 'engineering';
+    title: 'Software Engineer',
+    level: 'mid',
+    category: 'engineering',
     keywords: ['software engineer', 'developer', 'programmer', 'sde', 'software developer'],
     responsibilities: [
       'Design and develop software applications',
@@ -401,9 +401,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['System design', 'Database design', 'API development', 'Testing']
   },
   'senior-software-engineer': {
-    title: 'Senior Software Engineer';
-    level: 'senior';
-    category: 'engineering';
+    title: 'Senior Software Engineer',
+    level: 'senior',
+    category: 'engineering',
     keywords: ['senior software engineer', 'senior developer', 'senior sde', 'lead developer'],
     responsibilities: [
       'Lead technical design and architecture decisions',
@@ -416,9 +416,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['Distributed systems', 'Performance optimization', 'Team management', 'Technical strategy']
   },
   'frontend-engineer': {
-    title: 'Frontend Engineer';
-    level: 'mid';
-    category: 'engineering';
+    title: 'Frontend Engineer',
+    level: 'mid',
+    category: 'engineering',
     keywords: ['frontend engineer', 'frontend developer', 'ui developer', 'react developer'],
     responsibilities: [
       'Build user interfaces and experiences',
@@ -431,9 +431,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['TypeScript', 'State management', 'Testing frameworks', 'Build tools']
   },
   'backend-engineer': {
-    title: 'Backend Engineer';
-    level: 'mid';
-    category: 'engineering';
+    title: 'Backend Engineer',
+    level: 'mid',
+    category: 'engineering',
     keywords: ['backend engineer', 'backend developer', 'server developer', 'api developer'],
     responsibilities: [
       'Build server-side applications and APIs',
@@ -446,9 +446,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['Microservices', 'Cloud platforms', 'DevOps', 'Distributed systems']
   },
   'fullstack-engineer': {
-    title: 'Full Stack Engineer';
-    level: 'mid';
-    category: 'engineering';
+    title: 'Full Stack Engineer',
+    level: 'mid',
+    category: 'engineering',
     keywords: ['fullstack engineer', 'full stack developer', 'fullstack developer'],
     responsibilities: [
       'Work on both frontend and backend',
@@ -461,9 +461,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['DevOps', 'Cloud platforms', 'API design', 'Performance optimization']
   },
   'data-scientist': {
-    title: 'Data Scientist';
-    level: 'mid';
-    category: 'data';
+    title: 'Data Scientist',
+    level: 'mid',
+    category: 'data',
     keywords: ['data scientist', 'ml engineer', 'machine learning engineer', 'ai engineer'],
     responsibilities: [
       'Analyze complex datasets',
@@ -476,9 +476,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['Deep learning', 'Big data tools', 'MLOps', 'A/B testing']
   },
   'product-manager': {
-    title: 'Product Manager';
-    level: 'mid';
-    category: 'product';
+    title: 'Product Manager',
+    level: 'mid',
+    category: 'product',
     keywords: ['product manager', 'pm', 'senior product manager', 'lead product manager'],
     responsibilities: [
       'Define product strategy and roadmap',
@@ -491,9 +491,9 @@ export const JOB_ROLES: { [key: string]: JobRole } = {
     preferredSkills: ['Technical background', 'User research', 'A/B testing', 'Market analysis']
   },
   'data-engineer': {
-    title: 'Data Engineer';
-    level: 'mid';
-    category: 'data';
+    title: 'Data Engineer',
+    level: 'mid',
+    category: 'data',
     keywords: ['data engineer', 'big data engineer', 'etl developer', 'data pipeline engineer'],
     responsibilities: [
       'Build data pipelines and infrastructure',
@@ -537,7 +537,7 @@ export function searchCompanyAndRole(query: string): {
   const lowerQuery = query.toLowerCase();
   
   // Find matching company
-  let matchedCompany: CompanyData | null = null;
+  let matchedCompany: CompanyData | null = null,
   for (const [key, company] of Object.entries(ENHANCED_COMPANIES)) {
     if (company.name.toLowerCase().includes(lowerQuery) || 
         lowerQuery.includes(company.name.toLowerCase())) {

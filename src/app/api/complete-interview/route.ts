@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // Extract answers in the same order as questions
     const answers = questions.map((question: any) => {
-      const response = responses.find((r: any) => r.questionId === question.id);
+      const response = responses.find((r: any) => r.questionId === question.id),
       return response?.userAnswer || 'No answer provided';
     });
 
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     // Calculate detailed metrics
     const responseScores = responses;
       .map((r: any) => r.analysis?.score || 0)
-      .filter((score: number) => score > 0);
+      .filter((score: number) => score > 0),
 
     const categoryScores = calculateCategoryScores(questions, responses);
     const completionStats = calculateCompletionStats(questions, responses);
@@ -87,45 +87,45 @@ export async function POST(request: NextRequest) {
       ...performanceAnalysis,
       interviewId,
       metadata: {
-        companyName: interview.companyName;
-        jobTitle: interview.jobTitle;
-        interviewType: interview.interviewType;
-        experienceLevel: interview.experienceLevel;
-        totalQuestions: questions.length;
-        answeredQuestions: responses.length;
+        companyName: interview.companyName,
+        jobTitle: interview.jobTitle,
+        interviewType: interview.interviewType,
+        experienceLevel: interview.experienceLevel,
+        totalQuestions: questions.length,
+        answeredQuestions: responses.length,
         completionRate: Math.round((responses.length / questions.length) * 100),
-        duration: interview.duration || 'Not tracked';
+        duration: interview.duration || 'Not tracked',
         completedAt: new Date()
       },
       detailedScores: {
-        categoryBreakdown: categoryScores;
+        categoryBreakdown: categoryScores,
         responseMetrics: {
           averageScore: responseScores.length > 0 
             ? Math.round(responseScores.reduce((sum: number, score: number) => sum + score, 0) / responseScores.length * 10) / 10 
             : 0,
           highestScore: responseScores.length > 0 ? Math.max(...responseScores) : 0,
           lowestScore: responseScores.length > 0 ? Math.min(...responseScores) : 0,
-          totalResponses: responseScores.length;
+          totalResponses: responseScores.length,
           responseRate: Math.round((responseScores.length / questions.length) * 100)
         },
         completionStats,
         historicalComparison: historicalPerformance
       },
-      aiProvider: 'groq';
-      companySpecific: true;
+      aiProvider: 'groq',
+      companySpecific: true,
       feedbackSummary: generateFeedbackSummary(performanceAnalysis, categoryScores)
     };
 
     // Store comprehensive performance analysis
     const performanceDoc = {
       interviewId,
-      userId: interview.userId;
-      companyName: interview.companyName;
-      jobTitle: interview.jobTitle;
-      performance: enhancedPerformance;
+      userId: interview.userId,
+      companyName: interview.companyName,
+      jobTitle: interview.jobTitle,
+      performance: enhancedPerformance,
       questions: questions.map((q: any, index: number) => ({
         ...q,
-        userAnswer: answers[index];
+        userAnswer: answers[index],
         response: responses.find((r: any) => r.questionId === q.id)
       })),
       createdAt: new Date(),
@@ -144,9 +144,9 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'completed';
+          status: 'completed',
           completedAt: new Date(),
-          performanceAnalyzed: true;
+          performanceAnalyzed: true,
           finalScore: performanceAnalysis.overallScore || 0
         } 
       }
@@ -158,15 +158,15 @@ export async function POST(request: NextRequest) {
     console.log(`🎉 Interview completed successfully with score: ${performanceAnalysis.overallScore}/10`);
 
     return NextResponse.json({
-      success: true;
-      performance: enhancedPerformance;
+      success: true,
+      performance: enhancedPerformance,
       redirectUrl: `/performance/interview/${interviewId}`,
       summary: {
-        overallScore: performanceAnalysis.overallScore || 0;
+        overallScore: performanceAnalysis.overallScore || 0,
         completionRate: Math.round((responses.length / questions.length) * 100),
         strongAreas: performanceAnalysis.strengths?.slice(0, 3) || [],
         improvementAreas: performanceAnalysis.improvements?.slice(0, 3) || [],
-        totalQuestions: questions.length;
+        totalQuestions: questions.length,
         answeredQuestions: responses.length
       },
       message: 'Interview completed successfully with comprehensive analysis'
@@ -177,8 +177,8 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to complete interview';
-        details: error.message;
+        error: 'Failed to complete interview',
+        details: error.message,
         timestamp: new Date().toISOString()
       },
       { status: 500 }
@@ -191,7 +191,7 @@ function calculateCategoryScores(questions: any[], responses: any[]) {
   const categoryScores: {[key: string]: {total: number, count: number, average: number}} = {};
   
   questions.forEach((question: any) => {
-    const response = responses.find((r: any) => r.questionId === question.id);
+    const response = responses.find((r: any) => r.questionId === question.id),
     const score = response?.analysis?.score || 0;
     const category = question.category || 'general';
     
@@ -222,7 +222,7 @@ function calculateCompletionStats(questions: any[], responses: any[]) {
   
   questions.forEach((question: any) => {
     const category = question.category || 'general';
-    const hasResponse = responses.some((r: any) => r.questionId === question.id);
+    const hasResponse = responses.some((r: any) => r.questionId === question.id),
     
     if (!categoryCompletion[category]) {
       categoryCompletion[category] = { total: 0, answered: 0, rate: 0 };
@@ -261,26 +261,26 @@ async function getUserHistoricalPerformance(db: any, userId: string, companyName
     
     if (previousAnalyses.length === 0) {
       return {
-        isFirstAttempt: true;
-        previousAttempts: 0;
-        scoreHistory: [];
-        improvementTrend: 'first_attempt';
+        isFirstAttempt: true,
+        previousAttempts: 0,
+        scoreHistory: [],
+        improvementTrend: 'first_attempt',
         bestScore: 0
       };
     }
     
-    const scores = previousAnalyses.map((analysis: any) =>;
+    const scores = previousAnalyses.map((analysis: any) =>,
       analysis.performance?.overallScore || 0
     );
     
     const improvementTrend = scores.length > 1 ?;
       (scores[0] > scores[1] ? 'improving' : 
-       scores[0] < scores[1] ? 'declining' : 'stable') : 'insufficient_data';
+       scores[0] < scores[1] ? 'declining' : 'stable') : 'insufficient_data',
     
     return {
-      isFirstAttempt: false;
-      previousAttempts: previousAnalyses.length;
-      scoreHistory: scores;
+      isFirstAttempt: false,
+      previousAttempts: previousAnalyses.length,
+      scoreHistory: scores,
       improvementTrend,
       bestScore: scores.length > 0 ? Math.max(...scores) : 0,
       averageScore: scores.length > 0 ? 
@@ -289,10 +289,10 @@ async function getUserHistoricalPerformance(db: any, userId: string, companyName
   } catch (error) {
     console.error('Error getting historical performance:', error);
     return {
-      isFirstAttempt: true;
-      previousAttempts: 0;
-      scoreHistory: [];
-      improvementTrend: 'error';
+      isFirstAttempt: true,
+      previousAttempts: 0,
+      scoreHistory: [],
+      improvementTrend: 'error',
       bestScore: 0
     };
   }
@@ -334,7 +334,7 @@ async function updateUserStatistics(db: any, userId: string, performanceData: an
   try {
     const stats = {
       lastInterviewDate: new Date(),
-      lastScore: performanceData.overallScore || 0;
+      lastScore: performanceData.overallScore || 0,
       totalInterviewsCompleted: 1 // This will be incremented
     };
     

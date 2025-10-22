@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
     // Initialize services
     const aiService = EnhancedGroqAIService.getInstance();
-    const compilerService = includeCompiler ? EnhancedDSACompiler.getInstance() : null;
+    const compilerService = includeCompiler ? EnhancedDSACompiler.getInstance() : null,
 
     try {
       // Generate company-specific DSA problems
@@ -64,14 +64,14 @@ export async function POST(req: NextRequest) {
         const compilerHealth = await compilerService.healthCheck();
         
         compilerInfo = {
-          available: true;
+          available: true,
           supportedLanguages: languages.map(lang => ({
-            id: lang.id;
-            name: lang.name;
-            label: lang.label;
+            id: lang.id,
+            name: lang.name,
+            label: lang.label,
             fileExtension: lang.fileExtension
           })),
-          status: compilerHealth;
+          status: compilerHealth,
           features: [
             'Real-time code execution',
             'Multiple test case validation',
@@ -87,16 +87,16 @@ export async function POST(req: NextRequest) {
       try {
         const { db } = await connectToDatabase();
         const dsaSessionData = {
-          userId: session.user?.email || session.user?.name;
+          userId: session.user?.email || session.user?.name,
           companyName,
           jobTitle,
           difficulty,
           techStack,
-          problems: dsaProblems;
+          problems: dsaProblems,
           createdAt: new Date(),
-          status: 'generated';
-          aiProvider: 'enhanced-groq';
-          totalProblems: dsaProblems.length;
+          status: 'generated',
+          aiProvider: 'enhanced-groq',
+          totalProblems: dsaProblems.length,
           compilerEnabled: includeCompiler
         };
 
@@ -112,8 +112,8 @@ export async function POST(req: NextRequest) {
         ...problem,
         metadata: {
           generatedAt: new Date().toISOString(),
-          aiProvider: 'enhanced-groq';
-          companySpecific: true;
+          aiProvider: 'enhanced-groq',
+          companySpecific: true,
           jobTitle,
           estimatedTime: problem.difficulty === 'easy' ? '15-20 min' :
                        problem.difficulty === 'hard' ? '35-45 min' : '25-30 min',
@@ -122,28 +122,28 @@ export async function POST(req: NextRequest) {
           tags: [...(problem.topics || []), companyName, jobTitle, 'company-specific']
         },
         compilerSupport: compilerInfo ? {
-          enabled: true;
+          enabled: true,
           languages: compilerInfo.supportedLanguages.map(lang => lang.name),
           templates: compilerInfo.supportedLanguages.map(lang => ({
-            language: lang.name;
+            language: lang.name,
             template: compilerService?.getLanguageTemplate(lang.name)
           }))
         } : {
-          enabled: false;
+          enabled: false,
           reason: 'Compiler service not requested'
         }
       }));
 
       return NextResponse.json({
-        success: true;
-        problems: enhancedProblems;
-        compiler: compilerInfo;
+        success: true,
+        problems: enhancedProblems,
+        compiler: compilerInfo,
         metadata: {
           companyName,
           jobTitle,
           difficulty,
-          totalProblems: enhancedProblems.length;
-          aiProvider: 'enhanced-groq';
+          totalProblems: enhancedProblems.length,
+          aiProvider: 'enhanced-groq',
           generatedAt: new Date().toISOString(),
           features: [
             'Company-specific problem context',
@@ -152,9 +152,9 @@ export async function POST(req: NextRequest) {
             'Technical challenge alignment'
           ],
           companyContext: {
-            name: companyName;
+            name: companyName,
             jobTitle,
-            techStack: techStack.length > 0 ? techStack : ['General'];
+            techStack: techStack.length > 0 ? techStack : ['General'],
             difficulty,
             problemTypes: [...new Set(enhancedProblems.flatMap(p => p.topics || []))]
           }
@@ -172,25 +172,25 @@ export async function POST(req: NextRequest) {
         return {
           id: `fallback-dsa-${companyName.toLowerCase()}-${i}`,
           title: `${companyName} Engineering Challenge ${i + 1}`,
-          difficulty: difficulty;
+          difficulty: difficulty,
           description: `This is a ${difficulty} level algorithmic problem designed for ${jobTitle} interviews at ${companyName}. Solve this efficiently considering their scale and requirements.`,
           examples: [
             {
-              input: 'Sample input data';
-              output: 'Expected output result';
+              input: 'Sample input data',
+              output: 'Expected output result',
               explanation: `This solution addresses ${companyName}'s specific technical requirements.`
             }
           ],
           testCases: [
             {
               id: `test-${i}-1`,
-              input: '5\n1 2 3 4 5';
-              expectedOutput: '15';
+              input: '5\n1 2 3 4 5',
+              expectedOutput: '15',
               hidden: false
             }
           ],
           constraints: [`Optimized for ${companyName}'s scale`, 'Efficient memory usage'],
-          topics: [topics[i % topics.length]];
+          topics: [topics[i % topics.length]],
           hints: [`Consider ${companyName}'s specific requirements`, 'Think about edge cases'],
           timeComplexity: 'O(n)',
           spaceComplexity: 'O(1)',
@@ -198,25 +198,25 @@ export async function POST(req: NextRequest) {
           realWorldApplication: `Used in ${companyName}'s production systems`,
           metadata: {
             generatedAt: new Date().toISOString(),
-            aiProvider: 'fallback';
-            companySpecific: false;
+            aiProvider: 'fallback',
+            companySpecific: false,
             jobTitle,
-            estimatedTime: '20-25 min';
+            estimatedTime: '20-25 min',
             difficultyScore: 5
           }
         };
       });
 
       return NextResponse.json({
-        success: true;
-        problems: fallbackProblems;
-        compiler: compilerInfo;
+        success: true,
+        problems: fallbackProblems,
+        compiler: compilerInfo,
         metadata: {
           companyName,
           jobTitle,
           difficulty,
-          totalProblems: fallbackProblems.length;
-          aiProvider: 'fallback';
+          totalProblems: fallbackProblems.length,
+          aiProvider: 'fallback',
           generatedAt: new Date().toISOString(),
           note: 'Generated using fallback due to AI service unavailability'
         }
@@ -229,7 +229,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Failed to generate company DSA problems', 
-        details: error instanceof Error ? error.message : 'Unknown error';
+        details: error instanceof Error ? error.message : 'Unknown error',
         aiProvider: 'enhanced-groq'
       },
       { status: 500 }
@@ -239,8 +239,8 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    message: 'Enhanced Company-Specific DSA Generation API';
-    aiProvider: 'enhanced-groq';
+    message: 'Enhanced Company-Specific DSA Generation API',
+    aiProvider: 'enhanced-groq',
     supportedDifficulties: ['easy', 'medium', 'hard'],
     features: [
       'Company-specific algorithmic challenges',

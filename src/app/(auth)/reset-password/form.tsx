@@ -15,7 +15,7 @@ const schema = z.object({
   password: z.string().min(8, "Password should be minimum 8 characters!"),
   confirmPassword: z.string().min(8, "Password should be minimum 8 characters!")
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match";
+  message: "Passwords don't match",
   path: ["confirmPassword"];
 })
 
@@ -33,7 +33,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      password: '';
+      password: '',
       confirmPassword: ''
     }
   })
@@ -53,7 +53,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
         toast.error(response?.error || "Failed to reset password");
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to reset password";
+      const errorMessage = error instanceof Error ? error.message : "Failed to reset password",
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);

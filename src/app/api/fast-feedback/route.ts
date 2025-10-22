@@ -34,7 +34,7 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
   const overallScore = Math.round(((technicalScore + communicationScore + problemSolvingScore + practicalScore + companyFitScore) / 5) * 10) / 10;
   
   // Generate contextual feedback based on performance
-  const performanceLevel = overallScore >= 8 ? 'excellent' : overallScore >= 6 ? 'good' : overallScore >= 4 ? 'fair' : 'needs improvement';
+  const performanceLevel = overallScore >= 8 ? 'excellent' : overallScore >= 6 ? 'good' : overallScore >= 4 ? 'fair' : 'needs improvement',
   
   const strengths = [];
   const improvements = [];
@@ -91,7 +91,7 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
     overallVerdict: `${performanceLevel.charAt(0).toUpperCase() + performanceLevel.slice(1)} performance in the ${jobTitle} interview. You answered ${answeredQuestions}/${totalQuestions} questions with an average of ${Math.round(avgWordCount)} words per response, demonstrating ${overallScore >= 7 ? 'strong' : overallScore >= 5 ? 'adequate' : 'developing'} technical communication skills.`,
     strengths: strengths.length > 0 ? strengths : ["Participated in the interview process", "Showed engagement with the questions"],
     improvements: improvements.length > 0 ? improvements : ["Continue developing technical expertise", "Practice interview communication skills"],
-    recommendations: recommendations;
+    recommendations: recommendations,
     adviceForImprovement: questions.slice(0, 3).map((q: any, index: number) => ({
       question: q.question || `Question ${index + 1}`,
       advice: answers[index] && answers[index].length > 10 ? 
@@ -180,10 +180,10 @@ export async function POST(request: NextRequest) {
     });
 
     console.log('📄 Questions document found:', {
-      exists: !!questionsDoc;
-      hasAnswers: !!questionsDoc?.answers;
-      answersLength: questionsDoc?.answers?.length || 0;
-      answersType: typeof questionsDoc?.answers;
+      exists: !!questionsDoc,
+      hasAnswers: !!questionsDoc?.answers,
+      answersLength: questionsDoc?.answers?.length || 0,
+      answersType: typeof questionsDoc?.answers,
       sampleAnswer: questionsDoc?.answers?.[0]
     });
 
@@ -204,11 +204,11 @@ export async function POST(request: NextRequest) {
 
     // Check if this is a DSA interview and handle accordingly
     const isDSAInterview = interview.jobTitle?.toLowerCase().includes('dsa') ||;
-                          questionsDoc.questions?.some((q: any) => q.category === 'dsa' || q.dsaProblem);
+                          questionsDoc.questions?.some((q: any) => q.category === 'dsa' || q.dsaProblem),
 
     console.log('🔍 Interview type analysis:', {
       isDSAInterview,
-      jobTitle: interview.jobTitle;
+      jobTitle: interview.jobTitle,
       questionCategories: questionsDoc.questions?.map((q: any) => q.category) || []
     });
 
@@ -231,8 +231,8 @@ export async function POST(request: NextRequest) {
       const interviewResponses = interview.responses || [];
       
       console.log('📊 DSA data found:', {
-        executionResults: dsaExecutions.length;
-        interviewResponses: interviewResponses.length;
+        executionResults: dsaExecutions.length,
+        interviewResponses: interviewResponses.length,
         hasResponses: interviewResponses.length > 0
       });
       
@@ -243,7 +243,7 @@ export async function POST(request: NextRequest) {
           const execution = dsaExecutions.find(exec =>;
             exec.problemId === question.id || exec.problemId === question.dsaProblem?.id
           );
-          const response = interviewResponses.find((r: any) => r.questionId === question.id);
+          const response = interviewResponses.find((r: any) => r.questionId === question.id),
           
           if (execution) {
             return `Code Solution: ${execution.sourceCode}
@@ -263,12 +263,12 @@ Execution Time: ${execution.executionTime}ms`;
     if (!hasValidAnswers) {
       console.warn('⚠️ No answers found in questions document:', {
         interviewId,
-        hasAnswers: !!questionsDoc.answers;
+        hasAnswers: !!questionsDoc.answers,
         answersLength: Array.isArray(questionsDoc.answers) ? questionsDoc.answers.length : 0,
-        answersType: typeof questionsDoc.answers;
+        answersType: typeof questionsDoc.answers,
         answersKeys: questionsDoc.answers && typeof questionsDoc.answers === 'object' ? Object.keys(questionsDoc.answers) : [],
         questionsDoc: Object.keys(questionsDoc),
-        interviewStatus: interview.status;
+        interviewStatus: interview.status,
         isDSAInterview
       });
       
@@ -276,7 +276,7 @@ Execution Time: ${execution.executionTime}ms`;
       if (isDSAInterview) {
         console.log('🤖 Generating no-submissions feedback for DSA interview');
         const noSubmissionsFeedback = {
-          overallScore: 0;
+          overallScore: 0,
           parameterScores: {
             "Problem Solving": 0,
             "Code Quality": 0,
@@ -284,7 +284,7 @@ Execution Time: ${execution.executionTime}ms`;
             "Implementation Skills": 0,
             "Testing & Debugging": 0
           },
-          strengths: [];
+          strengths: [],
           improvements: [
             "Submit code solutions to receive detailed feedback",
             "Attempt to solve the provided DSA problems",
@@ -300,14 +300,14 @@ Execution Time: ${execution.executionTime}ms`;
           summary: `No code submissions found for this ${interview.companyName} DSA interview. Please submit your solutions to receive personalized feedback and performance analysis.`,
           metadata: {
             analyzedAt: new Date(),
-            aiProvider: 'fallback';
-            model: 'no-submissions-analysis';
+            aiProvider: 'fallback',
+            model: 'no-submissions-analysis',
             processingTime: Date.now() - startTime,
-            interviewId: interviewId;
-            companyName: interview.companyName;
-            jobTitle: interview.jobTitle;
-            questionsAnalyzed: questionsDoc.questions?.length || 0;
-            answersProcessed: 0;
+            interviewId: interviewId,
+            companyName: interview.companyName,
+            jobTitle: interview.jobTitle,
+            questionsAnalyzed: questionsDoc.questions?.length || 0,
+            answersProcessed: 0,
             submissionStatus: 'no-submissions'
           }
         };
@@ -317,7 +317,7 @@ Execution Time: ${execution.executionTime}ms`;
           { interviewId: interviewId },
           {
             $set: {
-              extracted: noSubmissionsFeedback;
+              extracted: noSubmissionsFeedback,
               analyzedAt: new Date(),
               aiProvider: 'no-submissions-fallback'
             }
@@ -325,13 +325,13 @@ Execution Time: ${execution.executionTime}ms`;
         );
 
         return NextResponse.json({
-          success: true;
-          message: 'No submissions feedback generated';
-          insights: noSubmissionsFeedback;
+          success: true,
+          message: 'No submissions feedback generated',
+          insights: noSubmissionsFeedback,
           performance: {
             processingTime: Date.now() - startTime,
-            aiProvider: 'fallback';
-            model: 'no-submissions-analysis';
+            aiProvider: 'fallback',
+            model: 'no-submissions-analysis',
             questionsAnalyzed: questionsDoc.questions?.length || 0
           }
         });
@@ -342,8 +342,8 @@ Execution Time: ${execution.executionTime}ms`;
         return NextResponse.json(
           { 
             error: 'Interview not completed yet', 
-            message: 'Please complete the interview before generating feedback';
-            interviewStatus: interview.status;
+            message: 'Please complete the interview before generating feedback',
+            interviewStatus: interview.status,
             debug: { interviewId, status: interview.status, isDSAInterview }
           },
           { status: 400 }
@@ -353,7 +353,7 @@ Execution Time: ${execution.executionTime}ms`;
       return NextResponse.json(
         { 
           error: 'No answers submitted', 
-          message: 'No answers were submitted for this completed interview';
+          message: 'No answers were submitted for this completed interview',
           debug: { interviewId, documentKeys: Object.keys(questionsDoc), status: interview.status, isDSAInterview }
         },
         { status: 404 }
@@ -361,18 +361,18 @@ Execution Time: ${execution.executionTime}ms`;
     }
 
     // Handle different answer formats - both new format (objects with answer property) and direct strings
-    let answers: string[] = [];
+    let answers: string[] = [],
     
     // Use DSA answers if available, otherwise use regular answers
     if (isDSAInterview && dsaAnswers.length > 0) {
       console.log('🔍 Processing DSA answers:', {
-        dsaAnswersCount: dsaAnswers.length;
+        dsaAnswersCount: dsaAnswers.length,
         sampleAnswer: dsaAnswers[0]?.substring(0, 100) + '...'
       });
       answers = dsaAnswers;
     } else {
       console.log('🔍 Processing regular answers:', {
-        answersType: typeof questionsDoc.answers;
+        answersType: typeof questionsDoc.answers,
         isArray: Array.isArray(questionsDoc.answers),
         length: Array.isArray(questionsDoc.answers) ? questionsDoc.answers.length : 'N/A',
         sampleAnswer: Array.isArray(questionsDoc.answers) ? questionsDoc.answers[0] : questionsDoc.answers
@@ -408,9 +408,9 @@ Execution Time: ${execution.executionTime}ms`;
           }
           
           console.log(`📝 Answer ${index + 1}:`, {
-            originalType: typeof ans;
-            hasAnswerProp: ans && typeof ans === 'object' && 'answer' in ans;
-            extractedLength: extractedAnswer.length;
+            originalType: typeof ans,
+            hasAnswerProp: ans && typeof ans === 'object' && 'answer' in ans,
+            extractedLength: extractedAnswer.length,
             extractedPreview: extractedAnswer.substring(0, 50) + (extractedAnswer.length > 50 ? '...' : '')
           });
           
@@ -454,7 +454,7 @@ Execution Time: ${execution.executionTime}ms`;
       console.warn('⚠️ No meaningful answers found, but proceeding with analysis');
     }
     const questions = questionsDoc.questions || [];
-    const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided');
+    const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided'),
 
     console.log(`🧠 Analyzing ${questions.length} questions...`);
 
@@ -477,7 +477,7 @@ Execution Time: ${execution.executionTime}ms`;
     // Enhance insights with metadata
     const enhancedInsights = {
       ...insights,
-      overallScore: insights.overallScore || 6.5;
+      overallScore: insights.overallScore || 6.5,
       parameterScores: insights.parameterScores || {
         "Technical Knowledge": 7,
         "Problem Solving": 6,
@@ -487,13 +487,13 @@ Execution Time: ${execution.executionTime}ms`;
       },
       metadata: {
         analyzedAt: new Date(),
-        aiProvider: 'groq';
-        model: 'llama-3.3-70b-versatile';
+        aiProvider: 'groq',
+        model: 'llama-3.3-70b-versatile',
         processingTime: Date.now() - startTime,
-        interviewId: interviewId;
-        companyName: interview.companyName;
-        jobTitle: interview.jobTitle;
-        questionsAnalyzed: questions.length;
+        interviewId: interviewId,
+        companyName: interview.companyName,
+        jobTitle: interview.jobTitle,
+        questionsAnalyzed: questions.length,
         answersProcessed: answers.length
       }
     };
@@ -503,7 +503,7 @@ Execution Time: ${execution.executionTime}ms`;
       { interviewId: interviewId },
       {
         $set: {
-          extracted: enhancedInsights;
+          extracted: enhancedInsights,
           analyzedAt: new Date(),
           aiProvider: 'groq-fast'
         }
@@ -515,9 +515,9 @@ Execution Time: ${execution.executionTime}ms`;
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'completed';
+          status: 'completed',
           completedAt: new Date(),
-          performanceAnalyzed: true;
+          performanceAnalyzed: true,
           finalScore: enhancedInsights.overallScore || 0
         } 
       }
@@ -526,13 +526,13 @@ Execution Time: ${execution.executionTime}ms`;
     // Store comprehensive performance analysis for stats dashboard
     const performanceDoc = {
       interviewId,
-      userId: interview.userId;
-      companyName: interview.companyName;
-      jobTitle: interview.jobTitle;
-      performance: enhancedInsights;
+      userId: interview.userId,
+      companyName: interview.companyName,
+      jobTitle: interview.jobTitle,
+      performance: enhancedInsights,
       questions: questions.map((q: any, index: number) => ({
         ...q,
-        userAnswer: answers[index] || 'No answer provided';
+        userAnswer: answers[index] || 'No answer provided',
         response: { analysis: { score: enhancedInsights.parameterScores?.[q.category] || 6 } }
       })),
       createdAt: new Date(),
@@ -550,13 +550,13 @@ Execution Time: ${execution.executionTime}ms`;
     console.log(`✅ Fast feedback completed in ${processingTime}ms`);
 
     return NextResponse.json({
-      success: true;
-      message: 'Fast feedback generated successfully';
-      insights: enhancedInsights;
+      success: true,
+      message: 'Fast feedback generated successfully',
+      insights: enhancedInsights,
       performance: {
-        processingTime: processingTime;
-        aiProvider: 'groq';
-        model: 'llama-3.3-70b-versatile';
+        processingTime: processingTime,
+        aiProvider: 'groq',
+        model: 'llama-3.3-70b-versatile',
         questionsAnalyzed: questions.length
       }
     });
@@ -566,8 +566,8 @@ Execution Time: ${execution.executionTime}ms`;
     
     return NextResponse.json(
       {
-        error: 'Failed to generate feedback';
-        details: error.message;
+        error: 'Failed to generate feedback',
+        details: error.message,
         timestamp: new Date().toISOString()
       },
       { status: 500 }
@@ -596,16 +596,16 @@ export async function GET(request: NextRequest) {
 
     if (questionsDoc?.extracted) {
       return NextResponse.json({
-        success: true;
-        feedbackReady: true;
-        insights: questionsDoc.extracted;
+        success: true,
+        feedbackReady: true,
+        insights: questionsDoc.extracted,
         message: 'Feedback already available'
       });
     }
 
     return NextResponse.json({
-      success: true;
-      feedbackReady: false;
+      success: true,
+      feedbackReady: false,
       message: 'Feedback not ready yet'
     });
 

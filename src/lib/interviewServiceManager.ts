@@ -10,19 +10,19 @@ import EnhancedJudge0Service from './enhancedJudge0Service';
 import GroqAIService from './groqAIService';
 
 export interface InterviewServiceConfig {
-  useEnhancedDSA: boolean;
-  useFastFeedback: boolean;
-  enableCodeExecution: boolean;
-  companyName: string;
+  useEnhancedDSA: boolean,
+  useFastFeedback: boolean,
+  enableCodeExecution: boolean,
+  companyName: string,
   experienceLevel: 'entry' | 'mid' | 'senior'
 }
 
 export class InterviewServiceManager {
-  private static instance: InterviewServiceManager;
-  private dsaService: EnhancedGroqDSAService;
-  private feedbackService: OptimizedFeedbackService;
-  private codeExecutionService: EnhancedJudge0Service;
-  private groqService: GroqAIService;
+  private static instance: InterviewServiceManager,
+  private dsaService: EnhancedGroqDSAService,
+  private feedbackService: OptimizedFeedbackService,
+  private codeExecutionService: EnhancedJudge0Service,
+  private groqService: GroqAIService,
 
   private constructor() {
     this.dsaService = EnhancedGroqDSAService.getInstance();
@@ -45,15 +45,15 @@ export class InterviewServiceManager {
    * Fixed to generate exactly the requested count
    */
   public async generateDSAProblems(
-    companyName: string;
+    companyName: string,
     count: number = 2, // Default to 2 as per user requirements
-    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
+    experienceLevel: 'entry' | 'mid' | 'senior' = 'mid',
     focusAreas: string[] = []
   ): Promise<DSAProblem[]> {
     try {
       console.log(`🚀 Generating exactly ${count} DSA problems for ${companyName}...`);
       
-      let problems: DSAProblem[];
+      let problems: DSAProblem[],
       
       if (focusAreas.length > 0) {
         problems = await this.dsaService.generateEnhancedDSAProblems(companyName, count, focusAreas);
@@ -96,8 +96,8 @@ export class InterviewServiceManager {
    * Execute code with enhanced error handling
    */
   public async executeCode(
-    code: string;
-    language: string;
+    code: string,
+    language: string,
     testCases: any[]
   ): Promise<any> {
     try {
@@ -130,9 +130,9 @@ export class InterviewServiceManager {
    * Generate fast feedback for interview performance
    */
   public async generateFastFeedback(
-    questions: any[];
-    answers: string[];
-    companyName: string;
+    questions: any[],
+    answers: string[],
+    companyName: string,
     jobTitle: string
   ): Promise<any> {
     try {
@@ -158,11 +158,11 @@ export class InterviewServiceManager {
    * Generate interview questions using enhanced distribution logic
    */
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
-    skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'dsa';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    jobTitle: string,
+    companyName: string,
+    skills: string[],
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'dsa',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number
   }): Promise<any[]> {
     try {
@@ -180,13 +180,13 @@ export class InterviewServiceManager {
         
         // Convert DSA problems to question format
         return dsaProblems.map((problem, index) => ({
-          id: problem.id;
+          id: problem.id,
           question: `Solve this DSA problem: ${problem.title}\n\n${problem.description}`,
           expectedAnswer: `A working solution with proper time and space complexity analysis. Include code implementation, explain the approach, and analyze edge cases.`,
-          category: 'dsa';
-          difficulty: problem.difficulty;
+          category: 'dsa',
+          difficulty: problem.difficulty,
           points: this.getDSAPoints(problem.difficulty),
-          timeLimit: 45;
+          timeLimit: 45,
           evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases', 'Complexity Analysis'],
           tags: [params.companyName, 'dsa', ...problem.topics],
           dsaProblem: problem, // Include full DSA problem data
@@ -207,21 +207,21 @@ export class InterviewServiceManager {
           // Technical Questions (6)
           this.groqService.generateInterviewQuestions({
             ...params,
-            interviewType: 'technical';
+            interviewType: 'technical',
             numberOfQuestions: 6
           }),
           
           // Behavioral Questions (4)
           this.groqService.generateInterviewQuestions({
             ...params,
-            interviewType: 'behavioral';
+            interviewType: 'behavioral',
             numberOfQuestions: 4
           }),
           
           // Aptitude Questions (4) 
           this.groqService.generateInterviewQuestions({
             ...params,
-            interviewType: 'aptitude';
+            interviewType: 'aptitude',
             numberOfQuestions: 4
           }),
           
@@ -234,16 +234,16 @@ export class InterviewServiceManager {
         ]);
         
         const dsaQuestions = dsaProblems.map((problem) => ({
-          id: problem.id;
+          id: problem.id,
           question: `Solve this DSA problem: ${problem.title}\n\n${problem.description}`,
-          expectedAnswer: `A working solution with proper analysis and implementation details.`;
-          category: 'dsa';
-          difficulty: problem.difficulty;
+          expectedAnswer: `A working solution with proper analysis and implementation details.`,
+          category: 'dsa',
+          difficulty: problem.difficulty,
           points: this.getDSAPoints(problem.difficulty),
-          timeLimit: 45;
+          timeLimit: 45,
           evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality'],
           tags: [params.companyName, 'dsa', ...problem.topics],
-          dsaProblem: problem;
+          dsaProblem: problem,
           provider: 'enhanced-dsa-service'
         }));
         
@@ -269,10 +269,10 @@ export class InterviewServiceManager {
    * Health check for all services
    */
   public async healthCheck(): Promise<{
-    dsaService: boolean;
-    feedbackService: boolean;
-    codeExecutionService: boolean;
-    groqService: boolean;
+    dsaService: boolean,
+    feedbackService: boolean,
+    codeExecutionService: boolean,
+    groqService: boolean,
     overallStatus: 'healthy' | 'degraded' | 'unhealthy'
   }> {
     try {
@@ -290,25 +290,25 @@ export class InterviewServiceManager {
         groq.groqAvailable
       ].filter(Boolean).length;
       
-      let overallStatus: 'healthy' | 'degraded' | 'unhealthy';
+      let overallStatus: 'healthy' | 'degraded' | 'unhealthy',
       if (healthyServices === 4) overallStatus = 'healthy';
       else if (healthyServices >= 2) overallStatus = 'degraded';
       else overallStatus = 'unhealthy';
       
       return {
-        dsaService: dsa.groqAvailable;
-        feedbackService: feedback.groqAvailable;
-        codeExecutionService: execution.judge0Available;
-        groqService: groq.groqAvailable;
+        dsaService: dsa.groqAvailable,
+        feedbackService: feedback.groqAvailable,
+        codeExecutionService: execution.judge0Available,
+        groqService: groq.groqAvailable,
         overallStatus
       };
     } catch (error) {
       console.error('❌ Health check error:', error);
       return {
-        dsaService: false;
-        feedbackService: false;
-        codeExecutionService: false;
-        groqService: false;
+        dsaService: false,
+        feedbackService: false,
+        codeExecutionService: false,
+        groqService: false,
         overallStatus: 'unhealthy'
       };
     }
@@ -318,19 +318,19 @@ export class InterviewServiceManager {
   private generateFallbackTestCases(problem: DSAProblem): any[] {
     return [
       {
-        id: 'fallback-1';
+        id: 'fallback-1',
         input: problem.examples[0]?.input || 'nums = [2,7,11,15], target = 9',
         expectedOutput: problem.examples[0]?.output || '[0,1]',
         hidden: false
       },
       {
-        id: 'fallback-2';
+        id: 'fallback-2',
         input: 'nums = [3,2,4], target = 6',
         expectedOutput: '[1,2]',
         hidden: false
       },
       {
-        id: 'fallback-3';
+        id: 'fallback-3',
         input: 'nums = [3,3], target = 6',
         expectedOutput: '[0,1]',
         hidden: true
@@ -339,7 +339,7 @@ export class InterviewServiceManager {
   }
 
   private generateFallbackDSAProblems(companyName: string, count: number): DSAProblem[] {
-    const fallbackProblems: DSAProblem[] = [];
+    const fallbackProblems: DSAProblem[] = [],
     
     const problemTemplates = [;
       {
@@ -358,7 +358,7 @@ export class InterviewServiceManager {
         topics: ['String', 'Stack'],
         examples: [{
           input: 's = "()"',
-          output: 'true';
+          output: 'true',
           explanation: 'The parentheses are properly matched.'
         }]
       }
@@ -368,20 +368,20 @@ export class InterviewServiceManager {
       const template = problemTemplates[i % problemTemplates.length];
       fallbackProblems.push({
         id: `fallback-${companyName.toLowerCase()}-${i}`,
-        title: template.title;
-        difficulty: 'medium' as const;
-        description: template.description;
-        examples: template.examples;
+        title: template.title,
+        difficulty: 'medium' as const,
+        description: template.description,
+        examples: template.examples,
         testCases: this.generateFallbackTestCases({
           examples: template.examples
         } as DSAProblem),
         constraints: ['2 <= nums.length <= 10^4', '-10^9 <= nums[i] <= 10^9'],
-        topics: template.topics;
+        topics: template.topics,
         hints: ['Consider using a hash map', 'Think about the time complexity'],
-        companies: [companyName];
+        companies: [companyName],
         metadata: {
           generatedAt: new Date(),
-          company: companyName;
+          company: companyName,
           uniqueId: `fallback-${Date.now()}-${i}`,
           version: 1
         }
@@ -393,40 +393,40 @@ export class InterviewServiceManager {
 
   private getDSAPoints(difficulty: string): number {
     switch (difficulty) {
-      case 'easy': return 20;
-      case 'medium': return 30;
-      case 'hard': return 45;
+      case 'easy': return 20,
+      case 'medium': return 30,
+      case 'hard': return 45,
       default: return 25;
     }
   }
 
   private generateFallbackQuestions(params: any): any[] {
-    const count = params.interviewType === 'dsa' ? 2 : (params.interviewType === 'mixed' ? 16 : params.numberOfQuestions);
+    const count = params.interviewType === 'dsa' ? 2 : (params.interviewType === 'mixed' ? 16 : params.numberOfQuestions),
     const questions = [];
     
     if (params.interviewType === 'dsa') {
       // Generate exactly 2 DSA fallback questions
       questions.push({
-        id: 'dsa-fallback-1';
-        question: `DSA Problem 1: Implement a function to find the maximum sum of a contiguous subarray in an array of integers.`;
+        id: 'dsa-fallback-1',
+        question: `DSA Problem 1: Implement a function to find the maximum sum of a contiguous subarray in an array of integers.`,
         expectedAnswer: 'Use Kadane\'s algorithm with O(n) time complexity. Handle edge cases like all negative numbers.',
-        category: 'dsa';
-        difficulty: 'medium';
-        points: 30;
-        timeLimit: 45;
+        category: 'dsa',
+        difficulty: 'medium',
+        points: 30,
+        timeLimit: 45,
         evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases'],
         tags: [params.companyName, 'dsa', 'algorithms'],
         provider: 'fallback'
       });
       
       questions.push({
-        id: 'dsa-fallback-2';
+        id: 'dsa-fallback-2',
         question: `DSA Problem 2: Design a data structure that supports insert, delete, and getRandom operations in O(1) average time.`,
         expectedAnswer: 'Use a combination of array and hash map. Array for O(1) random access, hash map for O(1) insert/delete.',
-        category: 'dsa';
-        difficulty: 'medium';
+        category: 'dsa',
+        difficulty: 'medium',
         points: 30,  
-        timeLimit: 45;
+        timeLimit: 45,
         evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Design Skills'],
         tags: [params.companyName, 'dsa', 'data-structures'],
         provider: 'fallback'
@@ -437,11 +437,11 @@ export class InterviewServiceManager {
         questions.push({
           id: `tech-fallback-${i}`,
           question: `Tell me about your experience with ${params.skills[i % params.skills.length]} at ${params.companyName}.`,
-          expectedAnswer: 'A technical answer with practical examples.';
-          category: 'technical';
-          difficulty: 'medium';
-          points: 15;
-          timeLimit: 5;
+          expectedAnswer: 'A technical answer with practical examples.',
+          category: 'technical',
+          difficulty: 'medium',
+          points: 15,
+          timeLimit: 5,
           evaluationCriteria: ['Technical Knowledge', 'Communication', 'Experience'],
           tags: [params.companyName, params.jobTitle],
           provider: 'fallback'
@@ -455,11 +455,11 @@ export class InterviewServiceManager {
         questions.push({
           id: `fallback-${i}`,
           question: `Tell me about your experience with ${params.skills[i % params.skills.length] || 'software development'} at ${params.companyName}.`,
-          expectedAnswer: 'A comprehensive answer covering technical expertise and practical experience.';
-          category: params.interviewType;
-          difficulty: 'medium';
-          points: 15;
-          timeLimit: 5;
+          expectedAnswer: 'A comprehensive answer covering technical expertise and practical experience.',
+          category: params.interviewType,
+          difficulty: 'medium',
+          points: 15,
+          timeLimit: 5,
           evaluationCriteria: ['Technical Knowledge', 'Communication', 'Experience'],
           tags: [params.companyName, params.jobTitle],
           provider: 'fallback'

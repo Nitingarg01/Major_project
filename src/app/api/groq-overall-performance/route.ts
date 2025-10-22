@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const answers = questionData.answers || [];
 
     // Extract answer texts for analysis
-    const answerTexts = answers.map((answerObj: any) => answerObj?.answer || '');
+    const answerTexts = answers.map((answerObj: any) => answerObj?.answer || ''),
 
     // Perform fast comprehensive analysis
     const overallAnalysis = await feedbackService.generateFastOverallAnalysis(;
@@ -85,39 +85,39 @@ export async function POST(request: NextRequest) {
 
     // Create comprehensive performance report
     const performanceReport = {
-      interviewId: interviewId;
-      companyName: interview.companyName;
-      jobTitle: interview.jobTitle;
+      interviewId: interviewId,
+      companyName: interview.companyName,
+      jobTitle: interview.jobTitle,
       analysisMetrics: {
-        totalQuestions: totalQuestions;
+        totalQuestions: totalQuestions,
         averageScore: parseFloat(averageScore.toFixed(2)),
         percentageScore: parseFloat(percentageScore.toFixed(2)),
-        totalScore: averageScore * totalQuestions;
+        totalScore: averageScore * totalQuestions,
         maxPossibleScore: totalQuestions * 10
       },
       categoryPerformance: Object.entries(categoryPerformance).reduce((acc, [cat, perf]) => {
         acc[cat] = {
           average: parseFloat(perf.average.toFixed(2)),
-          questionsCount: perf.count;
+          questionsCount: perf.count,
           totalScore: perf.total
         };
         return acc;
       }, {} as any),
-      overallAnalysis: overallAnalysis;
-      parameterScores: overallAnalysis.parameterScores;
+      overallAnalysis: overallAnalysis,
+      parameterScores: overallAnalysis.parameterScores,
       detailedFeedback: {
-        overallVerdict: overallAnalysis.overallVerdict;
-        questionWiseAdvice: overallAnalysis.adviceForImprovement;
-        strengths: overallAnalysis.strengths;
-        improvements: overallAnalysis.improvements;
+        overallVerdict: overallAnalysis.overallVerdict,
+        questionWiseAdvice: overallAnalysis.adviceForImprovement,
+        strengths: overallAnalysis.strengths,
+        improvements: overallAnalysis.improvements,
         recommendations: overallAnalysis.recommendations
       },
       metadata: {
         analyzedAt: new Date(),
-        aiService: 'optimized-feedback-service';
-        analysisProvider: 'groq-llama-3.1-70b';
-        detailedAnalysis: true;
-        model: 'llama-3.1-70b-versatile';
+        aiService: 'optimized-feedback-service',
+        analysisProvider: 'groq-llama-3.1-70b',
+        detailedAnalysis: true,
+        model: 'llama-3.1-70b-versatile',
         optimizedAnalysis: true
       }
     };
@@ -130,8 +130,8 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'analyzed';
-          performanceScore: averageScore;
+          status: 'analyzed',
+          performanceScore: averageScore,
           analyzedAt: new Date()
         } 
       }
@@ -140,12 +140,12 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Overall performance analysis completed using Optimized Feedback Service - Score: ${averageScore.toFixed(1)}/10`);
 
     return NextResponse.json({
-      message: 'Overall performance analysis completed successfully with Optimized Feedback Service';
-      analysis: performanceReport;
+      message: 'Overall performance analysis completed successfully with Optimized Feedback Service',
+      analysis: performanceReport,
       summary: {
         score: `${averageScore.toFixed(1)}/10`,
         percentage: `${percentageScore.toFixed(1)}%`,
-        questionsAnalyzed: totalQuestions;
+        questionsAnalyzed: totalQuestions,
         provider: 'optimized-feedback-service'
       }
     });

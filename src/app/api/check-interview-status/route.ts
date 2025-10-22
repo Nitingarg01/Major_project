@@ -37,24 +37,24 @@ export async function GET(request: NextRequest) {
     })
     
     return NextResponse.json({
-      success: true;
+      success: true,
       interview: {
-        id: interview._id;
-        status: interview.status;
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        createdAt: interview.createdAt;
-        completedAt: interview.completedAt;
+        id: interview._id,
+        status: interview.status,
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        createdAt: interview.createdAt,
+        completedAt: interview.completedAt,
         performanceId: interview.performanceId
       },
-      hasPerformanceData: !!performance;
+      hasPerformanceData: !!performance,
       performanceId: performance?._id
     })
     
   } catch (error) {
     console.error('Error checking interview status:', error);
     return NextResponse.json({
-      success: false;
+      success: false,
       error: error instanceof Error ? error.message : String(error)
     }, { status: 500 })
   }

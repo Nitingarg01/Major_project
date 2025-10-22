@@ -35,8 +35,8 @@ export const getUserStats = async () => {
 
         if (!userId) {
                 return {
-                        totalInterviews: 0;
-                        completedInterviews: 0;
+                        totalInterviews: 0,
+                        completedInterviews: 0,
                         averageScore: 0
                 }
         }
@@ -69,11 +69,11 @@ export const getUserStats = async () => {
                 }
         }
 
-        const averageScore = validScoreCount > 0 ? Math.round(totalScore / validScoreCount) : 0;
+        const averageScore = validScoreCount > 0 ? Math.round(totalScore / validScoreCount) : 0,
 
         return {
-                totalInterviews: interviews.length;
-                completedInterviews: completedInterviews.length;
+                totalInterviews: interviews.length,
+                completedInterviews: completedInterviews.length,
                 averageScore: averageScore
         };
 }

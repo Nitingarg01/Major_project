@@ -25,19 +25,19 @@ export async function GET(req: NextRequest) {
       groqService.healthCheck().catch(error => ({ 
         groqAvailable: false, 
         model: 'llama-3.3-70b-versatile', 
-        status: 'error';
+        status: 'error',
         error: error.message 
       })),
       dsaCompiler.healthCheck().catch(error => ({ 
         judge0Available: false, 
         languagesSupported: 0, 
-        status: 'error';
+        status: 'error',
         error: error.message 
       })),
       smartAI.getHealthStatus().catch(error => ({ 
         groqAvailable: false, 
         geminiAvailable: false, 
-        status: 'error';
+        status: 'error',
         error: error.message 
       }))
     ]);
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
     const overallStatus = determineOverallStatus(groqResult, compilerResult, smartResult);
 
     // Get company suggestions (test intelligent routing)
-    let companySuggestions: string[] = [];
+    let companySuggestions: string[] = [],
     try {
       companySuggestions = groqService.getCompanySuggestions('tech');
     } catch (error) {
@@ -82,10 +82,10 @@ export async function GET(req: NextRequest) {
       overallStatus,
       services: {
         enhancedGroq: {
-          available: groqResult.groqAvailable || false;
-          model: groqResult.model || 'llama-3.3-70b-versatile';
-          status: groqResult.status || 'unknown';
-          companyProfilesLoaded: groqResult.companyProfilesLoaded || 0;
+          available: groqResult.groqAvailable || false,
+          model: groqResult.model || 'llama-3.3-70b-versatile',
+          status: groqResult.status || 'unknown',
+          companyProfilesLoaded: groqResult.companyProfilesLoaded || 0,
           features: [
             'Company-specific question generation',
             'Advanced prompt engineering',
@@ -95,10 +95,10 @@ export async function GET(req: NextRequest) {
           ]
         },
         gemini: {
-          available: smartResult.geminiAvailable || false;
-          model: 'gemini-1.5-flash';
-          status: smartResult.geminiAvailable ? 'active' : 'offline';
-          primaryUse: 'Resume parsing and company search';
+          available: smartResult.geminiAvailable || false,
+          model: 'gemini-1.5-flash',
+          status: smartResult.geminiAvailable ? 'active' : 'offline',
+          primaryUse: 'Resume parsing and company search',
           features: [
             'Fast resume analysis',
             'Company information lookup',
@@ -107,9 +107,9 @@ export async function GET(req: NextRequest) {
           ]
         },
         dsaCompiler: {
-          available: compilerResult.judge0Available || false;
-          languagesSupported: compilerResult.languagesSupported || 0;
-          status: compilerResult.status || 'unknown';
+          available: compilerResult.judge0Available || false,
+          languagesSupported: compilerResult.languagesSupported || 0,
+          status: compilerResult.status || 'unknown',
           features: [
             'Multi-language code execution',
             'Real-time testing',
@@ -118,25 +118,25 @@ export async function GET(req: NextRequest) {
           ]
         },
         smartRouting: {
-          available: true;
-          status: 'active';
-          activeProvider: smartResult.activeProvider || 'none';
-          fallbackAvailable: smartResult.fallbackAvailable || false;
+          available: true,
+          status: 'active',
+          activeProvider: smartResult.activeProvider || 'none',
+          fallbackAvailable: smartResult.fallbackAvailable || false,
           features: smartResult.features || []
         }
       },
       capabilities: {
-        questionGeneration: groqResult.groqAvailable || false;
-        responseAnalysis: groqResult.groqAvailable || false;
-        performanceEvaluation: groqResult.groqAvailable || false;
-        dsaProblemGeneration: groqResult.groqAvailable || false;
-        codeExecution: compilerResult.judge0Available || false;
-        resumeParsing: smartResult.geminiAvailable || false;
-        companyIntelligence: groqResult.groqAvailable || false;
+        questionGeneration: groqResult.groqAvailable || false,
+        responseAnalysis: groqResult.groqAvailable || false,
+        performanceEvaluation: groqResult.groqAvailable || false,
+        dsaProblemGeneration: groqResult.groqAvailable || false,
+        codeExecution: compilerResult.judge0Available || false,
+        resumeParsing: smartResult.geminiAvailable || false,
+        companyIntelligence: groqResult.groqAvailable || false,
         culturalFitAnalysis: groqResult.groqAvailable || false
       },
       metrics: {
-        totalServices: 4;
+        totalServices: 4,
         activeServices: [
           groqResult.groqAvailable,
           smartResult.geminiAvailable,
@@ -144,7 +144,7 @@ export async function GET(req: NextRequest) {
           true // Smart routing always available
         ].filter(Boolean).length,
         healthScore: calculateHealthScore(groqResult, compilerResult, smartResult),
-        companySuggestionsAvailable: companySuggestions.length;
+        companySuggestionsAvailable: companySuggestions.length,
         lastChecked: new Date().toISOString()
       },
       testing: {
@@ -163,9 +163,9 @@ export async function GET(req: NextRequest) {
     console.log(`📊 Services: Groq(${groqResult.groqAvailable}), Gemini(${smartResult.geminiAvailable}), Compiler(${compilerResult.judge0Available})`);
 
     return NextResponse.json({
-      success: true;
-      health: healthReport;
-      message: 'Enhanced Groq AI services health check completed';
+      success: true,
+      health: healthReport,
+      message: 'Enhanced Groq AI services health check completed',
       aiProvider: 'enhanced-groq'
     });
 
@@ -173,10 +173,10 @@ export async function GET(req: NextRequest) {
     console.error('❌ Enhanced Groq Health Check failed:', error);
     
     return NextResponse.json({
-      success: false;
+      success: false,
       health: {
         timestamp: new Date().toISOString(),
-        overallStatus: 'critical_error';
+        overallStatus: 'critical_error',
         services: {
           enhancedGroq: { available: false, status: 'error' },
           gemini: { available: false, status: 'error' },
@@ -185,7 +185,7 @@ export async function GET(req: NextRequest) {
         },
         error: error instanceof Error ? error.message : 'Unknown error'
       },
-      message: 'Health check failed';
+      message: 'Health check failed',
       aiProvider: 'enhanced-groq'
     }, { status: 500 });
   }
@@ -212,20 +212,20 @@ export async function POST(req: NextRequest) {
             jobTitle,
             companyName,
             skills: ['JavaScript', 'React', 'Node.js'],
-            interviewType: 'technical';
-            experienceLevel: 'mid';
+            interviewType: 'technical',
+            experienceLevel: 'mid',
             numberOfQuestions: 2
           });
           
           testResults.questionGeneration = {
-            success: true;
-            questionsGenerated: questions.length;
+            success: true,
+            questionsGenerated: questions.length,
             sampleQuestion: questions[0]?.question?.substring(0, 100) + '...',
             companyRelevance: questions.reduce((sum, q) => sum + (q.companyRelevance || 0), 0) / questions.length
           };
         } catch (error) {
           testResults.questionGeneration = {
-            success: false;
+            success: false,
             error: error instanceof Error ? error.message : 'Question generation failed'
           };
         }
@@ -242,14 +242,14 @@ export async function POST(req: NextRequest) {
           );
           
           testResults.dsaGeneration = {
-            success: true;
-            problemsGenerated: problems.length;
-            sampleProblem: problems[0]?.title;
+            success: true,
+            problemsGenerated: problems.length,
+            sampleProblem: problems[0]?.title,
             companySpecific: problems[0]?.companyContext ? true : false
           };
         } catch (error) {
           testResults.dsaGeneration = {
-            success: false;
+            success: false,
             error: error instanceof Error ? error.message : 'DSA generation failed'
           };
         }
@@ -267,14 +267,14 @@ export async function POST(req: NextRequest) {
           );
           
           testResults.responseAnalysis = {
-            success: true;
-            score: analysis.score;
-            companyFit: analysis.companyFit;
+            success: true,
+            score: analysis.score,
+            companyFit: analysis.companyFit,
             feedbackLength: analysis.feedback.length
           };
         } catch (error) {
           testResults.responseAnalysis = {
-            success: false;
+            success: false,
             error: error instanceof Error ? error.message : 'Response analysis failed'
           };
         }
@@ -287,20 +287,20 @@ export async function POST(req: NextRequest) {
             jobTitle,
             companyName,
             skills: ['Python', 'Machine Learning'],
-            interviewType: 'technical';
-            experienceLevel: 'senior';
+            interviewType: 'technical',
+            experienceLevel: 'senior',
             numberOfQuestions: 1
           });
           
           testResults.smartRouting = {
-            success: routingTest.success;
-            provider: routingTest.provider;
-            model: routingTest.model;
+            success: routingTest.success,
+            provider: routingTest.provider,
+            model: routingTest.model,
             processingTime: routingTest.processingTime
           };
         } catch (error) {
           testResults.smartRouting = {
-            success: false;
+            success: false,
             error: error instanceof Error ? error.message : 'Smart routing test failed'
           };
         }
@@ -310,14 +310,14 @@ export async function POST(req: NextRequest) {
         // Basic connectivity test
         const basicTest = await groqService.healthCheck();
         testResults.basic = {
-          success: basicTest.groqAvailable;
-          model: basicTest.model;
+          success: basicTest.groqAvailable,
+          model: basicTest.model,
           status: basicTest.status
         };
     }
 
     return NextResponse.json({
-      success: true;
+      success: true,
       testResults,
       testType,
       timestamp: new Date().toISOString(),
@@ -329,9 +329,9 @@ export async function POST(req: NextRequest) {
     console.error('❌ Service test failed:', error);
     
     return NextResponse.json({
-      success: false;
-      error: error instanceof Error ? error.message : 'Test failed';
-      testType: 'unknown';
+      success: false,
+      error: error instanceof Error ? error.message : 'Test failed',
+      testType: 'unknown',
       timestamp: new Date().toISOString(),
       aiProvider: 'enhanced-groq'
     }, { status: 500 });

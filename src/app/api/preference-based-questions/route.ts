@@ -68,17 +68,17 @@ export async function POST(request: NextRequest) {
     // Check if preference-based questions already exist
     if (!forceRegenerate) {
       const existingQuestions = await db.collection('questions').findOne({
-        interviewId: interviewId;
+        interviewId: interviewId,
         'metadata.questionType': 'preference-based'
       });
 
       if (existingQuestions && existingQuestions.questions?.length > 0) {
         console.log('✅ Returning existing preference-based questions');
         return NextResponse.json({
-          success: true;
-          message: 'Preference-based questions already exist';
-          questions: existingQuestions.questions;
-          metadata: existingQuestions.metadata;
+          success: true,
+          message: 'Preference-based questions already exist',
+          questions: existingQuestions.questions,
+          metadata: existingQuestions.metadata,
           fromCache: true
         });
       }
@@ -89,8 +89,8 @@ export async function POST(request: NextRequest) {
     // Get user preferences
     const userPreferences = await userPreferencesService.getUserPreferences(session.user.id);
     console.log('📊 User preferences loaded:', {
-      defaultDifficulty: userPreferences.defaultDifficulty;
-      dsaFocus: userPreferences.dsaPreferences.companySpecificFocus;
+      defaultDifficulty: userPreferences.defaultDifficulty,
+      dsaFocus: userPreferences.dsaPreferences.companySpecificFocus,
       questionDistribution: userPreferences.questionDistribution
     });
 
@@ -100,10 +100,10 @@ export async function POST(request: NextRequest) {
       jobTitle,
       companyName,
       skills,
-      experienceLevel: experienceLevel || 'mid';
-      interviewType: interviewType || 'mixed';
-      numberOfQuestions: numberOfQuestions || 20;
-      companyIntelligence: null;
+      experienceLevel: experienceLevel || 'mid',
+      interviewType: interviewType || 'mixed',
+      numberOfQuestions: numberOfQuestions || 20,
+      companyIntelligence: null,
       forceUniqueGeneration: true
     };
 
@@ -122,16 +122,16 @@ export async function POST(request: NextRequest) {
 
     // Store questions in database
     const questionDoc = {
-      interviewId: interviewId;
-      userId: session.user.id;
-      questions: generationResult.questions;
-      answers: [];
+      interviewId: interviewId,
+      userId: session.user.id,
+      questions: generationResult.questions,
+      answers: [],
       metadata: {
         ...generationResult.metadata,
-        questionType: 'preference-based';
+        questionType: 'preference-based',
         generatedAt: new Date(),
-        userPreferenceVersion: userPreferences.version;
-        companySpecific: true;
+        userPreferenceVersion: userPreferences.version,
+        companySpecific: true,
         uniqueGeneration: true
       }
     };
@@ -148,9 +148,9 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       {
         $set: {
-          status: 'ready';
-          questionType: 'preference-based';
-          questionMetadata: questionDoc.metadata;
+          status: 'ready',
+          questionType: 'preference-based',
+          questionMetadata: questionDoc.metadata,
           updatedAt: new Date()
         }
       }
@@ -159,15 +159,15 @@ export async function POST(request: NextRequest) {
     console.log(`🎉 Successfully generated and stored preference-based questions for interview ${interviewId}`);
 
     return NextResponse.json({
-      success: true;
+      success: true,
       message: `Generated ${generationResult.questions.length} preference-based questions with ${generationResult.metadata.uniqueDSAProblems} unique DSA problems`,
-      questions: generationResult.questions;
-      metadata: generationResult.metadata;
+      questions: generationResult.questions,
+      metadata: generationResult.metadata,
       statistics: {
-        totalQuestions: generationResult.questions.length;
+        totalQuestions: generationResult.questions.length,
         preferenceAlignment: `${generationResult.metadata.preferenceAlignment}%`,
-        uniqueDSAProblems: generationResult.metadata.uniqueDSAProblems;
-        companySpecific: true;
+        uniqueDSAProblems: generationResult.metadata.uniqueDSAProblems,
+        companySpecific: true,
         generationTime: `${generationResult.metadata.generationTime}ms`,
         questionBreakdown: this.getQuestionBreakdown(generationResult.questions)
       }
@@ -178,8 +178,8 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to generate preference-based questions';
-        details: error.message;
+        error: 'Failed to generate preference-based questions',
+        details: error.message,
         suggestion: 'Please try again or check your preferences settings'
       },
       { status: 500 }
@@ -203,8 +203,8 @@ export async function GET(request: NextRequest) {
     const userPreferences = await userPreferencesService.getUserPreferences(session.user.id);
     
     return NextResponse.json({
-      success: true;
-      preferences: userPreferences;
+      success: true,
+      preferences: userPreferences,
       message: 'User preferences retrieved successfully'
     });
 
@@ -213,7 +213,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to get user preferences';
+        error: 'Failed to get user preferences',
         details: error.message
       },
       { status: 500 }

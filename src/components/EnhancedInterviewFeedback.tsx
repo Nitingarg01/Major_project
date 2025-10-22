@@ -93,11 +93,11 @@ const EnhancedInterviewFeedback: React.FC<EnhancedInterviewFeedbackProps> = ({
   // Get emotion icon
   const getEmotionIcon = (emotion: string) => {
     const icons: Record<string, React.ReactNode> = {
-      happy: <Smile className="w-4 h-4 text-green-500" />;
-      focused: <Target className="w-4 h-4 text-blue-500" />;
-      engaged: <Brain className="w-4 h-4 text-purple-500" />;
-      neutral: <Meh className="w-4 h-4 text-gray-500" />;
-      confused: <AlertCircle className="w-4 h-4 text-yellow-500" />;
+      happy: <Smile className="w-4 h-4 text-green-500" />,
+      focused: <Target className="w-4 h-4 text-blue-500" />,
+      engaged: <Brain className="w-4 h-4 text-purple-500" />,
+      neutral: <Meh className="w-4 h-4 text-gray-500" />,
+      confused: <AlertCircle className="w-4 h-4 text-yellow-500" />,
       stressed: <Frown className="w-4 h-4 text-red-500" />
     }
     return icons[emotion] || icons.neutral;

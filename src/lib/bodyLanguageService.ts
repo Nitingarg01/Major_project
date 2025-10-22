@@ -41,7 +41,7 @@ export class BodyLanguageService {
    * Analyze body language from video frame and face detection data
    */
   public async analyzeBodyLanguage(
-    video: HTMLVideoElement;
+    video: HTMLVideoElement,
     faceDetectionData?: any
   ): Promise<BodyLanguageData> {
     try {
@@ -117,7 +117,7 @@ export class BodyLanguageService {
    * Analyze posture based on face position and size
    */
   private analyzePosture(
-    faceData: any;
+    faceData: any,
     canvas: HTMLCanvasElement
   ): 'excellent' | 'good' | 'fair' | 'poor' {
     if (!faceData || !faceData.detection) {
@@ -154,7 +154,7 @@ export class BodyLanguageService {
     }
 
     const currentPosition = {
-      x: faceData.detection.box.x;
+      x: faceData.detection.box.x,
       y: faceData.detection.box.y
     }
 
@@ -188,7 +188,7 @@ export class BodyLanguageService {
    * Analyze head position
    */
   private analyzeHeadPosition(
-    faceData: any;
+    faceData: any,
     canvas: HTMLCanvasElement
   ): 'centered' | 'left' | 'right' | 'down' | 'up' {
     if (!faceData || !faceData.detection) {
@@ -235,7 +235,7 @@ export class BodyLanguageService {
     score += fidgetingScores[data.fidgeting as keyof typeof fidgetingScores] || 12;
 
     // Head position score (0-15)
-    score += data.headPosition === 'centered' ? 15 : 8;
+    score += data.headPosition === 'centered' ? 15 : 8,
 
     return Math.round(Math.min(100, score));
   }
@@ -246,10 +246,10 @@ export class BodyLanguageService {
   public getBodyLanguageAnalytics(): BodyLanguageAnalytics {
     if (this.bodyLanguageHistory.length === 0) {
       return {
-        averagePosture: 5;
-        averageEyeContact: 50;
-        fidgetingLevel: 5;
-        overallBodyLanguageScore: 50;
+        averagePosture: 5,
+        averageEyeContact: 50,
+        fidgetingLevel: 5,
+        overallBodyLanguageScore: 50,
         recommendations: ['Maintain good posture', 'Make eye contact with camera'],
         timeline: []
       }
@@ -279,10 +279,10 @@ export class BodyLanguageService {
     })
 
     return {
-      averagePosture: avgPosture;
-      averageEyeContact: avgEyeContact;
-      fidgetingLevel: avgFidgeting;
-      overallBodyLanguageScore: avgConfidence;
+      averagePosture: avgPosture,
+      averageEyeContact: avgEyeContact,
+      fidgetingLevel: avgFidgeting,
+      overallBodyLanguageScore: avgConfidence,
       recommendations,
       timeline: [...this.bodyLanguageHistory]
     }
@@ -292,7 +292,7 @@ export class BodyLanguageService {
    * Generate personalized recommendations
    */
   private generateRecommendations(metrics: any): string[] {
-    const recommendations: string[] = [];
+    const recommendations: string[] = [],
 
     if (metrics.avgPosture < 6) {
       recommendations.push('Sit upright and keep your shoulders back for better posture');
@@ -336,11 +336,11 @@ export class BodyLanguageService {
 
   private getDefaultBodyLanguage(): BodyLanguageData {
     return {
-      posture: 'fair';
-      eyeContact: 50;
-      fidgeting: 'low';
-      headPosition: 'centered';
-      confidence: 50;
+      posture: 'fair',
+      eyeContact: 50,
+      fidgeting: 'low',
+      headPosition: 'centered',
+      confidence: 50,
       timestamp: new Date()
     }
   }
@@ -358,7 +358,7 @@ export class BodyLanguageService {
    * Get real-time feedback message
    */
   public getBodyLanguageFeedback(data: BodyLanguageData): string {
-    const messages: string[] = [];
+    const messages: string[] = [],
 
     if (data.posture === 'poor') {
       messages.push('Sit up straight');

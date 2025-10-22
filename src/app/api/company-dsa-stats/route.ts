@@ -22,9 +22,9 @@ export async function GET(request: NextRequest) {
     const stats = await enhancedDSAGenerator.getCompanyProblemStats(companyName);
 
     return NextResponse.json({
-      success: true;
-      company: companyName;
-      statistics: stats;
+      success: true,
+      company: companyName,
+      statistics: stats,
       message: `DSA statistics retrieved for ${companyName}`
     });
 
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to retrieve company DSA statistics';
+        error: 'Failed to retrieve company DSA statistics',
         details: error.message
       },
       { status: 500 }
@@ -71,10 +71,10 @@ export async function POST(request: NextRequest) {
     const testPreferences = {
       dsaPreferences: {
         preferredTopics: ['arrays', 'strings', 'trees', 'graphs'],
-        avoidTopics: [];
-        companySpecificFocus: true;
-        difficultyProgression: true;
-        realWorldScenarios: true;
+        avoidTopics: [],
+        companySpecificFocus: true,
+        difficultyProgression: true,
+        realWorldScenarios: true,
         interviewStylePreference: 'company_specific' as const
       }
     };
@@ -88,10 +88,10 @@ export async function POST(request: NextRequest) {
     );
 
     return NextResponse.json({
-      success: true;
-      company: companyName;
-      problems: problems;
-      count: problems.length;
+      success: true,
+      company: companyName,
+      problems: problems,
+      count: problems.length,
       message: `Generated ${problems.length} unique DSA problems for ${companyName}`
     });
 
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to generate company DSA problems';
+        error: 'Failed to generate company DSA problems',
         details: error.message
       },
       { status: 500 }

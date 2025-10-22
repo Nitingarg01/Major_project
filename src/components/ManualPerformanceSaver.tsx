@@ -80,10 +80,10 @@ export default function ManualPerformanceSaver({
           const techScore = technicalParams.reduce((sum, param) =>;
             sum + (feedbackData.parameterScores[param] || 0), 0) / technicalParams.length
           roundResults.push({
-            roundType: 'technical';
+            roundType: 'technical',
             score: Math.round(techScore * 10),
-            questionsAnswered: technicalParams.length;
-            totalQuestions: technicalParams.length;
+            questionsAnswered: technicalParams.length,
+            totalQuestions: technicalParams.length,
             timeSpent: Math.round(timeSpent * 0.5)
           })
         }
@@ -92,10 +92,10 @@ export default function ManualPerformanceSaver({
           const behavioralScore = behavioralParams.reduce((sum, param) =>;
             sum + (feedbackData.parameterScores[param] || 0), 0) / behavioralParams.length
           roundResults.push({
-            roundType: 'behavioral';
+            roundType: 'behavioral',
             score: Math.round(behavioralScore * 10),
-            questionsAnswered: behavioralParams.length;
-            totalQuestions: behavioralParams.length;
+            questionsAnswered: behavioralParams.length,
+            totalQuestions: behavioralParams.length,
             timeSpent: Math.round(timeSpent * 0.3)
           })
         }
@@ -104,20 +104,20 @@ export default function ManualPerformanceSaver({
           const otherScore = otherParams.reduce((sum, param) =>;
             sum + (feedbackData.parameterScores[param] || 0), 0) / otherParams.length
           roundResults.push({
-            roundType: 'mixed';
+            roundType: 'mixed',
             score: Math.round(otherScore * 10),
-            questionsAnswered: otherParams.length;
-            totalQuestions: otherParams.length;
+            questionsAnswered: otherParams.length,
+            totalQuestions: otherParams.length,
             timeSpent: Math.round(timeSpent * 0.2)
           })
         }
       } else {
         // For single-type interviews
         roundResults.push({
-          roundType: roundType;
-          score: overallScore;
-          questionsAnswered: totalQuestions;
-          totalQuestions: totalQuestions;
+          roundType: roundType,
+          score: overallScore,
+          questionsAnswered: totalQuestions,
+          totalQuestions: totalQuestions,
           timeSpent: timeSpent
         })
       }
@@ -196,14 +196,14 @@ export default function ManualPerformanceSaver({
       )
 
       const performanceData = {
-        interviewId: interviewData.interviewId;
-        jobTitle: interviewData.jobTitle;
-        companyName: interviewData.companyName;
-        interviewType: interviewData.interviewType;
-        experienceLevel: interviewData.experienceLevel;
+        interviewId: interviewData.interviewId,
+        jobTitle: interviewData.jobTitle,
+        companyName: interviewData.companyName,
+        interviewType: interviewData.interviewType,
+        experienceLevel: interviewData.experienceLevel,
         totalQuestions,
         correctAnswers,
-        score: overallScore;
+        score: overallScore,
         timeSpent,
         feedback: {
           overall: feedbackData.overallVerdict || `${interviewData.interviewType} interview completed for ${interviewData.experienceLevel} level position`,
@@ -217,7 +217,7 @@ export default function ManualPerformanceSaver({
       console.log('Manual save - sending data:', performanceData);
 
       const response = await fetch('/api/save-performance', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },

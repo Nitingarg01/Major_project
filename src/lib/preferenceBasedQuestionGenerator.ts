@@ -10,7 +10,7 @@ import { optimizedAIService } from './optimizedAIService';
 import { extractJSON } from './jsonExtractor';
 
 export class PreferenceBasedQuestionGenerator {
-  private static instance: PreferenceBasedQuestionGenerator;
+  private static instance: PreferenceBasedQuestionGenerator,
 
   private constructor() {}
 
@@ -25,15 +25,15 @@ export class PreferenceBasedQuestionGenerator {
    * Main method to generate preference-based questions
    */
   async generatePreferenceBasedQuestions(request: QuestionGenerationRequest): Promise<{
-    success: boolean;
-    questions: EnhancedQuestion[];
+    success: boolean,
+    questions: EnhancedQuestion[],
     metadata: {
-      totalQuestions: number;
-      preferenceAlignment: number;
-      companySpecific: boolean;
-      uniqueDSAProblems: number;
-      generationTime: number;
-      provider: string;
+      totalQuestions: number,
+      preferenceAlignment: number,
+      companySpecific: boolean,
+      uniqueDSAProblems: number,
+      generationTime: number,
+      provider: string,
       model: string
     };
   }> {
@@ -50,7 +50,7 @@ export class PreferenceBasedQuestionGenerator {
 
       console.log('📊 Question distribution:', questionDistribution);
 
-      const allQuestions: EnhancedQuestion[] = [];
+      const allQuestions: EnhancedQuestion[] = [],
       let uniqueDSACount = 0;
       let totalPreferenceAlignment = 0;
 
@@ -119,15 +119,15 @@ export class PreferenceBasedQuestionGenerator {
       console.log(`🔥 Unique DSA problems: ${uniqueDSACount}`);
 
       return {
-        success: true;
-        questions: shuffledQuestions;
+        success: true,
+        questions: shuffledQuestions,
         metadata: {
-          totalQuestions: shuffledQuestions.length;
+          totalQuestions: shuffledQuestions.length,
           preferenceAlignment: Math.round((totalPreferenceAlignment / shuffledQuestions.length) * 100),
-          companySpecific: true;
-          uniqueDSAProblems: uniqueDSACount;
+          companySpecific: true,
+          uniqueDSAProblems: uniqueDSACount,
           generationTime,
-          provider: 'preference-based-generator';
+          provider: 'preference-based-generator',
           model: 'enhanced-ai-with-preferences'
         }
       };
@@ -135,15 +135,15 @@ export class PreferenceBasedQuestionGenerator {
     } catch (error) {
       console.error('❌ Error in preference-based question generation:', error);
       return {
-        success: false;
-        questions: [];
+        success: false,
+        questions: [],
         metadata: {
-          totalQuestions: 0;
-          preferenceAlignment: 0;
-          companySpecific: false;
-          uniqueDSAProblems: 0;
+          totalQuestions: 0,
+          preferenceAlignment: 0,
+          companySpecific: false,
+          uniqueDSAProblems: 0,
           generationTime: Date.now() - startTime,
-          provider: 'error';
+          provider: 'error',
           model: 'none'
         }
       };
@@ -154,7 +154,7 @@ export class PreferenceBasedQuestionGenerator {
    * Generate technical questions aligned with user preferences
    */
   private async generateTechnicalQuestionsWithPreferences(
-    request: QuestionGenerationRequest;
+    request: QuestionGenerationRequest,
     count: number
   ): Promise<EnhancedQuestion[]> {
     const { userPreferences, companyName, jobTitle, skills, experienceLevel } = request;
@@ -210,9 +210,9 @@ Return ONLY valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'openai';
-        model: 'gpt-4o-mini';
-        max_tokens: 4000;
+        provider: 'openai',
+        model: 'gpt-4o-mini',
+        max_tokens: 4000,
         temperature: 0.7
       });
 
@@ -237,7 +237,7 @@ Return ONLY valid JSON array:
    * Generate behavioral questions aligned with user preferences
    */
   private async generateBehavioralQuestionsWithPreferences(
-    request: QuestionGenerationRequest;
+    request: QuestionGenerationRequest,
     count: number
   ): Promise<EnhancedQuestion[]> {
     const { userPreferences, companyName, jobTitle, experienceLevel } = request;
@@ -292,9 +292,9 @@ Return ONLY valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'openai';
-        model: 'gpt-4o-mini';
-        max_tokens: 3000;
+        provider: 'openai',
+        model: 'gpt-4o-mini',
+        max_tokens: 3000,
         temperature: 0.6
       });
 
@@ -319,7 +319,7 @@ Return ONLY valid JSON array:
    * Generate company-unique DSA questions - The MAIN FEATURE!
    */
   private async generateCompanyUniqueDSAQuestions(
-    request: QuestionGenerationRequest;
+    request: QuestionGenerationRequest,
     count: number
   ): Promise<EnhancedQuestion[]> {
     const { userPreferences, companyName, experienceLevel } = request;
@@ -344,11 +344,11 @@ Return ONLY valid JSON array:
 
     // Convert DSA problems to enhanced questions
     const dsaQuestions: EnhancedQuestion[] = uniqueDSAProblems.map((problem, index) => ({
-      id: problem.id;
+      id: problem.id,
       question: `${problem.title}\n\n${problem.description}\n\nCompany Context: ${problem.companyContext}\n\nReal-World Application: ${problem.realWorldApplication}`,
       expectedAnswer: `Implement an efficient solution with ${problem.expectedComplexity.time} time complexity and ${problem.expectedComplexity.space} space complexity. Consider ${companyName}'s scale requirements: ${problem.companySpecificContext.scaleRequirements}`,
-      category: 'dsa';
-      difficulty: problem.difficulty;
+      category: 'dsa',
+      difficulty: problem.difficulty,
       points: this.getDSAPoints(problem.difficulty),
       timeLimit: this.getDSATimeLimit(problem.difficulty),
       evaluationCriteria: [
@@ -364,12 +364,12 @@ Return ONLY valid JSON array:
         'company-specific',
         ...problem.topics
       ],
-      hints: problem.hints;
-      companyRelevance: problem.uniquenessScore;
-      uniquenessScore: problem.uniquenessScore;
-      companyContext: problem.companyContext;
+      hints: problem.hints,
+      companyRelevance: problem.uniquenessScore,
+      uniquenessScore: problem.uniquenessScore,
+      companyContext: problem.companyContext,
       preferences: {
-        alignsWithUserPrefs: true;
+        alignsWithUserPrefs: true,
         preferenceFactors: [
           'Company-specific focus',
           'Real-world scenarios',
@@ -378,9 +378,9 @@ Return ONLY valid JSON array:
         ]
       },
       metadata: {
-        generatedBy: 'enhanced-dsa-generator';
-        model: 'preference-based-unique';
-        provider: 'company-specific';
+        generatedBy: 'enhanced-dsa-generator',
+        model: 'preference-based-unique',
+        provider: 'company-specific',
         generatedAt: new Date(),
         userPreferenceVersion: userPreferences.version || '1.0'
       }
@@ -394,7 +394,7 @@ Return ONLY valid JSON array:
    * Generate system design questions with preferences
    */
   private async generateSystemDesignQuestionsWithPreferences(
-    request: QuestionGenerationRequest;
+    request: QuestionGenerationRequest,
     count: number
   ): Promise<EnhancedQuestion[]> {
     const { userPreferences, companyName, jobTitle, skills, experienceLevel } = request;
@@ -433,9 +433,9 @@ Return ONLY valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'openai';
-        model: 'gpt-4o-mini';
-        max_tokens: 3000;
+        provider: 'openai',
+        model: 'gpt-4o-mini',
+        max_tokens: 3000,
         temperature: 0.7
       });
 
@@ -460,33 +460,33 @@ Return ONLY valid JSON array:
    * Generate aptitude questions with preferences
    */
   private async generateAptitudeQuestionsWithPreferences(
-    request: QuestionGenerationRequest;
+    request: QuestionGenerationRequest,
     count: number
   ): Promise<EnhancedQuestion[]> {
     // For aptitude questions, we'll use a simpler approach since they're less company-specific
-    const questions: EnhancedQuestion[] = [];
+    const questions: EnhancedQuestion[] = [],
     
     for (let i = 0; i < count; i++) {
       questions.push({
         id: `aptitude-pref-${Date.now()}-${i}`,
         question: `Aptitude Question ${i + 1}: Solve this logical reasoning problem designed for ${request.jobTitle} candidates.`,
-        expectedAnswer: 'Systematic approach to solving the logical problem with clear reasoning.';
-        category: 'aptitude';
-        difficulty: 'medium';
-        points: 8;
-        timeLimit: 3;
+        expectedAnswer: 'Systematic approach to solving the logical problem with clear reasoning.',
+        category: 'aptitude',
+        difficulty: 'medium',
+        points: 8,
+        timeLimit: 3,
         evaluationCriteria: ['Logical Reasoning', 'Problem Solving', 'Analytical Skills'],
         tags: ['aptitude', request.companyName, 'preference-aligned'],
         hints: ['Think systematically', 'Consider all possibilities'],
-        companyRelevance: 6;
+        companyRelevance: 6,
         preferences: {
-          alignsWithUserPrefs: true;
+          alignsWithUserPrefs: true,
           preferenceFactors: ['Analytical thinking focus']
         },
         metadata: {
-          generatedBy: 'preference-aptitude-generator';
-          model: 'template-based';
-          provider: 'internal';
+          generatedBy: 'preference-aptitude-generator',
+          model: 'template-based',
+          provider: 'internal',
           generatedAt: new Date(),
           userPreferenceVersion: request.userPreferences.version || '1.0'
         }
@@ -500,37 +500,37 @@ Return ONLY valid JSON array:
    * Enhance a question with preference metadata
    */
   private enhanceQuestionWithPreferences(
-    question: any;
-    category: string;
-    userPreferences: UserInterviewPreferences;
-    provider: string;
-    model: string;
+    question: any,
+    category: string,
+    userPreferences: UserInterviewPreferences,
+    provider: string,
+    model: string,
     index: number
   ): EnhancedQuestion {
     const preferenceFactors = this.analyzePreferenceAlignment(question, userPreferences, category);
     
     return {
       id: question.id || `${category}-pref-${Date.now()}-${index}`,
-      question: question.question;
-      expectedAnswer: question.expectedAnswer;
-      category: category as any;
-      difficulty: question.difficulty || 'medium';
-      points: question.points || 12;
-      timeLimit: question.timeLimit || 6;
+      question: question.question,
+      expectedAnswer: question.expectedAnswer,
+      category: category as any,
+      difficulty: question.difficulty || 'medium',
+      points: question.points || 12,
+      timeLimit: question.timeLimit || 6,
       evaluationCriteria: question.evaluationCriteria || ['Technical Knowledge', 'Communication', 'Problem Solving'],
       tags: question.tags || [category, 'preference-aligned'],
-      hints: question.hints || [];
-      companyRelevance: question.companyRelevance || 7;
-      uniquenessScore: question.uniquenessScore;
-      companyContext: question.companyContext;
+      hints: question.hints || [],
+      companyRelevance: question.companyRelevance || 7,
+      uniquenessScore: question.uniquenessScore,
+      companyContext: question.companyContext,
       preferences: {
-        alignsWithUserPrefs: preferenceFactors.length > 0;
+        alignsWithUserPrefs: preferenceFactors.length > 0,
         preferenceFactors: preferenceFactors
       },
       metadata: {
-        generatedBy: 'preference-based-generator';
-        model: model;
-        provider: provider;
+        generatedBy: 'preference-based-generator',
+        model: model,
+        provider: provider,
         generatedAt: new Date(),
         userPreferenceVersion: userPreferences.version || '1.0'
       }
@@ -541,11 +541,11 @@ Return ONLY valid JSON array:
    * Analyze how well a question aligns with user preferences
    */
   private analyzePreferenceAlignment(
-    question: any;
-    userPreferences: UserInterviewPreferences;
+    question: any,
+    userPreferences: UserInterviewPreferences,
     category: string
   ): string[] {
-    const alignmentFactors: string[] = [];
+    const alignmentFactors: string[] = [],
 
     if (category === 'technical') {
       const techPrefs = userPreferences.technicalPreferences;
@@ -586,18 +586,18 @@ Return ONLY valid JSON array:
    */
   private getDSAPoints(difficulty: 'easy' | 'medium' | 'hard'): number {
     switch (difficulty) {
-      case 'easy': return 15;
-      case 'medium': return 25;
-      case 'hard': return 40;
+      case 'easy': return 15,
+      case 'medium': return 25,
+      case 'hard': return 40,
       default: return 20;
     }
   }
 
   private getDSATimeLimit(difficulty: 'easy' | 'medium' | 'hard'): number {
     switch (difficulty) {
-      case 'easy': return 20;
-      case 'medium': return 35;
-      case 'hard': return 50;
+      case 'easy': return 20,
+      case 'medium': return 35,
+      case 'hard': return 50,
       default: return 30;
     }
   }
@@ -622,22 +622,22 @@ Return ONLY valid JSON array:
       id: `tech-fallback-${Date.now()}-${index}`,
       question: `Technical Question ${index + 1}: Describe your experience with ${request.skills[index % request.skills.length]} and how it applies to ${request.jobTitle} role at ${request.companyName}.`,
       expectedAnswer: `Detailed technical explanation covering experience, challenges, and practical applications.`,
-      category: 'technical';
-      difficulty: 'medium';
-      points: 15;
-      timeLimit: 8;
+      category: 'technical',
+      difficulty: 'medium',
+      points: 15,
+      timeLimit: 8,
       evaluationCriteria: ['Technical Depth', 'Communication', 'Real Experience'],
       tags: ['technical', request.companyName, 'fallback'],
       hints: ['Include specific examples', 'Discuss challenges faced'],
-      companyRelevance: 6;
+      companyRelevance: 6,
       preferences: {
-        alignsWithUserPrefs: true;
+        alignsWithUserPrefs: true,
         preferenceFactors: ['Technical focus']
       },
       metadata: {
-        generatedBy: 'fallback-generator';
-        model: 'template';
-        provider: 'internal';
+        generatedBy: 'fallback-generator',
+        model: 'template',
+        provider: 'internal',
         generatedAt: new Date(),
         userPreferenceVersion: '1.0'
       }
@@ -649,22 +649,22 @@ Return ONLY valid JSON array:
       id: `behavioral-fallback-${Date.now()}-${index}`,
       question: `Behavioral Question ${index + 1}: Tell me about a challenging situation you faced in your role and how you handled it, particularly in the context of ${request.companyName}'s work environment.`,
       expectedAnswer: `STAR format response demonstrating problem-solving, leadership, and professional growth.`,
-      category: 'behavioral';
-      difficulty: 'medium';
-      points: 12;
-      timeLimit: 6;
+      category: 'behavioral',
+      difficulty: 'medium',
+      points: 12,
+      timeLimit: 6,
       evaluationCriteria: ['Communication', 'Problem Solving', 'Professional Growth'],
       tags: ['behavioral', request.companyName, 'fallback'],
       hints: ['Use STAR format', 'Focus on your role and impact'],
-      companyRelevance: 6;
+      companyRelevance: 6,
       preferences: {
-        alignsWithUserPrefs: true;
+        alignsWithUserPrefs: true,
         preferenceFactors: ['Behavioral assessment']
       },
       metadata: {
-        generatedBy: 'fallback-generator';
-        model: 'template';
-        provider: 'internal';
+        generatedBy: 'fallback-generator',
+        model: 'template',
+        provider: 'internal',
         generatedAt: new Date(),
         userPreferenceVersion: '1.0'
       }
@@ -676,22 +676,22 @@ Return ONLY valid JSON array:
       id: `system-fallback-${Date.now()}-${index}`,
       question: `System Design Question ${index + 1}: Design a scalable system for ${request.companyName} that handles their core business requirements with high availability and performance.`,
       expectedAnswer: `Complete system design covering architecture, scalability, data flow, and technology choices appropriate for ${request.companyName}'s scale.`,
-      category: 'system_design';
-      difficulty: 'medium';
-      points: 20;
-      timeLimit: 15;
+      category: 'system_design',
+      difficulty: 'medium',
+      points: 20,
+      timeLimit: 15,
       evaluationCriteria: ['System Architecture', 'Scalability', 'Technology Choices', 'Trade-offs'],
       tags: ['system-design', request.companyName, 'fallback'],
       hints: ['Consider scale requirements', 'Think about trade-offs'],
-      companyRelevance: 7;
+      companyRelevance: 7,
       preferences: {
-        alignsWithUserPrefs: true;
+        alignsWithUserPrefs: true,
         preferenceFactors: ['System design focus']
       },
       metadata: {
-        generatedBy: 'fallback-generator';
-        model: 'template';
-        provider: 'internal';
+        generatedBy: 'fallback-generator',
+        model: 'template',
+        provider: 'internal',
         generatedAt: new Date(),
         userPreferenceVersion: '1.0'
       }

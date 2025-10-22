@@ -29,7 +29,7 @@ const CreateLoginForm = () => {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: '';
+      email: '',
       password: ''
     }
   })
@@ -51,7 +51,7 @@ const CreateLoginForm = () => {
       }
     } catch (error) {
       // Display the actual error message from the server
-      const errorMessage = error instanceof Error ? error.message : "Login failed. Please check your credentials.";
+      const errorMessage = error instanceof Error ? error.message : "Login failed. Please check your credentials.",
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);

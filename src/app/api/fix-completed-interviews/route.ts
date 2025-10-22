@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
           { _id: interviewId },
           {
             $set: {
-              status: 'completed';
+              status: 'completed',
               completedAt: performance.completedAt || new Date(),
               performanceId: performance._id
             }
@@ -73,9 +73,9 @@ export async function POST(request: NextRequest) {
     console.log(`🔄 Converted ${convertedCount} interviews to use ObjectId userId`);
 
     return NextResponse.json({
-      success: true;
+      success: true,
       message: `Fixed ${fixedCount} completed interviews and converted ${convertedCount} userId formats`,
-      fixedInterviews: fixedCount;
+      fixedInterviews: fixedCount,
       convertedUserIds: convertedCount
     })
 
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Internal server error';
+        error: 'Internal server error',
         details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }

@@ -70,7 +70,7 @@ const getScoreIcon = (score: number) => {
 
 const EnhancedFeedback = ({ data, labels, overallScore }: EnhancedFeedbackProps) => {
   // Calculate average and identify strengths/improvements
-  const averageScore = data.length > 0 ? Math.round(data.reduce((a, b) => a + b, 0) / data.length) : 0;
+  const averageScore = data.length > 0 ? Math.round(data.reduce((a, b) => a + b, 0) / data.length) : 0,
   const maxScore = Math.max(...data);
   const minScore = Math.min(...data);
   

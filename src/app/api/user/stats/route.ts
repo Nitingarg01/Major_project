@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
     console.error('Error fetching user stats:', error);
     return NextResponse.json(
       { 
-        totalInterviews: 0;
-        completedInterviews: 0;
+        totalInterviews: 0,
+        completedInterviews: 0,
         averageScore: 0 
       },
       { status: 500 }

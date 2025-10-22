@@ -8,7 +8,7 @@ import { ObjectId } from 'mongodb';
 import { UserInterviewPreferences, DEFAULT_USER_PREFERENCES, CompanySpecificDSAProfile } from '@/types/userPreferences';
 
 export class UserPreferencesService {
-  private static instance: UserPreferencesService;
+  private static instance: UserPreferencesService,
   private dbName = 'Cluster0';
 
   private constructor() {}
@@ -139,17 +139,17 @@ export class UserPreferencesService {
    */
   getQuestionDistribution(
     preferences: UserInterviewPreferences, 
-    totalQuestions: number;
+    totalQuestions: number,
     interviewType: string
   ): { [key: string]: number } {
     if (interviewType !== 'mixed') {
       // For specific types, return full allocation to that type
       return {
         [interviewType]: totalQuestions,
-        technical: 0;
-        behavioral: 0;
-        dsa: 0;
-        aptitude: 0;
+        technical: 0,
+        behavioral: 0,
+        dsa: 0,
+        aptitude: 0,
         system_design: 0
       };
     }
@@ -169,7 +169,7 @@ export class UserPreferencesService {
    * Determine if company-specific DSA generation is needed
    */
   shouldGenerateCompanySpecificDSA(
-    preferences: UserInterviewPreferences;
+    preferences: UserInterviewPreferences,
     companyName: string
   ): boolean {
     return preferences.dsaPreferences.companySpecificFocus &&
@@ -181,11 +181,11 @@ export class UserPreferencesService {
    * Get DSA difficulty progression for user
    */
   getDSADifficultyProgression(
-    preferences: UserInterviewPreferences;
-    totalDSAQuestions: number;
+    preferences: UserInterviewPreferences,
+    totalDSAQuestions: number,
     experienceLevel: string
   ): Array<'easy' | 'medium' | 'hard'> {
-    const progression: Array<'easy' | 'medium' | 'hard'> = [];
+    const progression: Array<'easy' | 'medium' | 'hard'> = [],
     
     if (!preferences.dsaPreferences.difficultyProgression) {
       // No progression, use standard distribution
@@ -229,8 +229,8 @@ export class UserPreferencesService {
 
   private getStandardDifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
-      case 'entry': return 'easy';
-      case 'senior': return 'hard';
+      case 'entry': return 'easy',
+      case 'senior': return 'hard',
       default: return 'medium';
     }
   }
@@ -260,18 +260,18 @@ export class UserPreferencesService {
     // Adjust defaults based on job title
     if (jobTitle.toLowerCase().includes('senior') || jobTitle.toLowerCase().includes('lead')) {
       defaults.behavioralPreferences = {
-        leadershipQuestions: true;
-        conflictResolution: true;
-        teamCollaboration: true;
-        problemSolving: true;
-        cultureFit: true;
+        leadershipQuestions: true,
+        conflictResolution: true,
+        teamCollaboration: true,
+        problemSolving: true,
+        cultureFit: true,
         situationalJudgment: true
       };
       defaults.questionDistribution = {
-        technical: 35;
-        behavioral: 35;
-        dsa: 20;
-        aptitude: 5;
+        technical: 35,
+        behavioral: 35,
+        dsa: 20,
+        aptitude: 5,
         system_design: 5
       };
     }
@@ -279,16 +279,16 @@ export class UserPreferencesService {
     if (jobTitle.toLowerCase().includes('data') || jobTitle.toLowerCase().includes('ml')) {
       defaults.technicalPreferences = {
         focusAreas: ['algorithms', 'statistics', 'machine_learning', 'data_structures'],
-        industrySpecific: true;
-        modernTechStack: true;
+        industrySpecific: true,
+        modernTechStack: true,
         legacySystemExperience: false
       };
       defaults.dsaPreferences = {
         preferredTopics: ['arrays', 'trees', 'graphs', 'dynamic_programming', 'math'],
-        avoidTopics: [];
-        companySpecificFocus: true;
-        difficultyProgression: true;
-        realWorldScenarios: true;
+        avoidTopics: [],
+        companySpecificFocus: true,
+        difficultyProgression: true,
+        realWorldScenarios: true,
         interviewStylePreference: 'company_specific'
       };
     }
@@ -298,17 +298,17 @@ export class UserPreferencesService {
     if (topTechCompanies.some(company => companyName.toLowerCase().includes(company))) {
       defaults.dsaPreferences = {
         preferredTopics: ['arrays', 'strings', 'trees', 'graphs', 'dynamic_programming'],
-        avoidTopics: [];
-        companySpecificFocus: true;
-        difficultyProgression: true;
-        realWorldScenarios: true;
+        avoidTopics: [],
+        companySpecificFocus: true,
+        difficultyProgression: true,
+        realWorldScenarios: true,
         interviewStylePreference: 'company_specific'
       };
       defaults.questionDistribution = {
-        technical: 30;
-        behavioral: 25;
-        dsa: 35;
-        aptitude: 5;
+        technical: 30,
+        behavioral: 25,
+        dsa: 35,
+        aptitude: 5,
         system_design: 5
       };
     }

@@ -8,7 +8,7 @@ const MobileNavigator = () => {
 
 
     useEffect(() => {
-        const userAgent = typeof window.navigator === 'undefined' ? '' : navigator.userAgent;
+        const userAgent = typeof window.navigator === 'undefined' ? '' : navigator.userAgent,
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
         if (isMobileDevice || window.innerWidth < 768) {

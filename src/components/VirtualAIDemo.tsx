@@ -76,8 +76,8 @@ const VirtualAIDemo: React.FC = () => {
     speakMessage(welcomeMsg);
     
     setConversation([{
-      speaker: 'ai';
-      message: welcomeMsg;
+      speaker: 'ai',
+      message: welcomeMsg,
       timestamp: new Date()
     }])
     
@@ -98,8 +98,8 @@ const VirtualAIDemo: React.FC = () => {
       const userMsg = userResponses[messageIndex];
       
       setConversation(prev => [...prev, {
-        speaker: 'user';
-        message: userMsg;
+        speaker: 'user',
+        message: userMsg,
         timestamp: new Date()
       }])
       
@@ -114,8 +114,8 @@ const VirtualAIDemo: React.FC = () => {
           speakMessage(nextAiMsg);
           
           setConversation(prev => [...prev, {
-            speaker: 'ai';
-            message: nextAiMsg;
+            speaker: 'ai',
+            message: nextAiMsg,
             timestamp: new Date()
           }])
           
@@ -127,8 +127,8 @@ const VirtualAIDemo: React.FC = () => {
           speakMessage(endMsg);
           
           setConversation(prev => [...prev, {
-            speaker: 'ai';
-            message: endMsg;
+            speaker: 'ai',
+            message: endMsg,
             timestamp: new Date()
           }])
           

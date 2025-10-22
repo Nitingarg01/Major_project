@@ -3,36 +3,36 @@ import { extractJSON } from './jsonExtractor';
 
 // Types for interview questions and analysis
 export interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design',
   points: number
 }
 
 export interface InterviewAnalysis {
-  score: number;
-  feedback: string;
-  strengths: string[];
-  improvements: string[];
+  score: number,
+  feedback: string,
+  strengths: string[],
+  improvements: string[],
   recommendations: string[];
 }
 
 export interface QuestionGenerationParams {
-  jobTitle: string;
-  companyName: string;
-  skills: string[];
-  jobDescription: string;
-  experienceLevel: 'entry' | 'mid' | 'senior';
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design';
-  resumeContent?: string;
+  jobTitle: string,
+  companyName: string,
+  skills: string[],
+  jobDescription: string,
+  experienceLevel: 'entry' | 'mid' | 'senior',
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design',
+  resumeContent?: string,
   numberOfQuestions?: number
 }
 
 class AIInterviewModel {
-  private genAI: GoogleGenerativeAI | null = null;
-  private model: any = null;
+  private genAI: GoogleGenerativeAI | null = null,
+  private model: any = null,
 
   constructor() {
     if (!process.env.GEMINI_API_KEY) {
@@ -92,10 +92,10 @@ class AIInterviewModel {
       
       return questions.map((q: any, index: number) => ({
         id: `${interviewType}_${index + 1}`,
-        question: q.question;
-        expectedAnswer: q.expectedAnswer;
-        difficulty: q.difficulty || 'medium';
-        category: interviewType;
+        question: q.question,
+        expectedAnswer: q.expectedAnswer,
+        difficulty: q.difficulty || 'medium',
+        category: interviewType,
         points: this.calculatePoints(q.difficulty || 'medium')
       }))
     } catch (error) {
@@ -155,7 +155,7 @@ PERSONALIZATION INSTRUCTIONS:
 - Ask about challenges they faced in projects they've listed
 - Explore their role in team projects they've described
 - Reference specific companies, technologies, or accomplishments from their background
-- Ask about lessons learned from their career progression as shown in their resume` : '';
+- Ask about lessons learned from their career progression as shown in their resume` : '',
 
     return `You are an experienced HR interviewer at ${companyName}. Generate ${numberOfQuestions} behavioral interview questions for a ${experienceLevel} level ${jobTitle} position.;
 
@@ -343,7 +343,7 @@ Ensure questions are progressive, realistic, and thoroughly test the candidate's
   async analyzeInterviewPerformance(
     questions: InterviewQuestion[], 
     answers: string[], 
-    jobTitle: string;
+    jobTitle: string,
     skills: string[]
   ): Promise<any> {
     if (!this.model) {
@@ -488,8 +488,8 @@ Focus on constructive feedback that helps the candidate improve while highlighti
     // This would integrate with camera monitoring and activity detection
     // For now, returning a basic structure
     return {
-      isAnomalous: false;
-      concerns: [];
+      isAnomalous: false,
+      concerns: [],
       riskLevel: 'low'
     }
   }

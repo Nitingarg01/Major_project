@@ -12,11 +12,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Chart = ({data,labels}:{data:number[],labels:string[]}) => {
   const chartData = {
-    labels: labels;
+    labels: labels,
     datasets: [
       {
-        label: 'Score Distribution';
-        data: data;
+        label: 'Score Distribution',
+        data: data,
         backgroundColor: [
           '#36A2EB',
           '#FF6384',
@@ -24,7 +24,7 @@ const Chart = ({data,labels}:{data:number[],labels:string[]}) => {
           '#4BC0C0',
           '#9966FF'
         ],
-        borderColor: '#ffffff';
+        borderColor: '#ffffff',
         borderWidth: 2
       }
     ]

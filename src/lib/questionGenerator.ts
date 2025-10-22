@@ -47,9 +47,9 @@ export class QuestionGenerator {
   private dsaProblems: { [key: string]: DSAProblem[] } = {
     easy: [
       {
-        id: 'two-sum';
-        title: 'Two Sum';
-        difficulty: 'easy';
+        id: 'two-sum',
+        title: 'Two Sum',
+        difficulty: 'easy',
         description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.',
         examples: [
           {
@@ -82,19 +82,19 @@ export class QuestionGenerator {
         ]
       },
       {
-        id: 'palindrome-number';
-        title: 'Palindrome Number';
-        difficulty: 'easy';
+        id: 'palindrome-number',
+        title: 'Palindrome Number',
+        difficulty: 'easy',
         description: 'Given an integer x, return true if x is palindrome integer. An integer is a palindrome when it reads the same backward as forward.',
         examples: [
           {
-            input: 'x = 121';
-            output: 'true';
+            input: 'x = 121',
+            output: 'true',
             explanation: '121 reads as 121 from left to right and from right to left.'
           },
           {
-            input: 'x = -121';
-            output: 'false';
+            input: 'x = -121',
+            output: 'false',
             explanation: 'From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.'
           }
         ],
@@ -107,7 +107,7 @@ export class QuestionGenerator {
         constraints: [
           '-2^31 <= x <= 2^31 - 1';
         ],
-        topics: ['Math'];
+        topics: ['Math'],
         hints: [
           'Could you solve it without converting the integer to a string?',
           'Try reversing half of the number'
@@ -116,9 +116,9 @@ export class QuestionGenerator {
     ],
     medium: [
       {
-        id: 'add-two-numbers';
-        title: 'Add Two Numbers';
-        difficulty: 'medium';
+        id: 'add-two-numbers',
+        title: 'Add Two Numbers',
+        difficulty: 'medium',
         description: 'You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.',
         examples: [
           {
@@ -145,19 +145,19 @@ export class QuestionGenerator {
         ]
       },
       {
-        id: 'longest-substring';
-        title: 'Longest Substring Without Repeating Characters';
-        difficulty: 'medium';
+        id: 'longest-substring',
+        title: 'Longest Substring Without Repeating Characters',
+        difficulty: 'medium',
         description: 'Given a string s, find the length of the longest substring without repeating characters.',
         examples: [
           {
-            input: 's = "abcabcbb"';
-            output: '3';
+            input: 's = "abcabcbb"',
+            output: '3',
             explanation: 'The answer is "abc", with the length of 3.'
           },
           {
-            input: 's = "bbbbb"';
-            output: '1';
+            input: 's = "bbbbb"',
+            output: '1',
             explanation: 'The answer is "b", with the length of 1.'
           }
         ],
@@ -181,19 +181,19 @@ export class QuestionGenerator {
     ],
     hard: [
       {
-        id: 'median-sorted-arrays';
-        title: 'Median of Two Sorted Arrays';
-        difficulty: 'hard';
+        id: 'median-sorted-arrays',
+        title: 'Median of Two Sorted Arrays',
+        difficulty: 'hard',
         description: 'Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).',
         examples: [
           {
             input: 'nums1 = [1,3], nums2 = [2]',
-            output: '2.0';
+            output: '2.0',
             explanation: 'merged array = [1,2,3] and median is 2.';
           },
           {
             input: 'nums1 = [1,2], nums2 = [3,4]',
-            output: '2.5';
+            output: '2.5',
             explanation: 'merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.';
           }
         ],
@@ -223,87 +223,87 @@ export class QuestionGenerator {
   private aptitudeQuestions: { [key: string]: AptitudeQuestion[] } = {
     verbal: [
       {
-        id: 'verbal-1';
-        type: 'verbal';
-        question: 'Choose the word that best completes the sentence: "The new policy will _____ significant changes in the workflow."';
+        id: 'verbal-1',
+        type: 'verbal',
+        question: 'Choose the word that best completes the sentence: "The new policy will _____ significant changes in the workflow."',
         options: ['necessitate', 'alleviate', 'deteriorate', 'fabricate'],
-        correctAnswer: 0;
+        correctAnswer: 0,
         explanation: 'Necessitate means to make necessary as a result or consequence, which fits the context.',
-        difficulty: 'medium';
+        difficulty: 'medium',
         timeLimit: 60
       },
       {
-        id: 'verbal-2';
-        type: 'verbal';
-        question: 'Select the antonym of "Benevolent":';
+        id: 'verbal-2',
+        type: 'verbal',
+        question: 'Select the antonym of "Benevolent":',
         options: ['Kind', 'Malevolent', 'Generous', 'Charitable'],
-        correctAnswer: 1;
+        correctAnswer: 1,
         explanation: 'Malevolent is the opposite of benevolent (kind/generous).',
-        difficulty: 'easy';
+        difficulty: 'easy',
         timeLimit: 45
       },
       {
-        id: 'verbal-3';
-        type: 'verbal';
-        question: 'Choose the correct word: "The team\'s performance was _____ despite the challenging circumstances."';
+        id: 'verbal-3',
+        type: 'verbal',
+        question: 'Choose the correct word: "The team\'s performance was _____ despite the challenging circumstances."',
         options: ['exemplary', 'exemplarary', 'examplary', 'exemplery'],
-        correctAnswer: 0;
-        explanation: 'Exemplary is the correct spelling meaning serving as a desirable model.';
-        difficulty: 'medium';
+        correctAnswer: 0,
+        explanation: 'Exemplary is the correct spelling meaning serving as a desirable model.',
+        difficulty: 'medium',
         timeLimit: 50
       }
     ],
     numerical: [
       {
-        id: 'numerical-1';
-        type: 'numerical';
+        id: 'numerical-1',
+        type: 'numerical',
         question: 'If a product costs $80 after a 20% discount, what was the original price?',
         options: ['$96', '$100', '$104', '$120'],
-        correctAnswer: 1;
+        correctAnswer: 1,
         explanation: 'If $80 is 80% of the original price, then original price = $80 ÷ 0.8 = $100',
-        difficulty: 'medium';
+        difficulty: 'medium',
         timeLimit: 90
       },
       {
-        id: 'numerical-2';
-        type: 'numerical';
-        question: 'A train travels 240 miles in 4 hours. What is its average speed in miles per hour?';
+        id: 'numerical-2',
+        type: 'numerical',
+        question: 'A train travels 240 miles in 4 hours. What is its average speed in miles per hour?',
         options: ['55 mph', '60 mph', '65 mph', '70 mph'],
-        correctAnswer: 1;
-        explanation: 'Average speed = Total distance ÷ Total time = 240 ÷ 4 = 60 mph';
-        difficulty: 'easy';
+        correctAnswer: 1,
+        explanation: 'Average speed = Total distance ÷ Total time = 240 ÷ 4 = 60 mph',
+        difficulty: 'easy',
         timeLimit: 60
       },
       {
-        id: 'numerical-3';
-        type: 'numerical';
+        id: 'numerical-3',
+        type: 'numerical',
         question: 'If 3x + 7 = 22, what is the value of x?',
         options: ['3', '4', '5', '6'],
-        correctAnswer: 2;
+        correctAnswer: 2,
         explanation: '3x + 7 = 22, so 3x = 15, therefore x = 5',
-        difficulty: 'easy';
+        difficulty: 'easy',
         timeLimit: 75
       }
     ],
     logical: [
       {
-        id: 'logical-1';
-        type: 'logical';
-        question: 'All roses are flowers. Some flowers fade quickly. Therefore:';
+        id: 'logical-1',
+        type: 'logical',
+        question: 'All roses are flowers. Some flowers fade quickly. Therefore:',
         options: [
           'All roses fade quickly',
           'Some roses fade quickly',
           'No roses fade quickly',
           'Cannot be determined'
         ],
-        correctAnswer: 3;
-        explanation: 'We cannot determine if roses specifically fade quickly based on the given information.';
-        difficulty: 'medium';
+        correctAnswer: 3,
+        explanation: 'We cannot determine if roses specifically fade quickly based on the given information.',
+        difficulty: 'medium',
         timeLimit: 75
       },
       {
-        id: 'logical-2';
-        type: 'logical';
+        id: 'logical-2',
+        type: 'logical',
         question: 'If all A are B, and all B are C, then:',
         options: [
           'All A are C',
@@ -311,31 +311,31 @@ export class QuestionGenerator {
           'No A are C',
           'Cannot be determined'
         ],
-        correctAnswer: 0;
+        correctAnswer: 0,
         explanation: 'By transitive property, if all A are B and all B are C, then all A are C.',
-        difficulty: 'easy';
+        difficulty: 'easy',
         timeLimit: 60
       }
     ],
     spatial: [
       {
-        id: 'spatial-1';
-        type: 'spatial';
+        id: 'spatial-1',
+        type: 'spatial',
         question: 'Which shape comes next in the sequence: Circle, Square, Triangle, Circle, Square, ?',
         options: ['Circle', 'Square', 'Triangle', 'Pentagon'],
-        correctAnswer: 2;
+        correctAnswer: 2,
         explanation: 'The pattern repeats every 3 shapes: Circle, Square, Triangle.',
-        difficulty: 'easy';
+        difficulty: 'easy',
         timeLimit: 45
       },
       {
-        id: 'spatial-2';
-        type: 'spatial';
-        question: 'How many cubes are there in a 3×3×3 arrangement?';
+        id: 'spatial-2',
+        type: 'spatial',
+        question: 'How many cubes are there in a 3×3×3 arrangement?',
         options: ['9', '18', '27', '36'],
-        correctAnswer: 2;
-        explanation: '3 × 3 × 3 = 27 cubes in total.';
-        difficulty: 'easy';
+        correctAnswer: 2,
+        explanation: '3 × 3 × 3 = 27 cubes in total.',
+        difficulty: 'easy',
         timeLimit: 60
       }
     ]
@@ -343,8 +343,8 @@ export class QuestionGenerator {
 
   // Generate DSA problems based on company and difficulty
   generateDSAProblems(
-    companyName: string;
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    companyName: string,
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 1;
   ): DSAProblem[] {
     const problems = this.dsaProblems[difficulty] || this.dsaProblems.medium;
@@ -377,10 +377,10 @@ export class QuestionGenerator {
   // Generate aptitude questions based on types and difficulty
   generateAptitudeQuestions(
     types: ('verbal' | 'numerical' | 'logical' | 'spatial' | 'abstract')[],
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     questionsPerType: number = 2;
   ): AptitudeQuestion[] {
-    const questions: AptitudeQuestion[] = [];
+    const questions: AptitudeQuestion[] = [],
 
     types.forEach(type => {
       const typeQuestions = this.aptitudeQuestions[type] || [];
@@ -397,15 +397,15 @@ export class QuestionGenerator {
 
   // Generate company-specific questions mix
   generateCompanySpecificQuestions(
-    companyName: string;
-    jobLevel: 'entry' | 'mid' | 'senior';
+    companyName: string,
+    jobLevel: 'entry' | 'mid' | 'senior',
     interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed'
   ): {
     dsaProblems: DSAProblem[]
     aptitudeQuestions: AptitudeQuestion[]
   } {
-    let dsaDifficulty: 'easy' | 'medium' | 'hard' = 'medium';
-    let aptitudeDifficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    let dsaDifficulty: 'easy' | 'medium' | 'hard' = 'medium',
+    let aptitudeDifficulty: 'easy' | 'medium' | 'hard' = 'medium',
 
     // Adjust difficulty based on job level
     switch (jobLevel) {
@@ -429,7 +429,7 @@ export class QuestionGenerator {
 
     const dsaProblems = this.generateDSAProblems(companyName, dsaDifficulty, 2);
     
-    const aptitudeTypes: ('verbal' | 'numerical' | 'logical' | 'spatial')[] = [];
+    const aptitudeTypes: ('verbal' | 'numerical' | 'logical' | 'spatial')[] = [],
     
     // Different companies focus on different aptitude types
     if (['google', 'microsoft', 'apple'].includes(companyLower)) {

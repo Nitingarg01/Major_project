@@ -82,7 +82,7 @@ const SettingsPage = () => {
       const result = await elevenLabsService.textToSpeech(;
         'Hello! This is a test of the ElevenLabs AI voice. Your virtual interview will sound just like this.',
         {
-          personality: 'professional';
+          personality: 'professional',
           onStart: () => toast.info('🎙️ Playing test voice...'),
           onEnd: () => {
             toast.success('✅ Voice test completed!');

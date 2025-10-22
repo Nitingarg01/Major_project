@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
     if (interview.questions && interview.questions.length > 0 && !regenerate) {
       console.log('✅ Returning existing questions');
       return NextResponse.json({
-        success: true;
-        questions: interview.questions;
-        message: 'Questions already exist';
+        success: true,
+        questions: interview.questions,
+        message: 'Questions already exist',
         provider: 'cached'
       });
     }
@@ -52,17 +52,17 @@ export async function POST(request: NextRequest) {
       throw new Error('AI service is not available - check API keys');
     }
 
-    let allQuestions: any[] = [];
+    let allQuestions: any[] = [],
 
     // Generate different types of questions based on interview type
     if (interview.interviewType === 'mixed' || interview.interviewType === 'technical') {
       console.log('⚡ Generating technical questions with OpenAI GPT-4o-mini...');
       const technicalQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'technical';
-        experienceLevel: interview.experienceLevel || 'mid';
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'technical',
+        experienceLevel: interview.experienceLevel || 'mid',
         numberOfQuestions: Math.ceil(interview.numberOfQuestions * 0.6)
       });
       allQuestions.push(...technicalQuestions);
@@ -71,11 +71,11 @@ export async function POST(request: NextRequest) {
     if (interview.interviewType === 'mixed' || interview.interviewType === 'behavioral') {
       console.log('🧠 Generating behavioral questions with OpenAI GPT-4o-mini...');
       const behavioralQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'behavioral';
-        experienceLevel: interview.experienceLevel || 'mid';
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'behavioral',
+        experienceLevel: interview.experienceLevel || 'mid',
         numberOfQuestions: Math.ceil(interview.numberOfQuestions * 0.4)
       });
       allQuestions.push(...behavioralQuestions);
@@ -84,11 +84,11 @@ export async function POST(request: NextRequest) {
     if (interview.interviewType === 'system_design') {
       console.log('🏗️ Generating system design questions with OpenAI GPT-4o-mini...');
       const systemQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'system_design';
-        experienceLevel: interview.experienceLevel || 'mid';
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'system_design',
+        experienceLevel: interview.experienceLevel || 'mid',
         numberOfQuestions: interview.numberOfQuestions
       });
       allQuestions.push(...systemQuestions);
@@ -97,11 +97,11 @@ export async function POST(request: NextRequest) {
     if (interview.interviewType === 'aptitude') {
       console.log('🧮 Generating aptitude questions with OpenAI GPT-4o-mini...');
       const aptitudeQuestions = await aiService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'aptitude';
-        experienceLevel: interview.experienceLevel || 'mid';
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'aptitude',
+        experienceLevel: interview.experienceLevel || 'mid',
         numberOfQuestions: interview.numberOfQuestions
       });
       allQuestions.push(...aptitudeQuestions);
@@ -118,16 +118,16 @@ export async function POST(request: NextRequest) {
       
       // Convert DSA problems to question format
       const dsaQuestions = dsaProblems.map(problem => ({
-        id: problem.id;
+        id: problem.id,
         question: `Coding Problem: ${problem.title}\n\n${problem.description}`,
         expectedAnswer: `Implement an efficient solution with ${problem.timeComplexity} time complexity. Focus on correctness, efficiency, and clean code structure.`,
-        category: 'dsa';
-        difficulty: problem.difficulty;
-        points: 15;
-        timeLimit: 25;
+        category: 'dsa',
+        difficulty: problem.difficulty,
+        points: 15,
+        timeLimit: 25,
         evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases', 'Explanation'],
         tags: [...problem.topics, interview.companyName],
-        hints: problem.hints;
+        hints: problem.hints,
         dsaProblem: problem
       }));
       
@@ -142,12 +142,12 @@ export async function POST(request: NextRequest) {
     // Add metadata
     const questionsWithMetadata = allQuestions.map((question, index) => ({
       ...question,
-      order: index + 1;
+      order: index + 1,
       generatedAt: new Date(),
-      provider: question.provider || 'emergent-openai';
-      model: question.model || 'gpt-4o-mini';
-      companyRelevance: question.companyRelevance || 8;
-      optimized: true;
+      provider: question.provider || 'emergent-openai',
+      model: question.model || 'gpt-4o-mini',
+      companyRelevance: question.companyRelevance || 8,
+      optimized: true,
       performanceImprovement: '10x faster than Ollama'
     }));
 
@@ -156,10 +156,10 @@ export async function POST(request: NextRequest) {
       { id: interviewId },
       {
         $set: {
-          questions: questionsWithMetadata;
-          questionsGenerated: true;
+          questions: questionsWithMetadata,
+          questionsGenerated: true,
           lastUpdated: new Date(),
-          questionProvider: 'optimized-ai';
+          questionProvider: 'optimized-ai',
           performanceMode: 'high-speed-api'
         }
       }
@@ -168,12 +168,12 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Generated ${questionsWithMetadata.length} questions using Optimized AI (10x faster than Ollama)`);
 
     return NextResponse.json({
-      success: true;
-      questions: questionsWithMetadata;
-      provider: 'optimized-ai';
-      primaryModel: 'emergent-openai-gpt-4o-mini';
-      companySpecific: true;
-      performanceImprovement: '10x faster than Ollama';
+      success: true,
+      questions: questionsWithMetadata,
+      provider: 'optimized-ai',
+      primaryModel: 'emergent-openai-gpt-4o-mini',
+      companySpecific: true,
+      performanceImprovement: '10x faster than Ollama',
       message: `Generated ${questionsWithMetadata.length} high-quality, company-specific questions in record time`
     });
 
@@ -182,8 +182,8 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to generate questions with Optimized AI';
-        details: error.message;
+        error: 'Failed to generate questions with Optimized AI',
+        details: error.message,
         suggestion: 'Check API keys configuration (EMERGENT_LLM_KEY, GEMINI_API_KEY)'
       },
       { status: 500 }
@@ -206,7 +206,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       suggestions,
-      source: 'optimized_ai_service';
+      source: 'optimized_ai_service',
       performance: 'instant_response'
     });
 

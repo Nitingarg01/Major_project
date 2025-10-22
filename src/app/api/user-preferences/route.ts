@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const preferences = await userPreferencesService.getUserPreferences(session.user.id);
     
     return NextResponse.json({
-      success: true;
+      success: true,
       preferences,
       message: 'User preferences retrieved successfully'
     });
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to retrieve user preferences';
+        error: 'Failed to retrieve user preferences',
         details: error.message
       },
       { status: 500 }
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     if (missingFields.length > 0) {
       return NextResponse.json(
         { 
-          error: 'Missing required preference fields';
+          error: 'Missing required preference fields',
           missingFields 
         },
         { status: 400 }
@@ -77,11 +77,11 @@ export async function POST(request: NextRequest) {
     // Validate question distribution percentages
     const distribution = preferences.questionDistribution;
     if (distribution) {
-      const totalPercentage = Object.values(distribution).reduce((sum: number, val) => sum + Number(val || 0), 0);
+      const totalPercentage = Object.values(distribution).reduce((sum: number, val) => sum + Number(val || 0), 0),
       if (Math.abs(totalPercentage - 100) > 1) { // Allow for small rounding errors
         return NextResponse.json(
           { 
-            error: 'Question distribution percentages must sum to 100';
+            error: 'Question distribution percentages must sum to 100',
             currentTotal: totalPercentage
           },
           { status: 400 }
@@ -99,8 +99,8 @@ export async function POST(request: NextRequest) {
     console.log('✅ User preferences updated successfully');
 
     return NextResponse.json({
-      success: true;
-      preferences: updatedPreferences;
+      success: true,
+      preferences: updatedPreferences,
       message: 'User preferences updated successfully'
     });
 
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to update user preferences';
+        error: 'Failed to update user preferences',
         details: error.message
       },
       { status: 500 }
@@ -152,8 +152,8 @@ export async function DELETE(request: NextRequest) {
     console.log('✅ User preferences reset to smart defaults');
 
     return NextResponse.json({
-      success: true;
-      preferences: resetPreferences;
+      success: true,
+      preferences: resetPreferences,
       message: `Preferences reset to smart defaults${jobTitle ? ` for ${jobTitle}` : ''}${companyName ? ` at ${companyName}` : ''}`
     });
 
@@ -162,7 +162,7 @@ export async function DELETE(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: 'Failed to reset user preferences';
+        error: 'Failed to reset user preferences',
         details: error.message
       },
       { status: 500 }

@@ -7,80 +7,80 @@
 import EnhancedGroqAIService from './enhancedGroqAIService';
 
 interface CompilerLanguage {
-  id: number;
-  name: string;
-  label: string;
-  fileExtension: string;
-  template: string;
-  compileCommand?: string;
+  id: number,
+  name: string,
+  label: string,
+  fileExtension: string,
+  template: string,
+  compileCommand?: string,
   runCommand: string
 }
 
 interface TestCase {
-  id: string;
-  input: string;
-  expectedOutput: string;
+  id: string,
+  input: string,
+  expectedOutput: string,
   hidden?: boolean
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
-    output: string;
+    input: string,
+    output: string,
     explanation?: string
   }>;
-  testCases: TestCase[];
-  constraints: string[];
-  topics: string[];
-  hints?: string[];
-  timeComplexity?: string;
-  spaceComplexity?: string;
-  companyContext?: string;
+  testCases: TestCase[],
+  constraints: string[],
+  topics: string[],
+  hints?: string[],
+  timeComplexity?: string,
+  spaceComplexity?: string,
+  companyContext?: string,
   realWorldApplication?: string
 }
 
 interface ExecutionResult {
-  success: boolean;
-  output: string;
-  error?: string;
-  executionTime: number;
-  memory: number;
+  success: boolean,
+  output: string,
+  error?: string,
+  executionTime: number,
+  memory: number,
   testResults?: TestResult[];
 }
 
 interface TestResult {
-  testCase: TestCase;
-  passed: boolean;
-  actualOutput: string;
-  executionTime: number;
+  testCase: TestCase,
+  passed: boolean,
+  actualOutput: string,
+  executionTime: number,
   error?: string
 }
 
 interface CompilerSubmission {
-  sourceCode: string;
-  language: string;
-  problem: DSAProblem;
+  sourceCode: string,
+  language: string,
+  problem: DSAProblem,
   companyName: string
 }
 
 export class EnhancedDSACompiler {
-  private static instance: EnhancedDSACompiler;
-  private aiService: EnhancedGroqAIService;
-  private judge0ApiKey: string;
-  private judge0Host: string;
-  private judge0BaseUrl: string;
+  private static instance: EnhancedDSACompiler,
+  private aiService: EnhancedGroqAIService,
+  private judge0ApiKey: string,
+  private judge0Host: string,
+  private judge0BaseUrl: string,
 
   // Enhanced language support with better templates
   private languages: CompilerLanguage[] = [
     {
       id: 71, // Python 3
-      name: 'python';
-      label: 'Python 3.9';
-      fileExtension: '.py';
+      name: 'python',
+      label: 'Python 3.9',
+      fileExtension: '.py',
       template: `# Enhanced Python Template for Company DSA Problems
 # Time Complexity: O(?)
 # Space Complexity: O(?)
@@ -108,9 +108,9 @@ if __name__ == "__main__":;
     },
     {
       id: 54, // C++17
-      name: 'cpp';
-      label: 'C++ 17';
-      fileExtension: '.cpp';
+      name: 'cpp',
+      label: 'C++ 17',
+      fileExtension: '.cpp',
       template: `// Enhanced C++ Template for Company DSA Problems
 // Time Complexity: O(?)
 // Space Complexity: O(?)
@@ -148,9 +148,9 @@ int main() {
     },
     {
       id: 62, // Java 13
-      name: 'java';
-      label: 'Java 13';
-      fileExtension: '.java';
+      name: 'java',
+      label: 'Java 13',
+      fileExtension: '.java',
       template: `// Enhanced Java Template for Company DSA Problems
 // Time Complexity: O(?)
 // Space Complexity: O(?)
@@ -177,9 +177,9 @@ public class Solution {
     },
     {
       id: 63, // JavaScript (Node.js)
-      name: 'javascript';
+      name: 'javascript',
       label: 'JavaScript (Node.js)',
-      fileExtension: '.js';
+      fileExtension: '.js',
       template: `// Enhanced JavaScript Template for Company DSA Problems
 // Time Complexity: O(?)
 // Space Complexity: O(?)
@@ -196,7 +196,7 @@ class Solution {
 
 // Input handling
 const rl = readline.createInterface({
-    input: process.stdin;
+    input: process.stdin,
     output: process.stdout
 });
 
@@ -207,8 +207,8 @@ const solution = new Solution();
     {
       id: 70, // TypeScript
       name: 'typescript', 
-      label: 'TypeScript';
-      fileExtension: '.ts';
+      label: 'TypeScript',
+      fileExtension: '.ts',
       template: `// Enhanced TypeScript Template for Company DSA Problems
 // Time Complexity: O(?)
 // Space Complexity: O(?)
@@ -250,9 +250,9 @@ const solution = new Solution();
 
   // Generate company-specific DSA problems
   public async generateCompanyProblems(
-    companyName: string;
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
-    count: number = 3;
+    companyName: string,
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
+    count: number = 3,
     jobTitle: string = 'Software Engineer';
   ): Promise<DSAProblem[]> {
     try {
@@ -288,7 +288,7 @@ const solution = new Solution();
 
       console.log(`🚀 Executing ${language.label} code for ${submission.problem.title}...`);
       
-      const testResults: TestResult[] = [];
+      const testResults: TestResult[] = [],
       let allPassed = true;
       let totalExecutionTime = 0;
       let maxMemory = 0;
@@ -319,20 +319,20 @@ const solution = new Solution();
       console.log(`✅ Code execution completed: ${testResults.filter(r => r.passed).length}/${testResults.length} tests passed`);
 
       return {
-        success: allPassed;
-        output: feedback;
-        executionTime: avgExecutionTime;
-        memory: maxMemory;
+        success: allPassed,
+        output: feedback,
+        executionTime: avgExecutionTime,
+        memory: maxMemory,
         testResults: testResults
       };
 
     } catch (error) {
       console.error('❌ Code execution failed:', error);
       return {
-        success: false;
-        output: 'Execution failed';
-        error: error instanceof Error ? error.message : 'Unknown error';
-        executionTime: 0;
+        success: false,
+        output: 'Execution failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        executionTime: 0,
         memory: 0
       };
     }
@@ -340,23 +340,23 @@ const solution = new Solution();
 
   // Run code against a single test case  
   private async runSingleTest(
-    sourceCode: string;
-    languageId: number;
+    sourceCode: string,
+    languageId: number,
     testCase: TestCase
   ): Promise<TestResult> {
     try {
       // Submit code to Judge0
       const submissionResponse = await fetch(`${this.judge0BaseUrl}/submissions`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-RapidAPI-Key': this.judge0ApiKey,
           'X-RapidAPI-Host': this.judge0Host
         },
         body: JSON.stringify({
-          source_code: sourceCode;
-          language_id: languageId;
-          stdin: testCase.input;
+          source_code: sourceCode,
+          language_id: languageId,
+          stdin: testCase.input,
           expected_output: testCase.expectedOutput
         })
       });
@@ -391,19 +391,19 @@ const solution = new Solution();
       const executionTime = parseFloat(result.time || '0') * 1000; // Convert to ms
 
       return {
-        testCase: testCase;
-        passed: passed;
-        actualOutput: actualOutput;
-        executionTime: executionTime;
+        testCase: testCase,
+        passed: passed,
+        actualOutput: actualOutput,
+        executionTime: executionTime,
         error: result.stderr || undefined
       };
 
     } catch (error) {
       return {
-        testCase: testCase;
-        passed: false;
-        actualOutput: '';
-        executionTime: 0;
+        testCase: testCase,
+        passed: false,
+        actualOutput: '',
+        executionTime: 0,
         error: error instanceof Error ? error.message : 'Test execution failed'
       };
     }
@@ -411,8 +411,8 @@ const solution = new Solution();
 
   // Generate intelligent feedback based on execution results
   private generateExecutionFeedback(
-    testResults: TestResult[];
-    problem: DSAProblem;
+    testResults: TestResult[],
+    problem: DSAProblem,
     companyName: string
   ): string {
     const passedTests = testResults.filter(r => r.passed).length;
@@ -484,15 +484,15 @@ const solution = new Solution();
 
   // Health check for compiler service
   public async healthCheck(): Promise<{
-    judge0Available: boolean;
-    languagesSupported: number;
+    judge0Available: boolean,
+    languagesSupported: number,
     status: string
   }> {
     try {
       if (!this.judge0ApiKey) {
         return {
-          judge0Available: false;
-          languagesSupported: this.languages.length;
+          judge0Available: false,
+          languagesSupported: this.languages.length,
           status: 'judge0_not_configured'
         };
       }
@@ -506,14 +506,14 @@ const solution = new Solution();
       });
 
       return {
-        judge0Available: response.ok;
-        languagesSupported: this.languages.length;
+        judge0Available: response.ok,
+        languagesSupported: this.languages.length,
         status: response.ok ? 'healthy' : 'judge0_unavailable'
       };
     } catch (error) {
       return {
-        judge0Available: false;
-        languagesSupported: this.languages.length;
+        judge0Available: false,
+        languagesSupported: this.languages.length,
         status: 'error'
       };
     }
@@ -526,9 +526,9 @@ const solution = new Solution();
 
   private generateMockExecution(submission: CompilerSubmission): ExecutionResult {
     const testResults: TestResult[] = submission.problem.testCases.map((testCase, index) => ({
-      testCase: testCase;
+      testCase: testCase,
       passed: Math.random() > 0.3, // 70% pass rate for demo
-      actualOutput: testCase.expectedOutput;
+      actualOutput: testCase.expectedOutput,
       executionTime: Math.random() * 100 + 50
     }));
 
@@ -536,7 +536,7 @@ const solution = new Solution();
     const allPassed = passedTests === testResults.length;
 
     return {
-      success: allPassed;
+      success: allPassed,
       output: this.generateExecutionFeedback(testResults, submission.problem, submission.companyName),
       executionTime: testResults.reduce((sum, r) => sum + r.executionTime, 0) / testResults.length,
       memory: Math.random() * 50 + 10,
@@ -545,7 +545,7 @@ const solution = new Solution();
   }
 
   private generateFallbackProblems(companyName: string, difficulty: string, count: number): DSAProblem[] {
-    const problems: DSAProblem[] = [];
+    const problems: DSAProblem[] = [],
     
     const templates = [;
       {
@@ -564,25 +564,25 @@ const solution = new Solution();
       const template = templates[i % templates.length];
       problems.push({
         id: `fallback-${companyName.toLowerCase()}-${i}`,
-        title: template.title;
-        difficulty: difficulty as 'easy' | 'medium' | 'hard';
-        description: template.description;
+        title: template.title,
+        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        description: template.description,
         examples: [
           {
-            input: 'Sample input';
-            output: 'Expected output';
+            input: 'Sample input',
+            output: 'Expected output',
             explanation: `This solution addresses ${companyName}'s specific requirements.`
           }
         ],
         testCases: [
           {
             id: `test-${i}`,
-            input: '5\n1 2 3 4 5';
+            input: '5\n1 2 3 4 5',
             expectedOutput: '15'
           }
         ],
         constraints: [`Optimized for ${companyName}'s scale`, 'Efficient memory usage'],
-        topics: template.topics;
+        topics: template.topics,
         hints: [`Consider ${companyName}'s specific requirements`, 'Think about edge cases'],
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)',

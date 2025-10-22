@@ -38,9 +38,9 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
   const [isReady, setIsReady] = useState(false);
   const [showPreparation, setShowPreparation] = useState(true);
   const [systemChecks, setSystemChecks] = useState({
-    camera: false;
-    microphone: false;
-    speakers: false;
+    camera: false,
+    microphone: false,
+    speakers: false,
     browser: false
   })
   const [virtualAI] = useState(() => EnhancedVirtualInterviewerAI.getInstance());
@@ -105,8 +105,8 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
           companyName,
           jobTitle,
           interviewType,
-          currentQuestionIndex: response.questionIndex;
-          totalQuestions: questions.length;
+          currentQuestionIndex: response.questionIndex,
+          totalQuestions: questions.length,
           conversationHistory: results.conversationHistory
         }
       )
@@ -126,16 +126,16 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
 
     return {
       ...results,
-      responses: analyzedResponses;
+      responses: analyzedResponses,
       overallScore,
       strengths: [...new Set(totalStrengths)],
       improvements: [...new Set(totalImprovements)],
-      interviewType: 'virtual-ai';
+      interviewType: 'virtual-ai',
       metadata: {
-        aiInterviewer: true;
-        conversationFlow: true;
-        realTimeAnalysis: true;
-        speechToText: true;
+        aiInterviewer: true,
+        conversationFlow: true,
+        realTimeAnalysis: true,
+        speechToText: true,
         textToSpeech: true
       }
     }
@@ -144,7 +144,7 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
   const saveInterviewResults = async (interviewId: string, results: any) => {
     try {
       const response = await fetch('/api/interviews/save-results', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },

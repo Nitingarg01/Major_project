@@ -15,82 +15,82 @@ if (typeof process !== 'undefined') {
 
 interface GroqRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant';
+    role: 'system' | 'user' | 'assistant',
     content: string
   }>;
-  model?: string;
-  max_tokens?: number;
+  model?: string,
+  max_tokens?: number,
   temperature?: number
 }
 
 interface GroqResponse {
-  content: string;
-  provider: string;
-  model: string;
+  content: string,
+  provider: string,
+  model: string,
   usage?: {
-    prompt_tokens: number;
-    completion_tokens: number;
+    prompt_tokens: number,
+    completion_tokens: number,
     total_tokens: number
   };
 }
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
-  difficulty: 'easy' | 'medium' | 'hard';
-  points: number;
-  timeLimit?: number;
-  evaluationCriteria: string[];
-  tags: string[];
-  hints?: string[];
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design',
+  difficulty: 'easy' | 'medium' | 'hard',
+  points: number,
+  timeLimit?: number,
+  evaluationCriteria: string[],
+  tags: string[],
+  hints?: string[],
   companyRelevance: number
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
-    output: string;
+    input: string,
+    output: string,
     explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
-    expectedOutput: string;
+    id: string,
+    input: string,
+    expectedOutput: string,
     hidden?: boolean
   }>;
-  constraints: string[];
-  topics: string[];
-  hints?: string[];
-  timeComplexity?: string;
-  spaceComplexity?: string;
+  constraints: string[],
+  topics: string[],
+  hints?: string[],
+  timeComplexity?: string,
+  spaceComplexity?: string,
   companySpecific?: boolean
 }
 
 interface CompanyData {
-  name: string;
-  industry?: string;
-  techStack?: string[];
-  culture?: string[];
-  recentNews?: string[];
-  interviewStyle?: string;
+  name: string,
+  industry?: string,
+  techStack?: string[],
+  culture?: string[],
+  recentNews?: string[],
+  interviewStyle?: string,
   commonQuestions?: string[];
 }
 
 export class OptimizedAIService {
-  private static instance: OptimizedAIService;
-  private groq: Groq;
-  private groqApiKey: string;
-  private geminiApiKey: string;
+  private static instance: OptimizedAIService,
+  private groq: Groq,
+  private groqApiKey: string,
+  private geminiApiKey: string,
   private groqModel = 'llama-3.3-70b-versatile';
   
   // Company database for enhanced question generation
-  private companyDatabase: Map<string, CompanyData> = new Map();
+  private companyDatabase: Map<string, CompanyData> = new Map(),
 
   private constructor() {
     this.groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
@@ -102,14 +102,14 @@ export class OptimizedAIService {
 
     if (this.groqApiKey) {
       this.groq = new Groq({
-        apiKey: this.groqApiKey;
+        apiKey: this.groqApiKey,
         dangerouslyAllowBrowser: true
       });
     }
     
     this.initializeCompanyDatabase();
     console.log('🚀 OptimizedAIService initialized:', {
-      groq: !!this.groqApiKey;
+      groq: !!this.groqApiKey,
       gemini: !!this.geminiApiKey
     });
   }
@@ -126,80 +126,80 @@ export class OptimizedAIService {
     const companies = [;
       // Big Tech (FAANG+)
       {
-        name: 'Google';
-        industry: 'Technology';
+        name: 'Google',
+        industry: 'Technology',
         techStack: ['Go', 'Python', 'Java', 'C++', 'Kubernetes', 'TensorFlow', 'BigQuery', 'Spanner'],
         culture: ['Innovation', 'Data-driven', 'Collaboration', 'Think big', 'Focus on user'],
         interviewStyle: 'Technical depth, system design, behavioral, Googleyness',
         commonQuestions: ['Design a search engine', 'Scale to billions of users', 'MapReduce concepts']
       },
       {
-        name: 'Meta';
-        industry: 'Social Media';
+        name: 'Meta',
+        industry: 'Social Media',
         techStack: ['React', 'PHP', 'Python', 'GraphQL', 'PyTorch', 'Hack', 'React Native'],
         culture: ['Move fast', 'Be bold', 'Focus on impact', 'Be open', 'Build social value'],
         interviewStyle: 'Product sense, technical execution, leadership, culture fit',
         commonQuestions: ['Design Facebook feed', 'How would you improve Instagram?', 'Handle fake news']
       },
       {
-        name: 'Amazon';
-        industry: 'E-commerce/Cloud';
+        name: 'Amazon',
+        industry: 'E-commerce/Cloud',
         techStack: ['Java', 'Python', 'AWS', 'DynamoDB', 'Lambda', 'S3', 'EC2', 'Kinesis'],
         culture: ['Customer obsession', 'Ownership', 'Invent and simplify', 'Bias for action', 'Dive deep'],
         interviewStyle: 'Leadership principles, technical problems, system design, behavioral',
         commonQuestions: ['Design Amazon marketplace', 'Tell me about a time you failed', 'Scale AWS services']
       },
       {
-        name: 'Microsoft';
-        industry: 'Technology';
+        name: 'Microsoft',
+        industry: 'Technology',
         techStack: ['C#', 'TypeScript', 'Azure', 'PowerShell', '.NET', 'Teams', 'Office 365'],
         culture: ['Respect', 'Integrity', 'Accountability', 'Inclusive', 'Growth mindset'],
         interviewStyle: 'Technical skills, problem-solving, collaboration, growth mindset',
         commonQuestions: ['Design Office 365', 'How do you handle conflict?', 'Azure architecture']
       },
       {
-        name: 'Apple';
-        industry: 'Consumer Electronics';
+        name: 'Apple',
+        industry: 'Consumer Electronics',
         techStack: ['Swift', 'Objective-C', 'iOS', 'macOS', 'Metal', 'Core Data', 'Xcode'],
         culture: ['Innovation', 'Excellence', 'Privacy', 'Simplicity', 'Think different'],
         interviewStyle: 'Product focus, technical excellence, attention to detail, design thinking',
         commonQuestions: ['Design iPhone feature', 'Optimize for performance', 'Privacy considerations']
       },
       {
-        name: 'Netflix';
-        industry: 'Streaming/Entertainment';
+        name: 'Netflix',
+        industry: 'Streaming/Entertainment',
         techStack: ['Java', 'Python', 'React', 'AWS', 'Microservices', 'Kafka', 'Cassandra'],
         culture: ['Freedom and responsibility', 'High performance', 'Candor', 'Innovation'],
         interviewStyle: 'Culture fit, technical depth, real-world scenarios, keeper test',
         commonQuestions: ['Design video streaming', 'Handle service failures', 'Content recommendation']
       },
       {
-        name: 'OpenAI';
-        industry: 'AI & Machine Learning';
+        name: 'OpenAI',
+        industry: 'AI & Machine Learning',
         techStack: ['Python', 'PyTorch', 'Kubernetes', 'React', 'PostgreSQL', 'Redis'],
         culture: ['AI safety', 'Beneficial AGI', 'Transparency', 'Collaboration', 'Research excellence'],
         interviewStyle: 'Technical depth, AI/ML knowledge, ethics, research thinking',
         commonQuestions: ['Design language model', 'AI safety considerations', 'Scale ML training']
       },
       {
-        name: 'Anthropic';
-        industry: 'AI & Machine Learning';
+        name: 'Anthropic',
+        industry: 'AI & Machine Learning',
         techStack: ['Python', 'PyTorch', 'JAX', 'React', 'Kubernetes', 'GCP'],
         culture: ['AI safety', 'Constitutional AI', 'Research rigor', 'Responsible development'],
         interviewStyle: 'Research background, AI alignment, technical depth, safety focus',
         commonQuestions: ['Constitutional AI principles', 'RLHF implementation', 'AI safety research']
       },
       {
-        name: 'Tesla';
-        industry: 'Automotive & Energy';
+        name: 'Tesla',
+        industry: 'Automotive & Energy',
         techStack: ['Python', 'C++', 'React', 'PostgreSQL', 'Docker', 'Kubernetes', 'ROS'],
         culture: ['Innovation', 'Sustainability', 'First principles', 'Move fast', 'Excellence'],
         interviewStyle: 'Technical excellence, innovation, problem-solving, mission alignment',
         commonQuestions: ['Autonomous driving algorithms', 'Battery optimization', 'Manufacturing efficiency']
       },
       {
-        name: 'Stripe';
-        industry: 'Fintech';
+        name: 'Stripe',
+        industry: 'Fintech',
         techStack: ['Ruby', 'Scala', 'React', 'PostgreSQL', 'Kafka', 'Kubernetes'],
         culture: ['User obsession', 'Rigor', 'Transparency', 'Global scale'],
         interviewStyle: 'System design, financial systems, product thinking, attention to detail',
@@ -213,7 +213,7 @@ export class OptimizedAIService {
   }
 
   public getCompanySuggestions(query: string): string[] {
-    const suggestions: string[] = [];
+    const suggestions: string[] = [],
     const queryLower = query.toLowerCase();
     
     // Find matches from company database
@@ -246,9 +246,9 @@ export class OptimizedAIService {
       console.log('🚀 Calling Groq API with model:', request.model || this.groqModel);
       
       const chatCompletion = await this.groq.chat.completions.create({
-        messages: request.messages as any;
-        model: request.model || this.groqModel;
-        max_tokens: request.max_tokens || 4000;
+        messages: request.messages as any,
+        model: request.model || this.groqModel,
+        max_tokens: request.max_tokens || 4000,
         temperature: request.temperature || 0.7;
       });
 
@@ -256,12 +256,12 @@ export class OptimizedAIService {
       console.log('✅ Groq API response received');
       
       return {
-        content: content;
-        provider: 'groq';
-        model: request.model || this.groqModel;
+        content: content,
+        provider: 'groq',
+        model: request.model || this.groqModel,
         usage: chatCompletion.usage ? {
-          prompt_tokens: chatCompletion.usage.prompt_tokens;
-          completion_tokens: chatCompletion.usage.completion_tokens;
+          prompt_tokens: chatCompletion.usage.prompt_tokens,
+          completion_tokens: chatCompletion.usage.completion_tokens,
           total_tokens: chatCompletion.usage.total_tokens
         } : undefined
       };
@@ -293,8 +293,8 @@ export class OptimizedAIService {
       console.log('✅ Gemini API response received');
       
       return {
-        content: text;
-        provider: 'gemini';
+        content: text,
+        provider: 'gemini',
         model: 'gemini-1.5-flash'
       };
     } catch (error) {
@@ -305,11 +305,11 @@ export class OptimizedAIService {
 
   // QUESTION GENERATION - Uses OpenAI GPT-4o-mini for best speed
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
-    skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'system_design' | 'aptitude';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    jobTitle: string,
+    companyName: string,
+    skills: string[],
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'system_design' | 'aptitude',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number
   }): Promise<InterviewQuestion[]> {
     
@@ -362,8 +362,8 @@ Return ONLY a valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        model: this.groqModel;
-        max_tokens: 6000;
+        model: this.groqModel,
+        max_tokens: 6000,
         temperature: 0.8
       });
 
@@ -376,13 +376,13 @@ Return ONLY a valid JSON array:
       return questions.map((q: any, index: number) => ({
         ...q,
         id: q.id || `q-${Date.now()}-${index}`,
-        category: params.interviewType;
-        points: q.points || 10;
-        timeLimit: q.timeLimit || 5;
+        category: params.interviewType,
+        points: q.points || 10,
+        timeLimit: q.timeLimit || 5,
         evaluationCriteria: q.evaluationCriteria || ['Technical accuracy', 'Company relevance', 'Communication'],
         tags: [...(q.tags || []), params.companyName, params.jobTitle],
-        companyRelevance: q.companyRelevance || 8;
-        provider: 'groq';
+        companyRelevance: q.companyRelevance || 8,
+        provider: 'groq',
         model: this.groqModel
       }));
     } catch (error) {
@@ -393,8 +393,8 @@ Return ONLY a valid JSON array:
 
   // DSA PROBLEMS - Uses OpenAI GPT-4o-mini for structured coding problems
   public async generateDSAProblems(
-    companyName: string;
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    companyName: string,
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 6;
   ): Promise<DSAProblem[]> {
     
@@ -455,8 +455,8 @@ Return ONLY a valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        model: this.groqModel;
-        max_tokens: 8000;
+        model: this.groqModel,
+        max_tokens: 8000,
         temperature: 0.7
       });
 
@@ -469,14 +469,14 @@ Return ONLY a valid JSON array:
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `dsa-${Date.now()}-${index}`,
-        difficulty: difficulty;
-        examples: p.examples || [];
-        testCases: p.testCases || [];
-        constraints: p.constraints || [];
-        topics: p.topics || ['General'];
-        hints: p.hints || [];
-        companySpecific: true;
-        provider: 'groq';
+        difficulty: difficulty,
+        examples: p.examples || [],
+        testCases: p.testCases || [],
+        constraints: p.constraints || [],
+        topics: p.topics || ['General'],
+        hints: p.hints || [],
+        companySpecific: true,
+        provider: 'groq',
         model: this.groqModel
       }));
     } catch (error) {
@@ -487,16 +487,16 @@ Return ONLY a valid JSON array:
 
   // RESPONSE ANALYSIS - Uses Anthropic Claude 3.5 Sonnet for detailed analysis
   public async analyzeInterviewResponse(
-    question: string;
-    userAnswer: string;
-    expectedAnswer: string;
-    category: string;
+    question: string,
+    userAnswer: string,
+    expectedAnswer: string,
+    category: string,
     companyContext: string
   ): Promise<{
-    score: number;
-    feedback: string;
-    suggestions: string[];
-    strengths: string[];
+    score: number,
+    feedback: string,
+    suggestions: string[],
+    strengths: string[],
     improvements: string[];
   }> {
     
@@ -540,8 +540,8 @@ Consider:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        model: this.groqModel;
-        max_tokens: 3000;
+        model: this.groqModel,
+        max_tokens: 3000,
         temperature: 0.5
       });
 
@@ -549,9 +549,9 @@ Consider:
       
       return {
         score: Math.max(0, Math.min(10, analysis.score || 5)),
-        feedback: analysis.feedback || 'Response analyzed successfully.';
-        suggestions: analysis.suggestions || ['Continue practicing for this company'];
-        strengths: analysis.strengths || ['Attempted the question'];
+        feedback: analysis.feedback || 'Response analyzed successfully.',
+        suggestions: analysis.suggestions || ['Continue practicing for this company'],
+        strengths: analysis.strengths || ['Attempted the question'],
         improvements: analysis.improvements || ['Add more company-specific insights']
       };
     } catch (error) {
@@ -562,10 +562,10 @@ Consider:
 
   // OVERALL PERFORMANCE ANALYSIS - Uses Anthropic Claude 3.5 Sonnet for comprehensive evaluation
   public async analyzeOverallPerformance(
-    questions: any[];
-    answers: string[];
-    jobTitle: string;
-    companyName: string;
+    questions: any[],
+    answers: string[],
+    jobTitle: string,
+    companyName: string,
     skills: string[]
   ): Promise<any> {
     const companyData = this.companyDatabase.get(companyName.toLowerCase());
@@ -622,8 +622,8 @@ Return ONLY valid JSON:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        model: this.groqModel;
-        max_tokens: 5000;
+        model: this.groqModel,
+        max_tokens: 5000,
         temperature: 0.3
       });
 
@@ -636,15 +636,15 @@ Return ONLY valid JSON:
 
   // Health check method
   public async healthCheck(): Promise<{
-    groqAvailable: boolean;
-    geminiAvailable: boolean;
-    status: string;
+    groqAvailable: boolean,
+    geminiAvailable: boolean,
+    status: string,
     companyDatabaseSize: number
   }> {
     const status = {
-      groqAvailable: !!this.groqApiKey;
-      geminiAvailable: !!this.geminiApiKey;
-      status: 'unknown';
+      groqAvailable: !!this.groqApiKey,
+      geminiAvailable: !!this.geminiApiKey,
+      status: 'unknown',
       companyDatabaseSize: this.companyDatabase.size
     };
 
@@ -669,17 +669,17 @@ Return ONLY valid JSON:
   // Fallback methods for error cases
   private generateFallbackQuestions(params: any): InterviewQuestion[] {
     const companyData = this.companyDatabase.get(params.companyName.toLowerCase());
-    const questions: InterviewQuestion[] = [];
+    const questions: InterviewQuestion[] = [],
     
     for (let i = 0; i < params.numberOfQuestions; i++) {
       questions.push({
         id: `fallback-q-${i}`,
         question: `Based on ${params.companyName}'s focus on ${companyData?.techStack?.[0] || 'technology'}, describe your experience with ${params.skills[i % params.skills.length]} and how it applies to their ${params.jobTitle} role.`,
         expectedAnswer: `A comprehensive answer covering experience with ${params.skills[i % params.skills.length]}, specific examples relevant to ${params.companyName}, and understanding of their technical challenges.`,
-        category: params.interviewType;
+        category: params.interviewType,
         difficulty: ['easy', 'medium', 'hard'][i % 3] as 'easy' | 'medium' | 'hard',
-        points: 10;
-        timeLimit: 5;
+        points: 10,
+        timeLimit: 5,
         evaluationCriteria: ['Technical accuracy', 'Company relevance', 'Communication clarity'],
         tags: [params.companyName, params.jobTitle, params.skills[i % params.skills.length]],
         hints: [`Think about ${params.companyName}'s specific use cases`],
@@ -691,21 +691,21 @@ Return ONLY valid JSON:
   }
 
   private generateFallbackDSAProblems(companyName: string, difficulty: string, count: number): DSAProblem[] {
-    const problems: DSAProblem[] = [];
+    const problems: DSAProblem[] = [],
     
     const problemTemplates = [;
       {
-        title: 'Two Sum';
+        title: 'Two Sum',
         description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
         topics: ['Array', 'Hash Table']
       },
       {
-        title: 'Valid Parentheses';
+        title: 'Valid Parentheses',
         description: 'Given a string s containing just brackets, determine if the input string is valid.',
         topics: ['String', 'Stack']
       },
       {
-        title: 'Binary Tree Level Order Traversal';
+        title: 'Binary Tree Level Order Traversal',
         description: 'Given a binary tree, return the level order traversal of its nodes values.',
         topics: ['Tree', 'BFS']
       }
@@ -715,25 +715,25 @@ Return ONLY valid JSON:
       const template = problemTemplates[i % problemTemplates.length];
       problems.push({
         id: `fallback-dsa-${i}`,
-        title: template.title;
-        difficulty: difficulty as 'easy' | 'medium' | 'hard';
-        description: template.description;
+        title: template.title,
+        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        description: template.description,
         examples: [
           {
-            input: 'Example input';
-            output: 'Example output';
+            input: 'Example input',
+            output: 'Example output',
             explanation: 'Example explanation'
           }
         ],
         testCases: [
           {
             id: `test-${i}-1`,
-            input: 'Test input';
+            input: 'Test input',
             expectedOutput: 'Expected output'
           }
         ],
         constraints: ['1 <= n <= 1000', 'Time limit: 2 seconds'],
-        topics: template.topics;
+        topics: template.topics,
         hints: ['Think about the optimal approach', 'Consider edge cases'],
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)',
@@ -762,7 +762,7 @@ Return ONLY valid JSON:
     const score = Math.min(10, Math.max(4, avgWordCount / 20));
     
     return {
-      overallScore: score;
+      overallScore: score,
       parameterScores: {
         "Technical Knowledge": Math.min(10, score + 1),
         "Problem Solving": score,
@@ -772,7 +772,7 @@ Return ONLY valid JSON:
       },
       overallVerdict: `The candidate demonstrated ${score >= 7 ? 'strong' : score >= 5 ? 'adequate' : 'basic'} performance for ${companyName} interview standards. ${score >= 7 ? 'Shows good potential for the role.' : 'Would benefit from additional preparation.'}`,
       adviceForImprovement: questions.slice(0, 3).map((q, i) => ({
-        question: q.question;
+        question: q.question,
         advice: `For ${companyName}, focus more on their specific technical challenges and company culture values. Research their recent projects and technologies.`
       })),
       strengths: ["Attempted all questions", "Showed problem-solving approach", "Maintained professional communication"],

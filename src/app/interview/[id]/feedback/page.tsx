@@ -67,9 +67,9 @@ const page = async ({ params }: PageProps) => {
 
   // Generate simple company data (company intelligence service was removed)
   const companyData = {
-    name: interview.companyName;
-    industry: 'Technology';
-    difficulty: 'medium';
+    name: interview.companyName,
+    industry: 'Technology',
+    difficulty: 'medium',
     preparationTips: [
       'Study the company culture and values thoroughly',
       'Practice common interview questions for this role',
@@ -136,28 +136,28 @@ const page = async ({ params }: PageProps) => {
 
   // Company insights for dashboard
   const companyInsights = {
-    companyName: interview.companyName;
+    companyName: interview.companyName,
     readinessScore,
     strengths: strengths.length > 0 ? strengths : ['Completed full interview session', 'Showed engagement and effort'],
-    improvements: improvements.length > 0 ? improvements : ['Continue practicing to build confidence'];
+    improvements: improvements.length > 0 ? improvements : ['Continue practicing to build confidence'],
     companySpecificTips,
     interviewIntelligence: {
-      averageRounds: 4;
-      expectedDifficulty: companyData.difficulty;
-      keyFocusAreas: companyData.focusAreas;
-      culturalValues: companyData.culture;
-      techStack: companyData.techStack;
+      averageRounds: 4,
+      expectedDifficulty: companyData.difficulty,
+      keyFocusAreas: companyData.focusAreas,
+      culturalValues: companyData.culture,
+      techStack: companyData.techStack,
       recentNews: [`${interview.companyName} continues to innovate in technology`, `${interview.companyName} expands engineering team`]
-      averageRounds: companyIntelligence?.interviewInsights?.averageRounds || 4;
-      expectedDifficulty: companyIntelligence?.companyData?.difficulty || 'medium';
+      averageRounds: companyIntelligence?.interviewInsights?.averageRounds || 4,
+      expectedDifficulty: companyIntelligence?.companyData?.difficulty || 'medium',
       keyFocusAreas: companyIntelligence?.interviewInsights?.keySkillsRequired || ['Technical Skills', 'Problem Solving'],
       culturalValues: companyIntelligence?.companyData?.culture || ['Innovation', 'Collaboration'],
-      techStack: companyIntelligence?.companyData?.techStack || [];
+      techStack: companyIntelligence?.companyData?.techStack || [],
       recentNews: companyIntelligence?.recentUpdates || []
     },
     preparationMetrics,
     confidenceBuilder: {
-      completedMockInterviews: 1;
+      completedMockInterviews: 1,
       averageScore: Math.round(overallScore * 10),
       improvementTrend: Math.max(0, Math.round((overallScore - 5) * 2)),
       readyForRealInterview: overallScore >= 7
@@ -184,8 +184,8 @@ const page = async ({ params }: PageProps) => {
 
   // Debug logging (moved outside JSX)
   console.log('Feedback page data:', {
-    interviewId: id;
-    interview: interview;
+    interviewId: id,
+    interview: interview,
     feedbackData: det?.extracted
   })
 
@@ -199,16 +199,16 @@ const page = async ({ params }: PageProps) => {
       {/* Save performance data automatically */}
       <PerformanceSaver
         interviewData={{
-          interviewId: id;
-          jobTitle: interview.jobTitle;
-          companyName: interview.companyName;
-          interviewType: interview.interviewType || 'mixed';
+          interviewId: id,
+          jobTitle: interview.jobTitle,
+          companyName: interview.companyName,
+          interviewType: interview.interviewType || 'mixed',
           experienceLevel: interview.experienceLevel || 'mid'
         }}
         feedbackData={{
-          overallScore: det.extracted.overallScore || 0;
+          overallScore: det.extracted.overallScore || 0,
           parameterScores: det.extracted.parameterScores || {},
-          overallVerdict: det.extracted.overallVerdict || '';
+          overallVerdict: det.extracted.overallVerdict || '',
           adviceForImprovement: det.extracted.adviceForImprovement || []
         }}
         timeSpent={det.extracted.timeSpent || 30} // Default 30 minutes if not tracked
@@ -218,16 +218,16 @@ const page = async ({ params }: PageProps) => {
       <div className="max-w-7xl mx-auto px-4 mt-4">
         <ManualPerformanceSaver
           interviewData={{
-            interviewId: id;
-            jobTitle: interview.jobTitle;
-            companyName: interview.companyName;
-            interviewType: interview.interviewType || 'mixed';
+            interviewId: id,
+            jobTitle: interview.jobTitle,
+            companyName: interview.companyName,
+            interviewType: interview.interviewType || 'mixed',
             experienceLevel: interview.experienceLevel || 'mid'
           }}
           feedbackData={{
-            overallScore: det.extracted.overallScore || 0;
+            overallScore: det.extracted.overallScore || 0,
             parameterScores: det.extracted.parameterScores || {},
-            overallVerdict: det.extracted.overallVerdict || '';
+            overallVerdict: det.extracted.overallVerdict || '',
             adviceForImprovement: det.extracted.adviceForImprovement || []
           }}
           timeSpent={det.extracted.timeSpent || 30}

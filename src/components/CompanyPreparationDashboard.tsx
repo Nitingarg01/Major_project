@@ -25,36 +25,36 @@ import {
 import { Button } from './ui/button';
 
 interface CompanyInsights {
-  companyName: string;
-  readinessScore: number;
-  strengths: string[];
-  improvements: string[];
-  companySpecificTips: string[];
+  companyName: string,
+  readinessScore: number,
+  strengths: string[],
+  improvements: string[],
+  companySpecificTips: string[],
   interviewIntelligence: {
-    averageRounds: number;
-    expectedDifficulty: string;
-    keyFocusAreas: string[];
-    culturalValues: string[];
-    techStack: string[];
+    averageRounds: number,
+    expectedDifficulty: string,
+    keyFocusAreas: string[],
+    culturalValues: string[],
+    techStack: string[],
     recentNews: string[];
   };
   preparationMetrics: {
-    technicalReadiness: number;
-    behavioralReadiness: number;
-    companyKnowledge: number;
+    technicalReadiness: number,
+    behavioralReadiness: number,
+    companyKnowledge: number,
     culturalFit: number
   };
   confidenceBuilder: {
-    completedMockInterviews: number;
-    averageScore: number;
-    improvementTrend: number;
+    completedMockInterviews: number,
+    averageScore: number,
+    improvementTrend: number,
     readyForRealInterview: boolean
   };
 }
 
 interface CompanyPreparationDashboardProps {
-  companyInsights: CompanyInsights;
-  interviewResults?: any[];
+  companyInsights: CompanyInsights,
+  interviewResults?: any[],
   onStartNewInterview: () => void,
   onViewDetailedFeedback: () => void
 }

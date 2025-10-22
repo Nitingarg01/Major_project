@@ -1,29 +1,29 @@
 import axios from 'axios';
 
 interface CompanyData {
-  name: string;
-  industry: string;
-  techStack: string[];
-  culture: string[];
-  values: string[];
-  recentNews: string[];
-  commonQuestions: string[];
-  interviewProcess: string[];
-  difficulty: 'easy' | 'medium' | 'hard';
-  focusAreas: string[];
+  name: string,
+  industry: string,
+  techStack: string[],
+  culture: string[],
+  values: string[],
+  recentNews: string[],
+  commonQuestions: string[],
+  interviewProcess: string[],
+  difficulty: 'easy' | 'medium' | 'hard',
+  focusAreas: string[],
   preparationTips: string[];
 }
 
 interface CompanyIntelligence {
-  companyData: CompanyData;
-  marketPosition: string;
-  competitorAnalysis: string[];
-  businessModel: string;
-  recentUpdates: string[];
+  companyData: CompanyData,
+  marketPosition: string,
+  competitorAnalysis: string[],
+  businessModel: string,
+  recentUpdates: string[],
   interviewInsights: {
-    averageRounds: number;
-    timePerRound: number;
-    keySkillsRequired: string[];
+    averageRounds: number,
+    timePerRound: number,
+    keySkillsRequired: string[],
     culturalFitQuestions: string[];
   };
 }
@@ -66,8 +66,8 @@ export const COMPANY_SUGGESTIONS = [
 // Enhanced company database with real insights
 const companyDatabase: { [key: string]: CompanyData } = {
   'Google': {
-    name: 'Google';
-    industry: 'Technology';
+    name: 'Google',
+    industry: 'Technology',
     techStack: ['JavaScript', 'Python', 'Java', 'Go', 'C++', 'TypeScript', 'React', 'Angular', 'TensorFlow', 'Kubernetes'],
     culture: ['Innovation', 'Googleyness', 'Data-driven decisions', 'User focus', 'Collaboration'],
     values: ['Focus on the user', 'Democracy on the web', 'Fast is better than slow', 'Great just isn\'t good enough'],
@@ -85,7 +85,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How would you optimize Google Maps for developing countries?'
     ],
     interviewProcess: ['Phone Screen', 'Technical Phone Interview', 'Onsite (4-5 rounds)', 'Hiring Committee Review'],
-    difficulty: 'hard';
+    difficulty: 'hard',
     focusAreas: ['System Design', 'Algorithms', 'Data Structures', 'Machine Learning', 'Cultural Fit'],
     preparationTips: [
       'Master system design for large-scale systems',
@@ -96,8 +96,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Microsoft': {
-    name: 'Microsoft';
-    industry: 'Technology';
+    name: 'Microsoft',
+    industry: 'Technology',
     techStack: ['C#', 'JavaScript', 'TypeScript', 'Python', 'Azure', 'React', 'ASP.NET', 'SQL Server', 'Power Platform'],
     culture: ['Growth mindset', 'Inclusion', 'Respect', 'Collaboration', 'Customer obsession'],
     values: ['Empower every person and organization', 'Diversity and inclusion', 'Environmental sustainability'],
@@ -115,7 +115,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'Describe a time you showed growth mindset'
     ],
     interviewProcess: ['Recruiter Screen', 'Technical Interview', 'Onsite Loop (4-5 interviews)', 'Hiring Manager Discussion'],
-    difficulty: 'medium';
+    difficulty: 'medium',
     focusAreas: ['Cloud Architecture', 'Software Engineering', 'Problem Solving', 'Leadership', 'Growth Mindset'],
     preparationTips: [
       'Understand Microsoft\'s cloud-first strategy',
@@ -126,8 +126,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Amazon': {
-    name: 'Amazon';
-    industry: 'E-commerce/Cloud';
+    name: 'Amazon',
+    industry: 'E-commerce/Cloud',
     techStack: ['Java', 'Python', 'JavaScript', 'AWS', 'React', 'Node.js', 'DynamoDB', 'Lambda', 'S3'],
     culture: ['Customer obsession', 'Ownership', 'Invent and simplify', 'Learn and be curious', 'Hire and develop the best'],
     values: ['Customer obsession', 'Long-term thinking', 'Eagerness to invent', 'Operational excellence'],
@@ -145,7 +145,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How do you prioritize customer needs?'
     ],
     interviewProcess: ['Phone Screen', 'Technical Assessment', 'Onsite Loop (5-7 interviews)', 'Bar Raiser Interview'],
-    difficulty: 'hard';
+    difficulty: 'hard',
     focusAreas: ['Leadership Principles', 'System Design', 'Data Structures', 'AWS Knowledge', 'Customer Focus'],
     preparationTips: [
       'Master all 16 Leadership Principles with STAR examples',
@@ -156,8 +156,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Meta': {
-    name: 'Meta';
-    industry: 'Social Media/Metaverse';
+    name: 'Meta',
+    industry: 'Social Media/Metaverse',
     techStack: ['React', 'JavaScript', 'Python', 'PHP', 'GraphQL', 'React Native', 'PyTorch', 'Hack'],
     culture: ['Move fast', 'Be bold', 'Focus on impact', 'Be open', 'Build social value'],
     values: ['Connecting people', 'Building community', 'Serving everyone', 'Privacy and safety'],
@@ -175,7 +175,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How would you improve user engagement?'
     ],
     interviewProcess: ['Recruiter Call', 'Technical Phone Screen', 'Onsite (4-5 rounds)', 'Hiring Committee'],
-    difficulty: 'hard';
+    difficulty: 'hard',
     focusAreas: ['System Design', 'Product Sense', 'Algorithms', 'Social Impact', 'Innovation'],
     preparationTips: [
       'Understand social media algorithms',
@@ -186,8 +186,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Apple': {
-    name: 'Apple';
-    industry: 'Technology/Consumer Electronics';
+    name: 'Apple',
+    industry: 'Technology/Consumer Electronics',
     techStack: ['Swift', 'Objective-C', 'JavaScript', 'Python', 'iOS', 'macOS', 'React', 'Machine Learning'],
     culture: ['Innovation', 'Excellence', 'Privacy', 'Simplicity', 'Attention to detail'],
     values: ['Think different', 'Privacy is a fundamental human right', 'Environmental responsibility'],
@@ -205,7 +205,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'What makes Apple products unique?'
     ],
     interviewProcess: ['Phone Screen', 'Technical Interview', 'Onsite (3-6 rounds)', 'Final Review'],
-    difficulty: 'medium';
+    difficulty: 'medium',
     focusAreas: ['iOS Development', 'Hardware-Software Integration', 'User Experience', 'Quality', 'Innovation'],
     preparationTips: [
       'Master iOS development and Swift',
@@ -216,8 +216,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Netflix': {
-    name: 'Netflix';
-    industry: 'Streaming/Entertainment';
+    name: 'Netflix',
+    industry: 'Streaming/Entertainment',
     techStack: ['Java', 'Python', 'JavaScript', 'React', 'Spring Boot', 'Microservices', 'AWS', 'Kafka'],
     culture: ['Freedom and responsibility', 'High performance', 'Innovation', 'Data-driven decisions'],
     values: ['Judgment', 'Communication', 'Impact', 'Curiosity', 'Innovation', 'Courage', 'Passion', 'Honesty', 'Selflessness'],
@@ -235,7 +235,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How would you optimize video encoding and delivery?'
     ],
     interviewProcess: ['Recruiter Screen', 'Technical Phone', 'Onsite (4-5 rounds)', 'Reference Checks'],
-    difficulty: 'hard';
+    difficulty: 'hard',
     focusAreas: ['Distributed Systems', 'Scalability', 'Data Engineering', 'Performance', 'Innovation'],
     preparationTips: [
       'Understand distributed systems and microservices architecture',
@@ -246,8 +246,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Tesla': {
-    name: 'Tesla';
-    industry: 'Automotive/Energy';
+    name: 'Tesla',
+    industry: 'Automotive/Energy',
     techStack: ['Python', 'C++', 'JavaScript', 'React', 'Django', 'PostgreSQL', 'Redis', 'Docker'],
     culture: ['Innovation', 'Sustainability', 'First principles thinking', 'Rapid iteration', 'Mission-driven'],
     values: ['Accelerating sustainable transport', 'Environmental responsibility', 'Continuous improvement'],
@@ -265,7 +265,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How would you improve manufacturing efficiency?'
     ],
     interviewProcess: ['Phone Screen', 'Technical Assessment', 'Onsite (3-5 rounds)', 'Final Review'],
-    difficulty: 'hard';
+    difficulty: 'hard',
     focusAreas: ['Embedded Systems', 'Real-time Processing', 'Machine Learning', 'Hardware Integration', 'Optimization'],
     preparationTips: [
       'Understand automotive software and embedded systems',
@@ -276,8 +276,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Uber': {
-    name: 'Uber';
-    industry: 'Transportation/Logistics';
+    name: 'Uber',
+    industry: 'Transportation/Logistics',
     techStack: ['Go', 'Java', 'Python', 'JavaScript', 'React', 'Kafka', 'MySQL', 'Redis'],
     culture: ['Customer obsession', 'Innovation', 'Global mindset', 'Collaboration', 'Inclusion'],
     values: ['We build globally, we live locally', 'We are customer obsessed', 'We celebrate differences'],
@@ -295,7 +295,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How would you design a food delivery system?'
     ],
     interviewProcess: ['Phone Screen', 'Technical Interview', 'Onsite (4-5 rounds)', 'Hiring Committee'],
-    difficulty: 'medium';
+    difficulty: 'medium',
     focusAreas: ['Distributed Systems', 'Real-time Systems', 'Algorithms', 'Scalability', 'Mobile Development'],
     preparationTips: [
       'Understand real-time systems and location services',
@@ -306,8 +306,8 @@ const companyDatabase: { [key: string]: CompanyData } = {
     ]
   },
   'Airbnb': {
-    name: 'Airbnb';
-    industry: 'Travel/Hospitality';
+    name: 'Airbnb',
+    industry: 'Travel/Hospitality',
     techStack: ['Ruby', 'Java', 'JavaScript', 'React', 'Rails', 'MySQL', 'Redis', 'Kafka'],
     culture: ['Belong anywhere', 'Champion the mission', 'Be a host', 'Embrace the adventure'],
     values: ['Champion the mission', 'Be a host', 'Embrace the adventure', 'Be a cereal entrepreneur'],
@@ -325,7 +325,7 @@ const companyDatabase: { [key: string]: CompanyData } = {
       'How would you handle international expansion challenges?'
     ],
     interviewProcess: ['Recruiter Screen', 'Technical Phone', 'Onsite (4-6 rounds)', 'Reference Checks'],
-    difficulty: 'medium';
+    difficulty: 'medium',
     focusAreas: ['Product Engineering', 'Trust and Safety', 'International Scale', 'User Experience', 'Community'],
     preparationTips: [
       'Understand marketplace dynamics and trust systems',
@@ -400,7 +400,7 @@ export function parseJobQuery(query: string): { company: string; jobTitle: strin
 }
 
 export class CompanyIntelligenceService {
-  private static instance: CompanyIntelligenceService;
+  private static instance: CompanyIntelligenceService,
   
   public static getInstance(): CompanyIntelligenceService {
     if (!CompanyIntelligenceService.instance) {
@@ -431,7 +431,7 @@ export class CompanyIntelligenceService {
         interviewInsights: {
           averageRounds: this.getAverageRounds(companyData.difficulty),
           timePerRound: this.getTimePerRound(companyData.difficulty),
-          keySkillsRequired: companyData.focusAreas;
+          keySkillsRequired: companyData.focusAreas,
           culturalFitQuestions: this.generateCulturalQuestions(companyData.culture)
         }
       };
@@ -563,7 +563,7 @@ export class CompanyIntelligenceService {
   }
 
   private generateCulturalQuestions(culture: string[]): string[] {
-    const culturalQuestions: string[] = [];
+    const culturalQuestions: string[] = [],
     
     culture.forEach(value => {
       switch (value.toLowerCase()) {
@@ -593,8 +593,8 @@ export class CompanyIntelligenceService {
   private getGenericCompanyData(companyName: string): CompanyIntelligence {
     return {
       companyData: {
-        name: companyName;
-        industry: 'Technology';
+        name: companyName,
+        industry: 'Technology',
         techStack: ['JavaScript', 'Python', 'React', 'Node.js'],
         culture: ['Innovation', 'Collaboration', 'Excellence'],
         values: ['Customer focus', 'Quality', 'Growth'],
@@ -607,7 +607,7 @@ export class CompanyIntelligenceService {
           'Where do you see yourself in 5 years?'
         ],
         interviewProcess: ['Phone Screen', 'Technical Interview', 'Final Round', 'Decision'],
-        difficulty: 'medium';
+        difficulty: 'medium',
         focusAreas: ['Technical Skills', 'Problem Solving', 'Communication', 'Cultural Fit'],
         preparationTips: [
           'Research the company thoroughly',
@@ -616,13 +616,13 @@ export class CompanyIntelligenceService {
           'Show enthusiasm and cultural fit'
         ]
       },
-      marketPosition: 'Competitive position in the technology market';
-      competitorAnalysis: [];
-      businessModel: 'Technology-based business model';
-      recentUpdates: [];
+      marketPosition: 'Competitive position in the technology market',
+      competitorAnalysis: [],
+      businessModel: 'Technology-based business model',
+      recentUpdates: [],
       interviewInsights: {
-        averageRounds: 4;
-        timePerRound: 60;
+        averageRounds: 4,
+        timePerRound: 60,
         keySkillsRequired: ['Technical Skills', 'Problem Solving'],
         culturalFitQuestions: ['Why do you want to work here?', 'Tell me about a team project']
       }
@@ -633,11 +633,11 @@ export class CompanyIntelligenceService {
   generateCompanySpecificQuestions(
     companyIntelligence: CompanyIntelligence, 
     jobTitle: string, 
-    difficulty: 'easy' | 'medium' | 'hard';
+    difficulty: 'easy' | 'medium' | 'hard',
     round: 'technical' | 'behavioral' | 'system-design' | 'cultural-fit'
   ): string[] {
     const { companyData } = companyIntelligence;
-    const questions: string[] = [];
+    const questions: string[] = [],
 
     switch (round) {
       case 'technical':
@@ -662,7 +662,7 @@ export class CompanyIntelligenceService {
     jobTitle: string, 
     difficulty: 'easy' | 'medium' | 'hard'
   ): string[] {
-    const questions: string[] = [];
+    const questions: string[] = [],
     const techStack = companyData.techStack;
     
     // Add company-specific technical questions
@@ -699,7 +699,7 @@ export class CompanyIntelligenceService {
   }
 
   private generateBehavioralQuestions(companyData: CompanyData, difficulty: 'easy' | 'medium' | 'hard'): string[] {
-    const questions: string[] = [];
+    const questions: string[] = [],
     
     // Company-specific behavioral questions
     if (companyData.name === 'Amazon') {
@@ -731,7 +731,7 @@ export class CompanyIntelligenceService {
   }
 
   private generateSystemDesignQuestions(companyData: CompanyData, difficulty: 'easy' | 'medium' | 'hard'): string[] {
-    const questions: string[] = [];
+    const questions: string[] = [],
     
     // Company-specific system design questions
     if (companyData.name === 'Google') {

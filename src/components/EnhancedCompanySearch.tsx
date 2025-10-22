@@ -6,14 +6,14 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 
 interface EnhancedCompanySearchProps {
-  onSelect: (company: string, jobTitle: string, companyData?: any) => void;
-  placeholder?: string;
+  onSelect: (company: string, jobTitle: string, companyData?: any) => void,
+  placeholder?: string,
   className?: string
 }
 
 interface CompanySuggestion {
-  name: string;
-  industry: string;
+  name: string,
+  industry: string,
   description: string
 }
 
@@ -76,7 +76,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         )
         .slice(0, 5)
         .map(company => ({
-          name: company;
+          name: company,
           industry: getCompanyIndustry(company),
           description: `Explore opportunities at ${company}`
         }))
@@ -89,7 +89,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
 
       // Use Groq API for additional company suggestions
       const response = await fetch('/api/company-search', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -101,8 +101,8 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         if (data.success && data.companies) {
           // Combine popular matches with AI-generated suggestions
           const aiSuggestions = data.companies.map((company: any) => ({
-            name: company.name;
-            industry: company.industry || 'Technology';
+            name: company.name,
+            industry: company.industry || 'Technology',
             description: company.description || `Leading company in ${company.industry || 'technology'}`
           }))
           
@@ -128,7 +128,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         )
         .slice(0, 6)
         .map(company => ({
-          name: company;
+          name: company,
           industry: getCompanyIndustry(company),
           description: `Explore opportunities at ${company}`
         }))
@@ -223,7 +223,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   useEffect(() => {
     if (suggestionRefs.current[selectedIndex]) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
-        block: 'nearest';
+        block: 'nearest',
         behavior: 'smooth'
       })
     }
@@ -285,7 +285,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                 </div>
                 <div className="space-y-1 max-h-60 overflow-y-auto">
                   {trendingSuggestions.map((company, index) => {
-                    const companyName = typeof company === 'string' ? company : company;
+                    const companyName = typeof company === 'string' ? company : company,
                     const isRecent = recentSearches.includes(companyName);
                     
                     return (

@@ -61,10 +61,10 @@ const EnhancedDSACompiler: React.FC<EnhancedDSACompilerProps> = ({
   const [currentHint, setCurrentHint] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
   const [codeExecutionStats, setCodeExecutionStats] = useState<CodeExecutionStats>({
-    totalRuns: 0;
-    successfulRuns: 0;
-    averageExecutionTime: 0;
-    memoryUsage: 0;
+    totalRuns: 0,
+    successfulRuns: 0,
+    averageExecutionTime: 0,
+    memoryUsage: 0,
     codeQualityScore: 0
   })
   const [syntaxValid, setSyntaxValid] = useState<boolean | null>(null);
@@ -120,7 +120,7 @@ const EnhancedDSACompiler: React.FC<EnhancedDSACompilerProps> = ({
 // Example usage:
 // console.log(solution(${problem.examples[0]?.input || '[1,2,3]'}));`,
     
-    java: `import java.util.*;
+    java: `import java.util.*,
 
 public class Solution {
     /**
@@ -269,14 +269,14 @@ int main() {
       // Handle compilation errors
       if (!results.success && results.compilationError) {
         toast.dismiss(toastId);
-        toast.error('Compilation Error: ' + results.compilationError);
+        toast.error('Compilation Error: ' + results.compilationError),
         return
       }
 
       // Handle runtime errors
       if (!results.success && results.runtimeError) {
         toast.dismiss(toastId);
-        toast.error('Runtime Error: ' + results.runtimeError);
+        toast.error('Runtime Error: ' + results.runtimeError),
         return
       }
       
@@ -285,10 +285,10 @@ int main() {
       const avgMemory = results.results.reduce((sum, r) => sum + (r.memory || 0), 0) / results.results.length;
       
       setCodeExecutionStats(prev => ({
-        totalRuns: prev.totalRuns + 1;
+        totalRuns: prev.totalRuns + 1,
         successfulRuns: prev.successfulRuns + (passedCount === totalCount ? 1 : 0),
-        averageExecutionTime: avgTime;
-        memoryUsage: avgMemory;
+        averageExecutionTime: avgTime,
+        memoryUsage: avgMemory,
         codeQualityScore: calculateCodeQuality(code, passedCount, totalCount)
       }))
       
@@ -317,7 +317,7 @@ int main() {
         setTestResults(fallbackResults.results || []);
         toast.warning('Using fallback execution (Judge0 temporarily unavailable)');
       } catch (fallbackError) {
-        toast.error('Code execution failed: ' + error.message);
+        toast.error('Code execution failed: ' + error.message),
         setTestResults([]);
       }
     } finally {
@@ -375,11 +375,11 @@ int main() {
       const submissionData = {
         code,
         language,
-        testResults: finalResults;
+        testResults: finalResults,
         timeSpent,
-        problem: problem.id;
-        company: companyName;
-        executionStats: codeExecutionStats;
+        problem: problem.id,
+        company: companyName,
+        executionStats: codeExecutionStats,
         complexity: {
           time: extractComplexity(code, 'time'),
           space: extractComplexity(code, 'space')

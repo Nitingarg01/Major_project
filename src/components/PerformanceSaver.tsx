@@ -38,13 +38,13 @@ export default function PerformanceSaver({
         // Validate input data
         if (!interviewData.interviewId || !interviewData.jobTitle || !interviewData.companyName) {
           console.error('❌ Missing required interview data:', interviewData);
-          toast.error('Cannot save performance: Missing interview data');
+          toast.error('Cannot save performance: Missing interview data'),
           return
         }
 
         if (!feedbackData.parameterScores || typeof feedbackData.overallScore !== 'number') {
           console.error('❌ Missing or invalid feedback data:', feedbackData);
-          toast.error('Cannot save performance: Missing feedback data');
+          toast.error('Cannot save performance: Missing feedback data'),
           return
         }
 
@@ -77,10 +77,10 @@ export default function PerformanceSaver({
           const techScore = technicalParams.reduce((sum, param) =>;
             sum + feedbackData.parameterScores[param], 0) / technicalParams.length
           roundResults.push({
-            roundType: 'technical';
+            roundType: 'technical',
             score: Math.round(techScore * 10),
-            questionsAnswered: technicalParams.length;
-            totalQuestions: technicalParams.length;
+            questionsAnswered: technicalParams.length,
+            totalQuestions: technicalParams.length,
             timeSpent: Math.round(timeSpent * 0.4) // Assume 40% of time on technical
           })
         }
@@ -89,10 +89,10 @@ export default function PerformanceSaver({
           const behavioralScore = behavioralParams.reduce((sum, param) =>;
             sum + feedbackData.parameterScores[param], 0) / behavioralParams.length
           roundResults.push({
-            roundType: 'behavioral';
+            roundType: 'behavioral',
             score: Math.round(behavioralScore * 10),
-            questionsAnswered: behavioralParams.length;
-            totalQuestions: behavioralParams.length;
+            questionsAnswered: behavioralParams.length,
+            totalQuestions: behavioralParams.length,
             timeSpent: Math.round(timeSpent * 0.3) // Assume 30% of time on behavioral
           })
         }
@@ -101,10 +101,10 @@ export default function PerformanceSaver({
           const otherScore = otherParams.reduce((sum, param) =>;
             sum + feedbackData.parameterScores[param], 0) / otherParams.length
           roundResults.push({
-            roundType: 'mixed';
+            roundType: 'mixed',
             score: Math.round(otherScore * 10),
-            questionsAnswered: otherParams.length;
-            totalQuestions: otherParams.length;
+            questionsAnswered: otherParams.length,
+            totalQuestions: otherParams.length,
             timeSpent: Math.round(timeSpent * 0.3) // Remaining time
           })
         }
@@ -161,19 +161,19 @@ export default function PerformanceSaver({
         )
 
         const performanceData = {
-          interviewId: interviewData.interviewId;
-          jobTitle: interviewData.jobTitle;
-          companyName: interviewData.companyName;
-          interviewType: interviewData.interviewType;
-          experienceLevel: interviewData.experienceLevel;
+          interviewId: interviewData.interviewId,
+          jobTitle: interviewData.jobTitle,
+          companyName: interviewData.companyName,
+          interviewType: interviewData.interviewType,
+          experienceLevel: interviewData.experienceLevel,
           totalQuestions,
           correctAnswers,
-          score: overallScore;
+          score: overallScore,
           timeSpent,
           feedback: {
-            overall: feedbackData.overallVerdict || 'Interview completed successfully';
-            strengths: strengths.length > 0 ? strengths : ['Completed full interview session'];
-            improvements: improvements.length > 0 ? improvements : ['Continue practicing regularly'];
+            overall: feedbackData.overallVerdict || 'Interview completed successfully',
+            strengths: strengths.length > 0 ? strengths : ['Completed full interview session'],
+            improvements: improvements.length > 0 ? improvements : ['Continue practicing regularly'],
             recommendations
           },
           roundResults
@@ -182,7 +182,7 @@ export default function PerformanceSaver({
         console.log('📝 Sending performance data:', performanceData);
         
         const response = await fetch('/api/save-performance', {
-          method: 'POST';
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },

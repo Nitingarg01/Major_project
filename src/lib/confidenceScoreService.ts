@@ -84,11 +84,11 @@ export class ConfidenceScoreService {
     // Store in history
     this.addToHistory({
       timestamp: new Date(),
-      score: overallConfidence;
+      score: overallConfidence,
       factors: {
-        speech: speechConfidence;
-        bodyLanguage: bodyLanguageConfidence;
-        emotion: emotionalConfidence;
+        speech: speechConfidence,
+        bodyLanguage: bodyLanguageConfidence,
+        emotion: emotionalConfidence,
         responseQuality: responseQualityConfidence
       }
     })
@@ -122,7 +122,7 @@ export class ConfidenceScoreService {
     }
 
     // Response time analysis (assuming normal speaking pace)
-    const wordsPerSecond = responseTime > 0 ? wordCount / responseTime : 0;
+    const wordsPerSecond = responseTime > 0 ? wordCount / responseTime : 0,
     if (wordsPerSecond >= 1.5 && wordsPerSecond <= 2.5) {
       score += 10 // Good pace
     } else if (wordsPerSecond < 1) {
@@ -168,11 +168,11 @@ export class ConfidenceScoreService {
     if (!emotionData) return 50
 
     const emotionScores: Record<string, number> = {
-      happy: 85;
-      engaged: 80;
-      focused: 75;
-      neutral: 60;
-      confused: 40;
+      happy: 85,
+      engaged: 80,
+      focused: 75,
+      neutral: 60,
+      confused: 40,
       stressed: 30
     }
 
@@ -275,26 +275,26 @@ export class ConfidenceScoreService {
   } {
     if (score >= 80) {
       return {
-        level: 'Excellent';
-        message: 'You\'re showing strong confidence! Keep it up!';
+        level: 'Excellent',
+        message: 'You\'re showing strong confidence! Keep it up!',
         color: 'text-green-600'
       }
     } else if (score >= 65) {
       return {
-        level: 'Good';
-        message: 'You\'re demonstrating good confidence. Stay focused!';
+        level: 'Good',
+        message: 'You\'re demonstrating good confidence. Stay focused!',
         color: 'text-blue-600'
       }
     } else if (score >= 50) {
       return {
-        level: 'Moderate';
-        message: 'Your confidence is moderate. Take deep breaths and stay calm.';
+        level: 'Moderate',
+        message: 'Your confidence is moderate. Take deep breaths and stay calm.',
         color: 'text-yellow-600'
       }
     } else {
       return {
-        level: 'Needs Improvement';
-        message: 'Take your time and speak with more certainty. You\'ve got this!';
+        level: 'Needs Improvement',
+        message: 'Take your time and speak with more certainty. You\'ve got this!',
         color: 'text-red-600'
       }
     }

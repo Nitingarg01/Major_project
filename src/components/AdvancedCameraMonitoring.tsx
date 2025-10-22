@@ -8,27 +8,27 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type Props = {
-  cameraOn: boolean;
-  setCameraOn: Dispatch<SetStateAction<boolean>>;
-  onActivityDetected?: (activity: ActivityAlert) => void;
-  isInterviewActive?: boolean;
+  cameraOn: boolean,
+  setCameraOn: Dispatch<SetStateAction<boolean>>,
+  onActivityDetected?: (activity: ActivityAlert) => void,
+  isInterviewActive?: boolean,
   monitoringLevel?: 'basic' | 'moderate' | 'strict'
 }
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
-  timestamp: Date;
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
+  timestamp: Date,
   count?: number
 }
 
 interface MonitoringStats {
-  totalAlerts: number;
-  tabSwitches: number;
-  focusLost: number;
-  cameraIssues: number;
-  suspiciousActivity: number;
+  totalAlerts: number,
+  tabSwitches: number,
+  focusLost: number,
+  cameraIssues: number,
+  suspiciousActivity: number,
   monitoringDuration: number
 }
 
@@ -49,11 +49,11 @@ const AdvancedCameraMonitoring = ({
   const [isMonitoring, setIsMonitoring] = useState(false);
   const [faceDetectionStatus, setFaceDetectionStatus] = useState<'detecting' | 'face_found' | 'no_face' | 'multiple_faces' | 'error'>('detecting');
   const [monitoringStats, setMonitoringStats] = useState<MonitoringStats>({
-    totalAlerts: 0;
-    tabSwitches: 0;
-    focusLost: 0;
-    cameraIssues: 0;
-    suspiciousActivity: 0;
+    totalAlerts: 0,
+    tabSwitches: 0,
+    focusLost: 0,
+    cameraIssues: 0,
+    suspiciousActivity: 0,
     monitoringDuration: 0
   });
   
@@ -75,10 +75,10 @@ const AdvancedCameraMonitoring = ({
     // Update stats
     setMonitoringStats(prev => ({
       ...prev,
-      totalAlerts: prev.totalAlerts + 1;
-      tabSwitches: alert.type === 'tab_switch' ? prev.tabSwitches + 1 : prev.tabSwitches;
-      focusLost: alert.type === 'window_focus_lost' ? prev.focusLost + 1 : prev.focusLost;
-      cameraIssues: alert.type === 'camera_blocked' || alert.type === 'no_face' ? prev.cameraIssues + 1 : prev.cameraIssues;
+      totalAlerts: prev.totalAlerts + 1,
+      tabSwitches: alert.type === 'tab_switch' ? prev.tabSwitches + 1 : prev.tabSwitches,
+      focusLost: alert.type === 'window_focus_lost' ? prev.focusLost + 1 : prev.focusLost,
+      cameraIssues: alert.type === 'camera_blocked' || alert.type === 'no_face' ? prev.cameraIssues + 1 : prev.cameraIssues,
       suspiciousActivity: alert.type === 'suspicious_movement' || alert.type === 'multiple_faces' ? prev.suspiciousActivity + 1 : prev.suspiciousActivity
     }));
 
@@ -94,9 +94,9 @@ const AdvancedCameraMonitoring = ({
       if (document.hidden) {
         setTabSwitchCount(prev => prev + 1);
         addActivityAlert({
-          type: 'tab_switch';
-          message: 'Tab switched or browser minimized during interview';
-          severity: monitoringLevel === 'strict' ? 'high' : 'medium';
+          type: 'tab_switch',
+          message: 'Tab switched or browser minimized during interview',
+          severity: monitoringLevel === 'strict' ? 'high' : 'medium',
           timestamp: new Date(),
           count: tabSwitchCount + 1
         });
@@ -106,9 +106,9 @@ const AdvancedCameraMonitoring = ({
     const handleFocusLost = () => {
       setFocusLostCount(prev => prev + 1);
       addActivityAlert({
-        type: 'window_focus_lost';
-        message: 'Browser window lost focus';
-        severity: 'medium';
+        type: 'window_focus_lost',
+        message: 'Browser window lost focus',
+        severity: 'medium',
         timestamp: new Date(),
         count: focusLostCount + 1
       });
@@ -129,9 +129,9 @@ const AdvancedCameraMonitoring = ({
       if (isDevTools || isRefresh || isAltTab) {
         setSuspiciousMovementCount(prev => prev + 1);
         addActivityAlert({
-          type: 'suspicious_movement';
+          type: 'suspicious_movement',
           message: `Suspicious keyboard shortcut detected: ${e.key}`,
-          severity: 'high';
+          severity: 'high',
           timestamp: new Date()
         });
       }
@@ -159,9 +159,9 @@ const AdvancedCameraMonitoring = ({
       if (cameraOn) {
         setCameraBlockedCount(prev => prev + 1);
         addActivityAlert({
-          type: 'camera_blocked';
-          message: 'Camera appears to be blocked or not functioning';
-          severity: 'high';
+          type: 'camera_blocked',
+          message: 'Camera appears to be blocked or not functioning',
+          severity: 'high',
           timestamp: new Date()
         });
       }
@@ -193,9 +193,9 @@ const AdvancedCameraMonitoring = ({
         if (motionLevel > 0.8) {
           setSuspiciousMovementCount(prev => prev + 1);
           addActivityAlert({
-            type: 'suspicious_movement';
-            message: 'High level of movement detected';
-            severity: 'medium';
+            type: 'suspicious_movement',
+            message: 'High level of movement detected',
+            severity: 'medium',
             timestamp: new Date()
           });
         }
@@ -212,9 +212,9 @@ const AdvancedCameraMonitoring = ({
       } else {
         setFaceDetectionStatus('no_face');
         addActivityAlert({
-          type: 'no_face';
-          message: 'No face detected in camera feed';
-          severity: 'medium';
+          type: 'no_face',
+          message: 'No face detected in camera feed',
+          severity: 'medium',
           timestamp: new Date()
         });
       }
@@ -251,7 +251,7 @@ const AdvancedCameraMonitoring = ({
           video: { 
             width: { ideal: 640 }, 
             height: { ideal: 480 },
-            facingMode: 'user';
+            facingMode: 'user',
             frameRate: { ideal: 30 }
           } 
         });
@@ -279,15 +279,15 @@ const AdvancedCameraMonitoring = ({
                 } else {
                   console.error("Video play error:", error);
                   addActivityAlert({
-                    type: 'camera_blocked';
-                    message: 'Camera playback failed';
+                    type: 'camera_blocked',
+                    message: 'Camera playback failed',
                 console.error("Video play error:", error);
                 // Handle the play() request interruption error
                 if (error.name !== 'AbortError') {
                   addActivityAlert({
-                    type: 'camera_blocked';
-                    message: 'Camera playback interrupted';
-                    severity: 'medium';
+                    type: 'camera_blocked',
+                    message: 'Camera playback interrupted',
+                    severity: 'medium',
                     timestamp: new Date()
                   });
                 }
@@ -298,9 +298,9 @@ const AdvancedCameraMonitoring = ({
         console.error("Camera access error:", err);
         setCameraBlockedCount(prev => prev + 1);
         addActivityAlert({
-          type: 'camera_blocked';
-          message: 'Camera access denied or unavailable';
-          severity: 'high';
+          type: 'camera_blocked',
+          message: 'Camera access denied or unavailable',
+          severity: 'high',
           timestamp: new Date()
         });
       }
@@ -340,7 +340,7 @@ const AdvancedCameraMonitoring = ({
     }
 
     const intervalTime = monitoringLevel === 'strict' ? 5000 :;
-                        monitoringLevel === 'moderate' ? 10000 : 15000;
+                        monitoringLevel === 'moderate' ? 10000 : 15000,
 
     monitoringIntervalRef.current = setInterval(performAdvancedMonitoring, intervalTime);
 
@@ -367,28 +367,28 @@ const AdvancedCameraMonitoring = ({
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'high': return 'bg-red-500 border-red-600';
-      case 'medium': return 'bg-yellow-500 border-yellow-600';
-      case 'low': return 'bg-blue-500 border-blue-600';
+      case 'high': return 'bg-red-500 border-red-600',
+      case 'medium': return 'bg-yellow-500 border-yellow-600',
+      case 'low': return 'bg-blue-500 border-blue-600',
       default: return 'bg-gray-500 border-gray-600';
     }
   };
 
   const getFaceStatusColor = () => {
     switch (faceDetectionStatus) {
-      case 'face_found': return 'text-green-500';
-      case 'no_face': return 'text-red-500';
-      case 'multiple_faces': return 'text-red-500';
-      case 'detecting': return 'text-yellow-500';
-      case 'error': return 'text-red-500';
+      case 'face_found': return 'text-green-500',
+      case 'no_face': return 'text-red-500',
+      case 'multiple_faces': return 'text-red-500',
+      case 'detecting': return 'text-yellow-500',
+      case 'error': return 'text-red-500',
       default: return 'text-gray-500';
     }
   };
 
   const getMonitoringLevelBadge = () => {
     const colors = {
-      basic: 'bg-blue-100 text-blue-800';
-      moderate: 'bg-yellow-100 text-yellow-800';
+      basic: 'bg-blue-100 text-blue-800',
+      moderate: 'bg-yellow-100 text-yellow-800',
       strict: 'bg-red-100 text-red-800'
     };
     

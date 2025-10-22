@@ -11,23 +11,23 @@ const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_
 
 interface QuickFeedback {
   score: number; // 0-10
-  feedback: string;
-  strengths: string[];
-  improvements: string[];
+  feedback: string,
+  strengths: string[],
+  improvements: string[],
   nextSteps: string[];
 }
 
 interface PerformanceMetrics {
-  overallScore: number;
+  overallScore: number,
   categoryScores: { [category: string]: number };
-  totalQuestions: number;
-  timeSpent: number;
+  totalQuestions: number,
+  timeSpent: number,
   completionRate: number
 }
 
 export class OptimizedFeedbackService {
-  private static instance: OptimizedFeedbackService;
-  private groq: Groq;
+  private static instance: OptimizedFeedbackService,
+  private groq: Groq,
   private model = 'llama-3.1-70b-versatile'; // Faster model for feedback
 
   private constructor() {
@@ -36,7 +36,7 @@ export class OptimizedFeedbackService {
     }
     
     this.groq = new Groq({
-      apiKey: groqApiKey;
+      apiKey: groqApiKey,
       dangerouslyAllowBrowser: true
     });
     
@@ -53,9 +53,9 @@ export class OptimizedFeedbackService {
   private async callGroqAPI(messages: any[], maxTokens: number = 2000): Promise<string> {
     try {
       const chatCompletion = await this.groq.chat.completions.create({
-        messages: messages;
-        model: this.model;
-        max_tokens: maxTokens;
+        messages: messages,
+        model: this.model,
+        max_tokens: maxTokens,
         temperature: 0.3;
       });
 
@@ -70,9 +70,9 @@ export class OptimizedFeedbackService {
    * Generate quick feedback for single question response
    */
   public async generateQuickFeedback(
-    question: string;
-    userAnswer: string;
-    category: string;
+    question: string,
+    userAnswer: string,
+    category: string,
     companyName: string
   ): Promise<QuickFeedback> {
     const systemMessage = `You are a concise interview evaluator. Provide quick, actionable feedback in under 30 seconds. Focus on key points only.`;
@@ -102,9 +102,9 @@ export class OptimizedFeedbackService {
       const feedback = extractJSON(response);
       return {
         score: Math.max(0, Math.min(10, feedback.score || 5)),
-        feedback: feedback.feedback || 'Response evaluated successfully.';
-        strengths: feedback.strengths || ['Attempted the question'];
-        improvements: feedback.improvements || ['Add more detail'];
+        feedback: feedback.feedback || 'Response evaluated successfully.',
+        strengths: feedback.strengths || ['Attempted the question'],
+        improvements: feedback.improvements || ['Add more detail'],
         nextSteps: feedback.nextSteps || ['Practice similar questions']
       };
     } catch (error) {
@@ -117,9 +117,9 @@ export class OptimizedFeedbackService {
    * Generate fast overall performance analysis
    */
   public async generateFastOverallAnalysis(
-    questions: any[];
-    answers: string[];
-    companyName: string;
+    questions: any[],
+    answers: string[],
+    companyName: string,
     jobTitle: string
   ): Promise<any> {
     const systemMessage = `You are a fast interview performance analyzer. Provide essential insights quickly and concisely.`;
@@ -160,14 +160,14 @@ export class OptimizedFeedbackService {
       return {
         overallScore: Math.max(0, Math.min(10, analysis.overallScore || 5)),
         parameterScores: analysis.categoryScores || {},
-        overallVerdict: analysis.summary || 'Interview completed successfully';
-        strengths: analysis.keyStrengths || ['Completed all questions'];
-        improvements: analysis.keyImprovements || ['Continue practicing'];
-        recommendations: [analysis.recommendation || 'Keep up the good work'];
+        overallVerdict: analysis.summary || 'Interview completed successfully',
+        strengths: analysis.keyStrengths || ['Completed all questions'],
+        improvements: analysis.keyImprovements || ['Continue practicing'],
+        recommendations: [analysis.recommendation || 'Keep up the good work'],
         metadata: {
           analyzedAt: new Date(),
-          provider: 'optimized-groq';
-          model: this.model;
+          provider: 'optimized-groq',
+          model: this.model,
           processingTime: 'fast'
         }
       };
@@ -181,8 +181,8 @@ export class OptimizedFeedbackService {
    * Calculate simple performance metrics
    */
   public calculatePerformanceMetrics(
-    questions: any[];
-    answers: string[];
+    questions: any[],
+    answers: string[],
     timeSpent: number
   ): PerformanceMetrics {
     const totalQuestions = questions.length;
@@ -227,8 +227,8 @@ export class OptimizedFeedbackService {
    * Generate streaming feedback (for real-time updates)
    */
   public async generateStreamingFeedback(
-    question: string;
-    userAnswer: string;
+    question: string,
+    userAnswer: string,
     category: string
   ): Promise<AsyncIterable<string>> {
     // Simple streaming simulation - return chunks of feedback
@@ -269,16 +269,16 @@ export class OptimizedFeedbackService {
     const metrics = this.calculatePerformanceMetrics(questions, answers, 0);
     
     return {
-      overallScore: metrics.overallScore;
-      parameterScores: metrics.categoryScores;
+      overallScore: metrics.overallScore,
+      parameterScores: metrics.categoryScores,
       overallVerdict: `Interview completed with ${metrics.completionRate}% completion rate and ${metrics.overallScore.toFixed(1)}/10 overall performance.`,
       strengths: ['Completed interview', 'Consistent responses'],
       improvements: ['Add more detail', 'Practice specific topics'],
       recommendations: ['Continue practicing', 'Focus on weak areas'],
       metadata: {
         analyzedAt: new Date(),
-        provider: 'fallback';
-        model: 'simple-metrics';
+        provider: 'fallback',
+        model: 'simple-metrics',
         processingTime: 'instant'
       }
     };

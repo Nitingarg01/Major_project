@@ -65,13 +65,13 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 }) => {
   // Core state
   const [interviewState, setInterviewState] = useState<InterviewState>({
-    currentQuestionIndex: 0;
-    isListening: false;
-    isSpeaking: false;
-    userResponse: '';
-    aiResponse: '';
-    conversationHistory: [];
-    startTime: null;
+    currentQuestionIndex: 0,
+    isListening: false,
+    isSpeaking: false,
+    userResponse: '',
+    aiResponse: '',
+    conversationHistory: [],
+    startTime: null,
     responses: []
   })
 
@@ -240,10 +240,10 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     
     setInterviewState(prev => ({
       ...prev,
-      aiResponse: welcomeMessage;
+      aiResponse: welcomeMessage,
       conversationHistory: [{
-        speaker: 'ai';
-        message: welcomeMessage;
+        speaker: 'ai',
+        message: welcomeMessage,
         timestamp: new Date()
       }]
     }))
@@ -266,10 +266,10 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     
     setInterviewState(prev => ({
       ...prev,
-      aiResponse: questionText;
+      aiResponse: questionText,
       conversationHistory: [...prev.conversationHistory, {
-        speaker: 'ai';
-        message: questionText;
+        speaker: 'ai',
+        message: questionText,
         timestamp: new Date(),
         questionIndex: prev.currentQuestionIndex
       }]
@@ -292,17 +292,17 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
     // Add user response to conversation
     const userMessage = {
-      speaker: 'user' as const;
-      message: interviewState.userResponse;
+      speaker: 'user' as const,
+      message: interviewState.userResponse,
       timestamp: new Date(),
       questionIndex: interviewState.currentQuestionIndex
     }
 
     // Save response
     const response = {
-      questionIndex: interviewState.currentQuestionIndex;
-      question: currentQuestion.question;
-      userAnswer: interviewState.userResponse;
+      questionIndex: interviewState.currentQuestionIndex,
+      question: currentQuestion.question,
+      userAnswer: interviewState.userResponse,
       timestamp: new Date(),
       responseTime
     }
@@ -313,8 +313,8 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     const followUpMessage = generateFollowUp(interviewState.userResponse, currentQuestion);
     
     const aiMessage = {
-      speaker: 'ai' as const;
-      message: followUpMessage;
+      speaker: 'ai' as const,
+      message: followUpMessage,
       timestamp: new Date()
     }
 
@@ -369,12 +369,12 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
     // Calculate results
     const results = {
-      totalQuestions: questions.length;
-      answeredQuestions: interviewState.responses.length;
+      totalQuestions: questions.length,
+      answeredQuestions: interviewState.responses.length,
       totalTime: interviewState.startTime ? Date.now() - interviewState.startTime.getTime() : 0,
       averageResponseTime: interviewState.responses.reduce((sum, r) => sum + r.responseTime, 0) / interviewState.responses.length,
-      conversationHistory: interviewState.conversationHistory;
-      responses: interviewState.responses;
+      conversationHistory: interviewState.conversationHistory,
+      responses: interviewState.responses,
       completedAt: new Date()
     }
 

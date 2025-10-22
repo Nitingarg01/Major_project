@@ -22,7 +22,7 @@ const schema = z.object({
   password: z.string().min(8, "Password should be minimum 8 characters!"),
   confirmpassword: z.string().min(8, "Confirm Password should be minimum 8 characters!")
 }).refine((data) => data.password === data.confirmpassword, {
-  path: ["confirmpassword"];
+  path: ["confirmpassword"],
   message: "Passwords do not match";
 })
 
@@ -35,9 +35,9 @@ const CreateSignUp = () => {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '';
-      email: '';
-      password: '';
+      name: '',
+      email: '',
+      password: '',
       confirmpassword: ''
     }
   })

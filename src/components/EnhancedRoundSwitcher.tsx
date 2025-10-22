@@ -128,7 +128,7 @@ const EnhancedRoundSwitcher: React.FC<EnhancedRoundSwitcherProps> = ({
               className={`relative p-4 rounded-lg border-2 transition-all cursor-pointer ${
                 isCurrentRound
                   ? 'border-blue-500 bg-blue-50'
-                  : round.status === 'completed';
+                  : round.status === 'completed',
                     ? 'border-green-300 bg-green-50'
                     : canSwitch
                       ? 'border-gray-200 hover:border-gray-300 bg-white'

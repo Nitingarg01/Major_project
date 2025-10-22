@@ -9,18 +9,18 @@ import { v4 as uuidv4 } from 'uuid';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
 
 interface ResumeAnalysisResult {
-  overallScore: number;
+  overallScore: number,
   breakdown: {
-    structure: number;
-    skills: number;
-    experience: number;
-    projects: number;
-    education: number;
+    structure: number,
+    skills: number,
+    experience: number,
+    projects: number,
+    education: number,
     language: number
   };
-  strengths: string[];
-  improvements: string[];
-  recommendations: string[];
+  strengths: string[],
+  improvements: string[],
+  recommendations: string[],
   detailedFeedback: string
 }
 
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const contentType = request.headers.get("content-type") ?? "";
     if (!contentType.includes("multipart/form-data")) {
       return NextResponse.json({
-        error: "Expected multipart/form-data";
+        error: "Expected multipart/form-data",
         status: 400
       }, { status: 400 });
     }
@@ -45,14 +45,14 @@ export async function POST(request: NextRequest) {
 
     if (!file) {
       return NextResponse.json({ 
-        error: "No resume file provided";
+        error: "No resume file provided",
         status: 400
       }, { status: 400 });
     }
 
     if (!targetRole) {
       return NextResponse.json({ 
-        error: "Target role is required";
+        error: "Target role is required",
         status: 400
       }, { status: 400 });
     }
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({
-        error: "File size too large. Maximum allowed size is 5MB.";
+        error: "File size too large. Maximum allowed size is 5MB.",
         status: 400
       }, { status: 400 });
     }
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     
     if (!textContent || textContent.length < 50) {
       return NextResponse.json({
-        error: "Unable to extract meaningful content from the resume.";
+        error: "Unable to extract meaningful content from the resume.",
         status: 400
       }, { status: 400 });
     }
@@ -145,9 +145,9 @@ Focus on:
     }
 
     const model = genAI.getGenerativeModel({
-      model: modelUsed;
+      model: modelUsed,
       generationConfig: {
-        temperature: 0.7;
+        temperature: 0.7,
         maxOutputTokens: 2000
       }
     });
@@ -157,7 +157,7 @@ Focus on:
     
     try {
       const cleaned = text.replace(/```json\s*/g, '').replace(/\s*```/g, '').trim();
-      const analysisResult: ResumeAnalysisResult = JSON.parse(cleaned);
+      const analysisResult: ResumeAnalysisResult = JSON.parse(cleaned),
 
       // Validate and ensure proper structure
       const validatedResult = {
@@ -170,9 +170,9 @@ Focus on:
           education: Math.min(10, Math.max(0, analysisResult.breakdown?.education || 0)),
           language: Math.min(5, Math.max(0, analysisResult.breakdown?.language || 0))
         },
-        strengths: analysisResult.strengths || [];
-        improvements: analysisResult.improvements || [];
-        recommendations: analysisResult.recommendations || [];
+        strengths: analysisResult.strengths || [],
+        improvements: analysisResult.improvements || [],
+        recommendations: analysisResult.recommendations || [],
         detailedFeedback: analysisResult.detailedFeedback || "Analysis completed successfully."
       };
 
@@ -182,9 +182,9 @@ Focus on:
       
       const analysisRecord = {
         id: uuidv4(),
-        userId: session.user.id;
-        fileName: file.name;
-        targetRole: targetRole;
+        userId: session.user.id,
+        fileName: file.name,
+        targetRole: targetRole,
         ...validatedResult,
         createdAt: new Date()
       };
@@ -195,7 +195,7 @@ Focus on:
 
       return NextResponse.json({ 
         message: "Resume analyzed successfully", 
-        analysis: analysisRecord;
+        analysis: analysisRecord,
         status: 200
       }, { status: 200 });
 
@@ -204,8 +204,8 @@ Focus on:
       console.error("Raw response:", text);
       
       return NextResponse.json({
-        error: "Failed to parse analysis results. Please try again.";
-        status: 500;
+        error: "Failed to parse analysis results. Please try again.",
+        status: 500,
         details: parseError instanceof Error ? parseError.message : "Parse error"
       }, { status: 500 });
     }
@@ -213,8 +213,8 @@ Focus on:
   } catch (error) {
     console.error("❌ Error in resume analysis:", error);
     return NextResponse.json({
-      error: "Resume analysis failed. Please try again.";
-      status: 500;
+      error: "Resume analysis failed. Please try again.",
+      status: 500,
       details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }

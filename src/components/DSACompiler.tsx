@@ -38,11 +38,11 @@ interface DSACompilerProps {
 }
 
 // Default DSA problems if none provided
-const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [;
+const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [,
   {
-    id: 'two-sum';
-    title: 'Two Sum';
-    difficulty: 'easy';
+    id: 'two-sum',
+    title: 'Two Sum',
+    difficulty: 'easy',
     description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.',
     examples: [
       {
@@ -75,24 +75,24 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [;
     ]
   },
   {
-    id: 'valid-parentheses';
-    title: 'Valid Parentheses';
-    difficulty: 'easy';
+    id: 'valid-parentheses',
+    title: 'Valid Parentheses',
+    difficulty: 'easy',
     description: 'Given a string s containing just the characters "(", ")", "{", "}", "[" and "]", determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets and in the correct order.',
     examples: [
       {
         input: 's = "()"',
-        output: 'true';
+        output: 'true',
         explanation: 'The string contains valid parentheses.'
       },
       {
         input: 's = "()[]{}"',
-        output: 'true';
+        output: 'true',
         explanation: 'All brackets are properly matched.'
       },
       {
         input: 's = "(]"',
-        output: 'false';
+        output: 'false',
         explanation: 'Brackets are not properly matched.'
       }
     ],
@@ -114,9 +114,9 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [;
     ]
   },
   {
-    id: 'merge-intervals';
-    title: 'Merge Intervals';
-    difficulty: 'medium';
+    id: 'merge-intervals',
+    title: 'Merge Intervals',
+    difficulty: 'medium',
     description: 'Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.',
     examples: [
       {
@@ -274,13 +274,13 @@ int main() {
       const executionResult = await judge0Service.executeCode(code, language, problem.testCases || []);
       
       if (!executionResult.success && executionResult.compilationError) {
-        toast.error('Compilation Error: ' + executionResult.compilationError);
+        toast.error('Compilation Error: ' + executionResult.compilationError),
         setTestResults([]);
         return
       }
 
       if (!executionResult.success && executionResult.runtimeError) {
-        toast.error('Runtime Error: ' + executionResult.runtimeError);
+        toast.error('Runtime Error: ' + executionResult.runtimeError),
         setTestResults([]);
         return
       }
@@ -299,7 +299,7 @@ int main() {
       }
     } catch (error: any) {
       console.error('Code execution error:', error);
-      toast.error('Error running code: ' + error.message);
+      toast.error('Error running code: ' + error.message),
       
       // Fallback to mock execution if Judge0 fails
       try {
@@ -644,9 +644,9 @@ async function mockExecuteCode(code: string, language: string, testCases: TestCa
     const passed = Math.random() > 0.3 // 70% pass rate for demo
     return {
       passed,
-      input: testCase.input;
-      expected: testCase.expectedOutput;
-      actual: passed ? testCase.expectedOutput : 'Wrong output';
+      input: testCase.input,
+      expected: testCase.expectedOutput,
+      actual: passed ? testCase.expectedOutput : 'Wrong output',
       executionTime: Math.random() * 100 + 'ms'
     }
   })

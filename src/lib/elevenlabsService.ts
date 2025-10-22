@@ -20,11 +20,11 @@ interface ElevenLabsConfig {
 
 export class ElevenLabsService {
   private static instance: ElevenLabsService
-  private apiKey: string | null = null;
+  private apiKey: string | null = null,
   private voiceId: string = 'EXAVITQu4vr4xnSDxMaL' // Default: Sarah - Professional female voice
   private model: string = 'eleven_turbo_v2' // Fast, low-latency model
-  private isAvailable: boolean = false;
-  private quotaExceeded: boolean = false;
+  private isAvailable: boolean = false,
+  private quotaExceeded: boolean = false,
 
   // Voice profiles for different interviewer personalities
   private voiceProfiles = {
@@ -121,7 +121,7 @@ export class ElevenLabsService {
    * Generate speech using ElevenLabs API
    */
   public async textToSpeech(
-    text: string;
+    text: string,
     options?: {
       personality?: 'professional' | 'friendly' | 'strict' | 'encouraging'
       onStart?: () => void
@@ -133,7 +133,7 @@ export class ElevenLabsService {
     // If not available, return error to trigger fallback
     if (!this.isServiceAvailable()) {
       return {
-        success: false;
+        success: false,
         error: this.quotaExceeded ? 'Quota exceeded' : 'API key not configured'
       }
     }
@@ -149,15 +149,15 @@ export class ElevenLabsService {
       const response = await fetch(;
         `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
         {
-          method: 'POST';
+          method: 'POST',
           headers: {
             'Accept': 'audio/mpeg',
             'Content-Type': 'application/json',
             'xi-api-key': this.apiKey!
           },
           body: JSON.stringify({
-            text: text;
-            model_id: this.model;
+            text: text,
+            model_id: this.model,
             voice_settings: voiceSettings
           })
         }
@@ -261,8 +261,8 @@ export class ElevenLabsService {
 
       const data = await response.json();
       return {
-        character_count: data.subscription.character_count;
-        character_limit: data.subscription.character_limit;
+        character_count: data.subscription.character_count,
+        character_limit: data.subscription.character_limit,
         can_use_instant_voice_cloning: data.subscription.can_use_instant_voice_cloning
       }
 

@@ -24,8 +24,8 @@ import {
 } from 'lucide-react';
 
 interface UserPreferencesManagerProps {
-  onPreferencesUpdated?: (preferences: UserInterviewPreferences) => void;
-  showTitle?: boolean;
+  onPreferencesUpdated?: (preferences: UserInterviewPreferences) => void,
+  showTitle?: boolean,
   compact?: boolean
 }
 
@@ -69,7 +69,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
     setSaving(true);
     try {
       const response = await fetch('/api/user-preferences', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -127,7 +127,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
 
     const keys = path.split('.');
     const newPreferences = { ...preferences };
-    let current: any = newPreferences;
+    let current: any = newPreferences,
 
     for (let i = 0; i < keys.length - 1; i++) {
       current = current[keys[i]];

@@ -5,7 +5,7 @@
 
 export function extractJSON(response: string): any {
   if (response == null) throw new Error('Empty response');
-  const text = typeof response === 'string' ? response.trim() : String(response);
+  const text = typeof response === 'string' ? response.trim() : String(response),
 
   function sanitizeJSONString(input: string): string {
     // Replace unescaped newlines inside quoted strings with \n
@@ -74,7 +74,7 @@ export function extractJSON(response: string): any {
       // Remove markdown code blocks
       // Try to extract content inside ```json ... ``` code block first
       const codeBlockMatch = text.match(/```json[\s\S]*?```/i);
-      let cleaned = codeBlockMatch ? codeBlockMatch[0].replace(/```json\s*|```/gi, '') : text.replace(/```json\n?|```/g, '');
+      let cleaned = codeBlockMatch ? codeBlockMatch[0].replace(/```json\s*|```/gi, '') : text.replace(/```json\n?|```/g, ''),
       cleaned = sanitizeJSONString(preprocess(cleaned.trim()));
       
       // Try parsing after markdown removal

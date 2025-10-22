@@ -61,9 +61,9 @@ export class VirtualInterviewerAI {
 
     return {
       message: messages[Math.floor(Math.random() * messages.length)],
-      type: 'question';
-      emotion: 'encouraging';
-      shouldSpeak: true;
+      type: 'question',
+      emotion: 'encouraging',
+      shouldSpeak: true,
       nextAction: 'wait_for_response'
     }
   }
@@ -72,8 +72,8 @@ export class VirtualInterviewerAI {
    * Generate follow-up questions based on user response
    */
   public async generateFollowUp(
-    userResponse: string;
-    originalQuestion: string;
+    userResponse: string,
+    originalQuestion: string,
     context: ConversationContext
   ): Promise<AIResponse> {
     try {
@@ -97,11 +97,11 @@ Keep the follow-up concise (1-2 sentences) and natural. Examples:
 Generate only the follow-up response, nothing else.`
 
       const result = await this.smartAI.processRequest({
-        task: 'question_generation';
+        task: 'question_generation',
         context: {
-          jobTitle: context.jobTitle;
-          companyName: context.companyName;
-          interviewType: context.interviewType;
+          jobTitle: context.jobTitle,
+          companyName: context.companyName,
+          interviewType: context.interviewType,
           numberOfQuestions: 1
         }
       })
@@ -111,10 +111,10 @@ Generate only the follow-up response, nothing else.`
         const followUp = this.extractFollowUpFromResponse(result.data, userResponse);
         
         return {
-          message: followUp;
-          type: 'followup';
-          emotion: 'probing';
-          shouldSpeak: true;
+          message: followUp,
+          type: 'followup',
+          emotion: 'probing',
+          shouldSpeak: true,
           nextAction: 'wait_for_response'
         }
       }
@@ -130,18 +130,18 @@ Generate only the follow-up response, nothing else.`
    * Generate transition to next question
    */
   public generateTransition(
-    currentQuestionIndex: number;
-    totalQuestions: number;
+    currentQuestionIndex: number,
+    totalQuestions: number,
     context: ConversationContext
   ): AIResponse {
     const isLastQuestion = currentQuestionIndex >= totalQuestions - 1;
     
     if (isLastQuestion) {
       return {
-        message: "Thank you for that response. We've covered all the questions I had prepared. Do you have any questions for me about the role or the company before we wrap up?";
-        type: 'closing';
-        emotion: 'supportive';
-        shouldSpeak: true;
+        message: "Thank you for that response. We've covered all the questions I had prepared. Do you have any questions for me about the role or the company before we wrap up?",
+        type: 'closing',
+        emotion: 'supportive',
+        shouldSpeak: true,
         nextAction: 'end_interview'
       }
     }
@@ -156,9 +156,9 @@ Generate only the follow-up response, nothing else.`
 
     return {
       message: transitions[Math.floor(Math.random() * transitions.length)],
-      type: 'transition';
-      emotion: 'neutral';
-      shouldSpeak: true;
+      type: 'transition',
+      emotion: 'neutral',
+      shouldSpeak: true,
       nextAction: 'move_to_next'
     }
   }
@@ -167,8 +167,8 @@ Generate only the follow-up response, nothing else.`
    * Analyze user response and provide feedback
    */
   public async analyzeResponse(
-    userResponse: string;
-    question: string;
+    userResponse: string,
+    question: string,
     context: ConversationContext
   ): Promise<{
     score: number
@@ -178,21 +178,21 @@ Generate only the follow-up response, nothing else.`
   }> {
     try {
       const result = await this.smartAI.processRequest({
-        task: 'response_analysis';
+        task: 'response_analysis',
         context: {
           question,
-          userAnswer: userResponse;
-          expectedAnswer: 'Comprehensive response with examples';
-          interviewType: context.interviewType;
+          userAnswer: userResponse,
+          expectedAnswer: 'Comprehensive response with examples',
+          interviewType: context.interviewType,
           companyName: context.companyName
         }
       })
 
       if (result.success && result.data) {
         return {
-          score: result.data.score || 7;
-          strengths: result.data.strengths || ['Clear communication'];
-          improvements: result.data.improvements || ['Add more specific examples'];
+          score: result.data.score || 7,
+          strengths: result.data.strengths || ['Clear communication'],
+          improvements: result.data.improvements || ['Add more specific examples'],
           feedback: result.data.feedback || 'Good response overall'
         }
       }
@@ -218,9 +218,9 @@ Generate only the follow-up response, nothing else.`
 
     return {
       message: encouragements[Math.floor(Math.random() * encouragements.length)],
-      type: 'feedback';
-      emotion: 'supportive';
-      shouldSpeak: true;
+      type: 'feedback',
+      emotion: 'supportive',
+      shouldSpeak: true,
       nextAction: 'wait_for_response'
     }
   }
@@ -229,8 +229,8 @@ Generate only the follow-up response, nothing else.`
    * Handle clarification requests
    */
   public generateClarification(
-    originalQuestion: string;
-    clarificationRequest: string;
+    originalQuestion: string,
+    clarificationRequest: string,
     context: ConversationContext
   ): AIResponse {
     const clarifications = [;
@@ -241,9 +241,9 @@ Generate only the follow-up response, nothing else.`
 
     return {
       message: clarifications[Math.floor(Math.random() * clarifications.length)],
-      type: 'question';
-      emotion: 'supportive';
-      shouldSpeak: true;
+      type: 'question',
+      emotion: 'supportive',
+      shouldSpeak: true,
       nextAction: 'wait_for_response'
     }
   }
@@ -288,8 +288,8 @@ Generate only the follow-up response, nothing else.`
   }
 
   private generateFallbackFollowUp(
-    userResponse: string;
-    originalQuestion: string;
+    userResponse: string,
+    originalQuestion: string,
     context: ConversationContext
   ): AIResponse {
     const followUps = [;
@@ -302,9 +302,9 @@ Generate only the follow-up response, nothing else.`
 
     return {
       message: followUps[Math.floor(Math.random() * followUps.length)],
-      type: 'followup';
-      emotion: 'probing';
-      shouldSpeak: true;
+      type: 'followup',
+      emotion: 'probing',
+      shouldSpeak: true,
       nextAction: 'wait_for_response'
     }
   }
@@ -316,8 +316,8 @@ Generate only the follow-up response, nothing else.`
                        userResponse.toLowerCase().includes('time when');
 
     let score = 5;
-    const strengths: string[] = [];
-    const improvements: string[] = [];
+    const strengths: string[] = [],
+    const improvements: string[] = [],
 
     if (wordCount > 30) {
       score += 1;

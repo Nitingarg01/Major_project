@@ -35,28 +35,28 @@ import CompanyIntelligenceService from '@/lib/companyIntelligence';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
-  timestamp: Date;
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
+  timestamp: Date,
   confidence?: number
 }
 
 interface EnhancedInterviewWrapperProps {
-  questions: Question[];
-  id: string;
-  interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
-  rounds?: InterviewRound[];
-  companyName?: string;
+  questions: Question[],
+  id: string,
+  interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed',
+  rounds?: InterviewRound[],
+  companyName?: string,
   jobTitle?: string
 }
 
 // Enhanced DSA problems with better complexity
 const enhancedDSAProblems = [;
   {
-    id: 'two-sum-enhanced';
-    title: 'Two Sum';
-    difficulty: 'easy' as const;
+    id: 'two-sum-enhanced',
+    title: 'Two Sum',
+    difficulty: 'easy' as const,
     description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.',
     examples: [
       {
@@ -94,24 +94,24 @@ const enhancedDSAProblems = [;
     companies: ['Amazon', 'Google', 'Microsoft', 'Facebook']
   },
   {
-    id: 'valid-parentheses';
-    title: 'Valid Parentheses';
-    difficulty: 'easy' as const;
+    id: 'valid-parentheses',
+    title: 'Valid Parentheses',
+    difficulty: 'easy' as const,
     description: 'Given a string s containing just the characters \'(\', \')\', \'{\', \'}\', \'[\' and \']\', determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets, and open brackets must be closed in the correct order.',
     examples: [
       {
         input: '"()"',
-        output: 'true';
+        output: 'true',
         explanation: 'The string contains valid parentheses.'
       },
       {
         input: '"()[]{}"',
-        output: 'true';
+        output: 'true',
         explanation: 'All brackets are properly matched.'
       },
       {
         input: '"(]"',
-        output: 'false';
+        output: 'false',
         explanation: 'Mismatched bracket types.'
       }
     ],
@@ -141,58 +141,58 @@ const enhancedDSAProblems = [;
 // Enhanced aptitude questions with better variety
 const enhancedAptitudeQuestions = [;
   {
-    id: 'verbal-1-enhanced';
-    type: 'verbal' as const;
-    question: 'Choose the word that best completes the sentence: "The CEO\'s _____ approach to innovation has transformed the company\'s competitive position."';
+    id: 'verbal-1-enhanced',
+    type: 'verbal' as const,
+    question: 'Choose the word that best completes the sentence: "The CEO\'s _____ approach to innovation has transformed the company\'s competitive position."',
     options: ['conventional', 'pioneering', 'reluctant', 'arbitrary'],
-    correctAnswer: 1;
+    correctAnswer: 1,
     explanation: 'Pioneering means being among the first to explore or settle a new area of knowledge or activity, which fits with transforming competitive position.',
-    difficulty: 'medium' as const;
+    difficulty: 'medium' as const,
     timeLimit: 75
   },
   {
-    id: 'numerical-1-enhanced';
-    type: 'numerical' as const;
+    id: 'numerical-1-enhanced',
+    type: 'numerical' as const,
     question: 'A company\'s revenue increased by 25% in Q1, then decreased by 20% in Q2. If the final revenue is $60,000, what was the original revenue?',
     options: ['$48,000', '$50,000', '$60,000', '$75,000'],
-    correctAnswer: 2;
+    correctAnswer: 2,
     explanation: 'Let x be original revenue. After Q1: x × 1.25. After Q2: x × 1.25 × 0.8 = x × 1.0 = x. So original revenue was $60,000.',
-    difficulty: 'hard' as const;
+    difficulty: 'hard' as const,
     timeLimit: 120
   },
   {
-    id: 'logical-1-enhanced';
-    type: 'logical' as const;
-    question: 'In a tech company: All software engineers use version control. Some version control users work on mobile apps. Sarah works on mobile apps. Therefore:';
+    id: 'logical-1-enhanced',
+    type: 'logical' as const,
+    question: 'In a tech company: All software engineers use version control. Some version control users work on mobile apps. Sarah works on mobile apps. Therefore:',
     options: [
       'Sarah is a software engineer',
       'Sarah uses version control',
       'All mobile app developers are software engineers',
       'Cannot be determined from given information'
     ],
-    correctAnswer: 3;
+    correctAnswer: 3,
     explanation: 'We cannot definitively conclude any of the first three options from the given premises. Sarah works on mobile apps, but we don\'t know if she\'s a software engineer or uses version control.',
-    difficulty: 'hard' as const;
+    difficulty: 'hard' as const,
     timeLimit: 90
   },
   {
-    id: 'spatial-1-enhanced';
-    type: 'spatial' as const;
+    id: 'spatial-1-enhanced',
+    type: 'spatial' as const,
     question: 'A 3D cube is painted red on all faces, then cut into 27 smaller equal cubes. How many of the smaller cubes will have exactly 2 red faces?',
     options: ['8', '12', '6', '4'],
-    correctAnswer: 1;
+    correctAnswer: 1,
     explanation: 'The cubes with exactly 2 red faces are the edge cubes (not corners or centers). A 3×3×3 cube has 12 edge cubes.',
-    difficulty: 'hard' as const;
+    difficulty: 'hard' as const,
     timeLimit: 120
   },
   {
-    id: 'pattern-1-enhanced';
-    type: 'logical' as const;
+    id: 'pattern-1-enhanced',
+    type: 'logical' as const,
     question: 'What comes next in the sequence: 2, 6, 12, 20, 30, ?',
     options: ['40', '42', '44', '46'],
-    correctAnswer: 1;
+    correctAnswer: 1,
     explanation: 'The differences are 4, 6, 8, 10, so the next difference is 12. 30 + 12 = 42.',
-    difficulty: 'medium' as const;
+    difficulty: 'medium' as const,
     timeLimit: 90
   }
 ]
@@ -218,9 +218,9 @@ const EnhancedInterviewWrapper = ({
   const [roundTimeSpent, setRoundTimeSpent] = useState<{ [roundId: string]: number }>({});
   const [autoSaveInterval, setAutoSaveInterval] = useState<NodeJS.Timeout | null>(null);
   const [performanceMetrics, setPerformanceMetrics] = useState({
-    questionsAnswered: 0;
-    averageTimePerQuestion: 0;
-    accuracyScore: 0;
+    questionsAnswered: 0,
+    averageTimePerQuestion: 0,
+    accuracyScore: 0,
     focusScore: 100
   })
 
@@ -254,41 +254,41 @@ const EnhancedInterviewWrapper = ({
     const sessionId = `enhanced_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // Create enhanced rounds based on interview type and company intelligence
-    const enhancedRounds: InterviewRound[] = [];
+    const enhancedRounds: InterviewRound[] = [],
     
     if (interviewType === 'mixed') {
       // Technical Round - Enhanced based on company focus
       enhancedRounds.push({
-        id: 'technical-round-enhanced';
-        type: 'technical';
-        status: 'pending';
+        id: 'technical-round-enhanced',
+        type: 'technical',
+        status: 'pending',
         questions: questions.filter(q => q.category === 'technical').slice(0, 6),
         duration: 50 // Increased duration for thorough assessment
       })
       
       // DSA Round - Company-specific problems
       enhancedRounds.push({
-        id: 'dsa-round-enhanced';
-        type: 'dsa';
-        status: 'pending';
+        id: 'dsa-round-enhanced',
+        type: 'dsa',
+        status: 'pending',
         questions: [], // DSA uses problem format
         duration: 75 // Increased for complex problems
       })
       
       // Behavioral Round - Company culture focused
       enhancedRounds.push({
-        id: 'behavioral-round-enhanced';
-        type: 'behavioral';
-        status: 'pending';
+        id: 'behavioral-round-enhanced',
+        type: 'behavioral',
+        status: 'pending',
         questions: questions.filter(q => q.category === 'behavioral').slice(0, 5),
         duration: 35
       })
       
       // Aptitude Round - Industry specific
       enhancedRounds.push({
-        id: 'aptitude-round-enhanced';
-        type: 'aptitude';
-        status: 'pending';
+        id: 'aptitude-round-enhanced',
+        type: 'aptitude',
+        status: 'pending',
         questions: [], // Aptitude uses quiz format
         duration: 30
       })
@@ -297,8 +297,8 @@ const EnhancedInterviewWrapper = ({
       const duration = getDurationForType(interviewType);
       enhancedRounds.push({
         id: `${interviewType}-round-enhanced`,
-        type: interviewType;
-        status: 'pending';
+        type: interviewType,
+        status: 'pending',
         questions: questions.slice(0, getQuestionCountForType(interviewType)),
         duration
       })
@@ -306,23 +306,23 @@ const EnhancedInterviewWrapper = ({
 
     return {
       sessionId,
-      userId: 'current-user-id';
-      interviewId: id;
+      userId: 'current-user-id',
+      interviewId: id,
       companyName,
       jobTitle,
-      rounds: enhancedRounds;
-      currentRound: 0;
+      rounds: enhancedRounds,
+      currentRound: 0,
       sessionData: {
         startTime: new Date(),
-        totalTimeSpent: 0;
+        totalTimeSpent: 0,
         overallProgress: 0
       },
-      roundResults: [];
-      companyIntelligence: intelligence;
+      roundResults: [],
+      companyIntelligence: intelligence,
       sessionMetadata: {
-        userAgent: navigator.userAgent;
-        ipAddress: '';
-        cameraEnabled: cameraOn;
+        userAgent: navigator.userAgent,
+        ipAddress: '',
+        cameraEnabled: cameraOn,
         suspiciousActivity: []
       }
     }
@@ -356,10 +356,10 @@ const EnhancedInterviewWrapper = ({
   const autoSaveProgress = useCallback(() => {
     if (interviewSession) {
       const progress = {
-        sessionId: interviewSession.sessionId;
+        sessionId: interviewSession.sessionId,
         currentRound,
         timeElapsed,
-        activityAlerts: activityAlerts.length;
+        activityAlerts: activityAlerts.length,
         performanceMetrics,
         timestamp: new Date()
       }

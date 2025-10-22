@@ -6,20 +6,20 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 
 interface EnhancedCompanySearchProps {
-  onSelect: (company: string, jobTitle: string, companyData?: any) => void;
-  placeholder?: string;
+  onSelect: (company: string, jobTitle: string, companyData?: any) => void,
+  placeholder?: string,
   className?: string
 }
 
 interface CompanySuggestion {
-  name: string;
-  industry: string;
-  description: string;
-  relevanceScore: number;
+  name: string,
+  industry: string,
+  description: string,
+  relevanceScore: number,
   metadata: {
-    hasSpecificQuestions: boolean;
-    difficultyLevel: string;
-    popularRoles: string[];
+    hasSpecificQuestions: boolean,
+    difficultyLevel: string,
+    popularRoles: string[],
     techStack: string[];
   };
 }
@@ -88,12 +88,12 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       
       // Use the new company intelligence API
       const response = await fetch('/api/company-intelligence', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          query: searchQuery;
+          query: searchQuery,
           limit: 8
         }),
       })
@@ -117,13 +117,13 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
           )
           .slice(0, 6)
           .map(company => ({
-            name: company.name;
+            name: company.name,
             industry: getCompanyIndustry(company.name),
             description: `Leading company in ${getCompanyIndustry(company.name).toLowerCase()}`,
-            relevanceScore: 70;
+            relevanceScore: 70,
             metadata: {
-              hasSpecificQuestions: true;
-              difficultyLevel: company.difficulty;
+              hasSpecificQuestions: true,
+              difficultyLevel: company.difficulty,
               popularRoles: ['Software Engineer', 'Product Manager'],
               techStack: ['React', 'Python', 'AWS']
             }
@@ -141,13 +141,13 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
         )
         .slice(0, 6)
         .map(company => ({
-          name: company.name;
+          name: company.name,
           industry: getCompanyIndustry(company.name),
           description: `Leading company in ${getCompanyIndustry(company.name).toLowerCase()}`,
-          relevanceScore: 70;
+          relevanceScore: 70,
           metadata: {
-            hasSpecificQuestions: false;
-            difficultyLevel: company.difficulty;
+            hasSpecificQuestions: false,
+            difficultyLevel: company.difficulty,
             popularRoles: ['Software Engineer', 'Product Manager'],
             techStack: ['JavaScript', 'Python']
           }
@@ -229,7 +229,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   useEffect(() => {
     if (suggestionRefs.current[selectedIndex]) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
-        block: 'nearest';
+        block: 'nearest',
         behavior: 'smooth'
       })
     }

@@ -58,15 +58,15 @@ export const setAnswers = async (data:Record<string, string>[],id:string)=>{
             console.log('🚀 Starting fast feedback generation...');
             const insights = await generateInsightsDirectly(id);
             console.log('✅ Fast feedback generated successfully:', {
-                score: insights.overallScore;
-                provider: insights.metadata?.aiProvider;
+                score: insights.overallScore,
+                provider: insights.metadata?.aiProvider,
                 processingTime: insights.metadata?.processingTime + 'ms'
             });
             
             return {
                 ...response.data,
-                feedbackGenerated: true;
-                insights: insights;
+                feedbackGenerated: true,
+                insights: insights,
                 processingTime: insights.metadata?.processingTime
             };
         } catch (error) {
@@ -75,7 +75,7 @@ export const setAnswers = async (data:Record<string, string>[],id:string)=>{
             // Still return success for answer saving, feedback can be regenerated
             return {
                 ...response.data,
-                feedbackGenerated: false;
+                feedbackGenerated: false,
                 error: 'Feedback generation failed but answers were saved'
             };
         }
@@ -109,7 +109,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
     const skills = interview?.skills || ["JavaScript", "React"];
 
     const questions = questionsDoc.questions || [];
-    const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided');
+    const answers = questionsDoc.answers.map((ans: any) => ans.answer || 'No answer provided'),
 
     // Use Groq AI for fast analysis
     try {
@@ -129,7 +129,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
         // Ensure all required fields are present
         const enhancedInsights = {
             ...insights,
-            overallScore: insights.overallScore || 6.5;
+            overallScore: insights.overallScore || 6.5,
             parameterScores: insights.parameterScores || {
                 "Technical Knowledge": 7,
                 "Problem Solving": 6,
@@ -139,7 +139,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
             },
             overallVerdict: insights.overallVerdict || `Strong performance in the ${jobTitle} interview at ${companyName}. Demonstrated good technical understanding with room for improvement in specific areas.`,
             adviceForImprovement: insights.adviceForImprovement || questions.slice(0, 3).map((q: any, i: number) => ({
-                question: q.question;
+                question: q.question,
                 advice: `For this question, consider providing more specific examples and deeper technical insights.`
             })),
             strengths: insights.strengths || ["Good technical communication", "Problem-solving approach", "Relevant experience"],
@@ -147,11 +147,11 @@ const generateInsightsDirectly = async (interviewId: string) => {
             recommendations: insights.recommendations || ["Practice more technical scenarios", "Study company-specific technologies", "Prepare detailed project examples"],
             metadata: {
                 analyzedAt: new Date(),
-                aiProvider: 'groq';
-                model: 'llama-3.3-70b-versatile';
+                aiProvider: 'groq',
+                model: 'llama-3.3-70b-versatile',
                 processingTime: Date.now() - startTime,
-                interviewId: interviewId;
-                questionsAnalyzed: questions.length;
+                interviewId: interviewId,
+                questionsAnalyzed: questions.length,
                 answersProcessed: answers.length
             }
         };
@@ -161,7 +161,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
             {interviewId: interviewId},
             {
                 $set: {
-                    extracted: enhancedInsights;
+                    extracted: enhancedInsights,
                     analyzedAt: new Date(),
                     aiProvider: 'groq'
                 }
@@ -173,9 +173,9 @@ const generateInsightsDirectly = async (interviewId: string) => {
             { _id: new ObjectId(interviewId) },
             { 
                 $set: { 
-                    status: 'completed';
+                    status: 'completed',
                     completedAt: new Date(),
-                    performanceAnalyzed: true;
+                    performanceAnalyzed: true,
                     finalScore: enhancedInsights.overallScore || 0
                 } 
             }
@@ -184,13 +184,13 @@ const generateInsightsDirectly = async (interviewId: string) => {
         // Store comprehensive performance analysis for stats dashboard
         const performanceDoc = {
             interviewId,
-            userId: interview?.userId || 'unknown';
-            companyName: companyName;
-            jobTitle: jobTitle;
-            performance: enhancedInsights;
+            userId: interview?.userId || 'unknown',
+            companyName: companyName,
+            jobTitle: jobTitle,
+            performance: enhancedInsights,
             questions: questions.map((q: any, index: number) => ({
                 ...q,
-                userAnswer: answers[index] || 'No answer provided';
+                userAnswer: answers[index] || 'No answer provided',
                 response: { analysis: { score: 6 } }
             })),
             createdAt: new Date(),
@@ -213,7 +213,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
         
         // Fallback analysis if Groq fails
         const fallbackInsights = {
-            overallScore: 6.0;
+            overallScore: 6.0,
             parameterScores: {
                 "Technical Knowledge": 6,
                 "Problem Solving": 6,
@@ -221,9 +221,9 @@ const generateInsightsDirectly = async (interviewId: string) => {
                 "Practical Application": 6,
                 "Company Fit": 6
             },
-            overallVerdict: `Interview completed successfully. The candidate demonstrated adequate performance across different areas with potential for improvement.`;
+            overallVerdict: `Interview completed successfully. The candidate demonstrated adequate performance across different areas with potential for improvement.`,
             adviceForImprovement: questions.slice(0, 3).map((q: any, i: number) => ({
-                question: q.question;
+                question: q.question,
                 advice: `Consider providing more detailed and specific answers with practical examples.`
             })),
             strengths: ["Completed all questions", "Showed engagement", "Demonstrated basic understanding"],
@@ -231,12 +231,12 @@ const generateInsightsDirectly = async (interviewId: string) => {
             recommendations: ["Practice technical interview questions", "Study relevant technologies", "Prepare specific project examples"],
             metadata: {
                 analyzedAt: new Date(),
-                aiProvider: 'fallback';
-                model: 'basic-analysis';
+                aiProvider: 'fallback',
+                model: 'basic-analysis',
                 processingTime: Date.now() - startTime,
-                interviewId: interviewId;
-                questionsAnalyzed: questions.length;
-                answersProcessed: answers.length;
+                interviewId: interviewId,
+                questionsAnalyzed: questions.length,
+                answersProcessed: answers.length,
                 note: 'Generated using fallback analysis due to AI service unavailability'
             }
         };
@@ -246,7 +246,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
             {interviewId: interviewId},
             {
                 $set: {
-                    extracted: fallbackInsights;
+                    extracted: fallbackInsights,
                     analyzedAt: new Date(),
                     aiProvider: 'fallback'
                 }
@@ -258,9 +258,9 @@ const generateInsightsDirectly = async (interviewId: string) => {
             { _id: new ObjectId(interviewId) },
             { 
                 $set: { 
-                    status: 'completed';
+                    status: 'completed',
                     completedAt: new Date(),
-                    performanceAnalyzed: true;
+                    performanceAnalyzed: true,
                     finalScore: fallbackInsights.overallScore || 0
                 } 
             }
@@ -269,13 +269,13 @@ const generateInsightsDirectly = async (interviewId: string) => {
         // Store fallback performance analysis for stats dashboard
         const fallbackPerformanceDoc = {
             interviewId,
-            userId: interview?.userId || 'unknown';
-            companyName: companyName;
-            jobTitle: jobTitle;
-            performance: fallbackInsights;
+            userId: interview?.userId || 'unknown',
+            companyName: companyName,
+            jobTitle: jobTitle,
+            performance: fallbackInsights,
             questions: questions.map((q: any, index: number) => ({
                 ...q,
-                userAnswer: answers[index] || 'No answer provided';
+                userAnswer: answers[index] || 'No answer provided',
                 response: { analysis: { score: 6 } }
             })),
             createdAt: new Date(),

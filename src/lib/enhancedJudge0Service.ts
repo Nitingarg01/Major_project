@@ -4,39 +4,39 @@
  */
 
 interface TestCase {
-  id: string;
-  input: string;
-  expectedOutput: string;
-  description?: string;
+  id: string,
+  input: string,
+  expectedOutput: string,
+  description?: string,
   hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean;
-  input: string;
-  expected: string;
-  actual: string;
-  executionTime: string;
-  status: string;
-  error?: string;
+  passed: boolean,
+  input: string,
+  expected: string,
+  actual: string,
+  executionTime: string,
+  status: string,
+  error?: string,
   memory?: number
 }
 
 interface ExecutionResponse {
-  success: boolean;
-  results: CodeExecutionResult[];
-  totalPassed: number;
-  totalTests: number;
-  compilationError?: string;
-  runtimeError?: string;
+  success: boolean,
+  results: CodeExecutionResult[],
+  totalPassed: number,
+  totalTests: number,
+  compilationError?: string,
+  runtimeError?: string,
   overallStatus: 'passed' | 'failed' | 'error'
 }
 
 export class EnhancedJudge0Service {
-  private static instance: EnhancedJudge0Service;
-  private apiKey: string;
-  private apiHost: string;
-  private baseUrl: string;
+  private static instance: EnhancedJudge0Service,
+  private apiKey: string,
+  private apiHost: string,
+  private baseUrl: string,
 
   private constructor() {
     this.apiKey = process.env.JUDGE0_API_KEY || process.env.NEXT_PUBLIC_JUDGE0_API_KEY || '';
@@ -97,10 +97,10 @@ export class EnhancedJudge0Service {
   private async submitCode(sourceCode: string, languageId: number, stdin?: string): Promise<string> {
     const submission = {
       source_code: Buffer.from(sourceCode).toString('base64'),
-      language_id: languageId;
+      language_id: languageId,
       stdin: stdin ? Buffer.from(stdin).toString('base64') : undefined,
-      wait: false;
-      cpu_time_limit: 2;
+      wait: false,
+      cpu_time_limit: 2,
       memory_limit: 128000
     };
 
@@ -134,7 +134,7 @@ export class EnhancedJudge0Service {
     if (language === 'python') {
       // Extract function name from user code
       const functionMatch = userCode.match(/def\s+(\w+)\s*\(/);
-      const functionName = functionMatch ? functionMatch[1] : 'solution';
+      const functionName = functionMatch ? functionMatch[1] : 'solution',
       
       // Parse test case input more robustly
       const input = testCase.input;
@@ -166,7 +166,7 @@ export class EnhancedJudge0Service {
       return executableCode;
     } else if (language === 'javascript') {
       const functionMatch = userCode.match(/function\s+(\w+)\s*\(/);
-      const functionName = functionMatch ? functionMatch[1] : 'solution';
+      const functionName = functionMatch ? functionMatch[1] : 'solution',
       
       let executableCode = userCode + '\n\n// Test execution\ntry {\n'
       
@@ -200,8 +200,8 @@ export class EnhancedJudge0Service {
    * Enhanced code execution with better error handling and validation
    */
   public async executeCode(
-    sourceCode: string;
-    language: string;
+    sourceCode: string,
+    language: string,
     testCases: TestCase[]
   ): Promise<ExecutionResponse> {
     try {
@@ -217,7 +217,7 @@ export class EnhancedJudge0Service {
       }
 
       const languageId = this.getLanguageId(language);
-      const results: CodeExecutionResult[] = [];
+      const results: CodeExecutionResult[] = [],
       let totalPassed = 0;
 
       console.log(`🚀 Executing ${testCases.length} test cases for ${language}`);
@@ -238,9 +238,9 @@ export class EnhancedJudge0Service {
           const submission = await this.getSubmissionResult(token);
           
           // Decode outputs
-          const stdout = submission.stdout ? Buffer.from(submission.stdout, 'base64').toString().trim() : '';
-          const stderr = submission.stderr ? Buffer.from(submission.stderr, 'base64').toString() : '';
-          const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString() : '';
+          const stdout = submission.stdout ? Buffer.from(submission.stdout, 'base64').toString().trim() : '',
+          const stderr = submission.stderr ? Buffer.from(submission.stderr, 'base64').toString() : '',
+          const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString() : '',
           
           // Check execution status
           const isSuccess = submission.status.id === 3; // Accepted
@@ -254,23 +254,23 @@ export class EnhancedJudge0Service {
 
           results.push({
             passed,
-            input: testCase.input;
-            expected: testCase.expectedOutput;
-            actual: stdout;
+            input: testCase.input,
+            expected: testCase.expectedOutput,
+            actual: stdout,
             executionTime: `${submission.time || 0}s`,
-            status: submission.status.description;
-            error: stderr || compileOutput || undefined;
+            status: submission.status.description,
+            error: stderr || compileOutput || undefined,
             memory: submission.memory || 0
           });
 
           // Early exit on compilation error
           if (submission.status.id === 6 && i === 0) {
             return {
-              success: false;
+              success: false,
               results,
-              totalPassed: 0;
-              totalTests: testCases.length;
-              compilationError: compileOutput || stderr || 'Compilation failed';
+              totalPassed: 0,
+              totalTests: testCases.length,
+              compilationError: compileOutput || stderr || 'Compilation failed',
               overallStatus: 'error'
             };
           }
@@ -278,12 +278,12 @@ export class EnhancedJudge0Service {
         } catch (error: any) {
           console.error(`❌ Test case ${i + 1} execution error:`, error);
           results.push({
-            passed: false;
-            input: testCase.input;
-            expected: testCase.expectedOutput;
-            actual: '';
-            executionTime: '0s';
-            status: 'Execution Error';
+            passed: false,
+            input: testCase.input,
+            expected: testCase.expectedOutput,
+            actual: '',
+            executionTime: '0s',
+            status: 'Execution Error',
             error: error.message
           });
         }
@@ -292,10 +292,10 @@ export class EnhancedJudge0Service {
       console.log(`✅ Code execution completed: ${totalPassed}/${testCases.length} passed`);
 
       return {
-        success: totalPassed > 0;
+        success: totalPassed > 0,
         results,
         totalPassed,
-        totalTests: testCases.length;
+        totalTests: testCases.length,
         overallStatus: totalPassed === testCases.length ? 'passed' : totalPassed > 0 ? 'failed' : 'error'
       };
 
@@ -303,11 +303,11 @@ export class EnhancedJudge0Service {
       console.error('❌ Enhanced Judge0 execution error:', error);
       
       return {
-        success: false;
-        results: [];
-        totalPassed: 0;
-        totalTests: testCases?.length || 0;
-        runtimeError: error.message;
+        success: false,
+        results: [],
+        totalPassed: 0,
+        totalTests: testCases?.length || 0,
+        runtimeError: error.message,
         overallStatus: 'error'
       };
     }
@@ -319,9 +319,9 @@ export class EnhancedJudge0Service {
   private createFallbackTestCases(sourceCode: string, language: string): TestCase[] {
     console.warn('Creating fallback test cases for code execution');
     
-    const fallbackCases: TestCase[] = [;
+    const fallbackCases: TestCase[] = [,
       {
-        id: 'fallback-1';
+        id: 'fallback-1',
         input: 'nums = [2,7,11,15], target = 9',
         expectedOutput: '[0,1]',
         description: 'Basic test case'
@@ -333,7 +333,7 @@ export class EnhancedJudge0Service {
         description: 'Alternative test case'
       },
       {
-        id: 'fallback-3';
+        id: 'fallback-3',
         input: 'nums = [3,3], target = 6',
         expectedOutput: '[0,1]',
         description: 'Edge case with duplicates'
@@ -360,8 +360,8 @@ export class EnhancedJudge0Service {
    * Execute code with fallback for reliability
    */
   public async executeCodeWithFallback(
-    sourceCode: string;
-    language: string;
+    sourceCode: string,
+    language: string,
     testCases: TestCase[]
   ): Promise<ExecutionResponse> {
     try {
@@ -376,8 +376,8 @@ export class EnhancedJudge0Service {
    * Fallback execution with mock results
    */
   public async executeCodeFallback(
-    sourceCode: string;
-    language: string;
+    sourceCode: string,
+    language: string,
     testCases: TestCase[]
   ): Promise<ExecutionResponse> {
     console.log('⚠️ Using fallback execution (mock results)');
@@ -403,11 +403,11 @@ export class EnhancedJudge0Service {
       
       return {
         passed,
-        input: testCase.input;
-        expected: testCase.expectedOutput;
+        input: testCase.input,
+        expected: testCase.expectedOutput,
         actual: passed ? testCase.expectedOutput : `mock_output_${index}`,
         executionTime: `${(Math.random() * 0.5 + 0.1).toFixed(3)}s`,
-        status: passed ? 'Accepted' : 'Wrong Answer';
+        status: passed ? 'Accepted' : 'Wrong Answer',
         memory: Math.floor(Math.random() * 1000) + 500
       };
     });
@@ -415,10 +415,10 @@ export class EnhancedJudge0Service {
     const totalPassed = results.filter(r => r.passed).length;
 
     return {
-      success: totalPassed > 0;
+      success: totalPassed > 0,
       results,
       totalPassed,
-      totalTests: testCases.length;
+      totalTests: testCases.length,
       overallStatus: totalPassed === testCases.length ? 'passed' : 'failed'
     };
   }

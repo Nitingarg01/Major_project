@@ -27,16 +27,16 @@ export async function POST(request: NextRequest) {
 
         // Store session in database
         await db.collection('interview_sessions').insertOne({
-          sessionId: session.sessionId;
+          sessionId: session.sessionId,
           interviewId,
           userId,
-          sessionData: session;
+          sessionData: session,
           createdAt: new Date(),
           status: 'active'
         });
 
         return NextResponse.json({
-          success: true;
+          success: true,
           session: session
         });
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
         
         // Get current session
         const currentSession = await db.collection('interview_sessions').findOne({
-          interviewId: interviewId;
+          interviewId: interviewId,
           status: 'active'
         });
 
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
           { sessionId: updatedSession.sessionId },
           { 
             $set: { 
-              sessionData: updatedSession;
+              sessionData: updatedSession,
               updatedAt: new Date()
             }
           }
@@ -77,15 +77,15 @@ export async function POST(request: NextRequest) {
 
         // Store round result
         await db.collection('interview_round_results').insertOne({
-          sessionId: updatedSession.sessionId;
+          sessionId: updatedSession.sessionId,
           interviewId,
           roundResult,
           createdAt: new Date()
         });
 
         return NextResponse.json({
-          success: true;
-          session: updatedSession;
+          success: true,
+          session: updatedSession,
           roundResult,
           isCompleted: updatedSession.sessionData.endTime !== undefined
         });
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
       case 'finalize':
         // Generate final report
         const sessionToFinalize = await db.collection('interview_sessions').findOne({
-          interviewId: interviewId;
+          interviewId: interviewId,
           status: 'active'
         });
 
@@ -109,8 +109,8 @@ export async function POST(request: NextRequest) {
         // Store final report
         await db.collection('interview_reports').insertOne({
           interviewId,
-          sessionId: sessionToFinalize.sessionId;
-          report: finalReport;
+          sessionId: sessionToFinalize.sessionId,
+          report: finalReport,
           createdAt: new Date()
         });
 
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
           { sessionId: sessionToFinalize.sessionId },
           { 
             $set: { 
-              status: 'completed';
+              status: 'completed',
               completedAt: new Date()
             }
           }
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
         );
 
         return NextResponse.json({
-          success: true;
+          success: true,
           report: finalReport
         });
 
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
     
     // Get active session
     const session = await db.collection('interview_sessions').findOne({
-      interviewId: interviewId;
+      interviewId: interviewId,
       status: 'active'
     });
 
@@ -180,7 +180,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      success: true;
+      success: true,
       session: session.sessionData
     });
 

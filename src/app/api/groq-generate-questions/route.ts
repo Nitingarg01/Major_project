@@ -51,9 +51,9 @@ export async function POST(request: NextRequest) {
 
       if (existingQuestions && existingQuestions.questions && existingQuestions.questions.length > 0) {
         return NextResponse.json({
-          message: 'Questions already exist';
-          questionsCount: existingQuestions.questions.length;
-          questions: existingQuestions.questions;
+          message: 'Questions already exist',
+          questionsCount: existingQuestions.questions.length,
+          questions: existingQuestions.questions,
           provider: 'cached'
         });
       }
@@ -73,41 +73,41 @@ export async function POST(request: NextRequest) {
     console.log(`📊 Company intelligence gathered for ${interview.companyName}`);
     
     // Generate questions based on interview type
-    let allQuestions: any[] = [];
+    let allQuestions: any[] = [],
     
     if (interview.interviewType === 'mixed') {
       console.log('🔄 Generating comprehensive mixed interview questions with all 4 rounds...');
       
       // Technical Questions (6 questions - 37.5%)
       const technicalQuestions = await groqAIService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'technical';
-        experienceLevel: interview.experienceLevel || 'mid';
-        numberOfQuestions: 6;
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'technical',
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 6,
         companyIntelligence: enhancedCompanyData?.company_data
       });
 
       // Behavioral Questions (4 questions - 25%)
       const behavioralQuestions = await groqAIService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'behavioral';
-        experienceLevel: interview.experienceLevel || 'mid';
-        numberOfQuestions: 4;
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'behavioral',
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 4,
         companyIntelligence: enhancedCompanyData?.company_data
       });
 
       // Aptitude Questions (4 questions - 25%)
       const aptitudeQuestions = await groqAIService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'aptitude';
-        experienceLevel: interview.experienceLevel || 'mid';
-        numberOfQuestions: 4;
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'aptitude',
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 4,
         companyIntelligence: enhancedCompanyData?.company_data
       });
 
@@ -124,15 +124,15 @@ export async function POST(request: NextRequest) {
         ...behavioralQuestions,
         ...aptitudeQuestions,
         ...dsaProblems.map(p => ({
-          id: p.id;
-          question: p.title;
-          expectedAnswer: p.description;
-          category: 'dsa';
-          difficulty: p.difficulty;
+          id: p.id,
+          question: p.title,
+          expectedAnswer: p.description,
+          category: 'dsa',
+          difficulty: p.difficulty,
           points: getDSAPoints(p.difficulty),
           timeLimit: 45, // DSA problems get more time
-          problemData: p;
-          provider: 'groq';
+          problemData: p,
+          provider: 'groq',
           model: 'llama-3.3-70b-versatile'
         }))
       ];
@@ -149,15 +149,15 @@ export async function POST(request: NextRequest) {
       );
 
       allQuestions = dsaProblems.map(p => ({
-        id: p.id;
-        question: p.title;
-        expectedAnswer: p.description;
-        category: 'dsa';
-        difficulty: p.difficulty;
+        id: p.id,
+        question: p.title,
+        expectedAnswer: p.description,
+        category: 'dsa',
+        difficulty: p.difficulty,
         points: getDSAPoints(p.difficulty),
         timeLimit: 45, // More time for DSA problems
-        problemData: p;
-        provider: 'groq';
+        problemData: p,
+        provider: 'groq',
         model: 'llama-3.3-70b-versatile'
       }));
 
@@ -165,11 +165,11 @@ export async function POST(request: NextRequest) {
     } else {
       console.log(`🎯 Generating ${interview.interviewType} interview questions...`);
       allQuestions = await groqAIService.generateInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: interview.interviewType as 'technical' | 'behavioral' | 'aptitude';
-        experienceLevel: interview.experienceLevel || 'mid';
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: interview.interviewType as 'technical' | 'behavioral' | 'aptitude',
+        experienceLevel: interview.experienceLevel || 'mid',
         numberOfQuestions: getQuestionCount(interview.interviewType),
         companyIntelligence: enhancedCompanyData?.company_data
       });
@@ -177,42 +177,42 @@ export async function POST(request: NextRequest) {
 
     // Enhanced question document with company intelligence
     const questionDoc = {
-      interviewId: interviewId;
+      interviewId: interviewId,
       questions: allQuestions.map(q => ({
-        id: q.id;
-        question: q.question;
-        expectedAnswer: q.expectedAnswer;
-        category: q.category;
-        difficulty: q.difficulty;
-        points: q.points;
-        timeLimit: q.timeLimit;
-        followUpQuestions: q.followUpQuestions || [];
-        evaluationCriteria: q.evaluationCriteria || [];
-        companyRelevance: q.companyRelevance || 8;
-        tags: q.tags || [];
-        hints: q.hints || [];
-        problemData: q.problemData || null;
-        provider: q.provider || 'groq';
+        id: q.id,
+        question: q.question,
+        expectedAnswer: q.expectedAnswer,
+        category: q.category,
+        difficulty: q.difficulty,
+        points: q.points,
+        timeLimit: q.timeLimit,
+        followUpQuestions: q.followUpQuestions || [],
+        evaluationCriteria: q.evaluationCriteria || [],
+        companyRelevance: q.companyRelevance || 8,
+        tags: q.tags || [],
+        hints: q.hints || [],
+        problemData: q.problemData || null,
+        provider: q.provider || 'groq',
         model: q.model || 'llama-3.3-70b-versatile'
       })),
       companyIntelligence: enhancedCompanyData ? {
-        industry: enhancedCompanyData.company_data.industry;
-        tech_stack: enhancedCompanyData.company_data.tech_stack;
-        culture: enhancedCompanyData.company_data.culture;
-        recent_news: enhancedCompanyData.company_data.recent_news;
+        industry: enhancedCompanyData.company_data.industry,
+        tech_stack: enhancedCompanyData.company_data.tech_stack,
+        culture: enhancedCompanyData.company_data.culture,
+        recent_news: enhancedCompanyData.company_data.recent_news,
         recent_posts: enhancedCompanyData.company_data.recent_posts.slice(0, 3),
-        difficulty: enhancedCompanyData.company_data.difficulty;
+        difficulty: enhancedCompanyData.company_data.difficulty,
         focus_areas: enhancedCompanyData.company_data.focus_areas
       } : null,
       metadata: {
         generatedAt: new Date(),
-        aiService: 'groq-ai-service';
-        totalQuestions: allQuestions.length;
+        aiService: 'groq-ai-service',
+        totalQuestions: allQuestions.length,
         categoryBreakdown: getCategoryBreakdown(allQuestions),
         difficultyBreakdown: getDifficultyBreakdown(allQuestions),
         providerBreakdown: getProviderBreakdown(allQuestions),
-        companyIntelligenceUsed: !!enhancedCompanyData;
-        interviewType: interview.interviewType;
+        companyIntelligenceUsed: !!enhancedCompanyData,
+        interviewType: interview.interviewType,
         enhancedFeatures: interview.interviewType === 'mixed' ?
           'Full comprehensive interview with Technical + Behavioral + Aptitude + DSA rounds' :
           interview.interviewType === 'dsa' ?
@@ -234,11 +234,11 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'ready';
-          questionMetadata: questionDoc.metadata;
-          companyIntelligence: questionDoc.companyIntelligence;
+          status: 'ready',
+          questionMetadata: questionDoc.metadata,
+          companyIntelligence: questionDoc.companyIntelligence,
           updatedAt: new Date(),
-          totalQuestions: allQuestions.length;
+          totalQuestions: allQuestions.length,
           estimatedDuration: calculateEstimatedDuration(allQuestions)
         } 
       }
@@ -248,10 +248,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       message: `Questions generated successfully with Groq AI Service - ${interview.interviewType === 'mixed' ? 'All 4 rounds included' : interview.interviewType === 'dsa' ? '2 DSA problems' : `${allQuestions.length} ${interview.interviewType} questions`}`,
-      questionsCount: allQuestions.length;
-      questions: allQuestions;
-      metadata: questionDoc.metadata;
-      companyIntelligence: questionDoc.companyIntelligence;
+      questionsCount: allQuestions.length,
+      questions: allQuestions,
+      metadata: questionDoc.metadata,
+      companyIntelligence: questionDoc.companyIntelligence,
       breakdown: {
         categories: getCategoryBreakdown(allQuestions),
         difficulties: getDifficultyBreakdown(allQuestions),
@@ -272,9 +272,9 @@ export async function POST(request: NextRequest) {
 function getQuestionCount(interviewType: string): number {
   switch (interviewType) {
     case 'mixed': return 16; // Now properly distributed: 6+4+4+2
-    case 'technical': return 12;
-    case 'behavioral': return 10;  
-    case 'aptitude': return 15;
+    case 'technical': return 12,
+    case 'behavioral': return 10,
+    case 'aptitude': return 15,
     case 'dsa': return 2; // Fixed to exactly 2 questions
     default: return 12;
   }
@@ -282,18 +282,18 @@ function getQuestionCount(interviewType: string): number {
 
 function getDSADifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
   switch (experienceLevel) {
-    case 'entry': return 'easy';
-    case 'mid': return 'medium';
-    case 'senior': return 'hard';
+    case 'entry': return 'easy',
+    case 'mid': return 'medium',
+    case 'senior': return 'hard',
     default: return 'medium';
   }
 }
 
 function getDSAPoints(difficulty: string): number {
   switch (difficulty) {
-    case 'easy': return 20;
-    case 'medium': return 30;
-    case 'hard': return 45;
+    case 'easy': return 20,
+    case 'medium': return 30,
+    case 'hard': return 45,
     default: return 25;
   }
 }
@@ -301,7 +301,7 @@ function getDSAPoints(difficulty: string): number {
 function calculateEstimatedDuration(questions: any[]): number {
   // Calculate total time based on question types and time limits
   const totalTime = questions.reduce((sum, q) => {
-    const timeLimit = q.timeLimit || (q.category === 'dsa' ? 45 : 5);
+    const timeLimit = q.timeLimit || (q.category === 'dsa' ? 45 : 5),
     return sum + timeLimit;
   }, 0);
   

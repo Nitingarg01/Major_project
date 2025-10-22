@@ -54,20 +54,20 @@ export async function POST(req: NextRequest) {
       console.log(`✅ Analysis completed - Score: ${analysis.score}/10, Company Fit: ${analysis.companyFit}/10`);
 
       return NextResponse.json({
-        success: true;
+        success: true,
         analysis: {
-          score: analysis.score;
-          feedback: analysis.feedback;
-          suggestions: analysis.suggestions;
-          strengths: analysis.strengths;
-          improvements: analysis.improvements;
-          companyFit: analysis.companyFit;
+          score: analysis.score,
+          feedback: analysis.feedback,
+          suggestions: analysis.suggestions,
+          strengths: analysis.strengths,
+          improvements: analysis.improvements,
+          companyFit: analysis.companyFit,
           metadata: {
             category,
             companyContext,
             analyzedAt: new Date().toISOString(),
-            aiProvider: 'enhanced-groq';
-            answerLength: userAnswer.length;
+            aiProvider: 'enhanced-groq',
+            answerLength: userAnswer.length,
             wordCount: userAnswer.split(' ').length
           }
         }
@@ -102,16 +102,16 @@ export async function POST(req: NextRequest) {
       };
 
       return NextResponse.json({
-        success: true;
+        success: true,
         analysis: {
           ...fallbackAnalysis,
           metadata: {
             category,
             companyContext,
             analyzedAt: new Date().toISOString(),
-            aiProvider: 'fallback';
-            answerLength: userAnswer.length;
-            wordCount: wordCount;
+            aiProvider: 'fallback',
+            answerLength: userAnswer.length,
+            wordCount: wordCount,
             note: 'Generated using fallback due to AI service unavailability'
           }
         }
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Failed to analyze response', 
-        details: error instanceof Error ? error.message : 'Unknown error';
+        details: error instanceof Error ? error.message : 'Unknown error',
         aiProvider: 'enhanced-groq'
       },
       { status: 500 }
@@ -134,8 +134,8 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    message: 'Enhanced Response Analysis API';
-    aiProvider: 'enhanced-groq';
+    message: 'Enhanced Response Analysis API',
+    aiProvider: 'enhanced-groq',
     supportedCategories: ['technical', 'behavioral', 'dsa', 'aptitude', 'system_design'],
     features: [
       'Company-specific evaluation criteria',

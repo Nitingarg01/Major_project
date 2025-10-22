@@ -41,17 +41,17 @@ export interface MultiRoundSession {
 
 export class MultiRoundInterviewManager {
   private static instance: MultiRoundInterviewManager
-  private currentSession: MultiRoundSession | null = null;
+  private currentSession: MultiRoundSession | null = null,
 
   // Predefined round configurations
   private roundTemplates: InterviewRound[] = [
     {
-      id: 'hr_round';
-      name: 'HR Round';
-      type: 'HR';
-      personality: 'friendly';
-      description: 'Initial screening to understand your background and cultural fit';
-      icon: '👥';
+      id: 'hr_round',
+      name: 'HR Round',
+      type: 'HR',
+      personality: 'friendly',
+      description: 'Initial screening to understand your background and cultural fit',
+      icon: '👥',
       focusAreas: [
         'Background verification',
         'Cultural fit assessment',
@@ -63,12 +63,12 @@ export class MultiRoundInterviewManager {
       duration: 15
     },
     {
-      id: 'technical_round';
-      name: 'Technical Round';
-      type: 'Technical';
-      personality: 'professional';
-      description: 'Deep dive into your technical skills and problem-solving abilities';
-      icon: '💻';
+      id: 'technical_round',
+      name: 'Technical Round',
+      type: 'Technical',
+      personality: 'professional',
+      description: 'Deep dive into your technical skills and problem-solving abilities',
+      icon: '💻',
       focusAreas: [
         'Technical expertise',
         'Problem-solving',
@@ -80,12 +80,12 @@ export class MultiRoundInterviewManager {
       duration: 30
     },
     {
-      id: 'manager_round';
-      name: 'Manager Round';
-      type: 'Manager';
-      personality: 'encouraging';
+      id: 'manager_round',
+      name: 'Manager Round',
+      type: 'Manager',
+      personality: 'encouraging',
       description: 'Discussion about leadership, teamwork, and long-term fit',
-      icon: '💼';
+      icon: '💼',
       focusAreas: [
         'Leadership potential',
         'Team collaboration',
@@ -111,28 +111,28 @@ export class MultiRoundInterviewManager {
    * Initialize a new multi-round session
    */
   public initializeSession(
-    companyName: string;
-    jobTitle: string;
+    companyName: string,
+    jobTitle: string,
     rounds?: InterviewRound[]
   ): MultiRoundSession {
     const sessionRounds = rounds || this.roundTemplates;
     
     const progress: RoundProgress[] = sessionRounds.map(round => ({
-      roundId: round.id;
-      roundName: round.name;
-      status: 'pending' as const;
-      questionsTotal: 0;
-      questionsAnswered: 0;
-      timeSpent: 0;
+      roundId: round.id,
+      roundName: round.name,
+      status: 'pending' as const,
+      questionsTotal: 0,
+      questionsAnswered: 0,
+      timeSpent: 0,
       score: 0
     }))
 
     this.currentSession = {
       sessionId: `session_${Date.now()}`,
-      rounds: sessionRounds;
-      currentRoundIndex: 0;
+      rounds: sessionRounds,
+      currentRoundIndex: 0,
       progress,
-      overallScore: 0;
+      overallScore: 0,
       startedAt: new Date(),
       status: 'not_started'
     }
@@ -252,14 +252,14 @@ export class MultiRoundInterviewManager {
     const currentRound = this.getCurrentRound();
 
     return {
-      completed: this.currentSession.status === 'completed';
-      currentRound: currentRound?.name || 'Unknown';
+      completed: this.currentSession.status === 'completed',
+      currentRound: currentRound?.name || 'Unknown',
       roundsCompleted,
-      totalRounds: this.currentSession.rounds.length;
-      overallScore: this.currentSession.overallScore;
-      timeSpent: totalTimeSpent;
+      totalRounds: this.currentSession.rounds.length,
+      overallScore: this.currentSession.overallScore,
+      timeSpent: totalTimeSpent,
       roundScores: this.currentSession.progress.map(p => ({
-        round: p.roundName;
+        round: p.roundName,
         score: p.score
       }))
     }
@@ -277,7 +277,7 @@ export class MultiRoundInterviewManager {
     if (!currentRound || previousIndex < 0) return ''
 
     const previousProgress = this.currentSession.progress[previousIndex];
-    const scoreText = previousProgress.score >= 7 ? 'excellent' : previousProgress.score >= 5 ? 'good' : 'fair';
+    const scoreText = previousProgress.score >= 7 ? 'excellent' : previousProgress.score >= 5 ? 'good' : 'fair',
 
     return `Great job on the ${previousProgress.roundName}! You scored ${previousProgress.score.toFixed(1)}/10, which is ${scoreText}. Now, let's move to the ${currentRound.name}. ${currentRound.description}. Are you ready?`;
   }

@@ -8,53 +8,53 @@ import GroqAIService from './groqAIService';
 import { extractJSON } from './jsonExtractor';
 
 export interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
-    output: string;
+    input: string,
+    output: string,
     explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
-    expectedOutput: string;
+    id: string,
+    input: string,
+    expectedOutput: string,
     hidden?: boolean
   }>;
-  constraints: string[];
-  topics: string[];
-  hints?: string[];
-  timeComplexity?: string;
-  spaceComplexity?: string;
-  companies?: string[];
+  constraints: string[],
+  topics: string[],
+  hints?: string[],
+  timeComplexity?: string,
+  spaceComplexity?: string,
+  companies?: string[],
   interactiveFeatures?: {
-    hasVisualizer?: boolean;
-    hasStepByStep?: boolean;
-    hasHints?: boolean;
+    hasVisualizer?: boolean,
+    hasStepByStep?: boolean,
+    hasHints?: boolean,
     realTimeExecution?: boolean
   };
   metadata?: {
-    generatedAt: Date;
-    company: string;
-    uniqueId: string;
+    generatedAt: Date,
+    company: string,
+    uniqueId: string,
     version: number
   };
 }
 
 interface CompanyDSAPatterns {
   [company: string]: {
-    commonTopics: string[];
+    commonTopics: string[],
     difficultyDistribution: { easy: number; medium: number; hard: number };
-    interviewStyle: string;
-    focusAreas: string[];
+    interviewStyle: string,
+    focusAreas: string[],
     timeConstraints: number; // minutes
   };
 }
 
 export class EnhancedDSAService {
-  private static instance: EnhancedDSAService;
+  private static instance: EnhancedDSAService,
   private emergentIntegration = emergentIntegration;
 
   // Company-specific DSA patterns based on real interview data
@@ -62,42 +62,42 @@ export class EnhancedDSAService {
     'Google': {
       commonTopics: ['Dynamic Programming', 'Graph Algorithms', 'Trees', 'Arrays', 'System Design Coding'],
       difficultyDistribution: { easy: 10, medium: 60, hard: 30 },
-      interviewStyle: 'Algorithm optimization and scalability focused';
+      interviewStyle: 'Algorithm optimization and scalability focused',
       focusAreas: ['Time/Space Complexity', 'Edge Cases', 'Scalable Solutions'],
       timeConstraints: 45
     },
     'Amazon': {
       commonTopics: ['Arrays', 'Strings', 'Trees', 'Dynamic Programming', 'Leadership Principles Coding'],
       difficultyDistribution: { easy: 20, medium: 65, hard: 15 },
-      interviewStyle: 'Practical problem-solving with business context';
+      interviewStyle: 'Practical problem-solving with business context',
       focusAreas: ['Customer Obsession', 'Ownership', 'Practical Implementation'],
       timeConstraints: 45
     },
     'Meta': {
       commonTopics: ['Graph Algorithms', 'Dynamic Programming', 'Hash Tables', 'Social Network Problems'],
       difficultyDistribution: { easy: 15, medium: 55, hard: 30 },
-      interviewStyle: 'Social network and graph-heavy problems';
+      interviewStyle: 'Social network and graph-heavy problems',
       focusAreas: ['Graph Traversal', 'Network Analysis', 'Real-time Systems'],
       timeConstraints: 45
     },
     'Microsoft': {
       commonTopics: ['Arrays', 'Linked Lists', 'Trees', 'Dynamic Programming', 'String Processing'],
       difficultyDistribution: { easy: 25, medium: 55, hard: 20 },
-      interviewStyle: 'Balanced approach with clear communication';
+      interviewStyle: 'Balanced approach with clear communication',
       focusAreas: ['Code Quality', 'Testing', 'Clear Communication'],
       timeConstraints: 45
     },
     'Apple': {
       commonTopics: ['Arrays', 'Trees', 'System Design', 'Performance Optimization', 'Memory Management'],
       difficultyDistribution: { easy: 20, medium: 50, hard: 30 },
-      interviewStyle: 'Performance and optimization focused';
+      interviewStyle: 'Performance and optimization focused',
       focusAreas: ['Memory Efficiency', 'Performance', 'User Experience'],
       timeConstraints: 60
     },
     'Netflix': {
       commonTopics: ['Arrays', 'Strings', 'Recommendation Systems', 'Data Processing', 'Scalability'],
       difficultyDistribution: { easy: 15, medium: 60, hard: 25 },
-      interviewStyle: 'Data processing and recommendation focused';
+      interviewStyle: 'Data processing and recommendation focused',
       focusAreas: ['Data Processing', 'Scalability', 'Recommendation Algorithms'],
       timeConstraints: 45
     }
@@ -118,8 +118,8 @@ export class EnhancedDSAService {
    * Generate unique company-specific DSA problems
    */
   public async generateCompanySpecificDSAProblems(
-    companyName: string;
-    count: number = 5;
+    companyName: string,
+    count: number = 5,
     experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
@@ -141,8 +141,8 @@ export class EnhancedDSAService {
         ],
         'dsa_generation',
         {
-          provider: 'openai';
-          model: 'gpt-4o-mini';
+          provider: 'openai',
+          model: 'gpt-4o-mini',
           temperature: 0.9, // Higher temperature for more creative/unique problems
           max_tokens: 6000
         }
@@ -153,16 +153,16 @@ export class EnhancedDSAService {
       return problems.map((problem: any, index: number) => ({
         ...problem,
         id: `${company.toLowerCase()}-${Date.now()}-${index}`,
-        companies: [company];
+        companies: [company],
         interactiveFeatures: {
           hasVisualizer: this.shouldHaveVisualizer(problem.topics),
-          hasStepByStep: true;
-          hasHints: true;
+          hasStepByStep: true,
+          hasHints: true,
           realTimeExecution: true
         },
         metadata: {
           generatedAt: new Date(),
-          company: company;
+          company: company,
           uniqueId: `${company}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           version: 1
         }
@@ -178,8 +178,8 @@ export class EnhancedDSAService {
    * Generate interactive coding challenges with real-time features
    */
   public async generateInteractiveCodingChallenges(
-    companyName: string;
-    challengeType: 'algorithm' | 'system_design' | 'optimization' | 'debugging' = 'algorithm';
+    companyName: string,
+    challengeType: 'algorithm' | 'system_design' | 'optimization' | 'debugging' = 'algorithm',
     count: number = 3;
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
@@ -251,9 +251,9 @@ export class EnhancedDSAService {
         ],
         'interactive_challenges',
         {
-          provider: 'openai';
-          model: 'gpt-4o-mini';
-          temperature: 0.8;
+          provider: 'openai',
+          model: 'gpt-4o-mini',
+          temperature: 0.8,
           max_tokens: 8000
         }
       );
@@ -263,19 +263,19 @@ export class EnhancedDSAService {
       return challenges.map((challenge: any, index: number) => ({
         ...challenge,
         id: `${company.toLowerCase()}-interactive-${Date.now()}-${index}`,
-        companies: [company];
+        companies: [company],
         interactiveFeatures: {
-          hasVisualizer: true;
-          hasStepByStep: true;
-          hasHints: true;
-          realTimeExecution: true;
+          hasVisualizer: true,
+          hasStepByStep: true,
+          hasHints: true,
+          realTimeExecution: true,
           ...challenge.interactiveElements
         },
         metadata: {
           generatedAt: new Date(),
-          company: company;
+          company: company,
           uniqueId: `${company}-interactive-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          version: 1;
+          version: 1,
           challengeType
         }
       }));
@@ -290,9 +290,9 @@ export class EnhancedDSAService {
    * Generate completely unique problems every time (no repeats)
    */
   public async generateUniqueProblems(
-    companyName: string;
-    previousProblemIds: string[] = [];
-    count: number = 5;
+    companyName: string,
+    previousProblemIds: string[] = [],
+    count: number = 5,
     experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
@@ -335,8 +335,8 @@ export class EnhancedDSAService {
         ],
         'unique_dsa_generation',
         {
-          provider: 'openai';
-          model: 'gpt-4o-mini';
+          provider: 'openai',
+          model: 'gpt-4o-mini',
           temperature: 1.0, // Maximum creativity
           max_tokens: 8000
         }
@@ -347,18 +347,18 @@ export class EnhancedDSAService {
       return problems.map((problem: any, index: number) => ({
         ...problem,
         id: `${company.toLowerCase()}-unique-${uniquenessSeed}-${index}`,
-        companies: [company];
+        companies: [company],
         interactiveFeatures: {
           hasVisualizer: this.shouldHaveVisualizer(problem.topics),
-          hasStepByStep: true;
-          hasHints: true;
+          hasStepByStep: true,
+          hasHints: true,
           realTimeExecution: true
         },
         metadata: {
           generatedAt: new Date(),
-          company: company;
+          company: company,
           uniqueId: `${company}-unique-${uniquenessSeed}-${Math.random().toString(36).substr(2, 9)}`,
-          version: 1;
+          version: 1,
           uniquenessSeed
         }
       }));
@@ -389,14 +389,14 @@ export class EnhancedDSAService {
   }
 
   private selectDifficultyBasedOnExperience(
-    experienceLevel: string;
+    experienceLevel: string,
     pattern: any
   ): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
       case 'entry':
-        return Math.random() < 0.7 ? 'easy' : 'medium';
+        return Math.random() < 0.7 ? 'easy' : 'medium',
       case 'senior':
-        return Math.random() < 0.6 ? 'hard' : 'medium';
+        return Math.random() < 0.6 ? 'hard' : 'medium',
       default: // mid
         const rand = Math.random() * 100;
         if (rand < pattern.difficultyDistribution.easy) return 'easy';
@@ -406,10 +406,10 @@ export class EnhancedDSAService {
   }
 
   private buildCompanySpecificPrompt(
-    company: string;
-    pattern: any;
-    count: number;
-    difficulty: string;
+    company: string,
+    pattern: any,
+    count: number,
+    difficulty: string,
     experienceLevel: string
   ): string {
     return `;
@@ -473,12 +473,12 @@ export class EnhancedDSAService {
       {
         id: `fallback-${company.toLowerCase()}-1`,
         title: `${company} Array Processing Challenge`,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard';
+        difficulty: difficulty as 'easy' | 'medium' | 'hard',
         description: `Given an array of integers, find the maximum sum subarray. This problem is commonly asked at ${company} and tests your understanding of dynamic programming concepts.`,
         examples: [
           {
             input: 'nums = [-2,1,-3,4,-1,2,1,-5,4]',
-            output: '6';
+            output: '6',
             explanation: 'The subarray [4,-1,2,1] has the largest sum 6.'
           }
         ],
@@ -498,14 +498,14 @@ export class EnhancedDSAService {
       ...problem,
       id: `${company.toLowerCase()}-fallback-${Date.now()}-${index}`,
       interactiveFeatures: {
-        hasVisualizer: true;
-        hasStepByStep: true;
-        hasHints: true;
+        hasVisualizer: true,
+        hasStepByStep: true,
+        hasHints: true,
         realTimeExecution: true
       },
       metadata: {
         generatedAt: new Date(),
-        company: company;
+        company: company,
         uniqueId: `${company}-fallback-${Date.now()}-${index}`,
         version: 1
       }
@@ -517,13 +517,13 @@ export class EnhancedDSAService {
       ...problem,
       title: `Interactive ${problem.title}`,
       interactiveFeatures: {
-        hasVisualizer: true;
-        hasStepByStep: true;
-        hasHints: true;
-        realTimeExecution: true;
-        visualization: 'Array traversal and sum calculation';
-        stepByStep: true;
-        realTimeValidation: true;
+        hasVisualizer: true,
+        hasStepByStep: true,
+        hasHints: true,
+        realTimeExecution: true,
+        visualization: 'Array traversal and sum calculation',
+        stepByStep: true,
+        realTimeValidation: true,
         progressTracking: true
       }
     }));
@@ -544,12 +544,12 @@ export class EnhancedDSAService {
     try {
       const health = await this.emergentIntegration.healthCheck();
       return {
-        status: health.status;
+        status: health.status,
         emergentAvailable: health.status === 'healthy'
       };
     } catch (error) {
       return {
-        status: 'error';
+        status: 'error',
         emergentAvailable: false
       };
     }

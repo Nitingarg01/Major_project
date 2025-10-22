@@ -44,7 +44,7 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
       try {
         setStatus('generating');
         const response = await fetch('/api/fast-feedback', {
-          method: 'POST';
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ interviewId })
         })
@@ -95,30 +95,30 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
     switch (status) {
       case 'checking':
         return {
-          icon: <Clock className="w-6 h-6 text-blue-600 animate-pulse" />;
-          title: "Checking Feedback Status...";
-          message: "Looking for existing analysis";
+          icon: <Clock className="w-6 h-6 text-blue-600 animate-pulse" />,
+          title: "Checking Feedback Status...",
+          message: "Looking for existing analysis",
           color: "text-blue-600"
         }
       case 'generating':
         return {
-          icon: <Zap className="w-6 h-6 text-purple-600 animate-bounce" />;
-          title: "⚡ Generating AI Feedback...";
+          icon: <Zap className="w-6 h-6 text-purple-600 animate-bounce" />,
+          title: "⚡ Generating AI Feedback...",
           message: `Using advanced Groq AI • ${Math.floor(processingTime / 1000)}s elapsed`,
           color: "text-purple-600"
         }
       case 'ready':
         return {
-          icon: <CheckCircle className="w-6 h-6 text-green-600" />;
-          title: "✅ Feedback Ready!";
-          message: "Redirecting to your results...";
+          icon: <CheckCircle className="w-6 h-6 text-green-600" />,
+          title: "✅ Feedback Ready!",
+          message: "Redirecting to your results...",
           color: "text-green-600"
         }
       case 'error':
         return {
-          icon: <RotateCcw className="w-6 h-6 text-red-600" />;
-          title: "Feedback Generation Issue";
-          message: "Let's try a different approach";
+          icon: <RotateCcw className="w-6 h-6 text-red-600" />,
+          title: "Feedback Generation Issue",
+          message: "Let's try a different approach",
           color: "text-red-600"
         }
     }

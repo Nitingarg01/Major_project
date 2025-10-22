@@ -10,40 +10,40 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface SmartAIRequest {
-  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation';
+  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation',
   context: {
-    jobTitle?: string;
-    companyName?: string;
-    skills?: string[];
-    interviewType?: string;
-    experienceLevel?: string;
-    numberOfQuestions?: number;
-    companyIntelligence?: any;
-    question?: string;
-    userAnswer?: string;
-    expectedAnswer?: string;
-    resumeText?: string;
-    difficulty?: string;
+    jobTitle?: string,
+    companyName?: string,
+    skills?: string[],
+    interviewType?: string,
+    experienceLevel?: string,
+    numberOfQuestions?: number,
+    companyIntelligence?: any,
+    question?: string,
+    userAnswer?: string,
+    expectedAnswer?: string,
+    resumeText?: string,
+    difficulty?: string,
     count?: number
   };
   priority?: 'high' | 'medium' | 'low'
 }
 
 export interface SmartAIResponse {
-  success: boolean;
-  data: any;
-  provider: 'enhanced-groq' | 'gemini';
-  model: string;
-  processingTime: number;
-  taskType: string;
+  success: boolean,
+  data: any,
+  provider: 'enhanced-groq' | 'gemini',
+  model: string,
+  processingTime: number,
+  taskType: string,
   features?: string[];
 }
 
 export class SmartAIService {
-  private static instance: SmartAIService;
-  private groqService: EnhancedGroqAIService;
-  private geminiAI: GoogleGenerativeAI | null = null;
-  private geminiModel: any = null;
+  private static instance: SmartAIService,
+  private groqService: EnhancedGroqAIService,
+  private geminiAI: GoogleGenerativeAI | null = null,
+  private geminiModel: any = null,
 
   private constructor() {
     this.groqService = EnhancedGroqAIService.getInstance();
@@ -56,7 +56,7 @@ export class SmartAIService {
         // Try the most stable model first
         this.geminiModel = this.geminiAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
       } catch (error) {
-        console.warn('Failed to initialize Gemini:', error instanceof Error ? error.message : String(error));
+        console.warn('Failed to initialize Gemini:', error instanceof Error ? error.message : String(error)),
         this.geminiModel = null;
       }
     }
@@ -82,10 +82,10 @@ export class SmartAIService {
       console.log(`🎯 Processing ${request.task} with optimal AI provider...`);
 
       // Route to appropriate AI service based on task complexity
-      let result: any;
-      let provider: 'enhanced-groq' | 'gemini';
-      let model: string;
-      let features: string[] = [];
+      let result: any,
+      let provider: 'enhanced-groq' | 'gemini',
+      let model: string,
+      let features: string[] = [],
 
       // Try primary provider first
       if (this.shouldUseGroq(request.task)) {
@@ -150,12 +150,12 @@ export class SmartAIService {
       console.log(`✅ ${request.task} completed in ${processingTime}ms using ${provider}`);
 
       return {
-        success: true;
-        data: result;
+        success: true,
+        data: result,
         provider,
         model,
         processingTime,
-        taskType: request.task;
+        taskType: request.task,
         features
       };
     } catch (error) {
@@ -169,22 +169,22 @@ export class SmartAIService {
         
 
         return {
-          success: true;
-          data: fallbackResult.data;
-          provider: fallbackResult.provider;
-          model: fallbackResult.model;
+          success: true,
+          data: fallbackResult.data,
+          provider: fallbackResult.provider,
+          model: fallbackResult.model,
           processingTime,
-          taskType: request.task;
+          taskType: request.task,
           features: ['Fallback mode']
         };
       } catch (fallbackError) {
         return {
-          success: false;
+          success: false,
           data: { error: 'All AI services failed', details: error },
-          provider: 'enhanced-groq';
-          model: 'none';
+          provider: 'enhanced-groq',
+          model: 'none',
           processingTime: Date.now() - startTime,
-          taskType: request.task;
+          taskType: request.task,
           features: []
         };
       }
@@ -210,12 +210,12 @@ export class SmartAIService {
     switch (request.task) {
       case 'question_generation':
         return await this.groqService.generateInterviewQuestions({
-          jobTitle: request.context.jobTitle || '';
-          companyName: request.context.companyName || '';
-          skills: request.context.skills || [];
-          interviewType: request.context.interviewType as any || 'mixed';
-          experienceLevel: request.context.experienceLevel as any || 'mid';
-          numberOfQuestions: request.context.numberOfQuestions || 10;
+          jobTitle: request.context.jobTitle || '',
+          companyName: request.context.companyName || '',
+          skills: request.context.skills || [],
+          interviewType: request.context.interviewType as any || 'mixed',
+          experienceLevel: request.context.experienceLevel as any || 'mid',
+          numberOfQuestions: request.context.numberOfQuestions || 10,
           companyIntelligence: request.context.companyIntelligence
         });
 
@@ -249,19 +249,19 @@ export class SmartAIService {
           return [{
             id: `fallback-dsa-${Date.now()}`,
             title: `${request.context.companyName || 'Company'} Coding Challenge`,
-            difficulty: request.context.difficulty as any || 'medium';
-            description: 'Solve this coding problem to demonstrate your programming skills.';
+            difficulty: request.context.difficulty as any || 'medium',
+            description: 'Solve this coding problem to demonstrate your programming skills.',
             examples: [{
-              input: 'Example input';
-              output: 'Example output';
+              input: 'Example input',
+              output: 'Example output',
               explanation: 'This is how the solution works'
             }],
             testCases: [{
-              id: 'test1';
-              input: 'Test input';
+              id: 'test1',
+              input: 'Test input',
               expectedOutput: 'Expected output'
             }],
-            constraints: ['Standard programming constraints apply'];
+            constraints: ['Standard programming constraints apply'],
             topics: ['Programming', 'Problem Solving'],
             hints: ['Think step by step', 'Consider edge cases']
           }];
@@ -284,7 +284,7 @@ export class SmartAIService {
       case 'performance_analysis':
         // This would need questions and answers arrays - simplified for now
         return {
-          overallScore: 7.5;
+          overallScore: 7.5,
           parameterScores: {
             "Technical Knowledge": 8,
             "Problem Solving": 7,
@@ -292,7 +292,7 @@ export class SmartAIService {
             "Company Culture Fit": 7,
             "Practical Application": 7
           },
-          overallVerdict: "Good performance with room for improvement";
+          overallVerdict: "Good performance with room for improvement",
           strengths: ["Technical competency", "Clear communication"],
           improvements: ["Company-specific knowledge", "Advanced problem solving"],
           recommendations: ["Study company tech stack", "Practice system design"]
@@ -329,7 +329,7 @@ export class SmartAIService {
           throw new Error(`Unsupported Gemini task: ${request.task}`);
       }
     } catch (error) {
-      console.warn('Gemini API unavailable, using fallback:', error instanceof Error ? error.message : String(error));
+      console.warn('Gemini API unavailable, using fallback:', error instanceof Error ? error.message : String(error)),
 
       // Return fallback data when Gemini is unavailable
       if (request.task === 'company_search') {
@@ -399,19 +399,19 @@ export class SmartAIService {
       // Fallback parsing
       return {
         personalInfo: {
-          name: "Unable to parse";
+          name: "Unable to parse",
           email: this.extractEmailFromText(resumeText),
           phone: this.extractPhoneFromText(resumeText),
           location: "Unable to parse"
         },
         skills: {
           technical: this.extractSkillsFromText(resumeText),
-          languages: [];
+          languages: [],
           frameworks: []
         },
-        experience: [];
-        projects: [];
-        education: [];
+        experience: [],
+        projects: [],
+        education: [],
         summary: "Resume parsing failed - manual review required"
       };
     }
@@ -486,11 +486,11 @@ export class SmartAIService {
       console.error('Failed to parse Gemini company response:', error);
       return {
         basicInfo: {
-          name: companyName;
-          industry: "Technology";
+          name: companyName,
+          industry: "Technology",
           description: `${companyName} is a technology company`,
-          founded: "Unknown";
-          headquarters: "Unknown";
+          founded: "Unknown",
+          headquarters: "Unknown",
           size: "Unknown"
         },
         technical: {
@@ -502,7 +502,7 @@ export class SmartAIService {
         },
         culture: {
           values: ["Innovation", "Collaboration", "Excellence"],
-          workStyle: "Hybrid work environment";
+          workStyle: "Hybrid work environment",
           benefits: ["Health insurance", "Flexible hours", "Learning budget"]
         },
         interviewInfo: {
@@ -510,7 +510,7 @@ export class SmartAIService {
           technicalFocus: ["Problem solving", "Code quality", "System thinking"],
           preparationTips: ["Study their tech stack", "Practice coding problems", "Research company values"]
         },
-        recentNews: ["Company information limited"];
+        recentNews: ["Company information limited"],
         keyProducts: ["Technology solutions"]
       };
     }
@@ -572,19 +572,19 @@ export class SmartAIService {
         return Array.from({ length: request.context.numberOfQuestions || 5 }, (_, i) => ({
           id: `fallback-${i}`,
           question: `Tell me about your experience with ${request.context.skills?.[i % (request.context.skills?.length || 1)] || 'relevant technologies'}.`,
-          expectedAnswer: 'Comprehensive answer covering experience and examples.';
-          category: request.context.interviewType || 'technical';
-          difficulty: 'medium';
+          expectedAnswer: 'Comprehensive answer covering experience and examples.',
+          category: request.context.interviewType || 'technical',
+          difficulty: 'medium',
           points: 10
         }));
         
 
       case 'response_analysis':
         return {
-          score: 6;
-          feedback: 'Basic analysis - AI service unavailable';
+          score: 6,
+          feedback: 'Basic analysis - AI service unavailable',
           suggestions: ['Provide more detail', 'Add specific examples'],
-          strengths: ['Attempted the question'];
+          strengths: ['Attempted the question'],
           improvements: ['Technical depth', 'Communication clarity']
         };
         
@@ -592,11 +592,11 @@ export class SmartAIService {
         const companyName = request.context.companyName || 'Technology Company';
         return {
           basicInfo: {
-            name: companyName;
-            industry: "Technology";
+            name: companyName,
+            industry: "Technology",
             description: `${companyName} is a technology company focused on innovation and growth.`,
-            founded: "Unknown";
-            headquarters: "Unknown";
+            founded: "Unknown",
+            headquarters: "Unknown",
             size: "Medium"
           },
           technical: {
@@ -608,7 +608,7 @@ export class SmartAIService {
           },
           culture: {
             values: ["Innovation", "Collaboration", "Excellence"],
-            workStyle: "Hybrid work environment";
+            workStyle: "Hybrid work environment",
             benefits: ["Competitive salary", "Health insurance", "Flexible hours"]
           },
           interviewInfo: {
@@ -635,14 +635,14 @@ export class SmartAIService {
           id: `fallback-dsa-${i}`,
           title: `Coding Challenge ${i + 1}`,
           difficulty,
-          description: "Solve this algorithmic problem efficiently.";
+          description: "Solve this algorithmic problem efficiently.",
           examples: [
             { input: "Example input", output: "Expected output", explanation: "Solution explanation" }
           ],
           testCases: [
             { id: `test-${i}-1`, input: "test input", expectedOutput: "test output" }
           ],
-          constraints: ["Standard constraints apply"];
+          constraints: ["Standard constraints apply"],
           topics: ["Algorithms", "Data Structures"],
           hints: ["Think about the optimal approach", "Consider time complexity"]
         }));
@@ -650,24 +650,24 @@ export class SmartAIService {
       case 'resume_parsing':
         return {
           personalInfo: {
-            name: "Resume Parsed";
-            email: "Not available";
-            phone: "Not available";
+            name: "Resume Parsed",
+            email: "Not available",
+            phone: "Not available",
             location: "Not available"
           },
           skills: {
             technical: ["JavaScript", "Python", "React"],
             soft: ["Communication", "Problem Solving"]
           },
-          experience: [];
-          education: [];
+          experience: [],
+          education: [],
           projects: []
         };
         
       default:
         return { 
-          error: 'AI service temporarily unavailable';
-          fallback: true;
+          error: 'AI service temporarily unavailable',
+          fallback: true,
           message: 'Using basic fallback data'
         };
 
@@ -711,11 +711,11 @@ export class SmartAIService {
 
     return {
       basicInfo: {
-        name: companyName;
-        industry: "Technology";
+        name: companyName,
+        industry: "Technology",
         description: `${companyName} is a technology company. (Fallback data - Gemini API unavailable)`,
-        founded: "Unknown";
-        headquarters: "Unknown";
+        founded: "Unknown",
+        headquarters: "Unknown",
         size: "Unknown"
       },
       technical: {
@@ -727,7 +727,7 @@ export class SmartAIService {
       },
       culture: {
         values: ["Innovation", "Collaboration", "Excellence", "Growth"],
-        workStyle: "Hybrid work environment";
+        workStyle: "Hybrid work environment",
         benefits: ["Health insurance", "Flexible hours", "Learning budget", "Remote work"]
       },
       interviewInfo: {
@@ -740,9 +740,9 @@ export class SmartAIService {
           "Prepare behavioral examples"
         ]
       },
-      recentNews: ["Company information limited - API service unavailable"];
-      keyProducts: ["Technology solutions and services"];
-      fallbackMode: true;
+      recentNews: ["Company information limited - API service unavailable"],
+      keyProducts: ["Technology solutions and services"],
+      fallbackMode: true,
       message: "This is fallback data. Gemini API is temporarily unavailable."
     };
   }
@@ -752,71 +752,71 @@ export class SmartAIService {
 
     return {
       personalInfo: {
-        name: "Unable to parse - API unavailable";
+        name: "Unable to parse - API unavailable",
         email: this.extractEmailFromText(resumeText),
         phone: this.extractPhoneFromText(resumeText),
         location: "Unable to parse"
       },
       skills: {
         technical: this.extractSkillsFromText(resumeText),
-        languages: ["English"];
+        languages: ["English"],
         frameworks: this.extractSkillsFromText(resumeText).filter(skill =>
           ['React', 'Angular', 'Vue.js', 'Node.js', 'Express', 'Django', 'Flask'].includes(skill)
         )
       },
       experience: [{
-        company: "Unable to parse";
-        role: "Unable to parse";
-        duration: "Unable to parse";
+        company: "Unable to parse",
+        role: "Unable to parse",
+        duration: "Unable to parse",
         achievements: ["Resume parsing unavailable - please review manually"]
       }],
       projects: [{
-        name: "Unable to parse";
-        description: "Resume parsing unavailable - please review manually";
+        name: "Unable to parse",
+        description: "Resume parsing unavailable - please review manually",
         technologies: this.extractSkillsFromText(resumeText).slice(0, 3)
       }],
       education: [{
-        institution: "Unable to parse";
-        degree: "Unable to parse";
+        institution: "Unable to parse",
+        degree: "Unable to parse",
         year: "Unable to parse"
       }],
-      summary: "Resume parsing failed due to API unavailability. Manual review required.";
-      fallbackMode: true;
+      summary: "Resume parsing failed due to API unavailability. Manual review required.",
+      fallbackMode: true,
       message: "This is fallback data. Gemini API is temporarily unavailable."
     };
   }
 
   // Convenience methods for direct task execution
   public async generateQuestions(params: {
-    jobTitle: string;
-    companyName: string;
-    skills: string[];
-    interviewType: string;
-    experienceLevel: string;
-    numberOfQuestions: number;
+    jobTitle: string,
+    companyName: string,
+    skills: string[],
+    interviewType: string,
+    experienceLevel: string,
+    numberOfQuestions: number,
     companyIntelligence?: any
   }) {
     return this.processRequest({
-      task: 'question_generation';
-      context: params;
+      task: 'question_generation',
+      context: params,
       priority: 'high'
     });
   }
 
   public async analyzeResponse(
-    question: string;
-    userAnswer: string;
-    expectedAnswer: string;
-    category: string;
+    question: string,
+    userAnswer: string,
+    expectedAnswer: string,
+    category: string,
     companyContext: string
   ) {
     return this.processRequest({
-      task: 'response_analysis';
+      task: 'response_analysis',
       context: {
         question,
         userAnswer,
         expectedAnswer,
-        interviewType: category;
+        interviewType: category,
         companyName: companyContext
       },
       priority: 'high'
@@ -824,13 +824,13 @@ export class SmartAIService {
   }
 
   public async generateDSAProblems(
-    companyName: string;
-    difficulty: string = 'medium';
-    count: number = 3;
+    companyName: string,
+    difficulty: string = 'medium',
+    count: number = 3,
     jobTitle: string = 'Software Engineer';
   ) {
     return this.processRequest({
-      task: 'dsa_generation';
+      task: 'dsa_generation',
       context: {
         companyName,
         difficulty,
@@ -843,7 +843,7 @@ export class SmartAIService {
 
   public async parseResume(resumeText: string) {
     return this.processRequest({
-      task: 'resume_parsing';
+      task: 'resume_parsing',
       context: { resumeText },
       priority: 'medium'
     });
@@ -851,18 +851,18 @@ export class SmartAIService {
 
   public async searchCompany(companyName: string) {
     return this.processRequest({
-      task: 'company_search';
+      task: 'company_search',
       context: { companyName },
       priority: 'low'
     });
   }
 
   public async getHealthStatus(): Promise<{
-    groqAvailable: boolean;
-    geminiAvailable: boolean;
-    status: string;
-    activeProvider: string;
-    fallbackAvailable: boolean;
+    groqAvailable: boolean,
+    geminiAvailable: boolean,
+    status: string,
+    activeProvider: string,
+    fallbackAvailable: boolean,
     features: string[];
   }> {
     try {
@@ -870,11 +870,11 @@ export class SmartAIService {
       
 
       return {
-        groqAvailable: groqHealth.groqAvailable;
-        geminiAvailable: !!this.geminiModel;
-        status: groqHealth.status;
+        groqAvailable: groqHealth.groqAvailable,
+        geminiAvailable: !!this.geminiModel,
+        status: groqHealth.status,
         activeProvider: groqHealth.groqAvailable ? 'enhanced-groq' : (this.geminiModel ? 'gemini' : 'none'),
-        fallbackAvailable: groqHealth.groqAvailable && !!this.geminiModel;
+        fallbackAvailable: groqHealth.groqAvailable && !!this.geminiModel,
         features: [
           'Company-specific intelligence',
           'Enhanced prompt engineering', 
@@ -887,24 +887,24 @@ export class SmartAIService {
       };
     } catch (error) {
       return {
-        groqAvailable: false;
-        geminiAvailable: !!this.geminiModel;
-        status: 'error';
-        activeProvider: this.geminiModel ? 'gemini-only' : 'none';
-        fallbackAvailable: false;
+        groqAvailable: false,
+        geminiAvailable: !!this.geminiModel,
+        status: 'error',
+        activeProvider: this.geminiModel ? 'gemini-only' : 'none',
+        fallbackAvailable: false,
         features: ['Limited functionality']
       };
     }
   }
 
   public async generateAptitudeQuestionsConvenience(
-    difficulty: string = 'medium';
-    count: number = 5;
-    jobTitle: string = 'Software Engineer';
+    difficulty: string = 'medium',
+    count: number = 5,
+    jobTitle: string = 'Software Engineer',
     companyName: string = 'Technology Company';
   ) {
     return this.processRequest({
-      task: 'aptitude_generation';
+      task: 'aptitude_generation',
       context: {
         difficulty,
         count,
@@ -916,9 +916,9 @@ export class SmartAIService {
   }
 
   public async generateAptitudeQuestions(
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
-    count: number = 5;
-    jobTitle: string = 'Software Engineer';
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
+    count: number = 5,
+    jobTitle: string = 'Software Engineer',
     companyName: string = 'Technology Company';
   ) {
     const aptitudeTypes = ['numerical', 'logical', 'verbal', 'spatial', 'abstract'];
@@ -938,7 +938,7 @@ export class SmartAIService {
             correctAnswer = 1;
             explanation = 'Using inverse proportion: 4 developers × 8 days = 32 developer-days. 32 ÷ 2 developers = 16 days.'
           } else if (difficulty === 'hard') {
-            question = `A server processes requests at a rate that follows the pattern: 100, 150, 225, 337.5, ... What will be the processing rate after 6 iterations?`;
+            question = `A server processes requests at a rate that follows the pattern: 100, 150, 225, 337.5, ... What will be the processing rate after 6 iterations?`,
             options = ['759.375', '843.75', '1012.5', '1265.625'];
             correctAnswer = 0;
             explanation = 'Each term is multiplied by 1.5: 100 → 150 → 225 → 337.5 → 506.25 → 759.375'
@@ -976,7 +976,7 @@ export class SmartAIService {
             correctAnswer = 1;
             explanation = 'Optimize means to make something as effective or functional as possible, which is similar to improve.';
           } else if (difficulty === 'hard') {
-            question = `Choose the word that best completes: "The code review process should be _____ to ensure quality while maintaining development velocity."`;
+            question = `Choose the word that best completes: "The code review process should be _____ to ensure quality while maintaining development velocity."`,
             options = ['Perfunctory', 'Meticulous', 'Cursory', 'Superficial'];
             correctAnswer = 1;
             explanation = 'Meticulous means showing great attention to detail, which is essential for quality code reviews.';
@@ -996,16 +996,16 @@ export class SmartAIService {
           break;
 
         case 'abstract':
-          question = `In the sequence: Circle, Triangle, Square, Pentagon, what comes next?`;
+          question = `In the sequence: Circle, Triangle, Square, Pentagon, what comes next?`,
           options = ['Hexagon', 'Rectangle', 'Oval', 'Diamond'];
           correctAnswer = 0;
-          explanation = 'The sequence follows increasing number of sides: 0(circle), 3, 4, 5, so 6(hexagon) comes next.';
+          explanation = 'The sequence follows increasing number of sides: 0(circle), 3, 4, 5, so 6(hexagon) comes next.',
           break;
       }
 
       questions.push({
-        id: questionId;
-        type: type as 'numerical' | 'logical' | 'verbal' | 'spatial' | 'abstract';
+        id: questionId,
+        type: type as 'numerical' | 'logical' | 'verbal' | 'spatial' | 'abstract',
         question,
         options,
         correctAnswer,

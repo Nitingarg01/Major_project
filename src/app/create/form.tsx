@@ -46,11 +46,11 @@ const Createform = () => {
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-            jobTitle: '';
-            jobDesc: '';
-            skills: [];
-            companyName: '';
-            experienceLevel: 'mid';
+            jobTitle: '',
+            jobDesc: '',
+            skills: [],
+            companyName: '',
+            experienceLevel: 'mid',
             interviewType: 'mixed'
         }
     })

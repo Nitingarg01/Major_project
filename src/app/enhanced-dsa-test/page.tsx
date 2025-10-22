@@ -64,13 +64,13 @@ const EnhancedDSATestPage = () => {
 
     try {
       const response = await fetch('/api/generate-company-dsa', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          companyName: selectedCompany;
-          count: problemCount;
+          companyName: selectedCompany,
+          count: problemCount,
           experienceLevel,
           challengeType,
           previousProblemIds,
@@ -87,7 +87,7 @@ const EnhancedDSATestPage = () => {
         setCurrentProblemIndex(0);
         
         // Add new problem IDs to avoid duplicates in future generations
-        setPreviousProblemIds(prev => [...prev, ...data.problems.map((p: DSAProblem) => p.id)]);
+        setPreviousProblemIds(prev => [...prev, ...data.problems.map((p: DSAProblem) => p.id)]),
         
         toast.dismiss(toastId);
         toast.success(`🎉 Generated ${data.problems.length} ${selectedCompany}-style DSA problems!`, {
@@ -98,7 +98,7 @@ const EnhancedDSATestPage = () => {
       }
     } catch (error: any) {
       toast.dismiss(toastId);
-      toast.error('Failed to generate problems: ' + error.message);
+      toast.error('Failed to generate problems: ' + error.message),
       console.error('Problem generation error:', error)
     } finally {
       setLoading(false);
@@ -110,7 +110,7 @@ const EnhancedDSATestPage = () => {
       code, 
       results, 
       timeSpent, 
-      company: selectedCompany;
+      company: selectedCompany,
       problemId: problems[currentProblemIndex]?.id
     })
     

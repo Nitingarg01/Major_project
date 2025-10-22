@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search, Building2, ArrowRight } from 'lucide-react';
 
 interface SimpleCompanyAutofillProps {
-  onSelect: (company: string, jobTitle: string, companyData?: any) => void;
-  placeholder?: string;
+  onSelect: (company: string, jobTitle: string, companyData?: any) => void,
+  placeholder?: string,
   className?: string
 }
 

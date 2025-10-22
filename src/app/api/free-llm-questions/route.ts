@@ -51,9 +51,9 @@ export async function POST(request: NextRequest) {
 
       if (existingQuestions && existingQuestions.questions && existingQuestions.questions.length > 0) {
         return NextResponse.json({
-          message: 'Questions already exist';
-          questionsCount: existingQuestions.questions.length;
-          questions: existingQuestions.questions;
+          message: 'Questions already exist',
+          questionsCount: existingQuestions.questions.length,
+          questions: existingQuestions.questions,
           provider: 'cached'
         });
       }
@@ -73,32 +73,32 @@ export async function POST(request: NextRequest) {
     console.log(`📊 Company intelligence gathered for ${interview.companyName}`);
     
     // Generate enhanced HARD questions based on interview type
-    let allQuestions: any[] = [];
+    let allQuestions: any[] = [],
     
     if (interview.interviewType === 'mixed') {
       console.log('🔄 Generating comprehensive mixed interview questions with HIGH DIFFICULTY...');
       
       // Technical Questions (40%) - Enhanced with company context and HARD difficulty
       const technicalQuestions = await freeLLMService.generateHardInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'technical';
-        experienceLevel: interview.experienceLevel || 'mid';
-        numberOfQuestions: 10;
-        companyIntelligence: enhancedCompanyData?.company_data;
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'technical',
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 10,
+        companyIntelligence: enhancedCompanyData?.company_data,
         difficultyLevel: 'hard' // Force hard difficulty
       });
 
       // Behavioral Questions (30%) - Company culture focused with challenging scenarios
       const behavioralQuestions = await freeLLMService.generateHardInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: 'behavioral';
-        experienceLevel: interview.experienceLevel || 'mid';
-        numberOfQuestions: 8;
-        companyIntelligence: enhancedCompanyData?.company_data;
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: 'behavioral',
+        experienceLevel: interview.experienceLevel || 'mid',
+        numberOfQuestions: 8,
+        companyIntelligence: enhancedCompanyData?.company_data,
         difficultyLevel: 'hard' // Force hard difficulty
       });
 
@@ -114,14 +114,14 @@ export async function POST(request: NextRequest) {
         ...technicalQuestions,
         ...behavioralQuestions,
         ...dsaProblems.map(p => ({
-          id: p.id;
-          question: p.title;
-          expectedAnswer: p.description;
-          category: 'dsa';
+          id: p.id,
+          question: p.title,
+          expectedAnswer: p.description,
+          category: 'dsa',
           difficulty: 'hard', // Force hard
           points: getDSAPoints('hard'),
-          problemData: p;
-          provider: p.provider;
+          problemData: p,
+          provider: p.provider,
           model: p.model
         }))
       ];
@@ -135,67 +135,67 @@ export async function POST(request: NextRequest) {
       );
 
       allQuestions = dsaProblems.map(p => ({
-        id: p.id;
-        question: p.title;
-        expectedAnswer: p.description;
-        category: 'dsa';
-        difficulty: 'hard';
+        id: p.id,
+        question: p.title,
+        expectedAnswer: p.description,
+        category: 'dsa',
+        difficulty: 'hard',
         points: getDSAPoints('hard'),
-        problemData: p;
-        provider: p.provider;
+        problemData: p,
+        provider: p.provider,
         model: p.model
       }));
     } else {
       console.log(`🎯 Generating HARD ${interview.interviewType} interview questions...`);
       allQuestions = await freeLLMService.generateHardInterviewQuestions({
-        jobTitle: interview.jobTitle;
-        companyName: interview.companyName;
-        skills: interview.skills || [];
-        interviewType: interview.interviewType;
-        experienceLevel: interview.experienceLevel || 'mid';
+        jobTitle: interview.jobTitle,
+        companyName: interview.companyName,
+        skills: interview.skills || [],
+        interviewType: interview.interviewType,
+        experienceLevel: interview.experienceLevel || 'mid',
         numberOfQuestions: getQuestionCount(interview.interviewType),
-        companyIntelligence: enhancedCompanyData?.company_data;
+        companyIntelligence: enhancedCompanyData?.company_data,
         difficultyLevel: 'hard' // Force hard difficulty
       });
     }
 
     // Enhanced question document with company intelligence
     const questionDoc = {
-      interviewId: interviewId;
+      interviewId: interviewId,
       questions: allQuestions.map(q => ({
-        id: q.id;
-        question: q.question;
-        expectedAnswer: q.expectedAnswer;
-        category: q.category;
+        id: q.id,
+        question: q.question,
+        expectedAnswer: q.expectedAnswer,
+        category: q.category,
         difficulty: q.difficulty || 'hard', // Default to hard
-        points: q.points;
-        timeLimit: q.timeLimit;
-        followUpQuestions: q.followUpQuestions || [];
-        evaluationCriteria: q.evaluationCriteria || [];
+        points: q.points,
+        timeLimit: q.timeLimit,
+        followUpQuestions: q.followUpQuestions || [],
+        evaluationCriteria: q.evaluationCriteria || [],
         companyRelevance: q.companyRelevance || 9, // Higher relevance for hard questions
-        tags: q.tags || [];
-        hints: q.hints || [];
-        problemData: q.problemData || null;
-        provider: q.provider || 'fallback';
+        tags: q.tags || [],
+        hints: q.hints || [],
+        problemData: q.problemData || null,
+        provider: q.provider || 'fallback',
         model: q.model || 'mock'
       })),
       companyIntelligence: enhancedCompanyData ? {
-        industry: enhancedCompanyData.company_data.industry;
-        tech_stack: enhancedCompanyData.company_data.tech_stack;
-        culture: enhancedCompanyData.company_data.culture;
-        recent_news: enhancedCompanyData.company_data.recent_news;
+        industry: enhancedCompanyData.company_data.industry,
+        tech_stack: enhancedCompanyData.company_data.tech_stack,
+        culture: enhancedCompanyData.company_data.culture,
+        recent_news: enhancedCompanyData.company_data.recent_news,
         recent_posts: enhancedCompanyData.company_data.recent_posts.slice(0, 3),
         difficulty: 'hard', // Always mark as hard
         focus_areas: enhancedCompanyData.company_data.focus_areas
       } : null,
       metadata: {
         generatedAt: new Date(),
-        aiService: 'free-llm-service';
-        totalQuestions: allQuestions.length;
+        aiService: 'free-llm-service',
+        totalQuestions: allQuestions.length,
         categoryBreakdown: getCategoryBreakdown(allQuestions),
         difficultyBreakdown: getDifficultyBreakdown(allQuestions),
         providerBreakdown: getProviderBreakdown(allQuestions),
-        companyIntelligenceUsed: !!enhancedCompanyData;
+        companyIntelligenceUsed: !!enhancedCompanyData,
         difficultyLevel: 'hard' // Mark all questions as hard
       },
       status: 'ready'
@@ -213,9 +213,9 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'ready';
-          questionMetadata: questionDoc.metadata;
-          companyIntelligence: questionDoc.companyIntelligence;
+          status: 'ready',
+          questionMetadata: questionDoc.metadata,
+          companyIntelligence: questionDoc.companyIntelligence,
           updatedAt: new Date()
         } 
       }
@@ -224,11 +224,11 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Generated ${allQuestions.length} HARD enhanced questions using FREE LLMs`);
 
     return NextResponse.json({
-      message: 'Enhanced HARD questions generated successfully with FREE LLM Services';
-      questionsCount: allQuestions.length;
-      questions: allQuestions;
-      metadata: questionDoc.metadata;
-      companyIntelligence: questionDoc.companyIntelligence;
+      message: 'Enhanced HARD questions generated successfully with FREE LLM Services',
+      questionsCount: allQuestions.length,
+      questions: allQuestions,
+      metadata: questionDoc.metadata,
+      companyIntelligence: questionDoc.companyIntelligence,
       breakdown: {
         categories: getCategoryBreakdown(allQuestions),
         difficulties: getDifficultyBreakdown(allQuestions),

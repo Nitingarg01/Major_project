@@ -44,8 +44,8 @@ export async function POST(request: NextRequest) {
     
     // Enhanced response data
     const responseData = {
-      success: true;
-      analysis: performanceAnalysis;
+      success: true,
+      analysis: performanceAnalysis,
       metrics: {
         totalQuestions,
         answeredQuestions,
@@ -54,13 +54,13 @@ export async function POST(request: NextRequest) {
         analysisTimestamp: new Date().toISOString()
       },
       metadata: {
-        provider: 'emergent-anthropic';
-        model: 'claude-3-5-sonnet-20241022';
+        provider: 'emergent-anthropic',
+        model: 'claude-3-5-sonnet-20241022',
         timestamp: new Date().toISOString(),
-        processingTime: 'high-speed-api';
-        performanceImprovement: '5x faster than Ollama';
-        analysisQuality: 'comprehensive-professional-grade';
-        companyContext: companyName || 'General';
+        processingTime: 'high-speed-api',
+        performanceImprovement: '5x faster than Ollama',
+        analysisQuality: 'comprehensive-professional-grade',
+        companyContext: companyName || 'General',
         position: jobTitle || 'Software Engineer'
       }
     };
@@ -75,9 +75,9 @@ export async function POST(request: NextRequest) {
           { id: interviewId },
           {
             $set: {
-              performanceAnalysis: performanceAnalysis;
-              analysisMetrics: responseData.metrics;
-              analysisCompleted: true;
+              performanceAnalysis: performanceAnalysis,
+              analysisMetrics: responseData.metrics,
+              analysisCompleted: true,
               lastAnalyzed: new Date(),
               analysisProvider: 'optimized-ai'
             }
@@ -102,10 +102,10 @@ export async function POST(request: NextRequest) {
     // Enhanced fallback analysis
     const { questions = [], answers = [], jobTitle = 'Software Engineer', companyName = 'Technology Company' } = request.body || {};
     
-    const answeredQuestions = answers.filter((ans: string) => ans && ans.trim().length > 0).length;
+    const answeredQuestions = answers.filter((ans: string) => ans && ans.trim().length > 0).length,
     const totalQuestions = questions.length || 1;
     const completionRate = Math.round((answeredQuestions / totalQuestions) * 100);
-    const avgWordCount = answers.reduce((sum: number, ans: string) => sum + (ans?.split(' ').length || 0), 0) / answers.length;
+    const avgWordCount = answers.reduce((sum: number, ans: string) => sum + (ans?.split(' ').length || 0), 0) / answers.length,
     const baseScore = Math.min(10, Math.max(4, (avgWordCount / 20) + (completionRate / 100) * 3));
     
     const fallbackAnalysis = {
@@ -142,8 +142,8 @@ export async function POST(request: NextRequest) {
     };
 
     return NextResponse.json({
-      success: false;
-      analysis: fallbackAnalysis;
+      success: false,
+      analysis: fallbackAnalysis,
       metrics: {
         totalQuestions,
         answeredQuestions,
@@ -151,12 +151,12 @@ export async function POST(request: NextRequest) {
         averageAnswerLength: Math.round(avgWordCount),
         analysisTimestamp: new Date().toISOString()
       },
-      error: 'AI analysis service temporarily unavailable';
-      details: error.message;
-      suggestion: 'Check EMERGENT_LLM_KEY and GEMINI_API_KEY configuration';
+      error: 'AI analysis service temporarily unavailable',
+      details: error.message,
+      suggestion: 'Check EMERGENT_LLM_KEY and GEMINI_API_KEY configuration',
       metadata: {
-        provider: 'optimized_fallback';
-        model: 'enhanced-comprehensive-fallback';
+        provider: 'optimized_fallback',
+        model: 'enhanced-comprehensive-fallback',
         timestamp: new Date().toISOString(),
         processingTime: 'instant'
       }

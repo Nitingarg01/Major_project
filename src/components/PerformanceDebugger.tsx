@@ -32,7 +32,7 @@ export default function PerformanceDebugger({ interviewId }: PerformanceDebugger
     setLoading(true);
     try {
       const response = await fetch('/api/fix-completed-interviews', {
-        method: 'POST';
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       })
       const result = await response.json();

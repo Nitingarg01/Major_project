@@ -174,14 +174,14 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       if (isCorrect) correctAnswers++
 
       return {
-        questionId: question.id;
-        question: question.question;
-        type: question.type;
-        difficulty: question.difficulty;
+        questionId: question.id,
+        question: question.question,
+        type: question.type,
+        difficulty: question.difficulty,
         selectedAnswer,
-        correctAnswer: question.correctAnswer;
+        correctAnswer: question.correctAnswer,
         isCorrect,
-        options: question.options;
+        options: question.options,
         explanation: question.explanation
       }
     })
@@ -189,8 +189,8 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     const totalQuestions = questions.length;
     const totalQuestions = validQuestions.length;
     const answeredQuestions = Object.keys(selectedAnswers).length;
-    const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
-    const completionRate = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+    const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0,
+    const completionRate = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0,
 
     // Calculate type-wise performance
     const typePerformance = questions.reduce((acc, question, index) => {
@@ -274,7 +274,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {Object.entries(results.typePerformance).map(([type, performance]: [string, any]) => {
                   const Icon = getTypeIcon(type);
-                  const accuracy = performance.total > 0 ? Math.round((performance.correct / performance.total) * 100) : 0;
+                  const accuracy = performance.total > 0 ? Math.round((performance.correct / performance.total) * 100) : 0,
                   
                   return (
                     <div key={type} className="p-4 border border-gray-200 rounded-lg">
@@ -303,7 +303,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
                   <div key={index} className={`p-4 rounded-lg border ${
                     result.isCorrect 
                       ? 'bg-green-50 border-green-200' 
-                      : result.selectedAnswer !== undefined;
+                      : result.selectedAnswer !== undefined,
                         ? 'bg-red-50 border-red-200'
                         : 'bg-gray-50 border-gray-200'
                   }`}>
@@ -500,7 +500,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
               className={`w-8 h-8 rounded text-sm font-medium ${
                 index === currentQuestion;
                   ? 'bg-blue-500 text-white'
-                  : selectedAnswers[index] !== undefined;
+                  : selectedAnswers[index] !== undefined,
                     ? 'bg-green-100 text-green-800 border border-green-300'
                     : 'bg-white text-gray-600 border border-gray-300'
               }`}

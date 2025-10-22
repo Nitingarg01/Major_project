@@ -10,21 +10,21 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString(),
       services: {
         primary: health.emergentAvailable ? 'Emergent LLM (OpenAI GPT-4o-mini)' : 'None',
-        lightweight: health.geminiAvailable ? 'Google Gemini 1.5 Flash' : 'None';
+        lightweight: health.geminiAvailable ? 'Google Gemini 1.5 Flash' : 'None',
         fallback: health.fallbackAvailable ? 'Available' : 'Limited'
       },
       performance: {
-        questionGeneration: '3-5 seconds';
-        responseAnalysis: '2-3 seconds';
-        resumeParsing: '1-2 seconds';
+        questionGeneration: '3-5 seconds',
+        responseAnalysis: '2-3 seconds',
+        resumeParsing: '1-2 seconds',
         companySearch: '1-2 seconds'
       },
       features: {
-        questionGeneration: health.emergentAvailable;
-        responseAnalysis: health.emergentAvailable;
-        resumeParsing: health.geminiAvailable;
-        companySearch: health.geminiAvailable;
-        performanceAnalysis: health.emergentAvailable;
+        questionGeneration: health.emergentAvailable,
+        responseAnalysis: health.emergentAvailable,
+        resumeParsing: health.geminiAvailable,
+        companySearch: health.geminiAvailable,
+        performanceAnalysis: health.emergentAvailable,
         smartTaskRouting: true
       },
       taskRouting: {
@@ -44,14 +44,14 @@ export async function GET(request: NextRequest) {
     };
 
     console.log('🔍 Smart AI Health Check:', {
-      emergent: health.emergentAvailable;
-      gemini: health.geminiAvailable;
+      emergent: health.emergentAvailable,
+      gemini: health.geminiAvailable,
       status: health.status
     });
 
     return NextResponse.json({
       health,
-      system: systemInfo;
+      system: systemInfo,
       status: 'success'
     });
 
@@ -60,15 +60,15 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       health: {
-        emergentAvailable: false;
-        geminiAvailable: false;
-        status: 'error';
-        activeProvider: 'none';
+        emergentAvailable: false,
+        geminiAvailable: false,
+        status: 'error',
+        activeProvider: 'none',
         fallbackAvailable: false
       },
       system: {
         timestamp: new Date().toISOString(),
-        error: 'Health check failed';
+        error: 'Health check failed',
         services: { primary: 'Error', lightweight: 'Error', fallback: 'Error' }
       },
       status: 'error'
@@ -88,11 +88,11 @@ export async function POST(request: NextRequest) {
     // Test question generation
     const startTime = Date.now();
     const testResult = await smartAI.generateQuestions({
-      jobTitle: 'Software Engineer';
-      companyName: 'Google';
+      jobTitle: 'Software Engineer',
+      companyName: 'Google',
       skills: ['JavaScript', 'React', 'Node.js'],
-      interviewType: 'technical';
-      experienceLevel: 'mid';
+      interviewType: 'technical',
+      experienceLevel: 'mid',
       numberOfQuestions: 2
     });
 
@@ -101,12 +101,12 @@ export async function POST(request: NextRequest) {
     if (testResult.success && testResult.data.length > 0) {
       return NextResponse.json({
         results: {
-          success: true;
-          sampleQuestion: testResult.data[0].question;
-          provider: testResult.provider;
-          model: testResult.model;
+          success: true,
+          sampleQuestion: testResult.data[0].question,
+          provider: testResult.provider,
+          model: testResult.model,
           processingTime: `${processingTime}ms`,
-          companyRelevance: testResult.data[0].companyRelevance || 8;
+          companyRelevance: testResult.data[0].companyRelevance || 8,
           questionsGenerated: testResult.data.length
         }
       });
@@ -119,9 +119,9 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({
       results: {
-        success: false;
+        success: false,
         error: `Test failed: ${error}`,
-        provider: 'none';
+        provider: 'none',
         model: 'none'
       }
     }, { status: 500 });

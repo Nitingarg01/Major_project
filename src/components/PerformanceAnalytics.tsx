@@ -20,10 +20,10 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, BarChart, Bar } from 'recharts';
 
 interface PerformanceAnalyticsProps {
-  performance: InterviewPerformance;
-  rounds: InterviewRound[];
-  companyName: string;
-  jobTitle: string;
+  performance: InterviewPerformance,
+  rounds: InterviewRound[],
+  companyName: string,
+  jobTitle: string,
   skills: string[];
 }
 
@@ -36,10 +36,10 @@ const PerformanceAnalytics = ({
 }: PerformanceAnalyticsProps) => {
   // Calculate scores by category
   const categoryScores: {[key: string]: number} = {
-    technical: 0;
-    behavioral: 0;
-    aptitude: 0;
-    dsa: 0;
+    technical: 0,
+    behavioral: 0,
+    aptitude: 0,
+    dsa: 0,
     mixed: 0
   };
 
@@ -58,8 +58,8 @@ const PerformanceAnalytics = ({
   ];
 
   const progressData = rounds.map((round, index) => ({
-    name: round.type;
-    score: round.score || 0;
+    name: round.type,
+    score: round.score || 0,
     time: round.duration
   }));
 
@@ -81,10 +81,10 @@ const PerformanceAnalytics = ({
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'technical': return <Code className="w-5 h-5" />;
-      case 'behavioral': return <Users className="w-5 h-5" />;
-      case 'aptitude': return <Brain className="w-5 h-5" />;
-      case 'dsa': return <Lightbulb className="w-5 h-5" />;
+      case 'technical': return <Code className="w-5 h-5" />,
+      case 'behavioral': return <Users className="w-5 h-5" />,
+      case 'aptitude': return <Brain className="w-5 h-5" />,
+      case 'dsa': return <Lightbulb className="w-5 h-5" />,
       default: return <Target className="w-5 h-5" />;
     }
   };
@@ -288,7 +288,7 @@ const PerformanceAnalytics = ({
             <div className={`p-4 rounded-lg border ${
               performance.anomalousActivity.riskLevel === 'high';
                 ? 'bg-red-50 border-red-200' 
-                : performance.anomalousActivity.riskLevel === 'medium';
+                : performance.anomalousActivity.riskLevel === 'medium',
                 ? 'bg-yellow-50 border-yellow-200'
                 : 'bg-green-50 border-green-200'
             }`}>
