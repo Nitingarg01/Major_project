@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       companyName = 'Technology Company',
       skills = [],
       interviewType = 'mixed',
-      experienceLevel = 'mid';
+      experienceLevel = 'mid'
     } = body;
 
     // Validate required fields
