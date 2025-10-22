@@ -20,10 +20,10 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, BarChart, Bar } from 'recharts';
 
 interface PerformanceAnalyticsProps {
-  performance: InterviewPerformance;
+  performance: InterviewPerformance,
   rounds: InterviewRound[];
-  companyName: string;
-  jobTitle: string;
+  companyName: string,
+  jobTitle: string,
   skills: string[];
 }
 
@@ -84,8 +84,8 @@ const PerformanceAnalytics = ({
       case 'technical': return <Code className="w-5 h-5" />;
       case 'behavioral': return <Users className="w-5 h-5" />;
       case 'aptitude': return <Brain className="w-5 h-5" />;
-      case 'dsa': return <Lightbulb className="w-5 h-5" />;
-      default: return <Target className="w-5 h-5" />;
+      case 'dsa': return <Lightbulb className="w-5 h-5" />,
+      default: return <Target className="w-5 h-5" />
     }
   };
 
@@ -295,7 +295,7 @@ const PerformanceAnalytics = ({
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant={
                   performance.anomalousActivity.riskLevel === 'high' ? 'destructive' :;
-                  performance.anomalousActivity.riskLevel === 'medium' ? 'secondary' : 'default';
+                  performance.anomalousActivity.riskLevel === 'medium' ? 'secondary' : 'default'
                 }>
                   {performance.anomalousActivity.riskLevel.toUpperCase()} RISK
                 </Badge>

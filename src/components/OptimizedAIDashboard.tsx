@@ -24,44 +24,44 @@ import {
 } from 'lucide-react'
 
 interface OptimizedHealthStatus {
-  emergentAvailable: boolean;
-  geminiAvailable: boolean;
-  status: string;
-  companyDatabaseSize: number;
+  emergentAvailable: boolean,
+  geminiAvailable: boolean,
+  status: string,
+  companyDatabaseSize: number
 }
 
 interface SystemInfo {
-  timestamp: string;
+  timestamp: string,
   services: {
-    primary: string;
-    analysis: string;
-    fallback: string;
+    primary: string,
+    analysis: string,
+    fallback: string
   };
   performance: {
-    questionGeneration: string;
-    responseAnalysis: string;
-    overallAnalysis: string;
+    questionGeneration: string,
+    responseAnalysis: string,
+    overallAnalysis: string
   };
   features: {
-    questionGeneration: boolean;
-    responseAnalysis: boolean;
-    performanceAnalysis: boolean;
-    companyDatabase: boolean;
-    companySuggestions: boolean;
-    dsaProblems: boolean;
+    questionGeneration: boolean,
+    responseAnalysis: boolean,
+    performanceAnalysis: boolean,
+    companyDatabase: boolean,
+    companySuggestions: boolean,
+    dsaProblems: boolean
   };
   apiStrategy: {
-    questionGeneration: string;
-    responseAnalysis: string;
-    performanceAnalysis: string;
-    companyIntelligence: string;
+    questionGeneration: string,
+    responseAnalysis: string,
+    performanceAnalysis: string,
+    companyIntelligence: string
   };
   replacedServices: string[];
   advantages: string[];
 }
 
 interface OptimizedAIDashboardProps {
-  className?: string;
+  className?: string
 }
 
 const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className = "" }) => {
@@ -128,7 +128,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
   const getStatusIcon = (available: boolean) => {
     return available;
       ? <CheckCircle className="w-5 h-5 text-green-500" />
-      : <XCircle className="w-5 h-5 text-red-500" />;
+      : <XCircle className="w-5 h-5 text-red-500" />
   };
 
   const getStatusColor = (status: string) => {

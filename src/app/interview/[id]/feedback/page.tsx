@@ -160,7 +160,7 @@ const page = async ({ params }: PageProps) => {
       completedMockInterviews: 1,
       averageScore: Math.round(overallScore * 10),
       improvementTrend: Math.max(0, Math.round((overallScore - 5) * 2)),
-      readyForRealInterview: overallScore >= 7;
+      readyForRealInterview: overallScore >= 7
     }
   }
 

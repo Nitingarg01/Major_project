@@ -375,7 +375,7 @@ async function testDashboardDirect() {
         console.log('- Recent feedback history with actionable advice');
         
     } catch (error) {
-        console.error('❌ Dashboard direct test failed:', error.message);
+        console.error('❌ Dashboard direct test failed:', error.message)
     } finally {
         await client.close();
     }

@@ -174,7 +174,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
                 } catch (e: any) {
                   // Only log if it's not "already started" error
                   if (!e.message?.includes('already started')) {
-                    console.warn('Could not restart recognition:', e);
+                    console.warn('Could not restart recognition:', e)
                   }
                 }
               }
@@ -252,7 +252,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
         try {
           speechRecognition.stop();
         } catch (e) {
-          console.log('Recognition cleanup:', e);
+          console.log('Recognition cleanup:', e)
         }
       }
     }
@@ -294,7 +294,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
         }
         speechRecognition.stop();
       } catch (e) {
-        console.log('Recognition stop error:', e);
+        console.log('Recognition stop error:', e)
       }
       setInterviewState(prev => ({ ...prev, isListening: false }));
       updateAvatarState('thinking');
@@ -563,7 +563,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       try {
         speechRecognition.stop();
       } catch (e) {
-        console.log('Recognition cleanup on complete:', e);
+        console.log('Recognition cleanup on complete:', e)
       }
     }
     
@@ -621,7 +621,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
         'border-purple-300 shadow-md'
       } bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 flex items-center justify-center`}>
         <Bot className={`w-16 h-16 text-white transition-transform duration-300 ${
-          aiAvatarState === 'speaking' ? 'scale-110' : 'scale-100';
+          aiAvatarState === 'speaking' ? 'scale-110' : 'scale-100'
         }`} />
       </div>
       

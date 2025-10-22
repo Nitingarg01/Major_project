@@ -1,28 +1,28 @@
 import axios from 'axios';
 
 interface CompanyData {
-  name: string;
-  industry: string;
+  name: string,
+  industry: string,
   techStack: string[];
   culture: string[];
   values: string[];
   recentNews: string[];
   commonQuestions: string[];
   interviewProcess: string[];
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'easy' | 'medium' | 'hard',
   focusAreas: string[];
   preparationTips: string[];
 }
 
 interface CompanyIntelligence {
-  companyData: CompanyData;
-  marketPosition: string;
+  companyData: CompanyData,
+  marketPosition: string,
   competitorAnalysis: string[];
-  businessModel: string;
+  businessModel: string,
   recentUpdates: string[];
   interviewInsights: {
-    averageRounds: number;
-    timePerRound: number;
+    averageRounds: number,
+    timePerRound: number,
     keySkillsRequired: string[];
     culturalFitQuestions: string[];
   };
@@ -488,7 +488,7 @@ export class CompanyIntelligenceService {
       });
 
       if (response.data && response.data.length > 0) {
-        return response.data.map((article: any) => article.title);
+        return response.data.map((article: any) => article.title)
       }
     } catch (error) {
       console.error('Error fetching news from API Ninja:', error);

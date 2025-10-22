@@ -63,7 +63,7 @@ async function testCompleteInterviewFlow() {
         console.log('📄 SetAnswers API Response:', setAnswersResponse.status, setAnswersResult.message);
         
         if (setAnswersResponse.status !== 200) {
-            throw new Error('Failed to submit answers: ' + JSON.stringify(setAnswersResult));
+            throw new Error('Failed to submit answers: ' + JSON.stringify(setAnswersResult))
         }
         
         // Step 4: Check if feedback is ready (simulate FeedbackLoader GET check)
@@ -91,10 +91,10 @@ async function testCompleteInterviewFlow() {
                 console.log('🧠 AI Provider:', feedbackResult.insights?.metadata?.aiProvider);
                 console.log('⏱️ Processing Time:', feedbackResult.performance?.processingTime + 'ms');
                 console.log('🔥 Strengths:', feedbackResult.insights?.strengths?.slice(0, 2));
-                console.log('📈 Improvements:', feedbackResult.insights?.improvements?.slice(0, 2));
+                console.log('📈 Improvements:', feedbackResult.insights?.improvements?.slice(0, 2))
             } else {
                 console.log('❌ FAILED: Feedback generation failed');
-                console.log('Error details:', feedbackResult);
+                console.log('Error details:', feedbackResult)
             }
         }
         
@@ -116,7 +116,7 @@ async function testCompleteInterviewFlow() {
         
     } catch (error) {
         console.error('❌ Complete flow test failed:', error.message);
-        console.error('Stack trace:', error.stack);
+        console.error('Stack trace:', error.stack)
     } finally {
         await client.close();
     }

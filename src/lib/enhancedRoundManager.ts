@@ -2,100 +2,100 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface InterviewRound {
-  id: string;
-  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'mixed';
-  status: 'pending' | 'in-progress' | 'completed' | 'skipped';
+  id: string,
+  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'mixed',
+  status: 'pending' | 'in-progress' | 'completed' | 'skipped',
   questions: any[];
   duration: number; // in minutes
   startTime?: Date;
   endTime?: Date;
   timeSpent?: number;
   score?: number;
-  feedback?: string;
+  feedback?: string
 }
 
 export interface RoundResult {
-  roundId: string;
+  roundId: string,
   answers: string[];
-  timeSpent: number;
-  score: number;
-  feedback: string;
+  timeSpent: number,
+  score: number,
+  feedback: string,
   performanceMetrics: {
-    accuracy: number;
-    confidence: number;
-    clarity: number;
-    technicalDepth: number;
-    problemSolving: number;
+    accuracy: number,
+    confidence: number,
+    clarity: number,
+    technicalDepth: number,
+    problemSolving: number
   };
   suspiciousActivities: ActivityAlert[];
 }
 
 export interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
   timestamp: Date;
-  confidence?: number;
+  confidence?: number
 }
 
 export interface InterviewSession {
-  sessionId: string;
-  userId: string;
-  interviewId: string;
-  companyName: string;
-  jobTitle: string;
+  sessionId: string,
+  userId: string,
+  interviewId: string,
+  companyName: string,
+  jobTitle: string,
   rounds: InterviewRound[];
-  currentRound: number;
+  currentRound: number,
   sessionData: {
     startTime: Date;
-    endTime?: Date;
-    totalTimeSpent: number;
-    overallProgress: number;
+    endTime?: Date,
+    totalTimeSpent: number,
+    overallProgress: number
   };
   roundResults: RoundResult[];
-  companyIntelligence?: any;
+  companyIntelligence?: any,
   sessionMetadata: {
-    userAgent: string;
-    ipAddress: string;
-    cameraEnabled: boolean;
+    userAgent: string,
+    ipAddress: string,
+    cameraEnabled: boolean,
     suspiciousActivity: ActivityAlert[];
   };
 }
 
 export interface FinalInterviewReport {
-  sessionId: string;
-  overallScore: number;
-  overallVerdict: string;
+  sessionId: string,
+  overallScore: number,
+  overallVerdict: string,
   roundBreakdown: {
     [roundId: string]: {
-      score: number;
-      feedback: string;
-      timeSpent: number;
+      score: number,
+      feedback: string,
+      timeSpent: number,
       strengths: string[];
       improvements: string[];
     };
   };
   parameterScores: {
-    [parameter: string]: number;
+    [parameter: string]: number
   };
   adviceForImprovement: Array<{
-    question: string;
-    userAnswer: string;
-    feedback: string;
-    suggestedImprovement: string;
-    score: number;
+    question: string,
+    userAnswer: string,
+    feedback: string,
+    suggestedImprovement: string,
+    score: number
   }>;
   securityReport: {
-    totalAlerts: number;
-    highSeverityAlerts: number;
-    integrityScore: number;
+    totalAlerts: number,
+    highSeverityAlerts: number,
+    integrityScore: number,
     suspiciousPatterns: string[];
   };
   recommendations: {
     nextSteps: string[];
     focusAreas: string[];
     resources: string[];
-    readinessLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+    readinessLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert'
   };
 }
 
@@ -293,14 +293,14 @@ export class EnhancedRoundManager {
     companyName: string,
     jobTitle: string
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     metrics: {
-      accuracy: number;
-      confidence: number;
-      clarity: number;
-      technicalDepth: number;
-      problemSolving: number;
+      accuracy: number,
+      confidence: number,
+      clarity: number,
+      technicalDepth: number,
+      problemSolving: number
     };
   }> {
     try {
@@ -577,7 +577,7 @@ export class EnhancedRoundManager {
         nextSteps: avgScore >= 7 ? ['Apply to real interviews', 'Practice advanced topics'] : ['Continue mock interviews', 'Focus on weak areas'],
         focusAreas: avgScore < 6 ? ['Technical skills', 'Communication'] : ['Advanced concepts', 'System design'],
         resources: ['LeetCode practice', 'System design courses', 'Mock interview platforms'],
-        readinessLevel: avgScore >= 8 ? 'advanced' : avgScore >= 6 ? 'intermediate' : 'beginner';
+        readinessLevel: avgScore >= 8 ? 'advanced' : avgScore >= 6 ? 'intermediate' : 'beginner'
       }
     };
   }
@@ -602,7 +602,7 @@ export class EnhancedRoundManager {
         localStorage.setItem(`interview_report_${interviewId}`, JSON.stringify(report));
       }
     } catch (error) {
-      console.error('Error saving interview report:', error);
+      console.error('Error saving interview report:', error)
     }
   }
 }

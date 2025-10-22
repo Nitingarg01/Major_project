@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 
 // Create context for loading state
 const LoadingContext = createContext<{
-  isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
+  isLoading: boolean,
+  setIsLoading: (loading: boolean) => void
 }>({
   isLoading: false,
   setIsLoading: () => {}

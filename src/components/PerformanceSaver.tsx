@@ -200,7 +200,7 @@ export default function PerformanceSaver({
         } else {
           console.error('❌ Failed to save performance data:', result.error);
           if (result.details) {
-            console.error('Error details:', result.details);
+            console.error('Error details:', result.details)
           }
           
           // Retry logic

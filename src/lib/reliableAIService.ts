@@ -7,39 +7,39 @@ import SmartAIService from './smartAIService';
 import { extractJSON } from './jsonExtractor';
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  difficulty: 'easy' | 'medium' | 'hard';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  difficulty: 'easy' | 'medium' | 'hard',
   points: number;
-  timeLimit?: number;
+  timeLimit?: number,
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
   hints?: string[];
   timeComplexity?: string;
-  spaceComplexity?: string;
+  spaceComplexity?: string
 }
 
 export class ReliableAIService {
@@ -60,13 +60,13 @@ export class ReliableAIService {
 
   // Generate interview questions using Smart AI
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number;
-    companyIntelligence?: any;
+    companyIntelligence?: any
   }): Promise<InterviewQuestion[]> {
     
     try {
@@ -162,8 +162,8 @@ export class ReliableAIService {
     category: string,
     companyContext: string = 'Technology Company';
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     suggestions: string[];
     strengths: string[];
     improvements: string[];

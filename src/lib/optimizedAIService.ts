@@ -15,61 +15,61 @@ if (typeof process !== 'undefined') {
 
 interface GroqRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant';
-    content: string;
+    role: 'system' | 'user' | 'assistant',
+    content: string
   }>;
   model?: string;
   max_tokens?: number;
-  temperature?: number;
+  temperature?: number
 }
 
 interface GroqResponse {
-  content: string;
-  provider: string;
+  content: string,
+  provider: string,
   model: string;
   usage?: {
-    prompt_tokens: number;
-    completion_tokens: number;
-    total_tokens: number;
+    prompt_tokens: number,
+    completion_tokens: number,
+    total_tokens: number
   };
 }
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
-  difficulty: 'easy' | 'medium' | 'hard';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design',
+  difficulty: 'easy' | 'medium' | 'hard',
   points: number;
-  timeLimit?: number;
+  timeLimit?: number,
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
-  companyRelevance: number;
+  companyRelevance: number
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
   hints?: string[];
   timeComplexity?: string;
   spaceComplexity?: string;
-  companySpecific?: boolean;
+  companySpecific?: boolean
 }
 
 interface CompanyData {
@@ -305,12 +305,12 @@ export class OptimizedAIService {
 
   // QUESTION GENERATION - Uses OpenAI GPT-4o-mini for best speed
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'system_design' | 'aptitude';
-    experienceLevel: 'entry' | 'mid' | 'senior';
-    numberOfQuestions: number;
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'system_design' | 'aptitude',
+    experienceLevel: 'entry' | 'mid' | 'senior',
+    numberOfQuestions: number
   }): Promise<InterviewQuestion[]> {
     
     const companyData = this.companyDatabase.get(params.companyName.toLowerCase());
@@ -493,8 +493,8 @@ Return ONLY a valid JSON array:
     category: string,
     companyContext: string
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -636,10 +636,10 @@ Return ONLY valid JSON:
 
   // Health check method
   public async healthCheck(): Promise<{
-    groqAvailable: boolean;
-    geminiAvailable: boolean;
-    status: string;
-    companyDatabaseSize: number;
+    groqAvailable: boolean,
+    geminiAvailable: boolean,
+    status: string,
+    companyDatabaseSize: number
   }> {
     const status = {
       groqAvailable: !!this.groqApiKey,
@@ -657,10 +657,10 @@ Return ONLY valid JSON:
         status.status = 'groq_ready';
       } catch (error) {
         status.groqAvailable = false;
-        status.status = status.geminiAvailable ? 'gemini_fallback' : 'no_service';
+        status.status = status.geminiAvailable ? 'gemini_fallback' : 'no_service'
       }
     } else {
-      status.status = status.geminiAvailable ? 'gemini_only' : 'no_service';
+      status.status = status.geminiAvailable ? 'gemini_only' : 'no_service'
     }
 
     return status;

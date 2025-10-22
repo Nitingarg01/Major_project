@@ -3,31 +3,31 @@ import { extractJSON } from './jsonExtractor';
 
 // Types for interview questions and analysis
 export interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design';
-  points: number;
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design',
+  points: number
 }
 
 export interface InterviewAnalysis {
-  score: number;
-  feedback: string;
+  score: number,
+  feedback: string,
   strengths: string[];
   improvements: string[];
   recommendations: string[];
 }
 
 export interface QuestionGenerationParams {
-  jobTitle: string;
-  companyName: string;
+  jobTitle: string,
+  companyName: string,
   skills: string[];
-  jobDescription: string;
-  experienceLevel: 'entry' | 'mid' | 'senior';
+  jobDescription: string,
+  experienceLevel: 'entry' | 'mid' | 'senior',
   interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design';
   resumeContent?: string;
-  numberOfQuestions?: number;
+  numberOfQuestions?: number
 }
 
 class AIInterviewModel {

@@ -48,7 +48,7 @@ async function testOriginalInterview() {
                     const answer = ans?.answer || ans;
                     return answer && answer.trim() !== '' && answer !== 'No answer provided';
                 });
-                console.log('- Meaningful answers count:', meaningfulAnswers.length);
+                console.log('- Meaningful answers count:', meaningfulAnswers.length)
             }
         } else {
             console.log('❌ No questions document found');
@@ -73,15 +73,15 @@ async function testOriginalInterview() {
             console.log('🧠 AI Provider:', result.insights?.metadata?.aiProvider);
             console.log('⏱️ Processing Time:', result.performance?.processingTime + 'ms');
             console.log('📝 Questions Analyzed:', result.insights?.metadata?.questionsAnalyzed);
-            console.log('✍️ Answers Processed:', result.insights?.metadata?.answersProcessed);
+            console.log('✍️ Answers Processed:', result.insights?.metadata?.answersProcessed)
         } else {
             console.log('❌ FAILED: Still having issues');
             console.log('Error:', result.error);
-            console.log('Debug info:', result.debug);
+            console.log('Debug info:', result.debug)
         }
         
     } catch (error) {
-        console.error('❌ Test failed:', error.message);
+        console.error('❌ Test failed:', error.message)
     } finally {
         await client.close();
     }

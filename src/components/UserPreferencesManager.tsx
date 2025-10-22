@@ -26,7 +26,7 @@ import {
 interface UserPreferencesManagerProps {
   onPreferencesUpdated?: (preferences: UserInterviewPreferences) => void;
   showTitle?: boolean;
-  compact?: boolean;
+  compact?: boolean
 }
 
 const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
@@ -51,13 +51,13 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
 
       if (data.success) {
         setPreferences(data.preferences);
-        console.log('📊 User preferences loaded:', data.preferences);
+        console.log('📊 User preferences loaded:', data.preferences)
       } else {
         throw new Error(data.error || 'Failed to load preferences');
       }
     } catch (error: any) {
       console.error('❌ Error loading preferences:', error);
-      toast.error('Failed to load preferences: ' + error.message);
+      toast.error('Failed to load preferences: ' + error.message)
     } finally {
       setLoading(false);
     }
@@ -87,7 +87,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
       }
     } catch (error: any) {
       console.error('❌ Error saving preferences:', error);
-      toast.error('Failed to save preferences: ' + error.message);
+      toast.error('Failed to save preferences: ' + error.message)
     } finally {
       setSaving(false);
     }
@@ -116,7 +116,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
       }
     } catch (error: any) {
       console.error('❌ Error resetting preferences:', error);
-      toast.error('Failed to reset preferences: ' + error.message);
+      toast.error('Failed to reset preferences: ' + error.message)
     } finally {
       setLoading(false);
     }

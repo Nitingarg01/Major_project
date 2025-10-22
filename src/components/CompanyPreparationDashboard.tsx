@@ -25,38 +25,38 @@ import {
 import { Button } from './ui/button';
 
 interface CompanyInsights {
-  companyName: string;
-  readinessScore: number;
+  companyName: string,
+  readinessScore: number,
   strengths: string[];
   improvements: string[];
   companySpecificTips: string[];
   interviewIntelligence: {
-    averageRounds: number;
-    expectedDifficulty: string;
+    averageRounds: number,
+    expectedDifficulty: string,
     keyFocusAreas: string[];
     culturalValues: string[];
     techStack: string[];
     recentNews: string[];
   };
   preparationMetrics: {
-    technicalReadiness: number;
-    behavioralReadiness: number;
-    companyKnowledge: number;
-    culturalFit: number;
+    technicalReadiness: number,
+    behavioralReadiness: number,
+    companyKnowledge: number,
+    culturalFit: number
   };
   confidenceBuilder: {
-    completedMockInterviews: number;
-    averageScore: number;
-    improvementTrend: number;
-    readyForRealInterview: boolean;
+    completedMockInterviews: number,
+    averageScore: number,
+    improvementTrend: number,
+    readyForRealInterview: boolean
   };
 }
 
 interface CompanyPreparationDashboardProps {
   companyInsights: CompanyInsights;
   interviewResults?: any[];
-  onStartNewInterview: () => void;
-  onViewDetailedFeedback: () => void;
+  onStartNewInterview: () => void,
+  onViewDetailedFeedback: () => void
 }
 
 const CompanyPreparationDashboard = ({ 
@@ -325,7 +325,7 @@ const CompanyPreparationDashboard = ({
                     <span className="text-sm text-gray-600">Difficulty Level:</span>
                     <Badge variant={
                       companyInsights.interviewIntelligence.expectedDifficulty === 'hard' ? 'destructive' :;
-                      companyInsights.interviewIntelligence.expectedDifficulty === 'medium' ? 'default' : 'secondary';
+                      companyInsights.interviewIntelligence.expectedDifficulty === 'medium' ? 'default' : 'secondary'
                     }>
                       {companyInsights.interviewIntelligence.expectedDifficulty}
                     </Badge>

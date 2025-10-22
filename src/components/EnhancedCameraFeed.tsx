@@ -6,17 +6,17 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Badge } from './ui/badge';
 
 type Props = {
-  cameraOn: boolean;
+  cameraOn: boolean,
   setCameraOn: Dispatch<SetStateAction<boolean>>;
   onActivityDetected?: (activity: ActivityAlert) => void;
-  isInterviewActive?: boolean;
+  isInterviewActive?: boolean
 }
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
-  timestamp: Date;
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
+  timestamp: Date
 }
 
 const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInterviewActive = false }: Props) => {
@@ -244,8 +244,8 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
     switch (severity) {
       case 'high': return 'bg-red-500';
       case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-blue-500';
-      default: return 'bg-gray-500';
+      case 'low': return 'bg-blue-500',
+      default: return 'bg-gray-500'
     }
   };
 
@@ -254,8 +254,8 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
       case 'face_found': return 'text-green-500';
       case 'no_face': return 'text-red-500';
       case 'multiple_faces': return 'text-red-500';
-      case 'detecting': return 'text-yellow-500';
-      default: return 'text-gray-500';
+      case 'detecting': return 'text-yellow-500',
+      default: return 'text-gray-500'
     }
   };
 

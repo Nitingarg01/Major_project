@@ -397,7 +397,7 @@ int main() {
         description: `Time taken: ${Math.floor(timeSpent / 60)}m ${timeSpent % 60}s`
       })
     } catch (error: any) {
-      toast.error('Submission failed: ' + error.message);
+      toast.error('Submission failed: ' + error.message)
     } finally {
       setIsSubmitting(false);
     }
@@ -406,7 +406,7 @@ int main() {
   const extractComplexity = (code: string, type: 'time' | 'space'): string => {
     const pattern = new RegExp(`${type}\\s*complexity[:\\s]*o\\(([^)]+)\\)`, 'i');
     const match = code.match(pattern);
-    return match ? `O(${match[1]})` : 'Not specified';
+    return match ? `O(${match[1]})` : 'Not specified'
   }
 
   const showNextHint = () => {

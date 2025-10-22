@@ -294,7 +294,7 @@ export class EnhancedVirtualInterviewerAI {
         }
       }
     } catch (error) {
-      console.error('Error generating AI follow-up:', error);
+      console.error('Error generating AI follow-up:', error)
     }
 
     // Fallback to personality-based follow-ups
@@ -341,7 +341,7 @@ export class EnhancedVirtualInterviewerAI {
         }
       }
     } catch (error) {
-      console.error('Error analyzing response:', error);
+      console.error('Error analyzing response:', error)
     }
 
     return this.generateFallbackAnalysis(userResponse, question);

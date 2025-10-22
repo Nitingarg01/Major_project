@@ -66,7 +66,7 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
         };
 
         recognition.onerror = (e: any) => {
-            console.error('Speech Recognition Error:', e);
+            console.error('Speech Recognition Error:', e)
         };
 
         recognitionRef.current = recognition;

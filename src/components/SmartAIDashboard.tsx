@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface SmartAIDashboardProps {
-  className?: string;
+  className?: string
 }
 
 const SmartAIDashboard: React.FC<SmartAIDashboardProps> = ({ className = "" }) => {

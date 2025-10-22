@@ -25,16 +25,16 @@ export class PreferenceBasedQuestionGenerator {
    * Main method to generate preference-based questions
    */
   async generatePreferenceBasedQuestions(request: QuestionGenerationRequest): Promise<{
-    success: boolean;
+    success: boolean,
     questions: EnhancedQuestion[];
     metadata: {
-      totalQuestions: number;
-      preferenceAlignment: number;
-      companySpecific: boolean;
-      uniqueDSAProblems: number;
-      generationTime: number;
-      provider: string;
-      model: string;
+      totalQuestions: number,
+      preferenceAlignment: number,
+      companySpecific: boolean,
+      uniqueDSAProblems: number,
+      generationTime: number,
+      provider: string,
+      model: string
     };
   }> {
     const startTime = Date.now();
@@ -62,7 +62,7 @@ export class PreferenceBasedQuestionGenerator {
           questionDistribution.technical
         );
         allQuestions.push(...techQuestions);
-        totalPreferenceAlignment += techQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0);
+        totalPreferenceAlignment += techQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0)
       }
 
       // Generate Behavioral Questions  
@@ -73,7 +73,7 @@ export class PreferenceBasedQuestionGenerator {
           questionDistribution.behavioral
         );
         allQuestions.push(...behavioralQuestions);
-        totalPreferenceAlignment += behavioralQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0);
+        totalPreferenceAlignment += behavioralQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0)
       }
 
       // Generate Company-Unique DSA Questions - The Special Feature!
@@ -96,7 +96,7 @@ export class PreferenceBasedQuestionGenerator {
           questionDistribution.system_design
         );
         allQuestions.push(...systemQuestions);
-        totalPreferenceAlignment += systemQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0);
+        totalPreferenceAlignment += systemQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0)
       }
 
       // Generate Aptitude Questions
@@ -107,7 +107,7 @@ export class PreferenceBasedQuestionGenerator {
           questionDistribution.aptitude
         );
         allQuestions.push(...aptitudeQuestions);
-        totalPreferenceAlignment += aptitudeQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0);
+        totalPreferenceAlignment += aptitudeQuestions.reduce((sum, q) => sum + (q.preferences?.alignsWithUserPrefs ? 1 : 0), 0)
       }
 
       // Shuffle questions for variety
@@ -588,8 +588,8 @@ Return ONLY valid JSON array:
     switch (difficulty) {
       case 'easy': return 15;
       case 'medium': return 25;
-      case 'hard': return 40;
-      default: return 20;
+      case 'hard': return 40,
+      default: return 20
     }
   }
 
@@ -597,8 +597,8 @@ Return ONLY valid JSON array:
     switch (difficulty) {
       case 'easy': return 20;
       case 'medium': return 35;
-      case 'hard': return 50;
-      default: return 30;
+      case 'hard': return 50,
+      default: return 30
     }
   }
 

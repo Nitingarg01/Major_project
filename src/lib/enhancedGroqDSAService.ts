@@ -11,20 +11,20 @@ import { extractJSON } from './jsonExtractor';
 const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
 
 export interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
@@ -36,13 +36,13 @@ export interface DSAProblem {
     hasVisualizer?: boolean;
     hasStepByStep?: boolean;
     hasHints?: boolean;
-    realTimeExecution?: boolean;
+    realTimeExecution?: boolean
   };
   metadata?: {
-    generatedAt: Date;
-    company: string;
-    uniqueId: string;
-    version: number;
+    generatedAt: Date,
+    company: string,
+    uniqueId: string,
+    version: number
   };
 }
 
@@ -50,9 +50,9 @@ interface CompanyDSAPatterns {
   [company: string]: {
     commonTopics: string[];
     difficultyDistribution: { easy: number; medium: number; hard: number };
-    interviewStyle: string;
+    interviewStyle: string,
     focusAreas: string[];
-    timeConstraints: number;
+    timeConstraints: number
   };
 }
 
@@ -380,8 +380,8 @@ export class EnhancedGroqDSAService {
   ): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
       case 'entry': return Math.random() < 0.7 ? 'easy' : 'medium';
-      case 'senior': return Math.random() < 0.6 ? 'hard' : 'medium';
-      default: return 'medium';
+      case 'senior': return Math.random() < 0.6 ? 'hard' : 'medium',
+      default: return 'medium'
     }
   }
 

@@ -23,23 +23,23 @@ import SmartAIService from '@/lib/smartAIService';
 import { Question, InterviewRound } from '@/types/interview';
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
-  timestamp: Date;
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
+  timestamp: Date
 }
 
 interface InterviewRoundConfig {
-  id: string;
-  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  name: string;
-  duration: number;
-  questionCount: number;
-  enabled: boolean;
-  order: number;
-  icon: React.ComponentType<any>;
-  description: string;
-  color: string;
+  id: string,
+  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  name: string,
+  duration: number,
+  questionCount: number,
+  enabled: boolean,
+  order: number,
+  icon: React.ComponentType<any>,
+  description: string,
+  color: string
 }
 
 interface NewInterviewWrapperProps {

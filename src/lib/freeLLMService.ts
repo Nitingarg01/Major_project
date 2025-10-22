@@ -9,36 +9,36 @@ import { extractJSON } from './jsonExtractor';
 
 interface LLMRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant';
-    content: string;
+    role: 'system' | 'user' | 'assistant',
+    content: string
   }>;
   model?: string;
   provider?: string;
   max_tokens?: number;
-  temperature?: number;
+  temperature?: number
 }
 
 interface LLMResponse {
-  content: string;
-  provider: string;
+  content: string,
+  provider: string,
   model: string;
   usage?: {
-    prompt_tokens: number;
-    completion_tokens: number;
-    total_tokens: number;
+    prompt_tokens: number,
+    completion_tokens: number,
+    total_tokens: number
   };
 }
 
 interface ProviderConfig {
-  name: string;
-  apiUrl: string;
-  apiKey: string;
+  name: string,
+  apiUrl: string,
+  apiKey: string,
   models: { [key: string]: string };
   rateLimits: {
-    requestsPerMinute: number;
-    requestsPerDay: number;
+    requestsPerMinute: number,
+    requestsPerDay: number
   };
-  priority: number;
+  priority: number
 }
 
 export class FreeLLMService {
@@ -324,14 +324,14 @@ export class FreeLLMService {
 
   // Enhanced Hard Question Generation Method
   public async generateHardInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    interviewType: 'technical' | 'behavioral' | 'mixed',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number;
     companyIntelligence?: any;
-    difficultyLevel?: 'hard';
+    difficultyLevel?: 'hard'
   }): Promise<any[]> {
     const systemMessage = `You are an expert SENIOR-LEVEL interview question generator specializing in EXTREMELY CHALLENGING ${params.interviewType} interviews for ${params.companyName}.;
     
@@ -582,13 +582,13 @@ export class FreeLLMService {
 
   // Convenience methods for different use cases (backward compatibility)
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    interviewType: 'technical' | 'behavioral' | 'mixed',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number;
-    companyIntelligence?: any;
+    companyIntelligence?: any
   }): Promise<any[]> {
     // Default to hard questions
     return this.generateHardInterviewQuestions({
@@ -614,8 +614,8 @@ export class FreeLLMService {
     category: string,
     companyContext: string
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -761,7 +761,7 @@ export class FreeLLMService {
   // Health check method
   public async healthCheck(): Promise<{ 
     availableProviders: string[];
-    totalProviders: number;
+    totalProviders: number,
     rateLimitStatus: { [key: string]: boolean };
   }> {
     const availableProviders: string[] = [];

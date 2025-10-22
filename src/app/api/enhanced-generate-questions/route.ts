@@ -253,7 +253,7 @@ function getEnhancedQuestionCount(interviewType: string): number {
     case 'behavioral': return 15; // Thorough behavioral evaluation
     case 'aptitude': return 20;   // Comprehensive aptitude test
     case 'dsa': return 6;         // Quality DSA problems (fewer but complex)
-    default: return 20;
+    default: return 20
   }
 }
 
@@ -277,8 +277,8 @@ function getDSADifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
     case 'entry': return 'easy';
     case 'mid': return 'medium';
     case 'senior':
-    case 'lead': return 'hard';
-    default: return 'medium';
+    case 'lead': return 'hard',
+    default: return 'medium'
   }
 }
 
@@ -287,8 +287,8 @@ function getAptitudeDifficulty(experienceLevel: string): 'easy' | 'medium' | 'ha
     case 'entry': return 'easy';
     case 'mid': return 'medium';
     case 'senior':
-    case 'lead': return 'hard';
-    default: return 'medium';
+    case 'lead': return 'hard',
+    default: return 'medium'
   }
 }
 
@@ -296,8 +296,8 @@ function getDSAPoints(difficulty: string): number {
   switch (difficulty) {
     case 'easy': return 15;
     case 'medium': return 25;
-    case 'hard': return 40;
-    default: return 20;
+    case 'hard': return 40,
+    default: return 20
   }
 }
 
@@ -305,8 +305,8 @@ function getAptitudePoints(difficulty: string): number {
   switch (difficulty) {
     case 'easy': return 5;
     case 'medium': return 8;
-    case 'hard': return 12;
-    default: return 8;
+    case 'hard': return 12,
+    default: return 8
   }
 }
 

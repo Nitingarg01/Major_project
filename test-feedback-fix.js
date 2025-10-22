@@ -64,10 +64,10 @@ async function testFeedbackFix() {
             console.log('✅ SUCCESS: Feedback generation fixed!');
             console.log('🎯 Overall Score:', result.insights?.overallScore);
             console.log('🧠 AI Provider:', result.insights?.metadata?.aiProvider);
-            console.log('⏱️ Processing Time:', result.performance?.processingTime + 'ms');
+            console.log('⏱️ Processing Time:', result.performance?.processingTime + 'ms')
         } else {
             console.log('❌ FAILED: Feedback generation still has issues');
-            console.log('Error details:', result.error);
+            console.log('Error details:', result.error)
         }
         
         // Cleanup test data
@@ -76,7 +76,7 @@ async function testFeedbackFix() {
         console.log('\n🧹 Cleaned up test data');
         
     } catch (error) {
-        console.error('❌ Test failed:', error.message);
+        console.error('❌ Test failed:', error.message)
     } finally {
         await client.close();
     }

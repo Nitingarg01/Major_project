@@ -132,7 +132,7 @@ async function testInterviewFlow() {
     console.log('✅ Cleanup completed');
     
   } catch (error) {
-    console.error('❌ Test failed:', error);
+    console.error('❌ Test failed:', error)
   } finally {
     await client.close();
   }

@@ -60,7 +60,7 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
                       try {
                         await videoRef.current.play();
                       } catch (retryError) {
-                        console.error('Video play retry failed:', retryError);
+                        console.error('Video play retry failed:', retryError)
                       }
                     }
                   }, 100);
@@ -79,17 +79,17 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
                   try {
                     await videoRef.current.play();
                   } catch (retryError) {
-                    console.error('Video play retry failed:', retryError);
+                    console.error('Video play retry failed:', retryError)
                   }
                 }
               }, 100);
             } else {
-              console.error('Video play failed:', playError);
+              console.error('Video play failed:', playError)
             }
           }
         }
       } catch (err) {
-        console.error("Camera access error:", err);
+        console.error("Camera access error:", err)
       }
     };
 

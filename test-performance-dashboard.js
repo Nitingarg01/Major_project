@@ -124,7 +124,7 @@ async function testPerformanceDashboard() {
             
         } else {
             const result = await response.json();
-            console.log('📄 API Response:', JSON.stringify(result, null, 2));
+            console.log('📄 API Response:', JSON.stringify(result, null, 2))
         }
         
         // Step 4: Test the performance dashboard calculation logic
@@ -165,7 +165,7 @@ async function testPerformanceDashboard() {
         console.log('\n🧹 Cleaned up test data');
         
     } catch (error) {
-        console.error('❌ Performance dashboard test failed:', error.message);
+        console.error('❌ Performance dashboard test failed:', error.message)
     } finally {
         await client.close();
     }

@@ -28,13 +28,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       name: 'Dashboard',
       href: '/dashboard',
       icon: Home,
-      current: pathname === '/dashboard';
+      current: pathname === '/dashboard'
     },
     {
       name: 'Create Interview',
       href: '/create',
       icon: PlusCircle,
-      current: pathname === '/create';
+      current: pathname === '/create'
     },
     {
       name: 'Resume Analyzer',
@@ -46,13 +46,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       name: 'Analytics',
       href: '/analytics',
       icon: BarChart3,
-      current: pathname === '/analytics';
+      current: pathname === '/analytics'
     },
     {
       name: 'Profile',
       href: '/profile',
       icon: User,
-      current: pathname === '/profile';
+      current: pathname === '/profile'
     }
   ]
 

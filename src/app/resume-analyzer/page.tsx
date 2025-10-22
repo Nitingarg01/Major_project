@@ -55,7 +55,7 @@ const ResumeAnalyzer = () => {
         setAnalysisHistory(data.analyses || []);
       }
     } catch (error) {
-      console.error('Error fetching history:', error);
+      console.error('Error fetching history:', error)
     }
   }
 

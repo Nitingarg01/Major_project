@@ -5,7 +5,7 @@ import { Search, Building2, ArrowRight } from 'lucide-react';
 interface SimpleCompanyAutofillProps {
   onSelect: (company: string, jobTitle: string, companyData?: any) => void;
   placeholder?: string;
-  className?: string;
+  className?: string
 }
 
 // Simple company list for N-gram style autofill suggestions
@@ -131,7 +131,7 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
               key={company}
               onClick={() => handleSelect(company)}
               className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all ${
-                index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50';
+                index === selectedIndex ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'
               }`}
             >
               <div className="flex items-center justify-between">

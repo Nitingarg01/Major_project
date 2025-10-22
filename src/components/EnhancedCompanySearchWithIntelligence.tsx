@@ -8,17 +8,17 @@ import { Button } from './ui/button';
 interface EnhancedCompanySearchProps {
   onSelect: (company: string, jobTitle: string, companyData?: any) => void;
   placeholder?: string;
-  className?: string;
+  className?: string
 }
 
 interface CompanySuggestion {
-  name: string;
-  industry: string;
-  description: string;
-  relevanceScore: number;
+  name: string,
+  industry: string,
+  description: string,
+  relevanceScore: number,
   metadata: {
-    hasSpecificQuestions: boolean;
-    difficultyLevel: string;
+    hasSpecificQuestions: boolean,
+    difficultyLevel: string,
     popularRoles: string[];
     techStack: string[];
   };
@@ -211,7 +211,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
         if (showTrending) {
           const selected = currentSuggestions[selectedIndex]
           if (selected) {
-            handleSelect(typeof selected === 'string' ? selected : (selected as any).name || String(selected));
+            handleSelect(typeof selected === 'string' ? selected : (selected as any).name || String(selected))
           }
         } else {
           const selected = suggestions[selectedIndex]
@@ -326,7 +326,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
                       ref={(el) => { suggestionRefs.current[index] = el }}
                       onClick={() => handleSelect(company.name)}
                       className={`px-3 py-2 cursor-pointer rounded-lg transition-all border ${
-                        index === selectedIndex ? 'bg-purple-50 border-purple-200' : 'hover:bg-gray-50 border-gray-200';
+                        index === selectedIndex ? 'bg-purple-50 border-purple-200' : 'hover:bg-gray-50 border-gray-200'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -352,7 +352,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
                     ref={(el) => { suggestionRefs.current[index] = el }}
                     onClick={() => handleSelect(suggestion.name, suggestion)}
                     className={`px-4 py-4 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all ${
-                      index === selectedIndex ? 'bg-purple-50 border-l-4 border-l-purple-500' : 'hover:bg-gray-50';
+                      index === selectedIndex ? 'bg-purple-50 border-l-4 border-l-purple-500' : 'hover:bg-gray-50'
                     }`}
                   >
                     <div className="flex items-center justify-between">

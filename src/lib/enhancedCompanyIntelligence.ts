@@ -8,52 +8,52 @@ import SmartAIService from './smartAIService';
 import { safeExtractJSON } from './jsonExtractor';
 
 interface CompanyData {
-  name: string;
-  industry: string;
-  description: string;
+  name: string,
+  industry: string,
+  description: string,
   tech_stack: string[];
   culture: string[];
   values: string[];
-  size: string;
+  size: string,
   locations: string[];
-  website: string;
-  founded: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  website: string,
+  founded: string,
+  difficulty: 'easy' | 'medium' | 'hard',
   interview_process: string[];
   recent_news: string[];
   recent_posts: Array<{
-    title: string;
-    summary: string;
-    date: string;
+    title: string,
+    summary: string,
+    date: string,
     source: string;
-    url?: string;
+    url?: string
   }>;
   focus_areas: string[];
   preparation_tips: string[];
   salary_ranges: {
-    entry: string;
-    mid: string;
-    senior: string;
+    entry: string,
+    mid: string,
+    senior: string
   };
-  work_environment: 'remote' | 'hybrid' | 'office' | 'flexible';
+  work_environment: 'remote' | 'hybrid' | 'office' | 'flexible',
   benefits: string[];
   growth_opportunities: string[];
 }
 
 interface EnhancedCompanyIntelligence {
-  company_data: CompanyData;
-  market_position: string;
+  company_data: CompanyData,
+  market_position: string,
   competitors: string[];
-  business_model: string;
+  business_model: string,
   recent_developments: Array<{
-    title: string;
-    summary: string;
-    impact: string;
-    date: string;
+    title: string,
+    summary: string,
+    impact: string,
+    date: string
   }>;
   interview_insights: {
-    average_rounds: number;
-    time_per_round: number;
+    average_rounds: number,
+    time_per_round: number,
     key_skills: string[];
     cultural_questions: string[];
     technical_focus: string[];

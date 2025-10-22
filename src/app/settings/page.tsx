@@ -46,7 +46,7 @@ const SettingsPage = () => {
       const stats = await elevenLabsService.getUsageStats();
       setUsageStats(stats);
     } catch (error) {
-      console.error('Error loading usage stats:', error);
+      console.error('Error loading usage stats:', error)
     } finally {
       setIsLoading(false);
     }

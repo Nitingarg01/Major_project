@@ -7,39 +7,39 @@ import SmartAIService from './smartAIService';
 import { extractJSON } from './jsonExtractor';
 
 interface CompanyResearchData {
-  name: string;
-  industry: string;
-  size: string;
+  name: string,
+  industry: string,
+  size: string,
   techStack: string[];
   interviewProcess: string[];
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'easy' | 'medium' | 'hard',
   focusAreas: string[];
   preparationTips: string[];
   commonQuestions: string[];
 }
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  difficulty: 'easy' | 'medium' | 'hard';
-  points: number;
-  timeLimit: number;
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  difficulty: 'easy' | 'medium' | 'hard',
+  points: number,
+  timeLimit: number,
   evaluationCriteria: string[];
   tags: string[];
   hints: string[];
-  companyRelevance: number;
+  companyRelevance: number
 }
 
 interface InterviewRoundConfig {
-  id: string;
-  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  name: string;
-  duration: number;
-  questionCount: number;
-  enabled: boolean;
-  order: number;
+  id: string,
+  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  name: string,
+  duration: number,
+  questionCount: number,
+  enabled: boolean,
+  order: number
 }
 
 export class EnhancedInterviewAI {
@@ -141,10 +141,10 @@ export class EnhancedInterviewAI {
    * Generate comprehensive interview questions using Smart AI
    */
   public async generateInterviewQuestions(params: {
-    companyName: string;
-    jobTitle: string;
+    companyName: string,
+    jobTitle: string,
     skills: string[];
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    experienceLevel: 'entry' | 'mid' | 'senior',
     rounds: InterviewRoundConfig[];
   }): Promise<{[roundType: string]: InterviewQuestion[]}> {
     try {
@@ -198,8 +198,8 @@ export class EnhancedInterviewAI {
   private getDifficultyForLevel(level: string): 'easy' | 'medium' | 'hard' {
     switch (level) {
       case 'entry': return 'easy';
-      case 'senior': return 'hard';
-      default: return 'medium';
+      case 'senior': return 'hard',
+      default: return 'medium'
     }
   }
 

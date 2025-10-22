@@ -7,31 +7,31 @@
 import EnhancedGroqAIService from './enhancedGroqAIService';
 
 interface CompilerLanguage {
-  id: number;
-  name: string;
-  label: string;
-  fileExtension: string;
+  id: number,
+  name: string,
+  label: string,
+  fileExtension: string,
   template: string;
-  compileCommand?: string;
-  runCommand: string;
+  compileCommand?: string,
+  runCommand: string
 }
 
 interface TestCase {
-  id: string;
-  input: string;
+  id: string,
+  input: string,
   expectedOutput: string;
-  hidden?: boolean;
+  hidden?: boolean
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: TestCase[];
   constraints: string[];
@@ -40,31 +40,31 @@ interface DSAProblem {
   timeComplexity?: string;
   spaceComplexity?: string;
   companyContext?: string;
-  realWorldApplication?: string;
+  realWorldApplication?: string
 }
 
 interface ExecutionResult {
-  success: boolean;
+  success: boolean,
   output: string;
-  error?: string;
-  executionTime: number;
+  error?: string,
+  executionTime: number,
   memory: number;
   testResults?: TestResult[];
 }
 
 interface TestResult {
-  testCase: TestCase;
-  passed: boolean;
-  actualOutput: string;
+  testCase: TestCase,
+  passed: boolean,
+  actualOutput: string,
   executionTime: number;
-  error?: string;
+  error?: string
 }
 
 interface CompilerSubmission {
-  sourceCode: string;
-  language: string;
-  problem: DSAProblem;
-  companyName: string;
+  sourceCode: string,
+  language: string,
+  problem: DSAProblem,
+  companyName: string
 }
 
 export class EnhancedDSACompiler {
@@ -484,9 +484,9 @@ const solution = new Solution();
 
   // Health check for compiler service
   public async healthCheck(): Promise<{
-    judge0Available: boolean;
-    languagesSupported: number;
-    status: string;
+    judge0Available: boolean,
+    languagesSupported: number,
+    status: string
   }> {
     try {
       if (!this.judge0ApiKey) {

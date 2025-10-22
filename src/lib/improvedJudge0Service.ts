@@ -4,30 +4,30 @@
  */
 
 interface TestCase {
-  id: string;
-  input: string;
+  id: string,
+  input: string,
   expectedOutput: string;
   description?: string;
-  hidden?: boolean;
+  hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean;
-  input: string;
-  expected: string;
-  actual: string;
-  executionTime: string;
+  passed: boolean,
+  input: string,
+  expected: string,
+  actual: string,
+  executionTime: string,
   status: string;
-  error?: string;
+  error?: string
 }
 
 interface ExecutionResponse {
-  success: boolean;
+  success: boolean,
   results: CodeExecutionResult[];
-  totalPassed: number;
+  totalPassed: number,
   totalTests: number;
   compilationError?: string;
-  runtimeError?: string;
+  runtimeError?: string
 }
 
 export class ImprovedJudge0Service {

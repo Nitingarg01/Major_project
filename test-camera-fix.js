@@ -30,7 +30,7 @@ const simulateVideoPlayScenarios = () => {
         console.log('   → ✅ AbortError handled gracefully (no retry needed)');
         console.log('   → ℹ️  This is normal during rapid camera toggling');
       } else {
-        console.log('   → ❌ Unexpected error type:', error.name);
+        console.log('   → ❌ Unexpected error type:', error.name)
       }
     });
   
@@ -92,7 +92,7 @@ const testRapidToggling = () => {
     simulateToggle();
   }
   
-  console.log('\n✅ Result: No AbortError with improved cleanup approach');
+  console.log('\n✅ Result: No AbortError with improved cleanup approach')
 };
 
 // Main test execution

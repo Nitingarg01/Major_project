@@ -401,7 +401,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
             </div>
             {questionTimeLeft > 0 && (
               <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${
-                questionTimeLeft <= 10 ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600';
+                questionTimeLeft <= 10 ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
               }`}>
                 <Clock className="w-3 h-3" />
                 {questionTimeLeft}s

@@ -7,7 +7,7 @@ async function testConnection() {
   try {
     const envContent = fs.readFileSync('.env.local', 'utf8');
     const mongoLine = envContent.split('\n').find(line => line.startsWith('MONGODB_URI='));
-    uri = mongoLine ? mongoLine.split('=')[1] : null;
+    uri = mongoLine ? mongoLine.split('=')[1] : null
   } catch (error) {
     console.error('Could not read .env.local file:', error);
     return;
@@ -47,7 +47,7 @@ async function testConnection() {
     console.log('Connection test completed successfully!');
     
   } catch (error) {
-    console.error('MongoDB connection failed:', error);
+    console.error('MongoDB connection failed:', error)
   }
 }
 

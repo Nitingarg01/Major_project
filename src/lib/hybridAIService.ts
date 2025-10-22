@@ -7,13 +7,13 @@ import SmartAIService from './smartAIService';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  difficulty: 'easy' | 'medium' | 'hard';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  difficulty: 'easy' | 'medium' | 'hard',
   points: number;
-  timeLimit?: number;
+  timeLimit?: number,
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
@@ -45,12 +45,12 @@ export class HybridAIService {
 
   // Generate interview questions using Smart AI
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude';
-    experienceLevel: 'entry' | 'mid' | 'senior';
-    numberOfQuestions: number;
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude',
+    experienceLevel: 'entry' | 'mid' | 'senior',
+    numberOfQuestions: number
   }): Promise<InterviewQuestion[]> {
     try {
       const result = await this.smartAIService.generateQuestions({
@@ -138,10 +138,10 @@ export class HybridAIService {
 
   // Health check for the service
   public async getHealthStatus(): Promise<{
-    status: string;
-    services: any;
-    primary: string;
-    fallback: string;
+    status: string,
+    services: any,
+    primary: string,
+    fallback: string
   }> {
     try {
       const smartAIHealth = await this.smartAIService.getHealthStatus();

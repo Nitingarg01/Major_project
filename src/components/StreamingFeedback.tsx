@@ -98,7 +98,7 @@ const StreamingFeedback = ({
                   break;
               }
             } catch (e) {
-              console.error('Error parsing streaming data:', e);
+              console.error('Error parsing streaming data:', e)
             }
           }
         }

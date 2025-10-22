@@ -73,7 +73,7 @@ async function testInterviewCompletionFlow() {
                 experienceLevel: 'mid',
                 createdAt: new Date(Date.now() - Math.random() * 86400000 * 7), // Random within last week
                 completedAt: stage.status === 'completed' ? new Date() : null,
-                availableInPerformanceStats: stage.status === 'completed';
+                availableInPerformanceStats: stage.status === 'completed'
             };
             
             createdInterviews.push(interview);
@@ -115,7 +115,7 @@ async function testInterviewCompletionFlow() {
             };
             
             performanceAnalyses.push(analysis);
-            console.log(`   📊 ${interview.companyName}: Performance analysis created`);
+            console.log(`   📊 ${interview.companyName}: Performance analysis created`)
         }
         
         await db.collection('performance_analysis').insertMany(performanceAnalyses);
@@ -177,7 +177,7 @@ async function testInterviewCompletionFlow() {
             console.log('   → User would be prevented from creating another Amazon interview');
             console.log('   → User would be redirected to performance stats instead');
         } else {
-            console.log('❌ Duplicate prevention failed: No completed Amazon interview found');
+            console.log('❌ Duplicate prevention failed: No completed Amazon interview found')
         }
         
         // Step 6: Test performance data retrieval
@@ -230,7 +230,7 @@ async function testInterviewCompletionFlow() {
         console.log('\n🧹 Cleaned up test data');
         
     } catch (error) {
-        console.error('❌ Interview completion flow test failed:', error.message);
+        console.error('❌ Interview completion flow test failed:', error.message)
     } finally {
         await client.close();
     }

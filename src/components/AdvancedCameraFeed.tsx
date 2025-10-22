@@ -7,12 +7,12 @@ import { Camera, CameraOff, AlertTriangle, Shield, Eye, EyeOff, Activity } from 
 import * as faceapi from 'face-api.js';
 
 interface AdvancedCameraFeedProps {
-  isRecording: boolean;
+  isRecording: boolean,
   onRecordingChange: (recording: boolean) => void;
   onAnomalyDetected?: (anomaly: string) => void;
   enableFaceDetection?: boolean;
   enableMisbehaviorDetection?: boolean;
-  className?: string;
+  className?: string
 }
 
 const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
@@ -160,7 +160,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
           }
         };
       } catch (e) {
-        console.log('Video pause error:', e);
+        console.log('Video pause error:', e)
       }
     }
     
@@ -172,7 +172,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
         });
         streamRef.current = null;
       } catch (e) {
-        console.log('Stream cleanup error:', e);
+        console.log('Stream cleanup error:', e)
       }
     }
     

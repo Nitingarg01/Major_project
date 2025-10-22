@@ -33,7 +33,7 @@ async function debugInterviewData() {
         });
         
     } catch (error) {
-        console.error('❌ Debug failed:', error.message);
+        console.error('❌ Debug failed:', error.message)
     } finally {
         await client.close();
     }

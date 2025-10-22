@@ -206,7 +206,7 @@ function calculateCategoryScores(questions: any[], responses: any[]) {
     
     categoryScores[category].average = categoryScores[category].total > 0
       ? Math.round((categoryScores[category].total / categoryScores[category].count) * 10) / 10
-      : 0;
+      : 0
   });
   
   return categoryScores;
@@ -347,6 +347,6 @@ async function updateUserStatistics(db: any, userId: string, performanceData: an
       { upsert: true }
     );
   } catch (error) {
-    console.error('Error updating user statistics:', error);
+    console.error('Error updating user statistics:', error)
   }
 }

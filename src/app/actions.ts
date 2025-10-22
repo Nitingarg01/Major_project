@@ -65,7 +65,7 @@ export const getUserStats = async () => {
                                 validScoreCount++;
                         }
                 } catch (error) {
-                        console.error('Error fetching score for interview:', interview._id, error);
+                        console.error('Error fetching score for interview:', interview._id, error)
                 }
         }
 

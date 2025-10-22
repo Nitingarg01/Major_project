@@ -54,7 +54,7 @@ const EnhancedDSATestPage = () => {
       const data = await response.json();
       setServiceStatus(data);
     } catch (error) {
-      console.error('Failed to check service status:', error);
+      console.error('Failed to check service status:', error)
     }
   }
 
@@ -99,7 +99,7 @@ const EnhancedDSATestPage = () => {
     } catch (error: any) {
       toast.dismiss(toastId);
       toast.error('Failed to generate problems: ' + error.message);
-      console.error('Problem generation error:', error);
+      console.error('Problem generation error:', error)
     } finally {
       setLoading(false);
     }

@@ -35,11 +35,11 @@ import CompanyIntelligenceService from '@/lib/companyIntelligence';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
   timestamp: Date;
-  confidence?: number;
+  confidence?: number
 }
 
 interface EnhancedInterviewWrapperProps {
@@ -48,7 +48,7 @@ interface EnhancedInterviewWrapperProps {
   interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
   rounds?: InterviewRound[];
   companyName?: string;
-  jobTitle?: string;
+  jobTitle?: string
 }
 
 // Enhanced DSA problems with better complexity
@@ -367,7 +367,7 @@ const EnhancedInterviewWrapper = ({
       // Save to localStorage as backup
       localStorage.setItem(`interview_progress_${id}`, JSON.stringify(progress));
       
-      console.log('Auto-saved enhanced progress:', progress);
+      console.log('Auto-saved enhanced progress:', progress)
     }
   }, [interviewSession, currentRound, timeElapsed, activityAlerts, performanceMetrics, id])
 

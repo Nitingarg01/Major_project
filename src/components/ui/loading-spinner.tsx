@@ -5,7 +5,7 @@ interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   text?: string;
-  variant?: 'default' | 'primary' | 'secondary' | 'gradient';
+  variant?: 'default' | 'primary' | 'secondary' | 'gradient'
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({

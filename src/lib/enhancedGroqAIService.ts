@@ -13,43 +13,43 @@ const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_
 
 interface GroqRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant';
-    content: string;
+    role: 'system' | 'user' | 'assistant',
+    content: string
   }>;
   model?: string;
   max_tokens?: number;
-  temperature?: number;
+  temperature?: number
 }
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
-  difficulty: 'easy' | 'medium' | 'hard';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design',
+  difficulty: 'easy' | 'medium' | 'hard',
   points: number;
-  timeLimit?: number;
+  timeLimit?: number,
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
-  companyRelevance?: number;
+  companyRelevance?: number
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
@@ -57,16 +57,16 @@ interface DSAProblem {
   timeComplexity?: string;
   spaceComplexity?: string;
   companyContext?: string;
-  realWorldApplication?: string;
+  realWorldApplication?: string
 }
 
 interface CompanyProfile {
-  name: string;
-  industry: string;
+  name: string,
+  industry: string,
   techStack: string[];
   culture: string[];
   recentNews?: string[];
-  interviewStyle: string;
+  interviewStyle: string,
   commonChallenges: string[];
   focusAreas: string[];
   valuedSkills: string[];
@@ -199,13 +199,13 @@ export class EnhancedGroqAIService {
 
   // Enhanced interview question generation with better prompt engineering
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'system_design';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'system_design',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number;
-    companyIntelligence?: any;
+    companyIntelligence?: any
   }): Promise<InterviewQuestion[]> {
     
     const companyProfile = this.companyProfiles.get(params.companyName.toLowerCase());
@@ -455,12 +455,12 @@ Return ONLY a valid JSON array:
     category: string,
     companyContext: string
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     suggestions: string[];
     strengths: string[];
     improvements: string[];
-    companyFit: number;
+    companyFit: number
   }> {
     
     const companyProfile = this.companyProfiles.get(companyContext.toLowerCase());
@@ -597,10 +597,10 @@ Return ONLY valid JSON:
 
   // Health check method
   public async healthCheck(): Promise<{
-    groqAvailable: boolean;
-    model: string;
-    status: string;
-    companyProfilesLoaded: number;
+    groqAvailable: boolean,
+    model: string,
+    status: string,
+    companyProfilesLoaded: number
   }> {
     try {
       console.log('🔍 Performing Enhanced Groq health check...');

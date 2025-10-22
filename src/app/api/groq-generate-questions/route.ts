@@ -276,7 +276,7 @@ function getQuestionCount(interviewType: string): number {
     case 'behavioral': return 10;  
     case 'aptitude': return 15;
     case 'dsa': return 2; // Fixed to exactly 2 questions
-    default: return 12;
+    default: return 12
   }
 }
 
@@ -284,8 +284,8 @@ function getDSADifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
   switch (experienceLevel) {
     case 'entry': return 'easy';
     case 'mid': return 'medium';
-    case 'senior': return 'hard';
-    default: return 'medium';
+    case 'senior': return 'hard',
+    default: return 'medium'
   }
 }
 
@@ -293,8 +293,8 @@ function getDSAPoints(difficulty: string): number {
   switch (difficulty) {
     case 'easy': return 20;
     case 'medium': return 30;
-    case 'hard': return 45;
-    default: return 25;
+    case 'hard': return 45,
+    default: return 25
   }
 }
 

@@ -2,33 +2,33 @@
 import axios from 'axios';
 
 interface CodeExecutionRequest {
-  source_code: string;
+  source_code: string,
   language_id: number;
   stdin?: string;
-  expected_output?: string;
+  expected_output?: string
 }
 
 interface CodeExecutionResult {
-  token: string;
+  token: string,
   status: {
-    id: number;
-    description: string;
+    id: number,
+    description: string
   };
   stdout?: string;
   stderr?: string;
   compile_output?: string;
   time?: string;
-  memory?: number;
+  memory?: number
 }
 
 interface TestCaseResult {
-  passed: boolean;
-  input: string;
-  expected: string;
+  passed: boolean,
+  input: string,
+  expected: string,
   actual: string;
   executionTime?: string;
   memory?: number;
-  error?: string;
+  error?: string
 }
 
 export class Judge0Service {

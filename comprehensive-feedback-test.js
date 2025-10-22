@@ -123,7 +123,7 @@ async function comprehensiveFeedbackTest() {
         console.log('- Maintains backward compatibility with existing data formats');
         
     } catch (error) {
-        console.error('❌ Comprehensive test failed:', error.message);
+        console.error('❌ Comprehensive test failed:', error.message)
     } finally {
         await client.close();
     }

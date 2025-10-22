@@ -18,10 +18,10 @@ import CompanyIntelligenceService from '@/lib/companyIntelligence';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
-  timestamp: Date;
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
+  timestamp: Date
 }
 
 interface SuperEnhancedInterviewWrapperProps {
@@ -30,7 +30,7 @@ interface SuperEnhancedInterviewWrapperProps {
   interviewType?: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
   rounds?: InterviewRound[];
   companyName?: string;
-  jobTitle?: string;
+  jobTitle?: string
 }
 
 // Sample DSA problems for the DSA round

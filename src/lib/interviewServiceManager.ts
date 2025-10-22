@@ -10,11 +10,11 @@ import EnhancedJudge0Service from './enhancedJudge0Service';
 import GroqAIService from './groqAIService';
 
 export interface InterviewServiceConfig {
-  useEnhancedDSA: boolean;
-  useFastFeedback: boolean;
-  enableCodeExecution: boolean;
-  companyName: string;
-  experienceLevel: 'entry' | 'mid' | 'senior';
+  useEnhancedDSA: boolean,
+  useFastFeedback: boolean,
+  enableCodeExecution: boolean,
+  companyName: string,
+  experienceLevel: 'entry' | 'mid' | 'senior'
 }
 
 export class InterviewServiceManager {
@@ -158,12 +158,12 @@ export class InterviewServiceManager {
    * Generate interview questions using enhanced distribution logic
    */
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'dsa';
-    experienceLevel: 'entry' | 'mid' | 'senior';
-    numberOfQuestions: number;
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'dsa',
+    experienceLevel: 'entry' | 'mid' | 'senior',
+    numberOfQuestions: number
   }): Promise<any[]> {
     try {
       console.log(`🎯 Generating ${params.numberOfQuestions} ${params.interviewType} questions...`);
@@ -269,11 +269,11 @@ export class InterviewServiceManager {
    * Health check for all services
    */
   public async healthCheck(): Promise<{
-    dsaService: boolean;
-    feedbackService: boolean;
-    codeExecutionService: boolean;
-    groqService: boolean;
-    overallStatus: 'healthy' | 'degraded' | 'unhealthy';
+    dsaService: boolean,
+    feedbackService: boolean,
+    codeExecutionService: boolean,
+    groqService: boolean,
+    overallStatus: 'healthy' | 'degraded' | 'unhealthy'
   }> {
     try {
       const [dsa, feedback, execution, groq] = await Promise.all([
@@ -395,8 +395,8 @@ export class InterviewServiceManager {
     switch (difficulty) {
       case 'easy': return 20;
       case 'medium': return 30;
-      case 'hard': return 45;
-      default: return 25;
+      case 'hard': return 45,
+      default: return 25
     }
   }
 

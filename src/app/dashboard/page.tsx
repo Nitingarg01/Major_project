@@ -124,7 +124,7 @@ export default function DashboardPage() {
       if (data.success) {
         setInterviews(data.interviews || []);
         setStats(data.stats || { total: 0, completed: 0, inProgress: 0 });
-        console.log('Successfully loaded interviews:', data.interviews?.length || 0);
+        console.log('Successfully loaded interviews:', data.interviews?.length || 0)
       } else {
         console.error('API returned success: false', data.error);
         throw new Error(data.error || 'Failed to fetch data');

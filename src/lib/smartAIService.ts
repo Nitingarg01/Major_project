@@ -10,8 +10,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface SmartAIRequest {
-  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation';
-  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation';
+  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation',
+  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation',
   context: {
     jobTitle?: string;
     companyName?: string;
@@ -25,17 +25,17 @@ export interface SmartAIRequest {
     expectedAnswer?: string;
     resumeText?: string;
     difficulty?: string;
-    count?: number;
+    count?: number
   };
-  priority?: 'high' | 'medium' | 'low';
+  priority?: 'high' | 'medium' | 'low'
 }
 
 export interface SmartAIResponse {
-  success: boolean;
-  data: any;
-  provider: 'enhanced-groq' | 'gemini';
-  model: string;
-  processingTime: number;
+  success: boolean,
+  data: any,
+  provider: 'enhanced-groq' | 'gemini',
+  model: string,
+  processingTime: number,
   taskType: string;
   features?: string[];
 }
@@ -704,13 +704,13 @@ export class SmartAIService {
   private extractEmailFromText(text: string): string {
     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
     const matches = text.match(emailRegex);
-    return matches ? matches[0] : 'Not found';
+    return matches ? matches[0] : 'Not found'
   }
 
   private extractPhoneFromText(text: string): string {
     const phoneRegex = /(\+?1?[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})/g;
     const matches = text.match(phoneRegex);
-    return matches ? matches[0] : 'Not found';
+    return matches ? matches[0] : 'Not found'
   }
 
   private generateCompanySearchFallback(companyName: string): any {
@@ -795,13 +795,13 @@ export class SmartAIService {
 
   // Convenience methods for direct task execution
   public async generateQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: string;
-    experienceLevel: string;
+    interviewType: string,
+    experienceLevel: string,
     numberOfQuestions: number;
-    companyIntelligence?: any;
+    companyIntelligence?: any
   }) {
     return this.processRequest({
       task: 'question_generation',
@@ -865,11 +865,11 @@ export class SmartAIService {
   }
 
   public async getHealthStatus(): Promise<{
-    groqAvailable: boolean;
-    geminiAvailable: boolean;
-    status: string;
-    activeProvider: string;
-    fallbackAvailable: boolean;
+    groqAvailable: boolean,
+    geminiAvailable: boolean,
+    status: string,
+    activeProvider: string,
+    fallbackAvailable: boolean,
     features: string[];
   }> {
     try {
@@ -943,12 +943,12 @@ export class SmartAIService {
             question = `If a team of 4 developers can complete a project in 8 days, how many days would it take 2 developers to complete the same project?`;
             options = ['12 days', '16 days', '20 days', '24 days'];
             correctAnswer = 1;
-            explanation = 'Using inverse proportion: 4 developers × 8 days = 32 developer-days. 32 ÷ 2 developers = 16 days.';
+            explanation = 'Using inverse proportion: 4 developers × 8 days = 32 developer-days. 32 ÷ 2 developers = 16 days.'
           } else if (difficulty === 'hard') {
             question = `A server processes requests at a rate that follows the pattern: 100, 150, 225, 337.5, ... What will be the processing rate after 6 iterations?`;
             options = ['759.375', '843.75', '1012.5', '1265.625'];
             correctAnswer = 0;
-            explanation = 'Each term is multiplied by 1.5: 100 → 150 → 225 → 337.5 → 506.25 → 759.375';
+            explanation = 'Each term is multiplied by 1.5: 100 → 150 → 225 → 337.5 → 506.25 → 759.375'
           } else {
             question = `If a database query takes 2.5 seconds to process 1000 records, how long would it take to process 4500 records at the same rate?`;
             options = ['10.25 seconds', '11.25 seconds', '12.5 seconds', '13.75 seconds'];
@@ -1018,7 +1018,7 @@ export class SmartAIService {
         correctAnswer,
         explanation,
         difficulty,
-        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'hard' ? 120 : 90;
+        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'hard' ? 120 : 90
       });
     }
 

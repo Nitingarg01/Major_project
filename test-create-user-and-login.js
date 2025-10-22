@@ -35,7 +35,7 @@ async function createTestUser() {
     return { ...testUser, _id: result.insertedId };
     
   } catch (error) {
-    console.error('❌ Error creating test user:', error);
+    console.error('❌ Error creating test user:', error)
   } finally {
     await client.close();
   }

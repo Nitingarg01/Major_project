@@ -10,27 +10,27 @@ export async function GET(request: NextRequest) {
     
     try {
       session1 = await auth();
-      console.log('🔍 Session attempt 1:', !!session1?.user?.id);
+      console.log('🔍 Session attempt 1:', !!session1?.user?.id)
     } catch (e) {
-      console.log('❌ Session attempt 1 failed:', e);
+      console.log('❌ Session attempt 1 failed:', e)
     }
     
     await new Promise(resolve => setTimeout(resolve, 500));
     
     try {
       session2 = await auth();
-      console.log('🔍 Session attempt 2:', !!session2?.user?.id);
+      console.log('🔍 Session attempt 2:', !!session2?.user?.id)
     } catch (e) {
-      console.log('❌ Session attempt 2 failed:', e);
+      console.log('❌ Session attempt 2 failed:', e)
     }
     
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     try {
       session3 = await auth();
-      console.log('🔍 Session attempt 3:', !!session3?.user?.id);
+      console.log('🔍 Session attempt 3:', !!session3?.user?.id)
     } catch (e) {
-      console.log('❌ Session attempt 3 failed:', e);
+      console.log('❌ Session attempt 3 failed:', e)
     }
     
     const finalSession = session3 || session2 || session1;

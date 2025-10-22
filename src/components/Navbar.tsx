@@ -31,7 +31,7 @@ const navItems = [
 ]
 
 interface NavbarProps {
-  minimal?: boolean;
+  minimal?: boolean
 }
 
 const Navbar = ({ minimal = false }: NavbarProps) => {

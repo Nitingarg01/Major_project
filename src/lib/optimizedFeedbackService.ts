@@ -11,18 +11,18 @@ const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_
 
 interface QuickFeedback {
   score: number; // 0-10
-  feedback: string;
+  feedback: string,
   strengths: string[];
   improvements: string[];
   nextSteps: string[];
 }
 
 interface PerformanceMetrics {
-  overallScore: number;
+  overallScore: number,
   categoryScores: { [category: string]: number };
-  totalQuestions: number;
-  timeSpent: number;
-  completionRate: number;
+  totalQuestions: number,
+  timeSpent: number,
+  completionRate: number
 }
 
 export class OptimizedFeedbackService {

@@ -8,20 +8,20 @@ import GroqAIService from './groqAIService';
 import { extractJSON } from './jsonExtractor';
 
 export interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
@@ -33,13 +33,13 @@ export interface DSAProblem {
     hasVisualizer?: boolean;
     hasStepByStep?: boolean;
     hasHints?: boolean;
-    realTimeExecution?: boolean;
+    realTimeExecution?: boolean
   };
   metadata?: {
-    generatedAt: Date;
-    company: string;
-    uniqueId: string;
-    version: number;
+    generatedAt: Date,
+    company: string,
+    uniqueId: string,
+    version: number
   };
 }
 
@@ -47,7 +47,7 @@ interface CompanyDSAPatterns {
   [company: string]: {
     commonTopics: string[];
     difficultyDistribution: { easy: number; medium: number; hard: number };
-    interviewStyle: string;
+    interviewStyle: string,
     focusAreas: string[];
     timeConstraints: number; // minutes
   };
@@ -104,7 +104,7 @@ export class EnhancedDSAService {
   };
 
   private constructor() {
-    console.log('🚀 Enhanced DSA Service initialized with company patterns:', Object.keys(this.companyPatterns));
+    console.log('🚀 Enhanced DSA Service initialized with company patterns:', Object.keys(this.companyPatterns))
   }
 
   public static getInstance(): EnhancedDSAService {
@@ -396,7 +396,7 @@ export class EnhancedDSAService {
       case 'entry':
         return Math.random() < 0.7 ? 'easy' : 'medium';
       case 'senior':
-        return Math.random() < 0.6 ? 'hard' : 'medium';
+        return Math.random() < 0.6 ? 'hard' : 'medium',
       default: // mid
         const rand = Math.random() * 100;
         if (rand < pattern.difficultyDistribution.easy) return 'easy';
@@ -545,7 +545,7 @@ export class EnhancedDSAService {
       const health = await this.emergentIntegration.healthCheck();
       return {
         status: health.status,
-        emergentAvailable: health.status === 'healthy';
+        emergentAvailable: health.status === 'healthy'
       };
     } catch (error) {
       return {

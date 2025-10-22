@@ -12,48 +12,48 @@ const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_
 
 interface GroqRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant';
-    content: string;
+    role: 'system' | 'user' | 'assistant',
+    content: string
   }>;
   model?: string;
   max_tokens?: number;
-  temperature?: number;
+  temperature?: number
 }
 
 interface InterviewQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
-  difficulty: 'easy' | 'medium' | 'hard';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
+  difficulty: 'easy' | 'medium' | 'hard',
   points: number;
-  timeLimit?: number;
+  timeLimit?: number,
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
   hints?: string[];
   timeComplexity?: string;
-  spaceComplexity?: string;
+  spaceComplexity?: string
 }
 
 export class GroqAIService {
@@ -105,13 +105,13 @@ export class GroqAIService {
 
   // Generate interview questions with Groq AI
   public async generateInterviewQuestions(params: {
-    jobTitle: string;
-    companyName: string;
+    jobTitle: string,
+    companyName: string,
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude';
-    experienceLevel: 'entry' | 'mid' | 'senior';
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude',
+    experienceLevel: 'entry' | 'mid' | 'senior',
     numberOfQuestions: number;
-    companyIntelligence?: any;
+    companyIntelligence?: any
   }): Promise<InterviewQuestion[]> {
     const systemMessage = `You are an expert interview question generator specializing in ${params.interviewType} interviews for ${params.companyName}. Generate high-quality, relevant questions that assess candidates effectively for their specific role and experience level.`;
     
@@ -279,8 +279,8 @@ export class GroqAIService {
     category: string,
     companyContext: string
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -492,9 +492,9 @@ export class GroqAIService {
 
   // Health check method
   public async healthCheck(): Promise<{
-    groqAvailable: boolean;
-    model: string;
-    status: string;
+    groqAvailable: boolean,
+    model: string,
+    status: string
   }> {
     try {
       console.log('🔍 Performing Groq health check...');

@@ -180,7 +180,7 @@ export class AIInterviewCoach {
       }
 
     } catch (error) {
-      console.error('Error getting contextual hint:', error);
+      console.error('Error getting contextual hint:', error)
     }
 
     return null;

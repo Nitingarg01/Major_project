@@ -270,9 +270,9 @@ int main() {
       if (results.overallStatus === 'error') {
         toast.dismiss(toastId);
         if (results.compilationError) {
-          toast.error('Compilation Error: ' + results.compilationError);
+          toast.error('Compilation Error: ' + results.compilationError)
         } else if (results.runtimeError) {
-          toast.error('Runtime Error: ' + results.runtimeError);
+          toast.error('Runtime Error: ' + results.runtimeError)
         } else {
           toast.error('Execution failed');
         }
@@ -396,7 +396,7 @@ int main() {
         description: `Time taken: ${Math.floor(timeSpent / 60)}m ${timeSpent % 60}s`
       })
     } catch (error: any) {
-      toast.error('Submission failed: ' + error.message);
+      toast.error('Submission failed: ' + error.message)
     } finally {
       setIsSubmitting(false);
     }
@@ -405,7 +405,7 @@ int main() {
   const extractComplexity = (code: string, type: 'time' | 'space'): string => {
     const pattern = new RegExp(`${type}\\s*complexity[:\\s]*o\\(([^)]+)\\)`, 'i');
     const match = code.match(pattern);
-    return match ? `O(${match[1]})` : 'Not specified';
+    return match ? `O(${match[1]})` : 'Not specified'
   }
 
   const showNextHint = () => {

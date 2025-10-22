@@ -402,7 +402,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
         'border-gray-300'
       } bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center`}>
         <Bot className={`w-16 h-16 text-white transition-transform duration-300 ${
-          aiAvatarState === 'speaking' ? 'scale-110' : 'scale-100';
+          aiAvatarState === 'speaking' ? 'scale-110' : 'scale-100'
         }`} />
       </div>
       

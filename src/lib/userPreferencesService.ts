@@ -130,7 +130,7 @@ export class UserPreferencesService {
 
       console.log(`✅ Updated DSA profile for company: ${profile.companyName}`);
     } catch (error) {
-      console.error('❌ Error updating company DSA profile:', error);
+      console.error('❌ Error updating company DSA profile:', error)
     }
   }
 
@@ -230,8 +230,8 @@ export class UserPreferencesService {
   private getStandardDifficulty(experienceLevel: string): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
       case 'entry': return 'easy';
-      case 'senior': return 'hard';
-      default: return 'medium';
+      case 'senior': return 'hard',
+      default: return 'medium'
     }
   }
 

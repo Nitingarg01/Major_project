@@ -69,7 +69,7 @@ export class ElevenLabsService {
     }
 
     this.isAvailable = !!this.apiKey;
-    console.log('🎙️ ElevenLabs Service:', this.isAvailable ? 'Available' : 'Using fallback (Browser TTS)');
+    console.log('🎙️ ElevenLabs Service:', this.isAvailable ? 'Available' : 'Using fallback (Browser TTS)')
   }
 
   /**

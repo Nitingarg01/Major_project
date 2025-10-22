@@ -26,22 +26,22 @@ import {
 } from 'lucide-react';
 
 interface AIHealthStatus {
-  groqAvailable: boolean;
-  geminiAvailable: boolean;
-  status: string;
-  activeProvider: string;
-  fallbackAvailable: boolean;
+  groqAvailable: boolean,
+  geminiAvailable: boolean,
+  status: string,
+  activeProvider: string,
+  fallbackAvailable: boolean,
   features: string[];
-  companyProfilesLoaded?: number;
+  companyProfilesLoaded?: number
 }
 
 interface ServiceMetrics {
-  totalRequests: number;
-  averageResponseTime: number;
-  successRate: number;
-  questionsGenerated: number;
-  responsesAnalyzed: number;
-  dsaProblemsCreated: number;
+  totalRequests: number,
+  averageResponseTime: number,
+  successRate: number,
+  questionsGenerated: number,
+  responsesAnalyzed: number,
+  dsaProblemsCreated: number
 }
 
 const EnhancedAIDashboard: React.FC = () => {
@@ -153,7 +153,7 @@ const EnhancedAIDashboard: React.FC = () => {
         await checkHealthStatus(); // Refresh status
       }
     } catch (error) {
-      console.error('Service test failed:', error);
+      console.error('Service test failed:', error)
     } finally {
       setTestInProgress(false);
     }

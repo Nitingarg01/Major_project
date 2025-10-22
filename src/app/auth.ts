@@ -91,7 +91,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         token.id = existingUser._id.toString();
                     }
                 } catch (error) {
-                    console.error("Error fetching user in JWT callback:", error);
+                    console.error("Error fetching user in JWT callback:", error)
                 }
             }
             return token;

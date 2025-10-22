@@ -9,19 +9,19 @@ import { v4 as uuidv4 } from 'uuid';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
 
 interface ResumeAnalysisResult {
-  overallScore: number;
+  overallScore: number,
   breakdown: {
-    structure: number;
-    skills: number;
-    experience: number;
-    projects: number;
-    education: number;
-    language: number;
+    structure: number,
+    skills: number,
+    experience: number,
+    projects: number,
+    education: number,
+    language: number
   };
   strengths: string[];
   improvements: string[];
   recommendations: string[];
-  detailedFeedback: string;
+  detailedFeedback: string
 }
 
 export async function POST(request: NextRequest) {

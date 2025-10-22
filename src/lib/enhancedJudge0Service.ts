@@ -4,32 +4,32 @@
  */
 
 interface TestCase {
-  id: string;
-  input: string;
+  id: string,
+  input: string,
   expectedOutput: string;
   description?: string;
-  hidden?: boolean;
+  hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean;
-  input: string;
-  expected: string;
-  actual: string;
-  executionTime: string;
+  passed: boolean,
+  input: string,
+  expected: string,
+  actual: string,
+  executionTime: string,
   status: string;
   error?: string;
-  memory?: number;
+  memory?: number
 }
 
 interface ExecutionResponse {
-  success: boolean;
+  success: boolean,
   results: CodeExecutionResult[];
-  totalPassed: number;
+  totalPassed: number,
   totalTests: number;
   compilationError?: string;
-  runtimeError?: string;
-  overallStatus: 'passed' | 'failed' | 'error';
+  runtimeError?: string,
+  overallStatus: 'passed' | 'failed' | 'error'
 }
 
 export class EnhancedJudge0Service {
@@ -296,7 +296,7 @@ export class EnhancedJudge0Service {
         results,
         totalPassed,
         totalTests: testCases.length,
-        overallStatus: totalPassed === testCases.length ? 'passed' : totalPassed > 0 ? 'failed' : 'error';
+        overallStatus: totalPassed === testCases.length ? 'passed' : totalPassed > 0 ? 'failed' : 'error'
       };
 
     } catch (error: any) {
@@ -419,7 +419,7 @@ export class EnhancedJudge0Service {
       results,
       totalPassed,
       totalTests: testCases.length,
-      overallStatus: totalPassed === testCases.length ? 'passed' : 'failed';
+      overallStatus: totalPassed === testCases.length ? 'passed' : 'failed'
     };
   }
 

@@ -54,7 +54,7 @@ async function createTestUser() {
     console.log('Test data setup completed!');
     
   } catch (error) {
-    console.error('Error creating test user:', error);
+    console.error('Error creating test user:', error)
   }
 }
 

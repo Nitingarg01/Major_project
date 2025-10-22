@@ -8,28 +8,28 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type Props = {
-  cameraOn: boolean;
+  cameraOn: boolean,
   setCameraOn: Dispatch<SetStateAction<boolean>>;
   onActivityDetected?: (activity: ActivityAlert) => void;
   isInterviewActive?: boolean;
-  monitoringLevel?: 'basic' | 'moderate' | 'strict';
+  monitoringLevel?: 'basic' | 'moderate' | 'strict'
 }
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement';
-  message: string;
-  severity: 'low' | 'medium' | 'high';
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'camera_blocked' | 'suspicious_movement',
+  message: string,
+  severity: 'low' | 'medium' | 'high',
   timestamp: Date;
-  count?: number;
+  count?: number
 }
 
 interface MonitoringStats {
-  totalAlerts: number;
-  tabSwitches: number;
-  focusLost: number;
-  cameraIssues: number;
-  suspiciousActivity: number;
-  monitoringDuration: number;
+  totalAlerts: number,
+  tabSwitches: number,
+  focusLost: number,
+  cameraIssues: number,
+  suspiciousActivity: number,
+  monitoringDuration: number
 }
 
 const AdvancedCameraMonitoring = ({ 
@@ -79,7 +79,7 @@ const AdvancedCameraMonitoring = ({
       tabSwitches: alert.type === 'tab_switch' ? prev.tabSwitches + 1 : prev.tabSwitches,
       focusLost: alert.type === 'window_focus_lost' ? prev.focusLost + 1 : prev.focusLost,
       cameraIssues: alert.type === 'camera_blocked' || alert.type === 'no_face' ? prev.cameraIssues + 1 : prev.cameraIssues,
-      suspiciousActivity: alert.type === 'suspicious_movement' || alert.type === 'multiple_faces' ? prev.suspiciousActivity + 1 : prev.suspiciousActivity;
+      suspiciousActivity: alert.type === 'suspicious_movement' || alert.type === 'multiple_faces' ? prev.suspiciousActivity + 1 : prev.suspiciousActivity
     }));
 
     onActivityDetected?.(alert);
@@ -369,8 +369,8 @@ const AdvancedCameraMonitoring = ({
     switch (severity) {
       case 'high': return 'bg-red-500 border-red-600';
       case 'medium': return 'bg-yellow-500 border-yellow-600';
-      case 'low': return 'bg-blue-500 border-blue-600';
-      default: return 'bg-gray-500 border-gray-600';
+      case 'low': return 'bg-blue-500 border-blue-600',
+      default: return 'bg-gray-500 border-gray-600'
     }
   };
 
@@ -380,8 +380,8 @@ const AdvancedCameraMonitoring = ({
       case 'no_face': return 'text-red-500';
       case 'multiple_faces': return 'text-red-500';
       case 'detecting': return 'text-yellow-500';
-      case 'error': return 'text-red-500';
-      default: return 'text-gray-500';
+      case 'error': return 'text-red-500',
+      default: return 'text-gray-500'
     }
   };
 

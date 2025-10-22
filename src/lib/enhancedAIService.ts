@@ -2,27 +2,27 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 interface QuestionGenerationParams {
-  jobTitle: string;
-  companyName: string;
+  jobTitle: string,
+  companyName: string,
   skills: string[];
-  jobDescription?: string;
-  experienceLevel: 'entry' | 'mid' | 'senior' | 'lead';
+  jobDescription?: string,
+  experienceLevel: 'entry' | 'mid' | 'senior' | 'lead',
   interviewType: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'mixed';
-  resumeContent?: string;
+  resumeContent?: string,
   numberOfQuestions: number;
   difficultyDistribution?: {
-    easy: number;
-    medium: number;
-    hard: number;
+    easy: number,
+    medium: number,
+    hard: number
   };
 }
 
 interface EnhancedQuestion {
-  id: string;
-  question: string;
-  expectedAnswer: string;
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
-  difficulty: 'easy' | 'medium' | 'hard';
+  id: string,
+  question: string,
+  expectedAnswer: string,
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design',
+  difficulty: 'easy' | 'medium' | 'hard',
   points: number;
   timeLimit?: number; // in minutes
   followUpQuestions?: string[];
@@ -33,20 +33,20 @@ interface EnhancedQuestion {
 }
 
 interface DSAProblem {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  description: string;
+  id: string,
+  title: string,
+  difficulty: 'easy' | 'medium' | 'hard',
+  description: string,
   examples: Array<{
-    input: string;
+    input: string,
     output: string;
-    explanation?: string;
+    explanation?: string
   }>;
   testCases: Array<{
-    id: string;
-    input: string;
+    id: string,
+    input: string,
     expectedOutput: string;
-    hidden?: boolean;
+    hidden?: boolean
   }>;
   constraints: string[];
   topics: string[];
@@ -57,13 +57,13 @@ interface DSAProblem {
 }
 
 interface AptitudeQuestion {
-  id: string;
-  type: 'verbal' | 'numerical' | 'logical' | 'spatial';
-  question: string;
+  id: string,
+  type: 'verbal' | 'numerical' | 'logical' | 'spatial',
+  question: string,
   options: string[];
-  correctAnswer: number;
-  explanation: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  correctAnswer: number,
+  explanation: string,
+  difficulty: 'easy' | 'medium' | 'hard',
   timeLimit: number; // in seconds
 }
 
@@ -256,8 +256,8 @@ export class EnhancedAIService {
     category: string,
     companyContext: string
   ): Promise<{
-    score: number;
-    feedback: string;
+    score: number,
+    feedback: string,
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -459,7 +459,7 @@ export class EnhancedAIService {
         correctAnswer: i % 4,
         explanation: 'This is the correct answer because of logical reasoning.',
         difficulty: difficulty as 'easy' | 'medium' | 'hard',
-        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'medium' ? 90 : 120;
+        timeLimit: difficulty === 'easy' ? 60 : difficulty === 'medium' ? 90 : 120
       });
     }
     

@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     let userObjectId;
     try {
       userObjectId = new ObjectId(userId);
-      console.log('UserObjectId created successfully:', userObjectId);
+      console.log('UserObjectId created successfully:', userObjectId)
     } catch (objectIdError) {
       console.error('Invalid userId ObjectId format:', objectIdError);
       return NextResponse.json(
@@ -172,7 +172,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       { 
         error: errorMessage,
-        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined;
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
       },
       { status: 500 }
     );

@@ -144,8 +144,8 @@ function getQuestionCount(interviewType: string): number {
     case 'technical': return 15;
     case 'behavioral': return 12;
     case 'aptitude': return 18;
-    case 'dsa': return 8;
-    default: return 15;
+    case 'dsa': return 8,
+    default: return 15
   }
 }
 

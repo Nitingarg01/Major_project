@@ -4,31 +4,31 @@
  */
 
 interface TestCase {
-  id: string;
-  input: string;
+  id: string,
+  input: string,
   expectedOutput: string;
   description?: string;
-  hidden?: boolean;
+  hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean;
-  input: string;
-  expected: string;
-  actual: string;
-  executionTime: string;
+  passed: boolean,
+  input: string,
+  expected: string,
+  actual: string,
+  executionTime: string,
   status: string;
   error?: string;
-  memory?: number;
+  memory?: number
 }
 
 interface ExecutionResponse {
-  success: boolean;
+  success: boolean,
   results: CodeExecutionResult[];
-  totalPassed: number;
+  totalPassed: number,
   totalTests: number;
   compilationError?: string;
-  runtimeError?: string;
+  runtimeError?: string
 }
 
 export class FixedJudge0Service {
@@ -147,12 +147,12 @@ try {
     if (Array.isArray(result)) {
         console.log(JSON.stringify(result).replace(/ /g, ''));
     } else if (typeof result === 'boolean') {
-        console.log(result ? 'true' : 'false');
+        console.log(result ? 'true' : 'false')
     } else {
         console.log(String(result));
     }
 } catch (error) {
-    console.log('Error: ' + error.message);
+    console.log('Error: ' + error.message)
 }
 `;
       
@@ -183,12 +183,12 @@ try {
                 }
                 System.out.println("]");
             } else if (result instanceof boolean) {
-                System.out.println((Boolean) result ? "true" : "false");
+                System.out.println((Boolean) result ? "true" : "false")
             } else {
                 System.out.println(result.toString());
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage())
         }
     }
 }`;
@@ -213,7 +213,7 @@ int main() {
         // Convert result to string for comparison
         cout << result << endl;
     } catch (const exception& e) {
-        cout << "Error: " << e.what() << endl;
+        cout << "Error: " << e.what() << endl
     }
     return 0;
 }`;

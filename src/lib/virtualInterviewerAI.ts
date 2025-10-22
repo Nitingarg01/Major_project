@@ -119,7 +119,7 @@ Generate only the follow-up response, nothing else.`
         }
       }
     } catch (error) {
-      console.error('Error generating AI follow-up:', error);
+      console.error('Error generating AI follow-up:', error)
     }
 
     // Fallback to predefined follow-ups
@@ -197,7 +197,7 @@ Generate only the follow-up response, nothing else.`
         }
       }
     } catch (error) {
-      console.error('Error analyzing response:', error);
+      console.error('Error analyzing response:', error)
     }
 
     // Fallback analysis
@@ -363,7 +363,7 @@ Generate only the follow-up response, nothing else.`
   private extractKeyTopic(question: string): string {
     // Extract the main topic from the question
     const topics = question.toLowerCase().match(/(problem solving|teamwork|leadership|technical challenges|project management|communication|conflict resolution)/g);
-    return topics ? topics[0] : 'this type of situation';
+    return topics ? topics[0] : 'this type of situation'
   }
 }
 

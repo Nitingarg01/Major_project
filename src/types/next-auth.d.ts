@@ -6,24 +6,24 @@ declare module "next-auth" {
   interface Session {
     user: {
       id?: string;
-      credits?: number;
+      credits?: number
     } & DefaultSession["user"];
   }
 
   interface User extends DefaultUser {
-    credits?: number;
+    credits?: number
   }
 }
 
 declare module "next-auth/adapters" {
   interface AdapterUser {
-    credits?: number;
+    credits?: number
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
-    credits?: number;
+    credits?: number
   }
 }

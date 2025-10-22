@@ -37,7 +37,7 @@ const testLLMProviders = async () => {
     console.log('Provider configuration test completed!');
     
   } catch (error) {
-    console.error('❌ Error testing providers:', error);
+    console.error('❌ Error testing providers:', error)
   }
 };
 

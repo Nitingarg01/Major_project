@@ -9,13 +9,13 @@ import { optimizedAIService } from './optimizedAIService';
 import client from '@/lib/db';
 
 interface CompanyDSAContext {
-  name: string;
-  industry: string;
+  name: string,
+  industry: string,
   techStack: string[];
   businessDomains: string[];
   scaleRequirements: string[];
   knownProblems: string[];
-  interviewStyle: string;
+  interviewStyle: string
 }
 
 export class EnhancedDSAGenerator {
@@ -326,7 +326,7 @@ Return ONLY valid JSON:
         console.log(`📚 Stored ${problems.length} new DSA problems for ${companyName}`);
       }
     } catch (error) {
-      console.error('❌ Error storing company problems:', error);
+      console.error('❌ Error storing company problems:', error)
     }
   }
 
@@ -463,10 +463,10 @@ Return ONLY valid JSON:
    * Get problem statistics for a company
    */
   async getCompanyProblemStats(companyName: string): Promise<{
-    totalProblems: number;
+    totalProblems: number,
     difficultyBreakdown: { [key: string]: number };
     topicDistribution: { [key: string]: number };
-    averageUniquenessScore: number;
+    averageUniquenessScore: number
   }> {
     try {
       const db = client.db(this.dbName);

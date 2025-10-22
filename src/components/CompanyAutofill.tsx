@@ -7,7 +7,7 @@ import { Badge } from './ui/badge';
 interface CompanyAutofillProps {
   onSelect: (company: string, jobTitle: string, companyData?: any) => void;
   placeholder?: string;
-  className?: string;
+  className?: string
 }
 
 const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role (e.g., Google Software Engineer)", className = "" }: CompanyAutofillProps) => {
@@ -130,7 +130,7 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
                 ref={(el) => { suggestionRefs.current[index] = el }}
                 onClick={() => handleSelect(suggestion)}
                 className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 hover:bg-gray-50 ${
-                  index === selectedIndex ? 'bg-blue-50 border-blue-200' : '';
+                  index === selectedIndex ? 'bg-blue-50 border-blue-200' : ''
                 }`}
               >
                 <div className="flex items-center justify-between">

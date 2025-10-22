@@ -21,9 +21,9 @@ async function testCompletePerformanceFlow() {
                 updatedAt: new Date()
             });
             testUser = { _id: insertResult.insertedId, email: testUserEmail, name: 'Performance Test User' };
-            console.log('✅ Created test user:', testUser._id.toString());
+            console.log('✅ Created test user:', testUser._id.toString())
         } else {
-            console.log('✅ Using existing test user:', testUser._id.toString());
+            console.log('✅ Using existing test user:', testUser._id.toString())
         }
         
         const userId = testUser._id.toString();
@@ -358,7 +358,7 @@ async function testCompletePerformanceFlow() {
         
     } catch (error) {
         console.error('❌ Complete performance flow test failed:', error.message);
-        console.error('Stack trace:', error.stack);
+        console.error('Stack trace:', error.stack)
     } finally {
         await client.close();
     }
