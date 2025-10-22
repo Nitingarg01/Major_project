@@ -292,8 +292,8 @@ function getDSAPointsForDifficulty(difficulty: string): number {
     switch (difficulty) {
         case 'easy': return 20;
         case 'medium': return 30;
-        case 'hard': return 45,
-        default: return 30
+        case 'hard': return 45;
+        default: return 30;
     }
 }
 
