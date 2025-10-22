@@ -204,7 +204,7 @@ function calculateCategoryScores(questions: any[], responses: any[]) {
       categoryScores[category].total += score;
     }
     
-    categoryScores[category].average = categoryScores[category].total > 0;
+    categoryScores[category].average = categoryScores[category].total > 0
       ? Math.round((categoryScores[category].total / categoryScores[category].count) * 10) / 10
       : 0;
   });
