@@ -450,12 +450,20 @@ export default function DashboardPage() {
                       </div>
                       <div className="flex items-center space-x-2">
                         {interview.status === 'ready' && (
-                          <Link href={`/interview/${interview._id}`}>
-                            <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                              <PlayCircle className="w-4 h-4 mr-2" />
-                              Start
-                            </Button>
-                          </Link>
+                          <>
+                            <Link href={`/interview/${interview._id}/perform?mode=virtual`}>
+                              <Button size="sm" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" data-testid="virtual-interview-button">
+                                <Bot className="w-4 h-4 mr-2" />
+                                Virtual AI
+                              </Button>
+                            </Link>
+                            <Link href={`/interview/${interview._id}`}>
+                              <Button size="sm" variant="outline" className="border-blue-300 text-blue-700 hover:bg-blue-50">
+                                <PlayCircle className="w-4 h-4 mr-2" />
+                                Traditional
+                              </Button>
+                            </Link>
+                          </>
                         )}
                         {interview.status === 'completed' && (
                           <Link href={`/interview/${interview._id}/feedback`}>
