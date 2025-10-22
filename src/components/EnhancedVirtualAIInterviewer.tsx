@@ -103,6 +103,9 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const virtualAI = useRef(EnhancedVirtualInterviewerAI.getInstance())
   const recognitionRestartTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const speakTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isCleaningUpRef = useRef<boolean>(false)
 
   // Initialize speech services
   useEffect(() => {
