@@ -34,7 +34,7 @@ interface SuperEnhancedInterviewWrapperProps {
 }
 
 // Sample DSA problems for the DSA round
-const sampleDSAProblems = [;
+const sampleDSAProblems = [
   {
     id: 'two-sum',
     title: 'Two Sum',
@@ -67,7 +67,7 @@ const sampleDSAProblems = [;
 ]
 
 // Sample aptitude questions
-const sampleAptitudeQuestions = [;
+const sampleAptitudeQuestions = [
   {
     id: 'verbal-1',
     type: 'verbal' as const,
@@ -245,7 +245,7 @@ const SuperEnhancedInterviewWrapper = ({
     
     // Mark first round as in-progress
     if (interviewSession) {
-      const updatedSession = { ...interviewSession }
+      const updatedSession = { ...interviewSession };
       if (updatedSession.rounds[0]) {
         updatedSession.rounds[0].status = 'in-progress';
         setInterviewSession(updatedSession);
@@ -304,7 +304,7 @@ const SuperEnhancedInterviewWrapper = ({
     setCurrentRound(roundIndex);
     
     // Update session
-    const updatedSession = { ...interviewSession }
+    const updatedSession = { ...interviewSession };
     
     // Mark previous round as completed if switching forward
     if (roundIndex > currentRound) {

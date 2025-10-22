@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Master your interview skills with AI-powered mock interviews, real-time feedback, and personalized coaching.',
 };
 
-const features = [;
+const features = [
   {
     icon: <Zap className="w-6 h-6" />,
     title: 'AI-Powered Questions',
@@ -41,7 +41,7 @@ const features = [;
   }
 ]
 
-const testimonials = [;
+const testimonials = [
   {
     name: 'Sarah Chen',
     role: 'Software Engineer at Google',

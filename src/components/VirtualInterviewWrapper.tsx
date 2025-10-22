@@ -51,7 +51,7 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
   }, [])
 
   const performSystemChecks = async () => {
-    const checks = { ...systemChecks }
+    const checks = { ...systemChecks };
 
     // Check browser compatibility
     checks.browser = !!(navigator.mediaDevices && window.SpeechRecognition || window.webkitSpeechRecognition);

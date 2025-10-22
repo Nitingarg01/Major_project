@@ -283,7 +283,7 @@ export class InterviewServiceManager {
         this.groqService.healthCheck()
       ]);
       
-      const healthyServices = [;
+      const healthyServices = [
         dsa.groqAvailable,
         feedback.groqAvailable,
         execution.judge0Available,
@@ -341,7 +341,7 @@ export class InterviewServiceManager {
   private generateFallbackDSAProblems(companyName: string, count: number): DSAProblem[] {
     const fallbackProblems: DSAProblem[] = [],
     
-    const problemTemplates = [;
+    const problemTemplates = [
       {
         title: `${companyName} Two Sum Challenge`,
         description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. This is a classic problem commonly asked at ${companyName} interviews.`,

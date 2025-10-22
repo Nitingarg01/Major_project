@@ -51,7 +51,7 @@ export class VirtualInterviewerAI {
    * Generate welcome message for the interview
    */
   public generateWelcomeMessage(context: ConversationContext): AIResponse {
-    const messages = [;
+    const messages = [
       `Hello! I'm excited to speak with you today about the ${context.jobTitle} position at ${context.companyName}. I'm an AI interviewer, and I'll be conducting this ${context.interviewType} interview with you. We'll have a natural conversation, so feel free to speak naturally. Are you ready to begin?`,
       
       `Welcome to your ${context.interviewType} interview for ${context.jobTitle} at ${context.companyName}! I'm your AI interviewer, and I'm here to have a meaningful conversation about your experience and skills. I'll ask you ${context.totalQuestions} questions, and we can discuss each one in detail. Let's get started!`,
@@ -146,7 +146,7 @@ Generate only the follow-up response, nothing else.`
       }
     }
 
-    const transitions = [;
+    const transitions = [
       "Great! Let's move on to the next question.",
       "Thank you for that insight. Now, let me ask you about something else.",
       "Excellent. I'd like to explore another area with you.",
@@ -208,7 +208,7 @@ Generate only the follow-up response, nothing else.`
    * Generate encouraging responses during pauses
    */
   public generateEncouragement(): AIResponse {
-    const encouragements = [;
+    const encouragements = [
       "Take your time to think about it.",
       "No rush, I'm here when you're ready.",
       "Feel free to think through your answer.",
@@ -233,7 +233,7 @@ Generate only the follow-up response, nothing else.`
     clarificationRequest: string,
     context: ConversationContext
   ): AIResponse {
-    const clarifications = [;
+    const clarifications = [
       `Of course! Let me rephrase that question. ${this.simplifyQuestion(originalQuestion)}`,
       `Sure, I can clarify. What I'm looking for is ${this.explainQuestionIntent(originalQuestion, context)}`,
       `Absolutely! Let me break that down for you. ${this.provideQuestionContext(originalQuestion, context)}`
@@ -263,7 +263,7 @@ Generate only the follow-up response, nothing else.`
   }
 
   private makeFollowUpConversational(question: string): string {
-    const conversationalStarters = [;
+    const conversationalStarters = [
       "That's interesting! ",
       "I see. ",
       "Good point. ",
@@ -292,7 +292,7 @@ Generate only the follow-up response, nothing else.`
     originalQuestion: string,
     context: ConversationContext
   ): AIResponse {
-    const followUps = [;
+    const followUps = [
       "That's a great start! Can you give me a specific example of how you've applied that in practice?",
       "I appreciate that perspective. What challenges did you face when implementing that approach?",
       "Interesting! How do you think that experience would translate to this role at " + context.companyName + "?",

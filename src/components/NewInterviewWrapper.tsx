@@ -57,7 +57,7 @@ interface NewInterviewWrapperProps {
 const generateEnhancedFallbackDSA = (companyName: string, experienceLevel: string, count: number) => {
   const difficultyLevel = experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
   
-  const dsaTemplates = [;
+  const dsaTemplates = [
     {
       title: "Two Sum",
       description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
@@ -282,7 +282,7 @@ const NewInterviewWrapper = ({
 
         // Generate questions for all enabled rounds with timestamp to ensure uniqueness
         const timestamp = Date.now();
-        const questionsResult: {[roundType: string]: any[]} = {}
+        const questionsResult: {[roundType: string]: any[]} = {};
         
         for (const round of roundConfigs) {
           if (!round.enabled) continue
@@ -313,7 +313,7 @@ const NewInterviewWrapper = ({
               }
             } else if (round.type === 'aptitude') {
               // Generate aptitude questions - fallback for now
-              const aptitudeQuestions = [;
+              const aptitudeQuestions = [
                 {
                   id: `aptitude-1-${Date.now()}`,
                   question: `Aptitude Question 1: If a car travels 60 miles per hour for 2 hours, how far does it travel?`,
@@ -350,7 +350,7 @@ const NewInterviewWrapper = ({
               } catch (aptitudeError) {
                 console.log('⚠️ Aptitude generation failed, using fallback questions');
                 // Fallback aptitude questions with proper format
-                const aptitudeQuestions = [;
+                const aptitudeQuestions = [
                   {
                     id: `aptitude-1-${Date.now()}`,
                     type: 'numerical' as const,

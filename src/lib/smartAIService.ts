@@ -193,7 +193,7 @@ export class SmartAIService {
 
   private shouldUseGroq(task: string): boolean {
     // Complex tasks that need high-quality AI with company intelligence
-    const groqTasks = [;
+    const groqTasks = [
       'question_generation',
       'response_analysis', 
       'performance_analysis',
@@ -678,7 +678,7 @@ export class SmartAIService {
 
   // Helper methods for text extraction
   private extractSkillsFromText(text: string): string[] {
-    const commonSkills = [;
+    const commonSkills = [
       'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'Go', 'Rust',
       'React', 'Angular', 'Vue.js', 'Node.js', 'Express', 'Django', 'Flask',
       'HTML', 'CSS', 'Tailwind', 'Bootstrap', 'SASS', 'LESS',

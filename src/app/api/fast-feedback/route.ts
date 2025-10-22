@@ -382,7 +382,7 @@ Execution Time: ${execution.executionTime}ms`;
         answers = questionsDoc.answers.map((ans: any, index: number) => {
           let extractedAnswer = '';
           
-          // Handle the format saved by setanswers API: {questionIndex: 0, answer: "text", timestamp: Date}
+          // Handle the format saved by setanswers API: {questionIndex: 0, answer: "text", timestamp: Date};
           if (ans && typeof ans === 'object') {
             if (ans.answer) {
               extractedAnswer = ans.answer;

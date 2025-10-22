@@ -123,7 +123,7 @@ export class OptimizedAIService {
 
   private initializeCompanyDatabase() {
     // Enhanced company database with comprehensive intelligence
-    const companies = [;
+    const companies = [
       // Big Tech (FAANG+)
       {
         name: 'Google',
@@ -225,7 +225,7 @@ export class OptimizedAIService {
     
     // Add popular companies if no matches
     if (suggestions.length === 0 && query.length > 0) {
-      const popularCompanies = [;
+      const popularCompanies = [
         'Google', 'Meta', 'Amazon', 'Microsoft', 'Apple', 'Tesla', 
         'OpenAI', 'Anthropic', 'Netflix', 'Stripe', 'Uber', 'Airbnb'
       ];
@@ -693,7 +693,7 @@ Return ONLY valid JSON:
   private generateFallbackDSAProblems(companyName: string, difficulty: string, count: number): DSAProblem[] {
     const problems: DSAProblem[] = [],
     
-    const problemTemplates = [;
+    const problemTemplates = [
       {
         title: 'Two Sum',
         description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',

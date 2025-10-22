@@ -217,7 +217,7 @@ export class ReliableAIService {
   }
 
   private generateFallbackDSAProblems(difficulty: string, count: number): DSAProblem[] {
-    const problems = [;
+    const problems = [
       {
         title: "Two Sum",
         description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",

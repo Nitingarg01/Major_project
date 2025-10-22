@@ -83,7 +83,7 @@ const page = async ({ params }: PageProps) => {
   // Get company intelligence for enhanced feedback
   const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName);
 
-  const arr = det?.extracted?.parameterScores || {}
+  const arr = det?.extracted?.parameterScores || {};
   console.log(det);
 
   const labels = Object.keys(arr) as string[];
@@ -105,7 +105,7 @@ const page = async ({ params }: PageProps) => {
   const companySpecificTips = companyData.preparationTips;
   
   // Generate company-specific recommendations
-  const companySpecificTips = companyIntelligence?.companyData?.preparationTips || [;
+  const companySpecificTips = companyIntelligence?.companyData?.preparationTips || [
     'Study the company culture and values thoroughly',
     'Practice common interview questions for this role',
     'Research recent company developments and news',

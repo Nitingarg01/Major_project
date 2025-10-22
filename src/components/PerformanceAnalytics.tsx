@@ -50,7 +50,7 @@ const PerformanceAnalytics = ({
   });
 
   // Prepare data for charts
-  const radarData = [;
+  const radarData = [
     { subject: 'Technical', score: categoryScores.technical || 0, fullMark: 100 },
     { subject: 'Behavioral', score: categoryScores.behavioral || 0, fullMark: 100 },
     { subject: 'Aptitude', score: categoryScores.aptitude || 0, fullMark: 100 },

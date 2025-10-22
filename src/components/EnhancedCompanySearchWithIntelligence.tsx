@@ -24,7 +24,7 @@ interface CompanySuggestion {
   };
 }
 
-const POPULAR_COMPANIES = [;
+const POPULAR_COMPANIES = [
   { name: 'Google', trend: 'hot', difficulty: 'High' },
   { name: 'Microsoft', trend: 'stable', difficulty: 'Medium' },
   { name: 'Amazon', trend: 'hot', difficulty: 'High' },
@@ -437,7 +437,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    const randomCompany = POPULAR_COMPANIES[;
+                    const randomCompany = POPULAR_COMPANIES[
                       Math.floor(Math.random() * POPULAR_COMPANIES.length);
                     ]
                     handleSelect(randomCompany.name);

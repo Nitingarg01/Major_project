@@ -94,7 +94,7 @@ export class OptimizedFeedbackService {
     `;
 
     try {
-      const response = await this.callGroqAPI([;
+      const response = await this.callGroqAPI([
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
       ], 1000);
@@ -150,7 +150,7 @@ export class OptimizedFeedbackService {
     `;
 
     try {
-      const response = await this.callGroqAPI([;
+      const response = await this.callGroqAPI([
         { role: 'system', content: systemMessage },
         { role: 'user', content: prompt }
       ], 1500);
@@ -234,7 +234,7 @@ export class OptimizedFeedbackService {
     // Simple streaming simulation - return chunks of feedback
     const feedback = await this.generateQuickFeedback(question, userAnswer, category, 'Company');
     
-    const chunks = [;
+    const chunks = [
       `Score: ${feedback.score}/10`,
       `Feedback: ${feedback.feedback}`,
       `Strengths: ${feedback.strengths.join(', ')}`,

@@ -168,7 +168,7 @@ export const parsingResume = async (file: File) => {
     const res = await axios.post(`${baseURL}/api/parse-resume`, formData, {
       // headers:{
       //   'Content-Type':'multipart/form-data'
-      // }
+      // };
     })
     // console.log("reasponse aagya",res.data)
     return res.data;

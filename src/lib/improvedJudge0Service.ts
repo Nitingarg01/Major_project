@@ -149,7 +149,7 @@ export class ImprovedJudge0Service {
       }
       
       // Create executable code that calls the function and prints result
-      const executableCode = `${userCode}
+      const executableCode = `${userCode};
 
 # Test execution
 try:

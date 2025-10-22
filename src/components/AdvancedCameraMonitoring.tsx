@@ -116,7 +116,7 @@ const AdvancedCameraMonitoring = ({
 
     const handleKeyboardShortcuts = (e: KeyboardEvent) => {
       // Detect common cheating shortcuts
-      const suspiciousShortcuts = [;
+      const suspiciousShortcuts = [
         { key: 'F12', desc: 'Developer tools' },
         { key: 'F5', desc: 'Page refresh' },
         { key: 'Alt+Tab', desc: 'Application switching' }

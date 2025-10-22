@@ -224,14 +224,14 @@ export class BodyLanguageService {
     let score = 0;
 
     // Posture score (0-30)
-    const postureScores = { excellent: 30, good: 22, fair: 15, poor: 5 }
+    const postureScores = { excellent: 30, good: 22, fair: 15, poor: 5 };
     score += postureScores[data.posture as keyof typeof postureScores] || 15;
 
     // Eye contact score (0-35)
     score += (data.eyeContact / 100) * 35;
 
     // Fidgeting score (0-20, lower fidgeting = higher score)
-    const fidgetingScores = { low: 20, moderate: 12, high: 5 }
+    const fidgetingScores = { low: 20, moderate: 12, high: 5 };
     score += fidgetingScores[data.fidgeting as keyof typeof fidgetingScores] || 12;
 
     // Head position score (0-15)
@@ -256,14 +256,14 @@ export class BodyLanguageService {
     }
 
     // Calculate averages
-    const postureScores = { excellent: 10, good: 7.5, fair: 5, poor: 2.5 }
+    const postureScores = { excellent: 10, good: 7.5, fair: 5, poor: 2.5 };
     const avgPosture = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + postureScores[data.posture], 0) / this.bodyLanguageHistory.length
 
     const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + data.eyeContact, 0) / this.bodyLanguageHistory.length
 
-    const fidgetingScores = { low: 2, moderate: 5, high: 8 }
+    const fidgetingScores = { low: 2, moderate: 5, high: 8 };
     const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) =>;
       sum + fidgetingScores[data.fidgeting], 0) / this.bodyLanguageHistory.length
 

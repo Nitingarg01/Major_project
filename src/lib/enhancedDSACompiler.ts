@@ -547,7 +547,7 @@ const solution = new Solution();
   private generateFallbackProblems(companyName: string, difficulty: string, count: number): DSAProblem[] {
     const problems: DSAProblem[] = [],
     
-    const templates = [;
+    const templates = [
       {
         title: `${companyName} Data Processing Challenge`,
         description: `At ${companyName}, you need to efficiently process large datasets. Design an algorithm that can handle their scale.`,

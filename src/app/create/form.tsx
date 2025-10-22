@@ -27,7 +27,7 @@ const schema = z.object({
 })
 
 // Popular companies for quick selection
-const popularCompanies = [;
+const popularCompanies = [
     "Google", "Microsoft", "Amazon", "Apple", "Meta", "Netflix", "Tesla", "Uber", 
     "Airbnb", "LinkedIn", "Spotify", "Dropbox", "Slack", "Adobe", "Salesforce"
 ];

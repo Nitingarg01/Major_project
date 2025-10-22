@@ -168,7 +168,7 @@ export class EnhancedGroqDSAService {
     const userMessage = this.buildEnhancedCompanyPrompt(company, pattern, count, difficulty, experienceLevel);
 
     try {
-      const response = await this.callGroqAPI([;
+      const response = await this.callGroqAPI([
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
       ], 0.9);
@@ -312,7 +312,7 @@ export class EnhancedGroqDSAService {
     `;
 
     try {
-      const response = await this.callGroqAPI([;
+      const response = await this.callGroqAPI([
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
       ], 0.7);
@@ -451,7 +451,7 @@ export class EnhancedGroqDSAService {
   }
 
   private generateFallbackProblems(company: string, count: number, difficulty: string): DSAProblem[] {
-    const fallbackProblems = [;
+    const fallbackProblems = [
       {
         id: `fallback-${company.toLowerCase()}-1`,
         title: `${company} Two Sum Problem`,
@@ -501,7 +501,7 @@ export class EnhancedGroqDSAService {
    */
   public async healthCheck(): Promise<{ status: string; groqAvailable: boolean }> {
     try {
-      const testResponse = await this.callGroqAPI([;
+      const testResponse = await this.callGroqAPI([
         { role: 'user', content: 'Health check - respond with "OK"' }
       ], 0);
       

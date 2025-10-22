@@ -52,7 +52,7 @@ interface EnhancedInterviewWrapperProps {
 }
 
 // Enhanced DSA problems with better complexity
-const enhancedDSAProblems = [;
+const enhancedDSAProblems = [
   {
     id: 'two-sum-enhanced',
     title: 'Two Sum',
@@ -139,7 +139,7 @@ const enhancedDSAProblems = [;
 ]
 
 // Enhanced aptitude questions with better variety
-const enhancedAptitudeQuestions = [;
+const enhancedAptitudeQuestions = [
   {
     id: 'verbal-1-enhanced',
     type: 'verbal' as const,
@@ -334,7 +334,7 @@ const EnhancedInterviewWrapper = ({
     
     // Mark first round as in-progress
     if (interviewSession) {
-      const updatedSession = { ...interviewSession }
+      const updatedSession = { ...interviewSession };
       if (updatedSession.rounds[0]) {
         updatedSession.rounds[0].status = 'in-progress';
         setInterviewSession(updatedSession);
@@ -439,7 +439,7 @@ const EnhancedInterviewWrapper = ({
     setCurrentRound(roundIndex);
     
     // Update session with enhanced state tracking
-    const updatedSession = { ...interviewSession }
+    const updatedSession = { ...interviewSession };
     
     // Mark previous round as completed if switching forward
     if (roundIndex > currentRound) {

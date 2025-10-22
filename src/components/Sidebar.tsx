@@ -23,7 +23,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
 
-  const navigation = [;
+  const navigation = [
     {
       name: 'Dashboard',
       href: '/dashboard',

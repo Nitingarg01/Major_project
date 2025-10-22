@@ -9,7 +9,7 @@ interface SimpleCompanyAutofillProps {
 }
 
 // Simple company list for N-gram style autofill suggestions
-const COMPANY_LIST = [;
+const COMPANY_LIST = [
   'Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Tesla', 'Uber', 
   'Airbnb', 'LinkedIn', 'Spotify', 'Dropbox', 'Slack', 'Adobe', 'Salesforce',
   'Twitter', 'PayPal', 'Oracle', 'IBM', 'Intel', 'NVIDIA', 'AMD', 'Qualcomm',

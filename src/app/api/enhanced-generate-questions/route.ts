@@ -311,7 +311,7 @@ function getAptitudePoints(difficulty: string): number {
 }
 
 function isDSASkill(skill: string): boolean {
-  const dsaSkills = [;
+  const dsaSkills = [
     'algorithms', 'data structures', 'dynamic programming', 
     'graph theory', 'tree traversal', 'sorting', 'searching',
     'arrays', 'strings', 'hash tables', 'linked lists'

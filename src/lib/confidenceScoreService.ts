@@ -186,7 +186,7 @@ export class ConfidenceScoreService {
    * Count filler words in response
    */
   private countFillerWords(text: string): number {
-    const fillers = [;
+    const fillers = [
       'um', 'uh', 'like', 'you know', 'so', 'basically',
       'actually', 'literally', 'sort of', 'kind of'
     ]

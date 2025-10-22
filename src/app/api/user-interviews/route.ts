@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     )
     
     // Use aggregation pipeline for better performance
-    const dbQueries = Promise.all([;
+    const dbQueries = Promise.all([
       // Get user's recent NON-COMPLETED interviews (exclude completed ones from dashboard)
       db.collection('interviews')
         .find({ 
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
       setTimeout(() => reject(new Error('Database query timeout')), 8000);
     )
     
-    const dbQueries = Promise.all([;
+    const dbQueries = Promise.all([
       // Get user's recent interviews
       db.collection('interviews')
         .find({ userId })
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
         })
     ]);
     
-    const result = await Promise.race([;
+    const result = await Promise.race([
       dbQueries,
       timeout
     ]);

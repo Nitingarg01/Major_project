@@ -368,7 +368,7 @@ export function parseJobQuery(query: string): { company: string; jobTitle: strin
   const lowerQuery = query.toLowerCase();
   
   // Common job title patterns
-  const jobTitlePatterns = [;
+  const jobTitlePatterns = [
     'software engineer', 'frontend engineer', 'backend engineer', 'full stack engineer',
     'data scientist', 'product manager', 'devops engineer', 'mobile developer',
     'ios developer', 'android developer', 'machine learning engineer', 'data engineer'

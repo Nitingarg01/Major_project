@@ -31,7 +31,7 @@ const VirtualAIDemo: React.FC = () => {
   }>>([])
 
   // Demo messages for the AI
-  const demoMessages = [;
+  const demoMessages = [
     "Hello! I'm your Virtual AI Interviewer. I'm excited to meet you today!",
     "Let's start with a simple question: Can you tell me about yourself?",
     "That's interesting! What motivated you to apply for this position?",
@@ -86,7 +86,7 @@ const VirtualAIDemo: React.FC = () => {
 
   // Simulate user response
   const simulateUserResponse = () => {
-    const userResponses = [;
+    const userResponses = [
       "I'm a software engineer with 5 years of experience in web development.",
       "I'm passionate about creating innovative solutions and this role aligns with my career goals.",
       "I break down complex problems into smaller parts and collaborate with my team to find solutions.",

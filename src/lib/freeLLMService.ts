@@ -692,7 +692,7 @@ export class FreeLLMService {
 
   private generateHardMockDSAProblems(count: number): any[] {
     const hardMockProblems: any[] = [],
-    const hardProblemTemplates = [;
+    const hardProblemTemplates = [
       {
         title: "Multi-Dimensional Range Query Optimization",
         description: "Design a data structure that supports efficient range queries in a multi-dimensional space with dynamic updates, considering memory constraints and query optimization for distributed systems.",

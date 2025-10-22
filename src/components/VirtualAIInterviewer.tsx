@@ -336,7 +336,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
   const generateFollowUp = (userAnswer: string, question: any): string => {
     // Simple follow-up generation - in production, use your AI service
-    const followUps = [;
+    const followUps = [
       "That's an interesting perspective. Can you elaborate on that approach?",
       "Good answer. How would you handle this in a team environment?",
       "I see. What challenges might you face with that solution?",

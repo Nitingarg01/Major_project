@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
           `
 
           // Simulate streaming response
-          const feedbackChunks = [;
+          const feedbackChunks = [
             { type: 'status', data: 'Analyzing your response...' },
             { type: 'status', data: 'Evaluating technical accuracy...' },
             { type: 'status', data: 'Assessing communication clarity...' },

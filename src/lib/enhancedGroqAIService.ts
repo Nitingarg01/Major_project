@@ -678,7 +678,7 @@ Return ONLY valid JSON:
   private generateMockDSAProblems(companyName: string, difficulty: string, count: number): DSAProblem[] {
     const problems: DSAProblem[] = [],
     
-    const problemTemplates = [;
+    const problemTemplates = [
       {
         title: `${companyName} Scale Data Processing`,
         description: `You're working at ${companyName} and need to process large datasets efficiently. Design an algorithm to handle this at their scale.`,

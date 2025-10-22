@@ -231,7 +231,7 @@ export default function PerformancePage() {
   }
 
   const exportData = () => {
-    const csvContent = [;
+    const csvContent = [
       ['Date', 'Company', 'Position', 'Type', 'Score', 'Time Spent', 'Questions Answered'].join(','),
       ...filteredData.map(item => [
         formatDate(item.completedAt),

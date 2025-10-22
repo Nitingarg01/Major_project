@@ -19,7 +19,7 @@ import { Tooltip, TooltipContent } from './ui/tooltip';
 import { TooltipTrigger } from '@radix-ui/react-tooltip';
 import { usePathname } from "next/navigation";
 
-const navItems = [;
+const navItems = [
   {
     'name': 'About Us',
     'link':''

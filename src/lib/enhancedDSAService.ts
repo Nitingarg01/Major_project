@@ -469,7 +469,7 @@ export class EnhancedDSAService {
 
   private generateFallbackProblems(company: string, count: number, difficulty: string): DSAProblem[] {
     // Fallback problems when AI generation fails
-    const fallbackProblems = [;
+    const fallbackProblems = [
       {
         id: `fallback-${company.toLowerCase()}-1`,
         title: `${company} Array Processing Challenge`,

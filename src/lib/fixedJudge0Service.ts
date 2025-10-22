@@ -111,7 +111,7 @@ export class FixedJudge0Service {
       // Parse test case input to extract parameters
       const testInput = this.parseTestInput(testCase.input);
       
-      const executableCode = `${userCode}
+      const executableCode = `${userCode};
 
 # Test execution
 try:
@@ -137,7 +137,7 @@ except Exception as e:
       
       const testInput = this.parseTestInput(testCase.input);
       
-      const executableCode = `${userCode}
+      const executableCode = `${userCode};
 
 // Test execution
 try {
@@ -167,7 +167,7 @@ try {
       
       const testInput = this.parseTestInput(testCase.input);
       
-      const executableCode = `${userCode}
+      const executableCode = `${userCode};
 
     public static void main(String[] args) {
         try {

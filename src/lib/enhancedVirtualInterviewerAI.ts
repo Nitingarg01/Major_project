@@ -435,7 +435,7 @@ export class EnhancedVirtualInterviewerAI {
     context: ConversationContext
   ): AIResponse {
     const personality = context.personality || 'professional';
-    const followUps = [;
+    const followUps = [
       "Can you give me a specific example from your experience?",
       "How did that experience prepare you for this role?",
       "What would you do differently in hindsight?",

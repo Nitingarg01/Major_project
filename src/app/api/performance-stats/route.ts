@@ -71,7 +71,7 @@ function calculatePerformanceStats(performances: any[]) {
   }
 
   // Find strongest and weakest areas
-  const areaScores: { [key: string]: number[] } = {}
+  const areaScores: { [key: string]: number[] } = {};
   performances.forEach(p => {
     p.roundResults?.forEach((round: any) => {
       if (!areaScores[round.roundType]) {

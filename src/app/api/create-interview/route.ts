@@ -86,7 +86,7 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         }
         
         // Behavioral questions (4)
-        const behavioralPrompts = [;
+        const behavioralPrompts = [
             "Tell me about a challenging project you led",
             "Describe a time when you had to work with a difficult team member",
             "How do you handle tight deadlines and pressure",
@@ -110,7 +110,7 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         }
         
         // Aptitude questions (4)
-        const aptitudePrompts = [;
+        const aptitudePrompts = [
             "You have 8 balls, one of which weighs slightly more. Using a balance scale only twice, how do you identify the heavier ball?",
             "How would you explain cloud computing to a 5-year-old?",
             "Estimate how many smartphone users are there globally",

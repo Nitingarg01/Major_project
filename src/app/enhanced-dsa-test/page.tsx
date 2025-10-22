@@ -34,7 +34,7 @@ const EnhancedDSATestPage = () => {
   const [previousProblemIds, setPreviousProblemIds] = useState<string[]>([]);
   const [serviceStatus, setServiceStatus] = useState<any>(null);
 
-  const companies = [;
+  const companies = [
     { name: 'Google', color: 'bg-blue-100 text-blue-800', icon: '🔍' },
     { name: 'Amazon', color: 'bg-orange-100 text-orange-800', icon: '📦' },
     { name: 'Meta', color: 'bg-purple-100 text-purple-800', icon: '👤' },

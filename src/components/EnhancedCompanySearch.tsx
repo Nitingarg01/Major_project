@@ -17,7 +17,7 @@ interface CompanySuggestion {
   description: string
 }
 
-const POPULAR_COMPANIES = [;
+const POPULAR_COMPANIES = [
   'Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Tesla', 'Uber', 
   'Airbnb', 'LinkedIn', 'Spotify', 'Dropbox', 'Slack', 'Adobe', 'Salesforce',
   'Twitter', 'PayPal', 'Oracle', 'IBM', 'Intel', 'NVIDIA', 'AMD', 'Qualcomm'
@@ -372,7 +372,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    const randomCompany = POPULAR_COMPANIES[;
+                    const randomCompany = POPULAR_COMPANIES[
                       Math.floor(Math.random() * POPULAR_COMPANIES.length);
                     ]
                     handleSelect(randomCompany);
