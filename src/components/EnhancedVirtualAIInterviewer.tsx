@@ -523,8 +523,13 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
 
       speakText(transition.message)
 
-      setTimeout(() => {
-        askCurrentQuestion()
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current)
+      }
+      transitionTimeoutRef.current = setTimeout(() => {
+        if (!isCleaningUpRef.current) {
+          askCurrentQuestion()
+        }
       }, 2000)
     } else {
       handleInterviewComplete()
