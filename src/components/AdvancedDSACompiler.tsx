@@ -80,10 +80,10 @@ const AdvancedDSACompiler: React.FC<AdvancedDSACompilerProps> = ({
   const [showHints, setShowHints] = useState(false);
   const [currentHint, setCurrentHint] = useState(0);
   const [codeExecutionStats, setCodeExecutionStats] = useState<CodeExecutionStats>({
-    totalRuns: 0,
-    successfulRuns: 0,
-    averageExecutionTime: 0,
-    memoryUsage: 0,
+    totalRuns: 0;
+    successfulRuns: 0;
+    averageExecutionTime: 0;
+    memoryUsage: 0;
     codeQualityScore: 0
   })
   const [syntaxValid, setSyntaxValid] = useState<boolean | null>(null);
@@ -288,10 +288,10 @@ int main() {
       const avgMemory = results.reduce((sum, r) => sum + (r.memory || 0), 0) / results.length;
       
       setCodeExecutionStats(prev => ({
-        totalRuns: prev.totalRuns + 1,
+        totalRuns: prev.totalRuns + 1;
         successfulRuns: prev.successfulRuns + (passedCount === totalCount ? 1 : 0),
-        averageExecutionTime: avgTime,
-        memoryUsage: avgMemory,
+        averageExecutionTime: avgTime;
+        memoryUsage: avgMemory;
         codeQualityScore: calculateCodeQuality(code, passedCount, totalCount)
       }))
       
@@ -329,7 +329,7 @@ int main() {
     score += lengthScore;
     
     // Comments and documentation (20% weight)
-    const commentLines = code.split('\n').filter(line =>
+    const commentLines = code.split('\n').filter(line =>;
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||
@@ -363,10 +363,10 @@ int main() {
       const submissionData = {
         code,
         language,
-        testResults: finalResults,
+        testResults: finalResults;
         timeSpent,
-        problem: problem.id,
-        executionStats: codeExecutionStats,
+        problem: problem.id;
+        executionStats: codeExecutionStats;
         complexity: {
           time: extractComplexity(code, 'time'),
           space: extractComplexity(code, 'space')

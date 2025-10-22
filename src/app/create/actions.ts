@@ -7,16 +7,16 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 type formD = {
-  jobDesc: string,
-  skills: string[],
-  companyName: string,
-  jobTitle: string,
-  experienceLevel: 'entry' | 'mid' | 'senior',
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design',
-  selectedRounds?: string[],
-  estimatedDuration?: number,
-  difficultyPreference?: 'adaptive' | 'fixed',
-  companyIntelligence?: any,
+  jobDesc: string;
+  skills: string[];
+  companyName: string;
+  jobTitle: string;
+  experienceLevel: 'entry' | 'mid' | 'senior';
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design';
+  selectedRounds?: string[];
+  estimatedDuration?: number;
+  difficultyPreference?: 'adaptive' | 'fixed';
+  companyIntelligence?: any;
   roundConfigs?: any[]
 }
 
@@ -41,20 +41,20 @@ export const createInterview = async (data: formD, projectContext: string[], wor
     
     // Prepare request data
     const requestData = {
-      id: session.user.id,
-      jobDesc: data.jobDesc,
-      skills: data.skills,
-      companyName: data.companyName,
-      projectContext: projectContext || [],
-      workExDetails: workExDetails || [],
-      jobTitle: data.jobTitle,
-      experienceLevel: data.experienceLevel,
-      interviewType: data.interviewType,
+      id: session.user.id;
+      jobDesc: data.jobDesc;
+      skills: data.skills;
+      companyName: data.companyName;
+      projectContext: projectContext || [];
+      workExDetails: workExDetails || [];
+      jobTitle: data.jobTitle;
+      experienceLevel: data.experienceLevel;
+      interviewType: data.interviewType;
       selectedRounds: data.selectedRounds || ['technical', 'behavioral'],
-      estimatedDuration: data.estimatedDuration || 60,
-      difficultyPreference: data.difficultyPreference || 'adaptive',
-      companyIntelligence: data.companyIntelligence,
-      roundConfigs: data.roundConfigs,
+      estimatedDuration: data.estimatedDuration || 60;
+      difficultyPreference: data.difficultyPreference || 'adaptive';
+      companyIntelligence: data.companyIntelligence;
+      roundConfigs: data.roundConfigs;
       createdAt: new Date()
     };
 
@@ -67,21 +67,21 @@ export const createInterview = async (data: formD, projectContext: string[], wor
       .join('; ')
 
     const fetchRes = await fetch(`${baseURL}/api/create-interview`, {
-      method: 'POST',
+      method: 'POST';
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        cookie: cookieHeader,
+        cookie: cookieHeader;
       },
       body: JSON.stringify(requestData),
-      cache: 'no-store',
+      cache: 'no-store';
     })
 
     if (!fetchRes.ok) {
       const errJson = await fetchRes.json().catch(() => ({}));
       console.log("❌ API error:", fetchRes.status, errJson);
       return {
-        success: false,
+        success: false;
         error: errJson?.error || `Server error: ${fetchRes.status}`,
       }
     }
@@ -95,8 +95,8 @@ export const createInterview = async (data: formD, projectContext: string[], wor
         ? 'Unexpected non-JSON response from server'
         : `Server error ${fetchRes.status}`
       return {
-        success: false,
-        error: resData?.error || msg,
+        success: false;
+        error: resData?.error || msg;
       }
     }
     
@@ -107,9 +107,9 @@ export const createInterview = async (data: formD, projectContext: string[], wor
     revalidatePath('/');
     
     return {
-      success: true,
-      data: resData,
-      message: "Interview created successfully!",
+      success: true;
+      data: resData;
+      message: "Interview created successfully!";
     }
 
   } catch (error: any) {

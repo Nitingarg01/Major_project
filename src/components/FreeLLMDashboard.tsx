@@ -17,12 +17,12 @@ import {
 } from 'lucide-react'
 
 interface ProviderStatus {
-  name: string,
-  status: 'active' | 'limited' | 'error',
-  requestsUsed: number,
-  requestsLimit: number,
-  responseTime: number,
-  model: string,
+  name: string;
+  status: 'active' | 'limited' | 'error';
+  requestsUsed: number;
+  requestsLimit: number;
+  responseTime: number;
+  model: string;
   priority: number
 }
 
@@ -46,32 +46,32 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
   const fetchProviderStatus = async () => {
     try {
       // Mock provider status - in real implementation, this would call your health check API
-      const mockProviders: ProviderStatus[] = [
+      const mockProviders: ProviderStatus[] = [;
         {
-          name: 'Together.ai',
-          status: 'active',
-          requestsUsed: 25,
-          requestsLimit: 60,
-          responseTime: 1200,
-          model: 'Llama 3.1 8B',
+          name: 'Together.ai';
+          status: 'active';
+          requestsUsed: 25;
+          requestsLimit: 60;
+          responseTime: 1200;
+          model: 'Llama 3.1 8B';
           priority: 1
         },
         {
-          name: 'Groq',
+          name: 'Groq';
           status: 'active', 
-          requestsUsed: 8,
-          requestsLimit: 30,
-          responseTime: 350,
-          model: 'Llama 3.1 70B',
+          requestsUsed: 8;
+          requestsLimit: 30;
+          responseTime: 350;
+          model: 'Llama 3.1 70B';
           priority: 2
         },
         {
-          name: 'Hugging Face',
-          status: 'active',
-          requestsUsed: 3,
-          requestsLimit: 10,
-          responseTime: 2800,
-          model: 'Mistral 7B',
+          name: 'Hugging Face';
+          status: 'active';
+          requestsUsed: 3;
+          requestsLimit: 10;
+          responseTime: 2800;
+          model: 'Mistral 7B';
           priority: 3
         }
       ];

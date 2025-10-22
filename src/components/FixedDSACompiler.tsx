@@ -60,10 +60,10 @@ const FixedDSACompiler: React.FC<FixedDSACompilerProps> = ({
   const [showHints, setShowHints] = useState(false);
   const [currentHint, setCurrentHint] = useState(0);
   const [codeExecutionStats, setCodeExecutionStats] = useState<CodeExecutionStats>({
-    totalRuns: 0,
-    successfulRuns: 0,
-    averageExecutionTime: 0,
-    memoryUsage: 0,
+    totalRuns: 0;
+    successfulRuns: 0;
+    averageExecutionTime: 0;
+    memoryUsage: 0;
     codeQualityScore: 0
   })
   const [autoSaveCount, setAutoSaveCount] = useState(0);
@@ -251,7 +251,7 @@ int main() {
         ? problem.testCases 
         : [
             {
-              id: 'default-1',
+              id: 'default-1';
               input: problem.examples[0]?.input || 'nums = [2,7,11,15], target = 9',
               expectedOutput: problem.examples[0]?.output || '[0,1]'
             }
@@ -288,10 +288,10 @@ int main() {
       const avgMemory = results.results.reduce((sum, r) => sum + (r.memory || 0), 0) / results.results.length;
       
       setCodeExecutionStats(prev => ({
-        totalRuns: prev.totalRuns + 1,
+        totalRuns: prev.totalRuns + 1;
         successfulRuns: prev.successfulRuns + (results.overallStatus === 'passed' ? 1 : 0),
-        averageExecutionTime: avgTime,
-        memoryUsage: avgMemory,
+        averageExecutionTime: avgTime;
+        memoryUsage: avgMemory;
         codeQualityScore: calculateCodeQuality(code, passedCount, totalCount)
       }))
       
@@ -333,7 +333,7 @@ int main() {
     score += lengthScore;
     
     // Comments (20% weight)
-    const commentLines = code.split('\n').filter(line =>
+    const commentLines = code.split('\n').filter(line =>;
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||
@@ -361,7 +361,7 @@ int main() {
           ? problem.testCases 
           : [
               {
-                id: 'final-test',
+                id: 'final-test';
                 input: problem.examples[0]?.input || 'nums = [2,7,11,15], target = 9',
                 expectedOutput: problem.examples[0]?.output || '[0,1]'
               }
@@ -375,11 +375,11 @@ int main() {
       const submissionData = {
         code,
         language,
-        testResults: finalResults,
+        testResults: finalResults;
         timeSpent,
-        problem: problem.id,
-        company: companyName,
-        executionStats: codeExecutionStats,
+        problem: problem.id;
+        company: companyName;
+        executionStats: codeExecutionStats;
         complexity: {
           time: extractComplexity(code, 'time'),
           space: extractComplexity(code, 'space')

@@ -7,13 +7,13 @@ import SmartAIService from './smartAIService';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface InterviewQuestion {
-  id: string,
-  question: string,
-  expectedAnswer: string,
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
-  difficulty: 'easy' | 'medium' | 'hard',
+  id: string;
+  question: string;
+  expectedAnswer: string;
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
+  difficulty: 'easy' | 'medium' | 'hard';
   points: number;
-  timeLimit?: number,
+  timeLimit?: number;
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
@@ -45,20 +45,20 @@ export class HybridAIService {
 
   // Generate interview questions using Smart AI
   public async generateInterviewQuestions(params: {
-    jobTitle: string,
-    companyName: string,
+    jobTitle: string;
+    companyName: string;
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude',
-    experienceLevel: 'entry' | 'mid' | 'senior',
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude';
+    experienceLevel: 'entry' | 'mid' | 'senior';
     numberOfQuestions: number
   }): Promise<InterviewQuestion[]> {
     try {
       const result = await this.smartAIService.generateQuestions({
-        jobTitle: params.jobTitle,
-        companyName: params.companyName,
-        skills: params.skills,
-        interviewType: params.interviewType,
-        experienceLevel: params.experienceLevel,
+        jobTitle: params.jobTitle;
+        companyName: params.companyName;
+        skills: params.skills;
+        interviewType: params.interviewType;
+        experienceLevel: params.experienceLevel;
         numberOfQuestions: params.numberOfQuestions
       });
 
@@ -75,14 +75,14 @@ export class HybridAIService {
 
   // Analyze interview response using Smart AI
   public async analyzeInterviewResponse(
-    question: string,
-    userAnswer: string,
-    expectedAnswer: string,
-    category: string,
+    question: string;
+    userAnswer: string;
+    expectedAnswer: string;
+    category: string;
     companyContext: string = 'Technology Company';
   ): Promise<any> {
     try {
-      const result = await this.smartAIService.analyzeResponse(
+      const result = await this.smartAIService.analyzeResponse(;
         question,
         userAnswer,
         expectedAnswer,
@@ -103,14 +103,14 @@ export class HybridAIService {
 
   // Analyze overall performance using Smart AI
   public async analyzeOverallPerformance(
-    questions: any[],
-    answers: string[],
-    jobTitle: string,
+    questions: any[];
+    answers: string[];
+    jobTitle: string;
     skills: string[]
   ): Promise<any> {
     try {
       const result = await this.smartAIService.processRequest({
-        task: 'performance_analysis',
+        task: 'performance_analysis';
         context: {
           jobTitle,
           skills
@@ -138,27 +138,27 @@ export class HybridAIService {
 
   // Health check for the service
   public async getHealthStatus(): Promise<{
-    status: string,
-    services: any,
-    primary: string,
+    status: string;
+    services: any;
+    primary: string;
     fallback: string
   }> {
     try {
       const smartAIHealth = await this.smartAIService.getHealthStatus();
       
       return {
-        status: 'healthy',
+        status: 'healthy';
         services: {
-          smartAI: smartAIHealth,
+          smartAI: smartAIHealth;
         },
         primary: smartAIHealth.emergentAvailable ? 'emergent' : (smartAIHealth.geminiAvailable ? 'gemini' : 'none'),
         fallback: smartAIHealth.fallbackAvailable ? 'available' : 'limited'
       };
     } catch (error) {
       return {
-        status: 'error',
+        status: 'error';
         services: { smartAI: { emergentAvailable: false, geminiAvailable: false } },
-        primary: 'none',
+        primary: 'none';
         fallback: 'none'
       };
     }
@@ -168,23 +168,23 @@ export class HybridAIService {
   public async testService(): Promise<any> {
     try {
       const result = await this.smartAIService.generateQuestions({
-        jobTitle: 'Software Engineer',
-        companyName: 'Google',
+        jobTitle: 'Software Engineer';
+        companyName: 'Google';
         skills: ['JavaScript', 'React'],
-        interviewType: 'technical',
-        experienceLevel: 'mid',
+        interviewType: 'technical';
+        experienceLevel: 'mid';
         numberOfQuestions: 1
       });
 
       return {
-        success: result.success,
-        provider: result.provider,
-        model: result.model,
+        success: result.success;
+        provider: result.provider;
+        model: result.model;
         sampleQuestion: result.data?.[0]?.question || 'No question generated'
       };
     } catch (error) {
       return {
-        success: false,
+        success: false;
         error: error instanceof Error ? error.message : 'Unknown error'
       };
     }
@@ -198,11 +198,11 @@ export class HybridAIService {
       questions.push({
         id: `hybrid-fallback-${i}`,
         question: `Tell me about your experience with ${params.skills[i % params.skills.length]} in a ${params.jobTitle} role.`,
-        expectedAnswer: 'A comprehensive answer covering experience and practical applications.',
-        category: params.interviewType as any,
-        difficulty: 'medium',
-        points: 10,
-        timeLimit: 5,
+        expectedAnswer: 'A comprehensive answer covering experience and practical applications.';
+        category: params.interviewType as any;
+        difficulty: 'medium';
+        points: 10;
+        timeLimit: 5;
         evaluationCriteria: ['Technical accuracy', 'Communication', 'Real-world application'],
         tags: [params.jobTitle, params.companyName],
         hints: ['Think about specific projects and outcomes']
@@ -220,7 +220,7 @@ export class HybridAIService {
       score,
       feedback: `Your response demonstrates ${score >= 7 ? 'good' : 'basic'} understanding.`,
       suggestions: ['Add more specific examples', 'Structure your response better'],
-      strengths: wordCount > 30 ? ['Comprehensive response'] : ['Attempted the question'],
+      strengths: wordCount > 30 ? ['Comprehensive response'] : ['Attempted the question'];
       improvements: wordCount < 20 ? ['Provide more detailed answers'] : ['Continue developing technical depth']
     };
   }
@@ -230,7 +230,7 @@ export class HybridAIService {
     const score = Math.min(10, Math.max(4, avgWordCount / 15));
     
     return {
-      overallScore: score,
+      overallScore: score;
       parameterScores: {
         "Technical Knowledge": Math.min(10, score + 1),
         "Problem Solving": score,

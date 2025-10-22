@@ -59,7 +59,7 @@ export async function DELETE(request: NextRequest) {
 
         return NextResponse.json(
             { 
-                message: "Interview deleted successfully",
+                message: "Interview deleted successfully";
                 success: true 
             },
             { status: 200 }
@@ -69,7 +69,7 @@ export async function DELETE(request: NextRequest) {
         console.error("❌ Error deleting interview:", error);
         return NextResponse.json(
             {
-                error: "Failed to delete interview",
+                error: "Failed to delete interview";
                 details: error instanceof Error ? error.message : "Unknown error"
             },
             { status: 500 }

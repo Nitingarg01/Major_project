@@ -25,10 +25,10 @@ export const handleSignUp = async (formData: FormData) => {
     const hashedPass = await hash(password, 10);
     try {
         const newUser = await db.collection("users").insertOne({
-            name: name,
-            email: email,
-            password: hashedPass,
-            googleId: null,
+            name: name;
+            email: email;
+            password: hashedPass;
+            googleId: null;
             credits:3
         })
         return {

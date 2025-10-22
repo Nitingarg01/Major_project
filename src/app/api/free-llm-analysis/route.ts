@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       const userAnswer = answerObj?.answer || '';
 
       try {
-        const analysis = await freeLLMService.analyzeInterviewResponse(
+        const analysis = await freeLLMService.analyzeInterviewResponse(;
           question.question,
           userAnswer,
           question.expectedAnswer,
@@ -65,32 +65,32 @@ export async function POST(request: NextRequest) {
         );
 
         questionAnalyses.push({
-          questionId: question.id,
-          question: question.question,
-          category: question.category,
-          difficulty: question.difficulty,
-          userAnswer: userAnswer,
-          analysis: analysis,
-          points: question.points || 10,
+          questionId: question.id;
+          question: question.question;
+          category: question.category;
+          difficulty: question.difficulty;
+          userAnswer: userAnswer;
+          analysis: analysis;
+          points: question.points || 10;
           maxPoints: question.points || 10
         });
       } catch (error) {
         console.error(`Error analyzing question ${i}:`, error);
         // Add fallback analysis
         questionAnalyses.push({
-          questionId: question.id,
-          question: question.question,
-          category: question.category,
-          difficulty: question.difficulty,
-          userAnswer: userAnswer,
+          questionId: question.id;
+          question: question.question;
+          category: question.category;
+          difficulty: question.difficulty;
+          userAnswer: userAnswer;
           analysis: {
             score: Math.min(10, Math.max(3, userAnswer.split(' ').length / 10)),
-            feedback: 'Basic analysis completed.',
-            suggestions: ['Provide more detailed answers'],
-            strengths: ['Attempted the question'],
+            feedback: 'Basic analysis completed.';
+            suggestions: ['Provide more detailed answers'];
+            strengths: ['Attempted the question'];
             improvements: ['Add more specific examples']
           },
-          points: question.points || 10,
+          points: question.points || 10;
           maxPoints: question.points || 10
         });
       }
@@ -129,11 +129,11 @@ export async function POST(request: NextRequest) {
       const overallAnalysisResponse = await freeLLMService.callLLM({
         messages: [
           {
-            role: 'system',
+            role: 'system';
             content: 'You are an expert interview performance analyst providing comprehensive feedback.'
           },
           {
-            role: 'user',
+            role: 'user';
             content: `
               Analyze this overall interview performance:
               
@@ -183,27 +183,27 @@ export async function POST(request: NextRequest) {
 
     // Create comprehensive performance report
     const performanceReport = {
-      interviewId: interviewId,
-      companyName: interview.companyName,
-      jobTitle: interview.jobTitle,
+      interviewId: interviewId;
+      companyName: interview.companyName;
+      jobTitle: interview.jobTitle;
       analysisMetrics: {
-        totalQuestions: questionAnalyses.length,
+        totalQuestions: questionAnalyses.length;
         averageScore: parseFloat(averageScore.toFixed(2)),
         percentageScore: parseFloat(percentageScore.toFixed(2)),
-        totalScore: totalScore,
+        totalScore: totalScore;
         maxPossibleScore: maxPossibleScore
       },
       categoryPerformance: Object.entries(categoryPerformance).reduce((acc, [cat, perf]) => {
         acc[cat] = {
           average: parseFloat(perf.average.toFixed(2)),
-          questionsCount: perf.count,
+          questionsCount: perf.count;
           totalScore: perf.total
         };
         return acc;
       }, {} as any),
-      overallFeedback: overallFeedback,
-      recommendations: recommendations,
-      questionAnalyses: questionAnalyses,
+      overallFeedback: overallFeedback;
+      recommendations: recommendations;
+      questionAnalyses: questionAnalyses;
       aggregatedInsights: {
         topStrengths: [...new Set(allStrengths)].slice(0, 5),
         keyImprovements: [...new Set(allImprovements)].slice(0, 5),
@@ -211,8 +211,8 @@ export async function POST(request: NextRequest) {
       },
       metadata: {
         analyzedAt: new Date(),
-        aiService: 'free-llm-service',
-        analysisProvider: 'multiple-free-providers',
+        aiService: 'free-llm-service';
+        analysisProvider: 'multiple-free-providers';
         detailedAnalysis: true
       }
     };
@@ -225,8 +225,8 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'analyzed',
-          performanceScore: averageScore,
+          status: 'analyzed';
+          performanceScore: averageScore;
           analyzedAt: new Date()
         } 
       }
@@ -235,12 +235,12 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Performance analysis completed using FREE LLMs - Score: ${averageScore.toFixed(1)}/10`);
 
     return NextResponse.json({
-      message: 'Performance analysis completed successfully with FREE LLM Services',
-      analysis: performanceReport,
+      message: 'Performance analysis completed successfully with FREE LLM Services';
+      analysis: performanceReport;
       summary: {
         score: `${averageScore.toFixed(1)}/10`,
         percentage: `${percentageScore.toFixed(1)}%`,
-        questionsAnalyzed: questionAnalyses.length,
+        questionsAnalyzed: questionAnalyses.length;
         provider: 'free-llm-service'
       }
     });

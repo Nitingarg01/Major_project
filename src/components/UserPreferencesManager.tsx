@@ -69,7 +69,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
     setSaving(true);
     try {
       const response = await fetch('/api/user-preferences', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
@@ -101,7 +101,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
     setLoading(true);
     try {
       const response = await fetch('/api/user-preferences', {
-        method: 'DELETE',
+        method: 'DELETE';
       });
 
       const data = await response.json();
@@ -153,7 +153,7 @@ const UserPreferencesManager: React.FC<UserPreferencesManagerProps> = ({
       newDistribution[category as keyof typeof newDistribution] = value;
       
       // Distribute remaining percentage among other categories
-      const currentOthersTotal = otherCategories.reduce((sum, key) =>
+      const currentOthersTotal = otherCategories.reduce((sum, key) =>;
         sum + newDistribution[key as keyof typeof newDistribution], 0);
       
       if (currentOthersTotal > 0) {

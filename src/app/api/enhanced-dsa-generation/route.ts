@@ -33,15 +33,15 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Generated ${problems.length} DSA problems successfully`);
 
     return NextResponse.json({
-      success: true,
-      problems: problems,
+      success: true;
+      problems: problems;
       metadata: {
-        company: companyName,
-        count: problems.length,
+        company: companyName;
+        count: problems.length;
         experienceLevel,
         focusAreas,
         generatedAt: new Date(),
-        service: 'enhanced-groq-dsa',
+        service: 'enhanced-groq-dsa';
         hasTestCases: problems.every(p => p.testCases && p.testCases.length > 0)
       }
     });
@@ -51,8 +51,8 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       { 
-        error: 'Failed to generate DSA problems',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        error: 'Failed to generate DSA problems';
+        details: error instanceof Error ? error.message : 'Unknown error';
         fallback: true
       },
       { status: 500 }

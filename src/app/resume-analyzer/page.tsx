@@ -74,7 +74,7 @@ const ResumeAnalyzer = () => {
       formData.append('targetRole', targetRole);
 
       const response = await fetch('/api/analyze-resume', {
-        method: 'POST',
+        method: 'POST';
         body: formData
       })
 
@@ -231,7 +231,7 @@ const ResumeAnalyzer = () => {
                     accept=".pdf,.doc,.docx"
                     className="hidden"
                     onChange={(e) => {
-                      const file = e.target.files?.[0]
+                      const file = e.target.files?.[0];
                       if (file) {
                         setFileName(file.name);
                         analyzeResume(file);

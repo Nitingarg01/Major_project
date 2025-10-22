@@ -62,16 +62,16 @@ export async function POST(req: NextRequest) {
       try {
         const { db } = await connectToDatabase();
         const executionData = {
-          userId: session.user?.email || session.user?.name,
-          problemId: problem.id,
-          problemTitle: problem.title,
+          userId: session.user?.email || session.user?.name;
+          problemId: problem.id;
+          problemTitle: problem.title;
           companyName,
           language,
           sourceCode,
           executionResult,
           createdAt: new Date(),
-          success: executionResult.success,
-          executionTime: executionResult.executionTime,
+          success: executionResult.success;
+          executionTime: executionResult.executionTime;
           testsPassed: executionResult.testResults?.filter(t => t.passed).length || 0,
           totalTests: executionResult.testResults?.length || 0
         };
@@ -87,13 +87,13 @@ export async function POST(req: NextRequest) {
       const enhancedResult = {
         ...executionResult,
         metadata: {
-          problemId: problem.id,
-          problemTitle: problem.title,
-          problemDifficulty: problem.difficulty,
+          problemId: problem.id;
+          problemTitle: problem.title;
+          problemDifficulty: problem.difficulty;
           companyName,
           language,
           executedAt: new Date().toISOString(),
-          codeLength: sourceCode.length,
+          codeLength: sourceCode.length;
           lineCount: sourceCode.split('\n').length,
           compilerService: 'enhanced-dsa-compiler'
         },
@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
       };
 
       return NextResponse.json({
-        success: true,
+        success: true;
         execution: enhancedResult
       });
 
@@ -130,20 +130,20 @@ export async function POST(req: NextRequest) {
       
       // Return execution failure details
       return NextResponse.json({
-        success: false,
+        success: false;
         execution: {
-          success: false,
-          output: 'Code execution failed',
-          error: executionError instanceof Error ? executionError.message : 'Execution error',
-          executionTime: 0,
-          memory: 0,
+          success: false;
+          output: 'Code execution failed';
+          error: executionError instanceof Error ? executionError.message : 'Execution error';
+          executionTime: 0;
+          memory: 0;
           metadata: {
-            problemId: problem.id,
-            problemTitle: problem.title,
+            problemId: problem.id;
+            problemTitle: problem.title;
             companyName,
             language,
             executedAt: new Date().toISOString(),
-            compilerService: 'enhanced-dsa-compiler',
+            compilerService: 'enhanced-dsa-compiler';
             errorType: 'execution_failure'
           }
         }
@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Failed to execute code', 
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: error instanceof Error ? error.message : 'Unknown error';
         compilerService: 'enhanced-dsa-compiler'
       },
       { status: 500 }
@@ -171,12 +171,12 @@ export async function GET() {
     const healthStatus = await compiler.healthCheck();
 
     return NextResponse.json({
-      message: 'Enhanced DSA Code Execution API',
-      compilerService: 'enhanced-dsa-compiler',
+      message: 'Enhanced DSA Code Execution API';
+      compilerService: 'enhanced-dsa-compiler';
       supportedLanguages: languages.map(lang => ({
-        id: lang.id,
-        name: lang.name,
-        label: lang.label,
+        id: lang.id;
+        name: lang.name;
+        label: lang.label;
         fileExtension: lang.fileExtension
       })),
       features: [
@@ -190,8 +190,8 @@ export async function GET() {
       ],
       healthStatus,
       capabilities: {
-        executionTimeout: '10 seconds',
-        memoryLimit: '128 MB',
+        executionTimeout: '10 seconds';
+        memoryLimit: '128 MB';
         supportedInputMethods: ['stdin', 'function parameters'],
         outputFormats: ['stdout', 'return values'],
         errorHandling: 'Comprehensive with debugging hints'
@@ -199,9 +199,9 @@ export async function GET() {
     });
   } catch (error) {
     return NextResponse.json({
-      message: 'Enhanced DSA Code Execution API',
-      compilerService: 'enhanced-dsa-compiler',
-      status: 'error',
+      message: 'Enhanced DSA Code Execution API';
+      compilerService: 'enhanced-dsa-compiler';
+      status: 'error';
       error: error instanceof Error ? error.message : 'Service unavailable'
     });
   }

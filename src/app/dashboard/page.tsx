@@ -102,7 +102,7 @@ export default function DashboardPage() {
       
       console.log('Making API call to /api/user-interviews...');
       const response = await fetch('/api/user-interviews?limit=5', {
-        signal: controller.signal,
+        signal: controller.signal;
         headers: {
           'Cache-Control': 'no-cache',
           'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ export default function DashboardPage() {
     
     try {
       const response = await fetch('/api/delete-interview', {
-        method: 'DELETE',
+        method: 'DELETE';
         headers: {
           'Content-Type': 'application/json',
         },
@@ -215,8 +215,8 @@ export default function DashboardPage() {
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
+      month: 'short';
+      day: 'numeric';
       year: 'numeric'
     })
   }

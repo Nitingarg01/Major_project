@@ -10,18 +10,18 @@ import { auth } from "@/app/auth"; // your NextAuth server auth helper
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: "--font-geist-sans";
+  subsets: ["latin"];
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-geist-mono";
+  subsets: ["latin"];
 });
 
 export const metadata: Metadata = {
-  title: "Interview AI",
-  description: "Advanced AI Interview Platform for Career Success",
+  title: "Interview AI";
+  description: "Advanced AI Interview Platform for Career Success";
 };
 
 export default async function RootLayout({

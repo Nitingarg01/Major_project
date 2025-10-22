@@ -44,7 +44,7 @@ const StreamingFeedback = ({
 
     try {
       const response = await fetch('/api/stream-response', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },

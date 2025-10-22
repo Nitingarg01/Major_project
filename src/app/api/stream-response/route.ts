@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
           `
 
           // Simulate streaming response
-          const feedbackChunks = [
+          const feedbackChunks = [;
             { type: 'status', data: 'Analyzing your response...' },
             { type: 'status', data: 'Evaluating technical accuracy...' },
             { type: 'status', data: 'Assessing communication clarity...' },
@@ -65,19 +65,19 @@ export async function POST(request: NextRequest) {
           
           // Send final feedback
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({
-            type: 'feedback',
+            type: 'feedback';
             data: feedback
           })}\n\n`))
           
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({
-            type: 'complete',
+            type: 'complete';
             data: 'Feedback analysis complete!'
           })}\n\n`))
           
         } catch (error) {
           console.error('Streaming error:', error);
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({
-            type: 'error',
+            type: 'error';
             data: 'Failed to generate feedback'
           })}\n\n`))
         } finally {

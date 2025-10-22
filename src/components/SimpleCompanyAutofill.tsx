@@ -9,7 +9,7 @@ interface SimpleCompanyAutofillProps {
 }
 
 // Simple company list for N-gram style autofill suggestions
-const COMPANY_LIST = [
+const COMPANY_LIST = [;
   'Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Tesla', 'Uber', 
   'Airbnb', 'LinkedIn', 'Spotify', 'Dropbox', 'Slack', 'Adobe', 'Salesforce',
   'Twitter', 'PayPal', 'Oracle', 'IBM', 'Intel', 'NVIDIA', 'AMD', 'Qualcomm',
@@ -33,7 +33,7 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
   // Simple N-gram style filtering
   useEffect(() => {
     if (query.length >= 1) {
-      const filtered = COMPANY_LIST.filter(company =>
+      const filtered = COMPANY_LIST.filter(company =>;
         company.toLowerCase().startsWith(query.toLowerCase()) ||
         company.toLowerCase().includes(query.toLowerCase());
       ).slice(0, 8) // Show max 8 suggestions

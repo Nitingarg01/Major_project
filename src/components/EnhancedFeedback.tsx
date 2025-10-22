@@ -118,7 +118,7 @@ const EnhancedFeedback = ({ data, labels, overallScore }: EnhancedFeedbackProps)
         
         <div className="space-y-4">
           {labels.map((label, index) => {
-            const score = data[index]
+            const score = data[index];
             const IconComponent = getSkillIcon(label);
             const ScoreIcon = getScoreIcon(score);
             

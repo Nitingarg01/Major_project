@@ -55,7 +55,7 @@ const MultiRoundProgressTracker: React.FC<MultiRoundProgressTrackerProps> = ({
           {/* Round Steps */}
           <div className="space-y-4">
             {rounds.map((round, index) => {
-              const roundProgress = progress[index]
+              const roundProgress = progress[index];
               const isActive = index === currentRoundIndex;
 
               return (

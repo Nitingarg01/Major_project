@@ -26,40 +26,40 @@ import {
 } from 'lucide-react';
 
 interface AIHealthStatus {
-  groqAvailable: boolean,
-  geminiAvailable: boolean,
-  status: string,
-  activeProvider: string,
-  fallbackAvailable: boolean,
+  groqAvailable: boolean;
+  geminiAvailable: boolean;
+  status: string;
+  activeProvider: string;
+  fallbackAvailable: boolean;
   features: string[];
   companyProfilesLoaded?: number
 }
 
 interface ServiceMetrics {
-  totalRequests: number,
-  averageResponseTime: number,
-  successRate: number,
-  questionsGenerated: number,
-  responsesAnalyzed: number,
+  totalRequests: number;
+  averageResponseTime: number;
+  successRate: number;
+  questionsGenerated: number;
+  responsesAnalyzed: number;
   dsaProblemsCreated: number
 }
 
 const EnhancedAIDashboard: React.FC = () => {
   const [healthStatus, setHealthStatus] = useState<AIHealthStatus>({
-    groqAvailable: false,
-    geminiAvailable: false,
-    status: 'checking',
-    activeProvider: 'none',
-    fallbackAvailable: false,
+    groqAvailable: false;
+    geminiAvailable: false;
+    status: 'checking';
+    activeProvider: 'none';
+    fallbackAvailable: false;
     features: []
   });
 
   const [metrics, setMetrics] = useState<ServiceMetrics>({
-    totalRequests: 0,
-    averageResponseTime: 0,
-    successRate: 0,
-    questionsGenerated: 0,
-    responsesAnalyzed: 0,
+    totalRequests: 0;
+    averageResponseTime: 0;
+    successRate: 0;
+    questionsGenerated: 0;
+    responsesAnalyzed: 0;
     dsaProblemsCreated: 0
   });
 
@@ -79,27 +79,27 @@ const EnhancedAIDashboard: React.FC = () => {
       
       // Check Enhanced Groq AI health
       const groqResponse = await fetch('/api/groq-health', {
-        method: 'GET',
+        method: 'GET';
         cache: 'no-store'
       });
       
       if (groqResponse.ok) {
         const groqData = await groqResponse.json();
         setHealthStatus(groqData.health || {
-          groqAvailable: false,
-          geminiAvailable: false,
-          status: 'unknown',
-          activeProvider: 'none',
-          fallbackAvailable: false,
+          groqAvailable: false;
+          geminiAvailable: false;
+          status: 'unknown';
+          activeProvider: 'none';
+          fallbackAvailable: false;
           features: []
         });
       } else {
         setHealthStatus({
-          groqAvailable: false,
-          geminiAvailable: false,
-          status: 'api_error',
-          activeProvider: 'none',
-          fallbackAvailable: false,
+          groqAvailable: false;
+          geminiAvailable: false;
+          status: 'api_error';
+          activeProvider: 'none';
+          fallbackAvailable: false;
           features: []
         });
       }
@@ -118,11 +118,11 @@ const EnhancedAIDashboard: React.FC = () => {
     } catch (error) {
       console.error('Health check failed:', error);
       setHealthStatus({
-        groqAvailable: false,
-        geminiAvailable: false,
-        status: 'error',
-        activeProvider: 'none',
-        fallbackAvailable: false,
+        groqAvailable: false;
+        geminiAvailable: false;
+        status: 'error';
+        activeProvider: 'none';
+        fallbackAvailable: false;
         features: []
       });
     } finally {
@@ -135,14 +135,14 @@ const EnhancedAIDashboard: React.FC = () => {
     
     try {
       const response = await fetch('/api/generate-questions', {
-        method: 'POST',
+        method: 'POST';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          jobTitle: 'Software Engineer',
-          companyName: 'Google',
+          jobTitle: 'Software Engineer';
+          companyName: 'Google';
           skills: ['JavaScript', 'React'],
-          interviewType: 'technical',
-          experienceLevel: 'mid',
+          interviewType: 'technical';
+          experienceLevel: 'mid';
           numberOfQuestions: 1
         })
       });

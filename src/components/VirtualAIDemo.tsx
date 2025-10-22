@@ -31,7 +31,7 @@ const VirtualAIDemo: React.FC = () => {
   }>>([])
 
   // Demo messages for the AI
-  const demoMessages = [
+  const demoMessages = [;
     "Hello! I'm your Virtual AI Interviewer. I'm excited to meet you today!",
     "Let's start with a simple question: Can you tell me about yourself?",
     "That's interesting! What motivated you to apply for this position?",
@@ -71,13 +71,13 @@ const VirtualAIDemo: React.FC = () => {
     setConversation([]);
     
     // Welcome message
-    const welcomeMsg = demoMessages[0]
+    const welcomeMsg = demoMessages[0];
     setCurrentMessage(welcomeMsg);
     speakMessage(welcomeMsg);
     
     setConversation([{
-      speaker: 'ai',
-      message: welcomeMsg,
+      speaker: 'ai';
+      message: welcomeMsg;
       timestamp: new Date()
     }])
     
@@ -86,7 +86,7 @@ const VirtualAIDemo: React.FC = () => {
 
   // Simulate user response
   const simulateUserResponse = () => {
-    const userResponses = [
+    const userResponses = [;
       "I'm a software engineer with 5 years of experience in web development.",
       "I'm passionate about creating innovative solutions and this role aligns with my career goals.",
       "I break down complex problems into smaller parts and collaborate with my team to find solutions.",
@@ -95,11 +95,11 @@ const VirtualAIDemo: React.FC = () => {
     ]
     
     if (messageIndex < userResponses.length) {
-      const userMsg = userResponses[messageIndex]
+      const userMsg = userResponses[messageIndex];
       
       setConversation(prev => [...prev, {
-        speaker: 'user',
-        message: userMsg,
+        speaker: 'user';
+        message: userMsg;
         timestamp: new Date()
       }])
       
@@ -109,13 +109,13 @@ const VirtualAIDemo: React.FC = () => {
       // After a delay, AI responds
       setTimeout(() => {
         if (messageIndex + 1 < demoMessages.length) {
-          const nextAiMsg = demoMessages[messageIndex + 1]
+          const nextAiMsg = demoMessages[messageIndex + 1];
           setCurrentMessage(nextAiMsg);
           speakMessage(nextAiMsg);
           
           setConversation(prev => [...prev, {
-            speaker: 'ai',
-            message: nextAiMsg,
+            speaker: 'ai';
+            message: nextAiMsg;
             timestamp: new Date()
           }])
           
@@ -127,8 +127,8 @@ const VirtualAIDemo: React.FC = () => {
           speakMessage(endMsg);
           
           setConversation(prev => [...prev, {
-            speaker: 'ai',
-            message: endMsg,
+            speaker: 'ai';
+            message: endMsg;
             timestamp: new Date()
           }])
           
@@ -171,7 +171,7 @@ const VirtualAIDemo: React.FC = () => {
   }
 
   // AI Avatar Component
-  const AIAvatar = () => (
+  const AIAvatar = () => (;
     <div className="relative w-40 h-40 mx-auto mb-6">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-500 ${
         aiState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :

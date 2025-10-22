@@ -25,11 +25,11 @@ type FormFieldContextValue<
   name: TName
 }
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
+const FormFieldContext = React.createContext<FormFieldContextValue>(;
   {} as FormFieldContextValue
 )
 
-const FormField = <
+const FormField = <;
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
@@ -57,7 +57,7 @@ const useFormField = () => {
 
   return {
     id,
-    name: fieldContext.name,
+    name: fieldContext.name;
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
@@ -69,7 +69,7 @@ type FormItemContextValue = {
   id: string
 }
 
-const FormItemContext = React.createContext<FormItemContextValue>(
+const FormItemContext = React.createContext<FormItemContextValue>(;
   {} as FormItemContextValue
 )
 

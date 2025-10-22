@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const stats = calculatePerformanceStats(performances);
 
     return NextResponse.json({
-      success: true,
+      success: true;
       performances: performances.map(p => ({
         ...p,
         _id: p._id.toString()
@@ -45,12 +45,12 @@ export async function GET(request: NextRequest) {
 function calculatePerformanceStats(performances: any[]) {
   if (performances.length === 0) {
     return {
-      totalInterviews: 0,
-      averageScore: 0,
-      totalTimeSpent: 0,
-      improvementTrend: 0,
-      strongestArea: 'N/A',
-      weakestArea: 'N/A',
+      totalInterviews: 0;
+      averageScore: 0;
+      totalTimeSpent: 0;
+      improvementTrend: 0;
+      strongestArea: 'N/A';
+      weakestArea: 'N/A';
       recentPerformance: []
     }
   }
@@ -99,7 +99,7 @@ function calculatePerformanceStats(performances: any[]) {
   })
 
   // Recent performance trend (last 10 interviews)
-  const recentPerformance = performances
+  const recentPerformance = performances;
     .slice(0, 10)
     .reverse()
     .map(p => p.score)

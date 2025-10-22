@@ -73,13 +73,13 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
 }) => {
   // Core state
   const [interviewState, setInterviewState] = useState<InterviewState>({
-    currentQuestionIndex: 0,
-    isListening: false,
-    isSpeaking: false,
-    userResponse: '',
-    aiResponse: '',
-    conversationHistory: [],
-    startTime: null,
+    currentQuestionIndex: 0;
+    isListening: false;
+    isSpeaking: false;
+    userResponse: '';
+    aiResponse: '';
+    conversationHistory: [];
+    startTime: null;
     responses: []
   })
 
@@ -311,7 +311,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     try {
       await virtualAI.current.speak(text, {
         useElevenLabs,
-        personality: currentPersonality,
+        personality: currentPersonality;
         onStart: () => {
           updateAvatarState('speaking');
           setInterviewState(prev => ({ ...prev, isSpeaking: true }));
@@ -347,18 +347,18 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       companyName,
       jobTitle,
       interviewType,
-      currentQuestionIndex: 0,
-      totalQuestions: questions.length,
-      conversationHistory: [],
+      currentQuestionIndex: 0;
+      totalQuestions: questions.length;
+      conversationHistory: [];
       personality: currentPersonality
     })
     
     setInterviewState(prev => ({
       ...prev,
-      aiResponse: welcomeResponse.message,
+      aiResponse: welcomeResponse.message;
       conversationHistory: [{
-        speaker: 'ai',
-        message: welcomeResponse.message,
+        speaker: 'ai';
+        message: welcomeResponse.message;
         timestamp: new Date()
       }]
     }))
@@ -379,17 +379,17 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   }, [companyName, jobTitle, interviewType, questions.length, currentPersonality, speakText])
 
   const askCurrentQuestion = useCallback(() => {
-    const currentQuestion = questions[interviewState.currentQuestionIndex]
+    const currentQuestion = questions[interviewState.currentQuestionIndex];
     if (!currentQuestion) return
 
     const questionText = `Question ${interviewState.currentQuestionIndex + 1}: ${currentQuestion.question}`;
     
     setInterviewState(prev => ({
       ...prev,
-      aiResponse: questionText,
+      aiResponse: questionText;
       conversationHistory: [...prev.conversationHistory, {
-        speaker: 'ai',
-        message: questionText,
+        speaker: 'ai';
+        message: questionText;
         timestamp: new Date(),
         questionIndex: prev.currentQuestionIndex
       }]
@@ -410,15 +410,15 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       stopListening();
     }
 
-    const currentQuestion = questions[interviewState.currentQuestionIndex]
-    const responseTime = questionStartTimeRef.current
+    const currentQuestion = questions[interviewState.currentQuestionIndex];
+    const responseTime = questionStartTimeRef.current;
       ? Date.now() - questionStartTimeRef.current.getTime()
       : 0
 
     // Add user response to conversation
     const userMessage = {
-      speaker: 'user' as const,
-      message: interviewState.userResponse,
+      speaker: 'user' as const;
+      message: interviewState.userResponse;
       timestamp: new Date(),
       questionIndex: interviewState.currentQuestionIndex
     }
@@ -426,16 +426,16 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     updateAvatarState('thinking');
 
     // Analyze response in real-time
-    const analysis = await virtualAI.current.analyzeResponse(
+    const analysis = await virtualAI.current.analyzeResponse(;
       interviewState.userResponse,
       currentQuestion.question,
       {
         companyName,
         jobTitle,
         interviewType,
-        currentQuestionIndex: interviewState.currentQuestionIndex,
-        totalQuestions: questions.length,
-        conversationHistory: interviewState.conversationHistory,
+        currentQuestionIndex: interviewState.currentQuestionIndex;
+        totalQuestions: questions.length;
+        conversationHistory: interviewState.conversationHistory;
         personality: currentPersonality
       }
     )
@@ -444,34 +444,34 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     setRealTimeScore(analysis.score);
 
     // Generate AI follow-up
-    const followUpResponse = await virtualAI.current.generateFollowUp(
+    const followUpResponse = await virtualAI.current.generateFollowUp(;
       interviewState.userResponse,
       currentQuestion.question,
       {
         companyName,
         jobTitle,
         interviewType,
-        currentQuestionIndex: interviewState.currentQuestionIndex,
-        totalQuestions: questions.length,
-        conversationHistory: interviewState.conversationHistory,
+        currentQuestionIndex: interviewState.currentQuestionIndex;
+        totalQuestions: questions.length;
+        conversationHistory: interviewState.conversationHistory;
         personality: currentPersonality
       }
     )
     
     const aiMessage = {
-      speaker: 'ai' as const,
-      message: followUpResponse.message,
+      speaker: 'ai' as const;
+      message: followUpResponse.message;
       timestamp: new Date()
     }
 
     // Save response with analysis
     const response = {
-      questionIndex: interviewState.currentQuestionIndex,
-      question: currentQuestion.question,
-      userAnswer: interviewState.userResponse,
+      questionIndex: interviewState.currentQuestionIndex;
+      question: currentQuestion.question;
+      userAnswer: interviewState.userResponse;
       timestamp: new Date(),
       responseTime,
-      aiFollowUp: followUpResponse.message,
+      aiFollowUp: followUpResponse.message;
       analysis
     }
 
@@ -502,26 +502,26 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   const moveToNextQuestion = useCallback(() => {
     if (interviewState.currentQuestionIndex < questions.length - 1) {
       // Generate transition
-      const transition = virtualAI.current.generateTransition(
+      const transition = virtualAI.current.generateTransition(;
         interviewState.currentQuestionIndex,
         questions.length,
         {
           companyName,
           jobTitle,
           interviewType,
-          currentQuestionIndex: interviewState.currentQuestionIndex,
-          totalQuestions: questions.length,
-          conversationHistory: interviewState.conversationHistory,
+          currentQuestionIndex: interviewState.currentQuestionIndex;
+          totalQuestions: questions.length;
+          conversationHistory: interviewState.conversationHistory;
           personality: currentPersonality
         }
       )
 
       setInterviewState(prev => ({
         ...prev,
-        aiResponse: transition.message,
+        aiResponse: transition.message;
         conversationHistory: [...prev.conversationHistory, {
-          speaker: 'ai',
-          message: transition.message,
+          speaker: 'ai';
+          message: transition.message;
           timestamp: new Date()
         }],
         currentQuestionIndex: prev.currentQuestionIndex + 1
@@ -575,19 +575,19 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     const avgScore = interviewState.responses.length > 0 ? totalScore / interviewState.responses.length : 0;
 
     const results = {
-      totalQuestions: questions.length,
-      answeredQuestions: interviewState.responses.length,
+      totalQuestions: questions.length;
+      answeredQuestions: interviewState.responses.length;
       totalTime: interviewState.startTime ? Date.now() - interviewState.startTime.getTime() : 0,
       averageResponseTime: interviewState.responses.reduce((sum, r) => sum + r.responseTime, 0) / Math.max(interviewState.responses.length, 1),
-      conversationHistory: interviewState.conversationHistory,
-      responses: interviewState.responses,
+      conversationHistory: interviewState.conversationHistory;
+      responses: interviewState.responses;
       completedAt: new Date(),
-      overallScore: avgScore,
-      personality: currentPersonality,
-      usedElevenLabs: useElevenLabs,
+      overallScore: avgScore;
+      personality: currentPersonality;
+      usedElevenLabs: useElevenLabs;
       metadata: {
-        virtualAI: true,
-        enhancedVersion: true,
+        virtualAI: true;
+        enhancedVersion: true;
         realTimeAnalysis: true
       }
     }
@@ -612,7 +612,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   }
 
   // AI Avatar Component
-  const AIAvatar = () => (
+  const AIAvatar = () => (;
     <div className="relative w-32 h-32 mx-auto mb-4">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-300 ${
         aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :

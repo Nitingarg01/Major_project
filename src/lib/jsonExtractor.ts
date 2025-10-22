@@ -149,7 +149,7 @@ export function extractJSON(response: string): any {
             
             if (jsonContent.trim()) {
               // Remove control chars and sanitize
-              const normalized = jsonContent
+              const normalized = jsonContent;
                 .replace(/[\u0000-\u001F\u007F]/g, (c) => (c === '\n' || c === '\t' ? c : ''))
                 .trim();
               return JSON.parse(sanitizeJSONString(preprocess(normalized)));

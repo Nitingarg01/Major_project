@@ -23,35 +23,35 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
 
-  const navigation = [
+  const navigation = [;
     {
-      name: 'Dashboard',
-      href: '/dashboard',
-      icon: Home,
+      name: 'Dashboard';
+      href: '/dashboard';
+      icon: Home;
       current: pathname === '/dashboard'
     },
     {
-      name: 'Create Interview',
-      href: '/create',
-      icon: PlusCircle,
+      name: 'Create Interview';
+      href: '/create';
+      icon: PlusCircle;
       current: pathname === '/create'
     },
     {
-      name: 'Resume Analyzer',
-      href: '/resume-analyzer',
-      icon: FileText,
+      name: 'Resume Analyzer';
+      href: '/resume-analyzer';
+      icon: FileText;
       current: pathname.startsWith('/resume-analyzer')
     },
     {
-      name: 'Analytics',
-      href: '/analytics',
-      icon: BarChart3,
+      name: 'Analytics';
+      href: '/analytics';
+      icon: BarChart3;
       current: pathname === '/analytics'
     },
     {
-      name: 'Profile',
-      href: '/profile',
-      icon: User,
+      name: 'Profile';
+      href: '/profile';
+      icon: User;
       current: pathname === '/profile'
     }
   ]

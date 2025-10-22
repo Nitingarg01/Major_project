@@ -2,27 +2,27 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 interface QuestionGenerationParams {
-  jobTitle: string,
-  companyName: string,
+  jobTitle: string;
+  companyName: string;
   skills: string[];
-  jobDescription?: string,
-  experienceLevel: 'entry' | 'mid' | 'senior' | 'lead',
+  jobDescription?: string;
+  experienceLevel: 'entry' | 'mid' | 'senior' | 'lead';
   interviewType: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'mixed';
-  resumeContent?: string,
+  resumeContent?: string;
   numberOfQuestions: number;
   difficultyDistribution?: {
-    easy: number,
-    medium: number,
+    easy: number;
+    medium: number;
     hard: number
   };
 }
 
 interface EnhancedQuestion {
-  id: string,
-  question: string,
-  expectedAnswer: string,
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design',
-  difficulty: 'easy' | 'medium' | 'hard',
+  id: string;
+  question: string;
+  expectedAnswer: string;
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
+  difficulty: 'easy' | 'medium' | 'hard';
   points: number;
   timeLimit?: number; // in minutes
   followUpQuestions?: string[];
@@ -33,18 +33,18 @@ interface EnhancedQuestion {
 }
 
 interface DSAProblem {
-  id: string,
-  title: string,
-  difficulty: 'easy' | 'medium' | 'hard',
-  description: string,
+  id: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
   examples: Array<{
-    input: string,
+    input: string;
     output: string;
     explanation?: string
   }>;
   testCases: Array<{
-    id: string,
-    input: string,
+    id: string;
+    input: string;
     expectedOutput: string;
     hidden?: boolean
   }>;
@@ -57,13 +57,13 @@ interface DSAProblem {
 }
 
 interface AptitudeQuestion {
-  id: string,
-  type: 'verbal' | 'numerical' | 'logical' | 'spatial',
-  question: string,
+  id: string;
+  type: 'verbal' | 'numerical' | 'logical' | 'spatial';
+  question: string;
   options: string[];
-  correctAnswer: number,
-  explanation: string,
-  difficulty: 'easy' | 'medium' | 'hard',
+  correctAnswer: number;
+  explanation: string;
+  difficulty: 'easy' | 'medium' | 'hard';
   timeLimit: number; // in seconds
 }
 
@@ -116,9 +116,9 @@ export class EnhancedAIService {
 
   // Generate DSA problems
   public async generateDSAProblems(
-    companyName: string,
-    difficulty: 'easy' | 'medium' | 'hard',
-    topics: string[],
+    companyName: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+    topics: string[];
     count: number = 3;
   ): Promise<DSAProblem[]> {
     if (!this.apiKey) {
@@ -193,7 +193,7 @@ export class EnhancedAIService {
   // Generate aptitude questions
   public async generateAptitudeQuestions(
     types: ('verbal' | 'numerical' | 'logical' | 'spatial')[],
-    difficulty: 'easy' | 'medium' | 'hard',
+    difficulty: 'easy' | 'medium' | 'hard';
     count: number = 10;
   ): Promise<AptitudeQuestion[]> {
     if (!this.apiKey) {
@@ -250,14 +250,14 @@ export class EnhancedAIService {
 
   // Real-time interview analysis
   public async analyzeResponse(
-    question: string,
-    userAnswer: string,
-    expectedAnswer: string,
-    category: string,
+    question: string;
+    userAnswer: string;
+    expectedAnswer: string;
+    category: string;
     companyContext: string
   ): Promise<{
-    score: number,
-    feedback: string,
+    score: number;
+    feedback: string;
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -301,9 +301,9 @@ export class EnhancedAIService {
         const analysis = extractJSON(text);
         return {
           score: Math.max(0, Math.min(10, analysis.score || 5)),
-          feedback: analysis.feedback || 'Response analyzed successfully.',
-          suggestions: analysis.suggestions || ['Continue practicing similar questions'],
-          strengths: analysis.strengths || ['Attempted the question'],
+          feedback: analysis.feedback || 'Response analyzed successfully.';
+          suggestions: analysis.suggestions || ['Continue practicing similar questions'];
+          strengths: analysis.strengths || ['Attempted the question'];
           improvements: analysis.improvements || ['Add more detail to responses']
         };
       } catch (parseError) {
@@ -369,14 +369,14 @@ export class EnhancedAIService {
     return questions.map((q, index) => ({
       id: q.id || `q-${Date.now()}-${index}`,
       question: q.question || `Sample question ${index + 1}`,
-      expectedAnswer: q.expectedAnswer || 'Expected answer not provided',
-      category: q.category || 'technical',
-      difficulty: q.difficulty || 'medium',
-      points: q.points || 10,
-      timeLimit: q.timeLimit || 5,
-      followUpQuestions: q.followUpQuestions || [],
+      expectedAnswer: q.expectedAnswer || 'Expected answer not provided';
+      category: q.category || 'technical';
+      difficulty: q.difficulty || 'medium';
+      points: q.points || 10;
+      timeLimit: q.timeLimit || 5;
+      followUpQuestions: q.followUpQuestions || [];
       evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
-      companyRelevance: q.companyRelevance || 7,
+      companyRelevance: q.companyRelevance || 7;
       tags: q.tags || [params.jobTitle, params.companyName],
       hints: q.hints || []
     }));
@@ -391,13 +391,13 @@ export class EnhancedAIService {
         id: `mock-q-${i}`,
         question: `Tell me about your experience with ${params.skills[i % params.skills.length]} in the context of ${params.jobTitle} role.`,
         expectedAnswer: `A comprehensive answer covering experience, challenges, and achievements with ${params.skills[i % params.skills.length]}.`,
-        category: i % 2 === 0 ? 'technical' : 'behavioral',
+        category: i % 2 === 0 ? 'technical' : 'behavioral';
         difficulty: ['easy', 'medium', 'hard'][i % 3] as 'easy' | 'medium' | 'hard',
-        points: 10,
-        timeLimit: 5,
-        followUpQuestions: [`Can you provide a specific example?`],
+        points: 10;
+        timeLimit: 5;
+        followUpQuestions: [`Can you provide a specific example?`];
         evaluationCriteria: ['Technical accuracy', 'Communication clarity', 'Real-world application'],
-        companyRelevance: 8,
+        companyRelevance: 8;
         tags: [params.jobTitle, params.companyName, params.skills[i % params.skills.length]],
         hints: ['Think about specific projects and outcomes']
       });
@@ -413,12 +413,12 @@ export class EnhancedAIService {
       mockProblems.push({
         id: `mock-dsa-${i}`,
         title: `${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Problem ${i + 1}`,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        difficulty: difficulty as 'easy' | 'medium' | 'hard';
         description: `Solve this ${difficulty} level data structures and algorithms problem.`,
         examples: [
           {
             input: '[1,2,3]',
-            output: '6',
+            output: '6';
             explanation: 'Sum of all elements'
           }
         ],
@@ -456,9 +456,9 @@ export class EnhancedAIService {
         type,
         question: `This is a ${difficulty} level ${type} reasoning question ${i + 1}.`,
         options: ['Option A', 'Option B', 'Option C', 'Option D'],
-        correctAnswer: i % 4,
-        explanation: 'This is the correct answer because of logical reasoning.',
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        correctAnswer: i % 4;
+        explanation: 'This is the correct answer because of logical reasoning.';
+        difficulty: difficulty as 'easy' | 'medium' | 'hard';
         timeLimit: difficulty === 'easy' ? 60 : difficulty === 'medium' ? 90 : 120
       });
     }

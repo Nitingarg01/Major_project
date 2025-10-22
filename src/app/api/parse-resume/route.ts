@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
         if (!contentType.includes("multipart/form-data")) {
             console.log("❌ Invalid Content Type:", contentType);
             return NextResponse.json({
-                error: "Expected multipart/form-data",
+                error: "Expected multipart/form-data";
                 status: 400
             }, { status: 400 })
         }
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
         if (!file) {
             return NextResponse.json({ 
-                error: "No resume file provided",
+                error: "No resume file provided";
                 status: 400
             }, { status: 400 })
         }
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             return NextResponse.json({
-                error: "File size too large. Maximum allowed size is 5MB.",
+                error: "File size too large. Maximum allowed size is 5MB.";
                 status: 400
             }, { status: 400 })
         }
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
         if (!textContent || textContent.length < 50) {
             return NextResponse.json({
-                error: "Unable to extract meaningful content from the resume. Please ensure the file is not corrupted or password-protected.",
+                error: "Unable to extract meaningful content from the resume. Please ensure the file is not corrupted or password-protected.";
                 status: 400
             }, { status: 400 })
         }
@@ -84,9 +84,9 @@ ${textContent.substring(0, 4000)}
         }
 
         const model = genAI.getGenerativeModel({
-            model: modelUsed,
+            model: modelUsed;
             generationConfig: {
-                temperature: 0.7,
+                temperature: 0.7;
                 maxOutputTokens: 1000
             }
         })
@@ -115,7 +115,7 @@ ${textContent.substring(0, 4000)}
 
             return NextResponse.json({ 
                 message: "Resume parsed successfully", 
-                data: extracted,
+                data: extracted;
                 status: 200
             }, { status: 200 })
 
@@ -124,8 +124,8 @@ ${textContent.substring(0, 4000)}
             console.error("Raw response:", text);
             
             return NextResponse.json({
-                error: "Failed to parse AI response. Please try uploading a different resume format.",
-                status: 500,
+                error: "Failed to parse AI response. Please try uploading a different resume format.";
+                status: 500;
                 details: parseError instanceof Error ? parseError.message : "JSON parse error"
             }, { status: 500 });
         }
@@ -133,8 +133,8 @@ ${textContent.substring(0, 4000)}
     } catch (error) {
         console.error("❌ Error in resume parser:", error);
         return NextResponse.json({
-            error: "Resume parsing failed. Please try again or contact support.",
-            status: 500,
+            error: "Resume parsing failed. Please try again or contact support.";
+            status: 500;
             details: error instanceof Error ? error.message : "Unknown error"
         }, { status: 500 });
     }

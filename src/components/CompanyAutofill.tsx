@@ -67,7 +67,7 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
   useEffect(() => {
     if (suggestionRefs.current[selectedIndex]) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
-        block: 'nearest',
+        block: 'nearest';
         behavior: 'smooth'
       })
     }

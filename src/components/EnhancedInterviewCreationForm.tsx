@@ -41,11 +41,11 @@ const EnhancedInterviewCreationForm = () => {
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-            jobTitle: '',
-            jobDesc: '',
-            skills: [],
-            companyName: '',
-            experienceLevel: 'mid',
+            jobTitle: '';
+            jobDesc: '';
+            skills: [];
+            companyName: '';
+            experienceLevel: 'mid';
             interviewType: 'mixed'
         }
     })
@@ -91,9 +91,9 @@ const EnhancedInterviewCreationForm = () => {
                 // Handle duplicate company error
                 if (response.error.includes('already completed an interview')) {
                     toast.error("🏢 Duplicate Company Interview", {
-                        description: response.error,
+                        description: response.error;
                         action: {
-                            label: "View Performance Stats",
+                            label: "View Performance Stats";
                             onClick: () => router.push('/performance')
                         }
                     })
@@ -595,7 +595,7 @@ const EnhancedInterviewCreationForm = () => {
                                         accept=".pdf,.doc,.docx"
                                         className="hidden"
                                         onChange={(e) => {
-                                            const file = e.target.files?.[0]
+                                            const file = e.target.files?.[0];
                                             if (file) {
                                                 setFileName(file.name);
                                                 parseResume(file);

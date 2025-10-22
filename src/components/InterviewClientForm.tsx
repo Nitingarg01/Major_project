@@ -80,7 +80,7 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
                 toast.info("⚡ Generating AI feedback...");
                 
                 const feedbackResponse = await fetch('/api/fast-feedback', {
-                    method: 'POST',
+                    method: 'POST';
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ interviewId: id })
                 });

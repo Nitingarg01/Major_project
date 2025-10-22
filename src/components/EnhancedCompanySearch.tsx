@@ -12,12 +12,12 @@ interface EnhancedCompanySearchProps {
 }
 
 interface CompanySuggestion {
-  name: string,
-  industry: string,
+  name: string;
+  industry: string;
   description: string
 }
 
-const POPULAR_COMPANIES = [
+const POPULAR_COMPANIES = [;
   'Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Tesla', 'Uber', 
   'Airbnb', 'LinkedIn', 'Spotify', 'Dropbox', 'Slack', 'Adobe', 'Salesforce',
   'Twitter', 'PayPal', 'Oracle', 'IBM', 'Intel', 'NVIDIA', 'AMD', 'Qualcomm'
@@ -70,13 +70,13 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     setLoading(true);
     try {
       // First, check if it matches popular companies for quick response
-      const popularMatches = POPULAR_COMPANIES
+      const popularMatches = POPULAR_COMPANIES;
         .filter(company => 
           company.toLowerCase().includes(searchQuery.toLowerCase());
         )
         .slice(0, 5)
         .map(company => ({
-          name: company,
+          name: company;
           industry: getCompanyIndustry(company),
           description: `Explore opportunities at ${company}`
         }))
@@ -89,7 +89,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
 
       // Use Groq API for additional company suggestions
       const response = await fetch('/api/company-search', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
@@ -101,13 +101,13 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         if (data.success && data.companies) {
           // Combine popular matches with AI-generated suggestions
           const aiSuggestions = data.companies.map((company: any) => ({
-            name: company.name,
-            industry: company.industry || 'Technology',
+            name: company.name;
+            industry: company.industry || 'Technology';
             description: company.description || `Leading company in ${company.industry || 'technology'}`
           }))
           
           // Remove duplicates and combine
-          const combined = [...popularMatches]
+          const combined = [...popularMatches];
           aiSuggestions.forEach((aiSugg: CompanySuggestion) => {
             if (!combined.some(existing => existing.name.toLowerCase() === aiSugg.name.toLowerCase())) {
               combined.push(aiSugg);
@@ -122,13 +122,13 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     } catch (error) {
       console.error('Error searching companies:', error);
       // Fallback to popular companies only
-      const fallbackMatches = POPULAR_COMPANIES
+      const fallbackMatches = POPULAR_COMPANIES;
         .filter(company => 
           company.toLowerCase().includes(searchQuery.toLowerCase());
         )
         .slice(0, 6)
         .map(company => ({
-          name: company,
+          name: company;
           industry: getCompanyIndustry(company),
           description: `Explore opportunities at ${company}`
         }))
@@ -187,7 +187,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return
 
-    const currentSuggestions = showTrending ?
+    const currentSuggestions = showTrending ?;
       [...recentSearches, ...POPULAR_COMPANIES.slice(0, 6)] : 
       suggestions
 
@@ -203,12 +203,12 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
       case 'Enter':
         e.preventDefault();
         if (showTrending) {
-          const selected = currentSuggestions[selectedIndex]
+          const selected = currentSuggestions[selectedIndex];
           if (selected) {
             handleSelect(typeof selected === 'string' ? selected : selected.name)
           }
         } else {
-          const selected = suggestions[selectedIndex]
+          const selected = suggestions[selectedIndex];
           if (selected) {
             handleSelect(selected.name);
           }
@@ -223,13 +223,13 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   useEffect(() => {
     if (suggestionRefs.current[selectedIndex]) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
-        block: 'nearest',
+        block: 'nearest';
         behavior: 'smooth'
       })
     }
   }, [selectedIndex])
 
-  const trendingSuggestions = showTrending ?
+  const trendingSuggestions = showTrending ?;
     [...recentSearches, ...POPULAR_COMPANIES.slice(0, 8)] : 
     []
 
@@ -372,7 +372,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    const randomCompany = POPULAR_COMPANIES[
+                    const randomCompany = POPULAR_COMPANIES[;
                       Math.floor(Math.random() * POPULAR_COMPANIES.length);
                     ]
                     handleSelect(randomCompany);

@@ -151,30 +151,30 @@ export default function PerformancePage() {
       } else {
         // Create mock data for demo if API doesn't exist yet
         setPerformanceData({
-          totalInterviews: 12,
-          completedInterviews: 8,
-          averageScore: 78,
+          totalInterviews: 12;
+          completedInterviews: 8;
+          averageScore: 78;
           strongAreas: ['Technical Skills', 'Problem Solving', 'Communication'],
           improvementAreas: ['System Design', 'Behavioral Questions', 'Time Management'],
           recentFeedback: [
             {
-              _id: '1',
-              interviewId: 'int_1',
-              companyName: 'Google',
-              jobTitle: 'Software Engineer',
-              score: 85,
-              feedback: 'Strong technical skills and problem-solving approach. Excellent coding implementation.',
+              _id: '1';
+              interviewId: 'int_1';
+              companyName: 'Google';
+              jobTitle: 'Software Engineer';
+              score: 85;
+              feedback: 'Strong technical skills and problem-solving approach. Excellent coding implementation.';
               strengths: ['Clean code', 'Algorithm optimization', 'Clear explanation'],
               improvements: ['System design depth', 'Edge case handling'],
               createdAt: new Date().toISOString()
             },
             {
-              _id: '2',
-              interviewId: 'int_2',
-              companyName: 'Amazon',
-              jobTitle: 'Senior SDE',
-              score: 72,
-              feedback: 'Good understanding of leadership principles. Need to work on system design complexity.',
+              _id: '2';
+              interviewId: 'int_2';
+              companyName: 'Amazon';
+              jobTitle: 'Senior SDE';
+              score: 72;
+              feedback: 'Good understanding of leadership principles. Need to work on system design complexity.';
               strengths: ['Leadership scenarios', 'Customer obsession'],
               improvements: ['Scalability discussions', 'Trade-off analysis'],
               createdAt: new Date(Date.now() - 86400000).toISOString()
@@ -193,7 +193,7 @@ export default function PerformancePage() {
 
   const filteredData = performanceData.filter(item => {
     const matchesType = filterType === 'all' || item.interviewType === filterType;
-    const matchesSearch = searchTerm === '' ||
+    const matchesSearch = searchTerm === '' ||;
       item.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.companyName.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesType && matchesSearch;
@@ -222,16 +222,16 @@ export default function PerformancePage() {
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
+      month: 'short';
+      day: 'numeric';
+      year: 'numeric';
+      hour: '2-digit';
       minute: '2-digit'
     })
   }
 
   const exportData = () => {
-    const csvContent = [
+    const csvContent = [;
       ['Date', 'Company', 'Position', 'Type', 'Score', 'Time Spent', 'Questions Answered'].join(','),
       ...filteredData.map(item => [
         formatDate(item.completedAt),

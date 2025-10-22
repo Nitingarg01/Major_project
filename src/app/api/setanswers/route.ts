@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
         console.log(`📝 Saving ${data.length} answers for interview ${id}`);
         console.log('📄 Answer data format:', {
             isArray: Array.isArray(data),
-            length: data.length,
-            firstAnswer: data[0],
+            length: data.length;
+            firstAnswer: data[0];
             answerKeys: data[0] ? Object.keys(data[0]) : []
         })
 
@@ -38,39 +38,39 @@ export async function POST(request: NextRequest) {
         const transformedAnswers = data.map((item, index) => {
             if (typeof item === 'object' && item.answer) {
                 return {
-                    questionIndex: index,
-                    answer: item.answer,
+                    questionIndex: index;
+                    answer: item.answer;
                     timestamp: new Date()
                 }
             } else if (typeof item === 'string') {
                 return {
-                    questionIndex: index,
-                    answer: item,
+                    questionIndex: index;
+                    answer: item;
                     timestamp: new Date()
                 }
             } else {
                 console.warn(`⚠️ Unexpected answer format at index ${index}:`, item);
                 return {
-                    questionIndex: index,
-                    answer: item?.answer || 'No answer provided',
+                    questionIndex: index;
+                    answer: item?.answer || 'No answer provided';
                     timestamp: new Date()
                 }
             }
         })
 
         console.log('✅ Transformed answers:', {
-            count: transformedAnswers.length,
+            count: transformedAnswers.length;
             sampleTransformed: transformedAnswers[0]
         })
 
         // Update questions with answers
-        const quesBank = await db.collection("questions").findOneAndUpdate(
+        const quesBank = await db.collection("questions").findOneAndUpdate(;
             { interviewId: id },
             {
                 $set: {
-                    answers: transformedAnswers,
+                    answers: transformedAnswers;
                     completedAt: new Date(),
-                    answersCount: transformedAnswers.length,
+                    answersCount: transformedAnswers.length;
                     lastUpdated: new Date()
                 }
             },
@@ -85,11 +85,11 @@ export async function POST(request: NextRequest) {
         }
 
         // Update interview status to completed
-        const intSet = await db.collection("interviews").findOneAndUpdate(
+        const intSet = await db.collection("interviews").findOneAndUpdate(;
             { _id: objid },
             {
                 $set: {
-                    status: 'completed',
+                    status: 'completed';
                     completedAt: new Date()
                 }
             },
@@ -106,15 +106,15 @@ export async function POST(request: NextRequest) {
         console.log(`✅ Interview ${id} completed successfully`);
 
         return NextResponse.json({
-            message: 'Answers uploaded successfully',
-            status: 200,
-            questionbank: quesBank._id,
-            intStatus: intSet.status,
-            answersCount: transformedAnswers.length,
+            message: 'Answers uploaded successfully';
+            status: 200;
+            questionbank: quesBank._id;
+            intStatus: intSet.status;
+            answersCount: transformedAnswers.length;
             debug: {
-                originalDataLength: data.length,
-                transformedDataLength: transformedAnswers.length,
-                sampleOriginal: data[0],
+                originalDataLength: data.length;
+                transformedDataLength: transformedAnswers.length;
+                sampleOriginal: data[0];
                 sampleTransformed: transformedAnswers[0]
             }
         })
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             { 
                 message: "Failed to upload answers", 
-                status: 500,
+                status: 500;
                 error: error instanceof Error ? error.message : "Unknown error"
             },
             { status: 500 }

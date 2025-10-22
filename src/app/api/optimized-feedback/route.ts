@@ -55,21 +55,21 @@ export async function POST(request: NextRequest) {
       // Generate individual question feedback
       const individualFeedback = [];
       for (let i = 0; i < Math.min(questions.length, answers.length, 5); i++) {
-        const questionFeedback = await feedbackService.generateQuickFeedback(
+        const questionFeedback = await feedbackService.generateQuickFeedback(;
           questions[i].question,
           answers[i]?.answer || '',
           questions[i].category,
           interview.companyName
         );
         individualFeedback.push({
-          questionIndex: i,
+          questionIndex: i;
           ...questionFeedback
         });
       }
       
       analysis = {
-        type: 'individual',
-        feedback: individualFeedback,
+        type: 'individual';
+        feedback: individualFeedback;
         processingTime: Date.now() - startTime
       };
     } else {
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate simple performance metrics
-    const metrics = feedbackService.calculatePerformanceMetrics(
+    const metrics = feedbackService.calculatePerformanceMetrics(;
       questions,
       answers.map((a: any) => a?.answer || ''),
       0 // timeSpent not available here
@@ -94,30 +94,30 @@ export async function POST(request: NextRequest) {
 
     // Create comprehensive but fast report
     const performanceReport = {
-      interviewId: interviewId,
-      companyName: interview.companyName,
-      jobTitle: interview.jobTitle,
-      mode: mode,
-      processingTime: analysis.processingTime,
+      interviewId: interviewId;
+      companyName: interview.companyName;
+      jobTitle: interview.jobTitle;
+      mode: mode;
+      processingTime: analysis.processingTime;
       analysisMetrics: {
-        totalQuestions: questions.length,
-        averageScore: analysis.overallScore || metrics.overallScore,
+        totalQuestions: questions.length;
+        averageScore: analysis.overallScore || metrics.overallScore;
         percentageScore: ((analysis.overallScore || metrics.overallScore) / 10) * 100,
         completionRate: metrics.completionRate
       },
-      categoryPerformance: analysis.parameterScores || metrics.categoryScores,
+      categoryPerformance: analysis.parameterScores || metrics.categoryScores;
       quickAnalysis: {
         overallVerdict: analysis.overallVerdict || `Interview completed with ${metrics.completionRate}% completion rate`,
-        strengths: analysis.strengths || ['Completed all questions'],
-        improvements: analysis.improvements || ['Continue practicing'],
+        strengths: analysis.strengths || ['Completed all questions'];
+        improvements: analysis.improvements || ['Continue practicing'];
         recommendations: analysis.recommendations || ['Keep improving']
       },
       metadata: {
         analyzedAt: new Date(),
-        aiService: 'optimized-feedback-service',
-        analysisProvider: 'groq-llama-3.1-70b',
-        fastMode: true,
-        model: 'llama-3.1-70b-versatile',
+        aiService: 'optimized-feedback-service';
+        analysisProvider: 'groq-llama-3.1-70b';
+        fastMode: true;
+        model: 'llama-3.1-70b-versatile';
         processingTimeMs: analysis.processingTime
       }
     };
@@ -130,8 +130,8 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'analyzed',
-          performanceScore: analysis.overallScore || metrics.overallScore,
+          status: 'analyzed';
+          performanceScore: analysis.overallScore || metrics.overallScore;
           analyzedAt: new Date(),
           fastAnalysis: true
         } 
@@ -141,13 +141,13 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Fast feedback completed in ${analysis.processingTime}ms`);
 
     return NextResponse.json({
-      message: 'Fast feedback analysis completed successfully',
-      analysis: performanceReport,
+      message: 'Fast feedback analysis completed successfully';
+      analysis: performanceReport;
       summary: {
         score: `${(analysis.overallScore || metrics.overallScore).toFixed(1)}/10`,
         percentage: `${(((analysis.overallScore || metrics.overallScore) / 10) * 100).toFixed(1)}%`,
-        questionsAnalyzed: questions.length,
-        provider: 'optimized-groq',
+        questionsAnalyzed: questions.length;
+        provider: 'optimized-groq';
         processingTime: `${analysis.processingTime}ms`,
         mode: mode
       }

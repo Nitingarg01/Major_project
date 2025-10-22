@@ -15,7 +15,7 @@ import { Button } from './ui/button';
 import StreamingFeedback from './StreamingFeedback';
 
 type Question = {
-    question: string,
+    question: string;
     expectedAnswer: string
 }
 

@@ -16,17 +16,17 @@ export async function POST(request: NextRequest) {
     const { db } = await connectToDatabase();
 
     // Update the interview with results
-    const updateResult = await db.collection('interviews').updateOne(
+    const updateResult = await db.collection('interviews').updateOne(;
       { _id: new ObjectId(interviewId) },
       {
         $set: {
           results: {
             ...results,
-            type: type || 'standard',
+            type: type || 'standard';
             completedAt: new Date(),
             version: '2.0' // Virtual AI Interview version
           },
-          status: 'completed',
+          status: 'completed';
           updatedAt: new Date()
         }
       }
@@ -45,8 +45,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      success: true,
-      message: 'Interview results saved successfully',
+      success: true;
+      message: 'Interview results saved successfully';
       interviewId
     })
 
@@ -64,45 +64,45 @@ async function saveVirtualInterviewAnalytics(db: any, interviewId: string, resul
     // Extract detailed analytics for virtual AI interviews
     const analytics = {
       interviewId: new ObjectId(interviewId),
-      type: 'virtual-ai',
+      type: 'virtual-ai';
       createdAt: new Date(),
       
       // Conversation metrics
       conversationMetrics: {
-        totalExchanges: results.conversationHistory?.length || 0,
-        averageResponseTime: results.averageResponseTime || 0,
-        totalInterviewTime: results.totalTime || 0,
-        questionsAnswered: results.answeredQuestions || 0,
+        totalExchanges: results.conversationHistory?.length || 0;
+        averageResponseTime: results.averageResponseTime || 0;
+        totalInterviewTime: results.totalTime || 0;
+        questionsAnswered: results.answeredQuestions || 0;
         totalQuestions: results.totalQuestions || 0
       },
 
       // Response analysis
       responseAnalysis: results.responses?.map((response: any) => ({
-        questionIndex: response.questionIndex,
-        question: response.question,
-        userAnswer: response.userAnswer,
-        responseTime: response.responseTime,
+        questionIndex: response.questionIndex;
+        question: response.question;
+        userAnswer: response.userAnswer;
+        responseTime: response.responseTime;
         analysis: response.analysis || {},
-        aiFollowUp: response.aiFollowUp,
+        aiFollowUp: response.aiFollowUp;
         timestamp: response.timestamp
       })) || [],
 
       // Overall performance
       performance: {
-        overallScore: results.overallScore || 0,
-        strengths: results.strengths || [],
-        improvements: results.improvements || [],
+        overallScore: results.overallScore || 0;
+        strengths: results.strengths || [];
+        improvements: results.improvements || [];
         scoreBreakdown: results.responses?.map((r: any) => ({
-          questionIndex: r.questionIndex,
+          questionIndex: r.questionIndex;
           score: r.analysis?.score || 0
         })) || []
       },
 
       // Technical metrics
       technicalMetrics: {
-        speechToTextUsed: results.metadata?.speechToText || false,
-        textToSpeechUsed: results.metadata?.textToSpeech || false,
-        conversationFlowEnabled: results.metadata?.conversationFlow || false,
+        speechToTextUsed: results.metadata?.speechToText || false;
+        textToSpeechUsed: results.metadata?.textToSpeech || false;
+        conversationFlowEnabled: results.metadata?.conversationFlow || false;
         realTimeAnalysis: results.metadata?.realTimeAnalysis || false
       },
 

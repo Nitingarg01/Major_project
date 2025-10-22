@@ -6,16 +6,16 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Badge } from './ui/badge';
 
 type Props = {
-  cameraOn: boolean,
+  cameraOn: boolean;
   setCameraOn: Dispatch<SetStateAction<boolean>>;
   onActivityDetected?: (activity: ActivityAlert) => void;
   isInterviewActive?: boolean
 }
 
 interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost',
-  message: string,
-  severity: 'low' | 'medium' | 'high',
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost';
+  message: string;
+  severity: 'low' | 'medium' | 'high';
   timestamp: Date
 }
 
@@ -46,9 +46,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
       if (document.hidden) {
         setTabSwitchCount(prev => prev + 1);
         addActivityAlert({
-          type: 'tab_switch',
-          message: 'Tab switched or browser minimized',
-          severity: 'high',
+          type: 'tab_switch';
+          message: 'Tab switched or browser minimized';
+          severity: 'high';
           timestamp: new Date()
         });
       }
@@ -57,9 +57,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
     const handleFocusLost = () => {
       setFocusLostCount(prev => prev + 1);
       addActivityAlert({
-        type: 'window_focus_lost',
-        message: 'Window focus lost',
-        severity: 'medium',
+        type: 'window_focus_lost';
+        message: 'Window focus lost';
+        severity: 'medium';
         timestamp: new Date()
       });
     };
@@ -78,9 +78,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
     if (!videoRef.current || !cameraOn) {
       setFaceDetectionStatus('no_face');
       addActivityAlert({
-        type: 'no_face',
-        message: 'No face detected - Camera not active',
-        severity: 'high',
+        type: 'no_face';
+        message: 'No face detected - Camera not active';
+        severity: 'high';
         timestamp: new Date()
       });
       return;
@@ -94,9 +94,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
     } else {
       setFaceDetectionStatus('no_face');
       addActivityAlert({
-        type: 'no_face',
-        message: 'Please ensure your face is visible in the camera',
-        severity: 'medium',
+        type: 'no_face';
+        message: 'Please ensure your face is visible in the camera';
+        severity: 'medium';
         timestamp: new Date()
       });
     }
@@ -115,7 +115,7 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
         const stream = await navigator.mediaDevices.getUserMedia({ 
           video: { 
             width: 640, 
-            height: 480,
+            height: 480;
             facingMode: 'user'
           } 
         });
@@ -139,9 +139,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                 } else {
                   console.error('Video play failed:', playError);
                   addActivityAlert({
-                    type: 'no_face',
-                    message: 'Video playback failed. Please check your browser settings.',
-                    severity: 'high',
+                    type: 'no_face';
+                    message: 'Video playback failed. Please check your browser settings.';
+                    severity: 'high';
                     timestamp: new Date()
                   });
                   // Only retry for non-AbortError cases
@@ -153,9 +153,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                       } catch (retryError) {
                         console.error('Video play retry failed:', retryError);
                         addActivityAlert({
-                          type: 'no_face',
-                          message: 'Video playback failed. Please refresh the page.',
-                          severity: 'high',
+                          type: 'no_face';
+                          message: 'Video playback failed. Please refresh the page.';
+                          severity: 'high';
                           timestamp: new Date()
                         });
                       }
@@ -180,9 +180,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
                   } catch (retryError) {
                     console.error('Video play retry failed:', retryError);
                     addActivityAlert({
-                      type: 'no_face',
-                      message: 'Video playback failed. Please refresh the page.',
-                      severity: 'high',
+                      type: 'no_face';
+                      message: 'Video playback failed. Please refresh the page.';
+                      severity: 'high';
                       timestamp: new Date()
                     });
                   }
@@ -191,9 +191,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
             } else {
               console.error('Video play failed:', playError);
               addActivityAlert({
-                type: 'no_face',
-                message: 'Video playback failed. Please check your browser settings.',
-                severity: 'high',
+                type: 'no_face';
+                message: 'Video playback failed. Please check your browser settings.';
+                severity: 'high';
                 timestamp: new Date()
               });
             }
@@ -202,9 +202,9 @@ const EnhancedCameraFeed = ({ cameraOn, setCameraOn, onActivityDetected, isInter
       } catch (err) {
         console.error("Camera access error:", err);
         addActivityAlert({
-          type: 'no_face',
-          message: 'Camera access denied or unavailable',
-          severity: 'high',
+          type: 'no_face';
+          message: 'Camera access denied or unavailable';
+          severity: 'high';
           timestamp: new Date()
         });
       }

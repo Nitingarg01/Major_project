@@ -58,7 +58,7 @@ export class AIInterviewCoach {
   public async analyzeAndCoach(context: CoachingContext): Promise<CoachHint[]> {
     if (!this.isEnabled) return []
 
-    const hints: CoachHint[] = []
+    const hints: CoachHint[] = [];
 
     // Check if enough time has passed since last hint
     if (this.lastHintTime && 
@@ -191,9 +191,9 @@ export class AIInterviewCoach {
    */
   public getStartingHint(question: string, interviewType: string): CoachHint {
     const hints: Record<string, string> = {
-      behavioral: 'Think of a specific example from your experience. Use the STAR method.',
-      technical: 'Break down the problem step by step. Explain your reasoning.',
-      mixed: 'Take a moment to organize your thoughts before answering.',
+      behavioral: 'Think of a specific example from your experience. Use the STAR method.';
+      technical: 'Break down the problem step by step. Explain your reasoning.';
+      mixed: 'Take a moment to organize your thoughts before answering.';
       default: 'Take your time and answer confidently. You\'ve got this!'
     }
 
@@ -261,9 +261,9 @@ export class AIInterviewCoach {
    * Helper: Create a hint object
    */
   private createHint(
-    type: CoachHint['type'],
-    message: string,
-    priority: CoachHint['priority'],
+    type: CoachHint['type'];
+    message: string;
+    priority: CoachHint['priority'];
     trigger: string
   ): CoachHint {
     return {
@@ -280,7 +280,7 @@ export class AIInterviewCoach {
    * Helper: Count filler words
    */
   private countFillerWords(text: string): number {
-    const fillers = ['um', 'uh', 'like', 'you know', 'sort of', 'kind of', 'basically', 'actually']
+    const fillers = ['um', 'uh', 'like', 'you know', 'sort of', 'kind of', 'basically', 'actually'];
     const lowerText = text.toLowerCase();
     let count = 0;
 
@@ -335,9 +335,9 @@ export class AIInterviewCoach {
    */
   public static getHintIcon(type: CoachHint['type']): string {
     const icons = {
-      tip: '💡',
-      warning: '⚠️',
-      suggestion: '💭',
+      tip: '💡';
+      warning: '⚠️';
+      suggestion: '💭';
       encouragement: '🌟'
     }
     return icons[type]
@@ -348,8 +348,8 @@ export class AIInterviewCoach {
    */
   public static getHintColor(priority: CoachHint['priority']): string {
     const colors = {
-      low: 'bg-blue-100 text-blue-800 border-blue-200',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      low: 'bg-blue-100 text-blue-800 border-blue-200';
+      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200';
       high: 'bg-red-100 text-red-800 border-red-200'
     }
     return colors[priority]

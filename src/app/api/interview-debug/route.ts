@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       .toArray()
 
     const debugInfo = {
-      userId: session.user.id,
+      userId: session.user.id;
       userObjectId: userObjectId.toString(),
       interviewId,
       interviewObjectId: interviewObjectId.toString(),
@@ -55,10 +55,10 @@ export async function GET(request: NextRequest) {
       interview: interview ? {
         _id: interview._id.toString(),
         userId: interview.userId?.toString(),
-        userIdType: typeof interview.userId,
-        status: interview.status,
-        createdAt: interview.createdAt,
-        completedAt: interview.completedAt,
+        userIdType: typeof interview.userId;
+        status: interview.status;
+        createdAt: interview.createdAt;
+        completedAt: interview.completedAt;
         performanceId: interview.performanceId?.toString()
       } : null,
       
@@ -66,13 +66,13 @@ export async function GET(request: NextRequest) {
         _id: performance._id.toString(),
         interviewId: performance.interviewId.toString(),
         userId: performance.userId.toString(),
-        completedAt: performance.completedAt,
+        completedAt: performance.completedAt;
         score: performance.score
       } : null,
       
-      allUserInterviewsCount: allUserInterviews.length,
+      allUserInterviewsCount: allUserInterviews.length;
       completedInterviewsCount: allUserInterviews.filter(i => i.status === 'completed').length,
-      stringUserIdInterviewsCount: stringUserIdInterviews.length,
+      stringUserIdInterviewsCount: stringUserIdInterviews.length;
       
       issues: []
     }
@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      success: true,
+      success: true;
       debug: debugInfo
     })
 
@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Debug failed',
+        error: 'Debug failed';
         details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }

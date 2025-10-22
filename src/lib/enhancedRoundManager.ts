@@ -2,9 +2,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface InterviewRound {
-  id: string,
-  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'mixed',
-  status: 'pending' | 'in-progress' | 'completed' | 'skipped',
+  id: string;
+  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'mixed';
+  status: 'pending' | 'in-progress' | 'completed' | 'skipped';
   questions: any[];
   duration: number; // in minutes
   startTime?: Date;
@@ -15,62 +15,62 @@ export interface InterviewRound {
 }
 
 export interface RoundResult {
-  roundId: string,
+  roundId: string;
   answers: string[];
-  timeSpent: number,
-  score: number,
-  feedback: string,
+  timeSpent: number;
+  score: number;
+  feedback: string;
   performanceMetrics: {
-    accuracy: number,
-    confidence: number,
-    clarity: number,
-    technicalDepth: number,
+    accuracy: number;
+    confidence: number;
+    clarity: number;
+    technicalDepth: number;
     problemSolving: number
   };
   suspiciousActivities: ActivityAlert[];
 }
 
 export interface ActivityAlert {
-  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured',
-  message: string,
-  severity: 'low' | 'medium' | 'high',
+  type: 'multiple_faces' | 'no_face' | 'looking_away' | 'tab_switch' | 'window_focus_lost' | 'face_obscured';
+  message: string;
+  severity: 'low' | 'medium' | 'high';
   timestamp: Date;
   confidence?: number
 }
 
 export interface InterviewSession {
-  sessionId: string,
-  userId: string,
-  interviewId: string,
-  companyName: string,
-  jobTitle: string,
+  sessionId: string;
+  userId: string;
+  interviewId: string;
+  companyName: string;
+  jobTitle: string;
   rounds: InterviewRound[];
-  currentRound: number,
+  currentRound: number;
   sessionData: {
     startTime: Date;
-    endTime?: Date,
-    totalTimeSpent: number,
+    endTime?: Date;
+    totalTimeSpent: number;
     overallProgress: number
   };
   roundResults: RoundResult[];
-  companyIntelligence?: any,
+  companyIntelligence?: any;
   sessionMetadata: {
-    userAgent: string,
-    ipAddress: string,
-    cameraEnabled: boolean,
+    userAgent: string;
+    ipAddress: string;
+    cameraEnabled: boolean;
     suspiciousActivity: ActivityAlert[];
   };
 }
 
 export interface FinalInterviewReport {
-  sessionId: string,
-  overallScore: number,
-  overallVerdict: string,
+  sessionId: string;
+  overallScore: number;
+  overallVerdict: string;
   roundBreakdown: {
     [roundId: string]: {
-      score: number,
-      feedback: string,
-      timeSpent: number,
+      score: number;
+      feedback: string;
+      timeSpent: number;
       strengths: string[];
       improvements: string[];
     };
@@ -79,16 +79,16 @@ export interface FinalInterviewReport {
     [parameter: string]: number
   };
   adviceForImprovement: Array<{
-    question: string,
-    userAnswer: string,
-    feedback: string,
-    suggestedImprovement: string,
+    question: string;
+    userAnswer: string;
+    feedback: string;
+    suggestedImprovement: string;
     score: number
   }>;
   securityReport: {
-    totalAlerts: number,
-    highSeverityAlerts: number,
-    integrityScore: number,
+    totalAlerts: number;
+    highSeverityAlerts: number;
+    integrityScore: number;
     suspiciousPatterns: string[];
   };
   recommendations: {
@@ -120,10 +120,10 @@ export class EnhancedRoundManager {
 
   // Initialize a new interview session
   public async initializeSession(
-    userId: string,
-    interviewId: string,
-    companyName: string,
-    jobTitle: string,
+    userId: string;
+    interviewId: string;
+    companyName: string;
+    jobTitle: string;
     interviewType: string
   ): Promise<InterviewSession> {
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -138,17 +138,17 @@ export class EnhancedRoundManager {
       companyName,
       jobTitle,
       rounds,
-      currentRound: 0,
+      currentRound: 0;
       sessionData: {
         startTime: new Date(),
-        totalTimeSpent: 0,
+        totalTimeSpent: 0;
         overallProgress: 0
       },
-      roundResults: [],
+      roundResults: [];
       sessionMetadata: {
-        userAgent: '',
-        ipAddress: '',
-        cameraEnabled: false,
+        userAgent: '';
+        ipAddress: '';
+        cameraEnabled: false;
         suspiciousActivity: []
       }
     };
@@ -163,37 +163,37 @@ export class EnhancedRoundManager {
     switch (interviewType) {
       case 'technical':
         baseRounds.push({
-          id: 'technical_1',
-          type: 'technical',
-          status: 'pending',
-          questions: [],
+          id: 'technical_1';
+          type: 'technical';
+          status: 'pending';
+          questions: [];
           duration: 45
         });
         break;
       case 'behavioral':
         baseRounds.push({
-          id: 'behavioral_1',
-          type: 'behavioral',
-          status: 'pending',
-          questions: [],
+          id: 'behavioral_1';
+          type: 'behavioral';
+          status: 'pending';
+          questions: [];
           duration: 30
         });
         break;
       case 'dsa':
         baseRounds.push({
-          id: 'dsa_1',
-          type: 'dsa',
-          status: 'pending',
-          questions: [],
+          id: 'dsa_1';
+          type: 'dsa';
+          status: 'pending';
+          questions: [];
           duration: 60
         });
         break;
       case 'aptitude':
         baseRounds.push({
-          id: 'aptitude_1',
-          type: 'aptitude',
-          status: 'pending',
-          questions: [],
+          id: 'aptitude_1';
+          type: 'aptitude';
+          status: 'pending';
+          questions: [];
           duration: 25
         });
         break;
@@ -201,17 +201,17 @@ export class EnhancedRoundManager {
       default:
         baseRounds.push(
           {
-            id: 'technical_1',
-            type: 'technical',
-            status: 'pending',
-            questions: [],
+            id: 'technical_1';
+            type: 'technical';
+            status: 'pending';
+            questions: [];
             duration: 30
           },
           {
-            id: 'behavioral_1',
-            type: 'behavioral',
-            status: 'pending',
-            questions: [],
+            id: 'behavioral_1';
+            type: 'behavioral';
+            status: 'pending';
+            questions: [];
             duration: 20
           }
         );
@@ -223,9 +223,9 @@ export class EnhancedRoundManager {
 
   // Complete a round with enhanced analysis
   public async completeRound(
-    session: InterviewSession,
-    answers: string[],
-    timeSpent: number,
+    session: InterviewSession;
+    answers: string[];
+    timeSpent: number;
     suspiciousActivities: ActivityAlert[]
   ): Promise<{ session: InterviewSession; roundResult: RoundResult }> {
     const currentRound = session.rounds[session.currentRound];
@@ -236,7 +236,7 @@ export class EnhancedRoundManager {
 
     try {
       // Analyze round performance using AI
-      const roundAnalysis = await this.analyzeRoundPerformance(
+      const roundAnalysis = await this.analyzeRoundPerformance(;
         currentRound,
         answers,
         timeSpent,
@@ -246,12 +246,12 @@ export class EnhancedRoundManager {
 
       // Create round result
       const roundResult: RoundResult = {
-        roundId: currentRound.id,
+        roundId: currentRound.id;
         answers,
         timeSpent,
-        score: roundAnalysis.score,
-        feedback: roundAnalysis.feedback,
-        performanceMetrics: roundAnalysis.metrics,
+        score: roundAnalysis.score;
+        feedback: roundAnalysis.feedback;
+        performanceMetrics: roundAnalysis.metrics;
         suspiciousActivities
       };
 
@@ -265,11 +265,11 @@ export class EnhancedRoundManager {
       // Update session
       const updatedSession: InterviewSession = {
         ...session,
-        currentRound: session.currentRound + 1,
+        currentRound: session.currentRound + 1;
         roundResults: [...session.roundResults, roundResult],
         sessionData: {
           ...session.sessionData,
-          totalTimeSpent: session.sessionData.totalTimeSpent + timeSpent,
+          totalTimeSpent: session.sessionData.totalTimeSpent + timeSpent;
           overallProgress: ((session.currentRound + 1) / session.rounds.length) * 100
         },
         sessionMetadata: {
@@ -287,19 +287,19 @@ export class EnhancedRoundManager {
 
   // Analyze individual round performance using AI
   private async analyzeRoundPerformance(
-    round: InterviewRound,
-    answers: string[],
-    timeSpent: number,
-    companyName: string,
+    round: InterviewRound;
+    answers: string[];
+    timeSpent: number;
+    companyName: string;
     jobTitle: string
   ): Promise<{
-    score: number,
-    feedback: string,
+    score: number;
+    feedback: string;
     metrics: {
-      accuracy: number,
-      confidence: number,
-      clarity: number,
-      technicalDepth: number,
+      accuracy: number;
+      confidence: number;
+      clarity: number;
+      technicalDepth: number;
       problemSolving: number
     };
   }> {
@@ -347,7 +347,7 @@ export class EnhancedRoundManager {
         const analysis = extractJSON(text);
         return {
           score: Math.max(0, Math.min(10, analysis.score || 5)),
-          feedback: analysis.feedback || 'Analysis completed successfully.',
+          feedback: analysis.feedback || 'Analysis completed successfully.';
           metrics: {
             accuracy: Math.max(0, Math.min(10, analysis.metrics?.accuracy || 5)),
             confidence: Math.max(0, Math.min(10, analysis.metrics?.confidence || 5)),
@@ -373,14 +373,14 @@ export class EnhancedRoundManager {
 
       // Prepare comprehensive session data
       const sessionSummary = {
-        company: session.companyName,
-        role: session.jobTitle,
-        totalTime: session.sessionData.totalTimeSpent,
+        company: session.companyName;
+        role: session.jobTitle;
+        totalTime: session.sessionData.totalTimeSpent;
         rounds: session.roundResults.map(result => ({
           type: session.rounds.find(r => r.id === result.roundId)?.type,
-          score: result.score,
-          timeSpent: result.timeSpent,
-          answers: result.answers,
+          score: result.score;
+          timeSpent: result.timeSpent;
+          answers: result.answers;
           metrics: result.performanceMetrics
         })),
         securityAlerts: session.sessionMetadata.suspiciousActivity
@@ -442,22 +442,22 @@ export class EnhancedRoundManager {
         const reportData = extractJSON(text);
         
         const report: FinalInterviewReport = {
-          sessionId: session.sessionId,
+          sessionId: session.sessionId;
           overallScore: Math.max(0, Math.min(10, reportData.overallScore || 5)),
-          overallVerdict: reportData.overallVerdict || 'Interview completed successfully.',
+          overallVerdict: reportData.overallVerdict || 'Interview completed successfully.';
           roundBreakdown: this.generateRoundBreakdown(session),
           parameterScores: this.normalizeParameterScores(reportData.parameterScores || {}),
-          adviceForImprovement: reportData.adviceForImprovement || [],
+          adviceForImprovement: reportData.adviceForImprovement || [];
           securityReport: {
-            totalAlerts: session.sessionMetadata.suspiciousActivity.length,
+            totalAlerts: session.sessionMetadata.suspiciousActivity.length;
             highSeverityAlerts: session.sessionMetadata.suspiciousActivity.filter(a => a.severity === 'high').length,
             integrityScore: Math.max(0, Math.min(100, reportData.securityReport?.integrityScore || 85)),
             suspiciousPatterns: reportData.securityReport?.suspiciousPatterns || []
           },
           recommendations: {
-            nextSteps: reportData.recommendations?.nextSteps || ['Continue practicing interview skills'],
-            focusAreas: reportData.recommendations?.focusAreas || ['Technical knowledge'],
-            resources: reportData.recommendations?.resources || ['Online coding practice'],
+            nextSteps: reportData.recommendations?.nextSteps || ['Continue practicing interview skills'];
+            focusAreas: reportData.recommendations?.focusAreas || ['Technical knowledge'];
+            resources: reportData.recommendations?.resources || ['Online coding practice'];
             readinessLevel: reportData.recommendations?.readinessLevel || 'intermediate'
           }
         };
@@ -500,9 +500,9 @@ export class EnhancedRoundManager {
     session.roundResults.forEach(result => {
       const round = session.rounds.find(r => r.id === result.roundId);
       breakdown[result.roundId] = {
-        score: result.score,
-        feedback: result.feedback,
-        timeSpent: result.timeSpent,
+        score: result.score;
+        feedback: result.feedback;
+        timeSpent: result.timeSpent;
         strengths: this.extractStrengths(result),
         improvements: this.extractImprovements(result)
       };
@@ -513,11 +513,11 @@ export class EnhancedRoundManager {
 
   private normalizeParameterScores(scores: any) {
     const defaultScores = {
-      technical_knowledge: 5,
-      problem_solving: 5,
-      communication: 5,
-      behavioral_competency: 5,
-      cultural_fit: 5,
+      technical_knowledge: 5;
+      problem_solving: 5;
+      communication: 5;
+      behavioral_competency: 5;
+      cultural_fit: 5;
       time_management: 5
     };
 
@@ -554,7 +554,7 @@ export class EnhancedRoundManager {
     const avgScore = session.roundResults.reduce((sum, r) => sum + r.score, 0) / session.roundResults.length || 5;
     
     return {
-      sessionId: session.sessionId,
+      sessionId: session.sessionId;
       overallScore: Math.round(avgScore * 10) / 10,
       overallVerdict: `Interview completed with an average score of ${avgScore.toFixed(1)}/10. ${avgScore >= 7 ? 'Strong performance overall.' : avgScore >= 5 ? 'Good effort with room for improvement.' : 'Additional practice recommended.'}`,
       roundBreakdown: this.generateRoundBreakdown(session),
@@ -568,7 +568,7 @@ export class EnhancedRoundManager {
       },
       adviceForImprovement: this.generateMockAdvice(session),
       securityReport: {
-        totalAlerts: session.sessionMetadata.suspiciousActivity.length,
+        totalAlerts: session.sessionMetadata.suspiciousActivity.length;
         highSeverityAlerts: session.sessionMetadata.suspiciousActivity.filter(a => a.severity === 'high').length,
         integrityScore: Math.max(50, 100 - (session.sessionMetadata.suspiciousActivity.length * 10)),
         suspiciousPatterns: session.sessionMetadata.suspiciousActivity.map(a => a.message).slice(0, 3)
@@ -586,9 +586,9 @@ export class EnhancedRoundManager {
     return session.roundResults.flatMap((result, roundIndex) => {
       return result.answers.slice(0, 2).map((answer, qIndex) => ({
         question: `Question ${qIndex + 1} from Round ${roundIndex + 1}`,
-        userAnswer: answer || 'No answer provided',
-        feedback: result.score >= 7 ? 'Good response with solid understanding' : 'Could be improved with more detail and examples',
-        suggestedImprovement: result.score >= 7 ? 'Consider adding more specific examples' : 'Practice similar questions and focus on structured answers',
+        userAnswer: answer || 'No answer provided';
+        feedback: result.score >= 7 ? 'Good response with solid understanding' : 'Could be improved with more detail and examples';
+        suggestedImprovement: result.score >= 7 ? 'Consider adding more specific examples' : 'Practice similar questions and focus on structured answers';
         score: Math.round(result.score)
       }));
     });

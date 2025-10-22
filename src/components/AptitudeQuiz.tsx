@@ -31,7 +31,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   timeLimit = 30;
 }) => {
   // Validate and filter questions to ensure they have required properties
-  const validQuestions = questions.filter(q =>
+  const validQuestions = questions.filter(q =>;
     q && q.type && q.difficulty && q.question && q.options
   )
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -43,12 +43,12 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
 
   useEffect(() => {
     // Set question time limit
-    const currentQ = questions[currentQuestion]
+    const currentQ = questions[currentQuestion];
     if (currentQ?.timeLimit) {
       setQuestionTimeLeft(currentQ.timeLimit);
     }
   }, [currentQuestion, questions])
-    const currentQ = validQuestions[currentQuestion]
+    const currentQ = validQuestions[currentQuestion];
     if (currentQ?.timeLimit) {
       setQuestionTimeLeft(currentQ.timeLimit);
     }
@@ -169,19 +169,19 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
     let correctAnswers = 0;
     const questionResults = questions.map((question, index) => {
     const questionResults = validQuestions.map((question, index) => {
-      const selectedAnswer = selectedAnswers[index]
+      const selectedAnswer = selectedAnswers[index];
       const isCorrect = selectedAnswer === question.correctAnswer;
       if (isCorrect) correctAnswers++
 
       return {
-        questionId: question.id,
-        question: question.question,
-        type: question.type,
-        difficulty: question.difficulty,
+        questionId: question.id;
+        question: question.question;
+        type: question.type;
+        difficulty: question.difficulty;
         selectedAnswer,
-        correctAnswer: question.correctAnswer,
+        correctAnswer: question.correctAnswer;
         isCorrect,
-        options: question.options,
+        options: question.options;
         explanation: question.explanation
       }
     })
@@ -200,7 +200,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
       }
       acc[type].total++
       
-      const selectedAnswer = selectedAnswers[index]
+      const selectedAnswer = selectedAnswers[index];
       if (selectedAnswer === question.correctAnswer) {
         acc[type].correct++
       }
@@ -221,7 +221,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   }
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
-  const currentQ = questions[currentQuestion]
+  const currentQ = questions[currentQuestion];
   // Early return if no valid questions
   if (validQuestions.length === 0) {
     return (
@@ -235,7 +235,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   }
 
   const progress = ((currentQuestion + 1) / validQuestions.length) * 100;
-  const currentQ = validQuestions[currentQuestion]
+  const currentQ = validQuestions[currentQuestion];
 
   if (showResults && results) {
     return (

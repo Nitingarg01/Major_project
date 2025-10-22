@@ -61,9 +61,9 @@ export async function POST(req: NextRequest) {
             jobTitle,
             companyName,
             skills,
-            interviewType: 'technical',
+            interviewType: 'technical';
             experienceLevel,
-            numberOfQuestions: technicalCount,
+            numberOfQuestions: technicalCount;
             companyIntelligence
           });
           allQuestions.push(...technicalQuestions.map(q => ({ ...q, category: 'technical' })));
@@ -75,9 +75,9 @@ export async function POST(req: NextRequest) {
             jobTitle,
             companyName,
             skills,
-            interviewType: 'behavioral',
+            interviewType: 'behavioral';
             experienceLevel,
-            numberOfQuestions: behavioralCount,
+            numberOfQuestions: behavioralCount;
             companyIntelligence
           });
           allQuestions.push(...behavioralQuestions.map(q => ({ ...q, category: 'behavioral' })));
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
 
         // Generate DSA problems
         if (dsaCount > 0) {
-          const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
+          const dsaProblems = await aiService.generateCompanySpecificDSAProblems(;
             companyName,
             experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
             dsaCount,
@@ -94,16 +94,16 @@ export async function POST(req: NextRequest) {
           
           // Convert DSA problems to question format
           const dsaQuestions = dsaProblems.map(problem => ({
-            id: problem.id,
+            id: problem.id;
             question: `DSA Problem: ${problem.title}\n\n${problem.description}\n\nExamples:\n${problem.examples.map(ex => `Input: ${ex.input}\nOutput: ${ex.output}\nExplanation: ${ex.explanation || 'See problem description'}`).join('\n\n')}`,
             expectedAnswer: `Algorithm approach, time/space complexity analysis, and implementation strategy. ${problem.hints ? 'Hints: ' + problem.hints.join(', ') : ''}`,
-            category: 'dsa',
-            difficulty: problem.difficulty,
-            points: problem.difficulty === 'easy' ? 8 : problem.difficulty === 'hard' ? 15 : 12,
-            timeLimit: problem.difficulty === 'easy' ? 20 : problem.difficulty === 'hard' ? 45 : 30,
+            category: 'dsa';
+            difficulty: problem.difficulty;
+            points: problem.difficulty === 'easy' ? 8 : problem.difficulty === 'hard' ? 15 : 12;
+            timeLimit: problem.difficulty === 'easy' ? 20 : problem.difficulty === 'hard' ? 45 : 30;
             evaluationCriteria: ['Algorithm correctness', 'Complexity analysis', 'Code quality', 'Edge case handling'],
             tags: [...(problem.topics || []), companyName, 'DSA'],
-            hints: problem.hints || [],
+            hints: problem.hints || [];
             companyRelevance: 9
           }));
           
@@ -116,9 +116,9 @@ export async function POST(req: NextRequest) {
             jobTitle,
             companyName,
             skills,
-            interviewType: 'aptitude',
+            interviewType: 'aptitude';
             experienceLevel,
-            numberOfQuestions: aptitudeCount,
+            numberOfQuestions: aptitudeCount;
             companyIntelligence
           });
           allQuestions.push(...aptitudeQuestions.map(q => ({ ...q, category: 'aptitude' })));
@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
         const difficulty = experienceLevel === 'entry' ? 'easy' :;
                           experienceLevel === 'senior' ? 'hard' : 'medium';
         
-        const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
+        const dsaProblems = await aiService.generateCompanySpecificDSAProblems(;
           companyName,
           difficulty,
           numberOfQuestions,
@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
         
         // Convert to question format
         allQuestions = dsaProblems.map(problem => ({
-          id: problem.id,
+          id: problem.id;
           question: `${problem.title}\n\n${problem.description}\n\n` +
                    `Examples:\n${problem.examples.map(ex => 
                      `Input: ${ex.input}\nOutput: ${ex.output}${ex.explanation ? '\nExplanation: ' + ex.explanation : ''}`
@@ -152,14 +152,14 @@ export async function POST(req: NextRequest) {
                         `Expected time complexity: ${problem.timeComplexity || 'Optimal'}, ` +
                         `space complexity: ${problem.spaceComplexity || 'Efficient'}.` +
                         (problem.hints ? ` Hints: ${problem.hints.join(', ')}` : ''),
-          category: 'dsa',
-          difficulty: problem.difficulty,
-          points: problem.difficulty === 'easy' ? 8 : problem.difficulty === 'hard' ? 15 : 12,
-          timeLimit: problem.difficulty === 'easy' ? 20 : problem.difficulty === 'hard' ? 45 : 30,
+          category: 'dsa';
+          difficulty: problem.difficulty;
+          points: problem.difficulty === 'easy' ? 8 : problem.difficulty === 'hard' ? 15 : 12;
+          timeLimit: problem.difficulty === 'easy' ? 20 : problem.difficulty === 'hard' ? 45 : 30;
           evaluationCriteria: ['Algorithm correctness', 'Complexity analysis', 'Implementation quality', 'Edge case handling'],
           tags: [...(problem.topics || []), companyName, 'DSA', jobTitle],
-          hints: problem.hints || [],
-          companyRelevance: 9,
+          hints: problem.hints || [];
+          companyRelevance: 9;
           dsaProblem: problem // Include full DSA problem data
         }));
         
@@ -171,7 +171,7 @@ export async function POST(req: NextRequest) {
           jobTitle,
           companyName,
           skills,
-          interviewType: interviewType as any,
+          interviewType: interviewType as any;
           experienceLevel,
           numberOfQuestions,
           companyIntelligence
@@ -194,16 +194,16 @@ export async function POST(req: NextRequest) {
       try {
         const { db } = await connectToDatabase();
         const interviewData = {
-          userId: session.user?.email || session.user?.name,
+          userId: session.user?.email || session.user?.name;
           jobTitle,
           companyName,
           skills,
           interviewType,
           experienceLevel,
-          questions: allQuestions,
+          questions: allQuestions;
           createdAt: new Date(),
-          status: 'generated',
-          aiProvider: 'enhanced-groq',
+          status: 'generated';
+          aiProvider: 'enhanced-groq';
           totalQuestions: allQuestions.length
         };
 
@@ -215,11 +215,11 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json({
-        success: true,
-        questions: allQuestions,
+        success: true;
+        questions: allQuestions;
         metadata: {
-          totalQuestions: allQuestions.length,
-          aiProvider: 'enhanced-groq',
+          totalQuestions: allQuestions.length;
+          aiProvider: 'enhanced-groq';
           companyName,
           jobTitle,
           interviewType,
@@ -243,22 +243,22 @@ export async function POST(req: NextRequest) {
         id: `fallback-${i}`,
         question: `Tell me about your experience with ${skills[i % skills.length] || 'relevant technologies'} in a ${jobTitle} role at ${companyName}.`,
         expectedAnswer: 'A comprehensive answer covering technical experience, specific projects, and problem-solving approach.',
-        category: interviewType,
-        difficulty: 'medium' as const,
-        points: 10,
-        timeLimit: 5,
+        category: interviewType;
+        difficulty: 'medium' as const;
+        points: 10;
+        timeLimit: 5;
         evaluationCriteria: ['Technical knowledge', 'Communication clarity', 'Practical experience'],
         tags: [companyName, jobTitle, interviewType],
-        hints: ['Think about specific projects you\'ve worked on'],
+        hints: ['Think about specific projects you\'ve worked on'];
         companyRelevance: 6
       }));
 
       return NextResponse.json({
-        success: true,
-        questions: fallbackQuestions,
+        success: true;
+        questions: fallbackQuestions;
         metadata: {
-          totalQuestions: fallbackQuestions.length,
-          aiProvider: 'fallback',
+          totalQuestions: fallbackQuestions.length;
+          aiProvider: 'fallback';
           companyName,
           jobTitle,
           interviewType,
@@ -275,7 +275,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Failed to generate questions', 
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: error instanceof Error ? error.message : 'Unknown error';
         aiProvider: 'enhanced-groq'
       },
       { status: 500 }
@@ -285,8 +285,8 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    message: 'Enhanced Question Generation API',
-    aiProvider: 'enhanced-groq',
+    message: 'Enhanced Question Generation API';
+    aiProvider: 'enhanced-groq';
     supportedTypes: ['technical', 'behavioral', 'mixed', 'dsa', 'aptitude', 'system_design'],
     features: [
       'Company-specific question generation',

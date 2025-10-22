@@ -11,18 +11,18 @@ import { extractJSON } from './jsonExtractor';
 const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
 
 export interface DSAProblem {
-  id: string,
-  title: string,
-  difficulty: 'easy' | 'medium' | 'hard',
-  description: string,
+  id: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
   examples: Array<{
-    input: string,
+    input: string;
     output: string;
     explanation?: string
   }>;
   testCases: Array<{
-    id: string,
-    input: string,
+    id: string;
+    input: string;
     expectedOutput: string;
     hidden?: boolean
   }>;
@@ -39,9 +39,9 @@ export interface DSAProblem {
     realTimeExecution?: boolean
   };
   metadata?: {
-    generatedAt: Date,
-    company: string,
-    uniqueId: string,
+    generatedAt: Date;
+    company: string;
+    uniqueId: string;
     version: number
   };
 }
@@ -50,7 +50,7 @@ interface CompanyDSAPatterns {
   [company: string]: {
     commonTopics: string[];
     difficultyDistribution: { easy: number; medium: number; hard: number };
-    interviewStyle: string,
+    interviewStyle: string;
     focusAreas: string[];
     timeConstraints: number
   };
@@ -66,42 +66,42 @@ export class EnhancedGroqDSAService {
     'Google': {
       commonTopics: ['Dynamic Programming', 'Graph Algorithms', 'Trees', 'Arrays', 'System Design Coding'],
       difficultyDistribution: { easy: 10, medium: 60, hard: 30 },
-      interviewStyle: 'Algorithm optimization and scalability focused',
+      interviewStyle: 'Algorithm optimization and scalability focused';
       focusAreas: ['Time/Space Complexity', 'Edge Cases', 'Scalable Solutions'],
       timeConstraints: 45
     },
     'Amazon': {
       commonTopics: ['Arrays', 'Strings', 'Trees', 'Dynamic Programming', 'Leadership Principles Coding'],
       difficultyDistribution: { easy: 20, medium: 65, hard: 15 },
-      interviewStyle: 'Practical problem-solving with business context',
+      interviewStyle: 'Practical problem-solving with business context';
       focusAreas: ['Customer Obsession', 'Ownership', 'Practical Implementation'],
       timeConstraints: 45
     },
     'Meta': {
       commonTopics: ['Graph Algorithms', 'Dynamic Programming', 'Hash Tables', 'Social Network Problems'],
       difficultyDistribution: { easy: 15, medium: 55, hard: 30 },
-      interviewStyle: 'Social network and graph-heavy problems',
+      interviewStyle: 'Social network and graph-heavy problems';
       focusAreas: ['Graph Traversal', 'Network Analysis', 'Real-time Systems'],
       timeConstraints: 45
     },
     'Microsoft': {
       commonTopics: ['Arrays', 'Linked Lists', 'Trees', 'Dynamic Programming', 'String Processing'],
       difficultyDistribution: { easy: 25, medium: 55, hard: 20 },
-      interviewStyle: 'Balanced approach with clear communication',
+      interviewStyle: 'Balanced approach with clear communication';
       focusAreas: ['Code Quality', 'Testing', 'Clear Communication'],
       timeConstraints: 45
     },
     'Apple': {
       commonTopics: ['Arrays', 'Trees', 'System Design', 'Performance Optimization', 'Memory Management'],
       difficultyDistribution: { easy: 20, medium: 50, hard: 30 },
-      interviewStyle: 'Performance and optimization focused',
+      interviewStyle: 'Performance and optimization focused';
       focusAreas: ['Memory Efficiency', 'Performance', 'User Experience'],
       timeConstraints: 60
     },
     'Netflix': {
       commonTopics: ['Arrays', 'Strings', 'Recommendation Systems', 'Data Processing', 'Scalability'],
       difficultyDistribution: { easy: 15, medium: 60, hard: 25 },
-      interviewStyle: 'Data processing and recommendation focused',
+      interviewStyle: 'Data processing and recommendation focused';
       focusAreas: ['Data Processing', 'Scalability', 'Recommendation Algorithms'],
       timeConstraints: 45
     }
@@ -113,7 +113,7 @@ export class EnhancedGroqDSAService {
     }
     
     this.groq = new Groq({
-      apiKey: groqApiKey,
+      apiKey: groqApiKey;
       dangerouslyAllowBrowser: true
     });
     
@@ -132,10 +132,10 @@ export class EnhancedGroqDSAService {
       console.log(`🚀 Calling Groq API for DSA generation...`);
       
       const chatCompletion = await this.groq.chat.completions.create({
-        messages: messages,
-        model: this.model,
-        max_tokens: 8000,
-        temperature: temperature,
+        messages: messages;
+        model: this.model;
+        max_tokens: 8000;
+        temperature: temperature;
       });
 
       const content = chatCompletion.choices[0]?.message?.content || '';
@@ -152,8 +152,8 @@ export class EnhancedGroqDSAService {
    * Generate company-specific DSA problems with guaranteed test cases
    */
   public async generateCompanySpecificDSAProblems(
-    companyName: string,
-    count: number = 5,
+    companyName: string;
+    count: number = 5;
     experienceLevel: 'entry' | 'mid' | 'senior' = 'mid';
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
@@ -168,7 +168,7 @@ export class EnhancedGroqDSAService {
     const userMessage = this.buildEnhancedCompanyPrompt(company, pattern, count, difficulty, experienceLevel);
 
     try {
-      const response = await this.callGroqAPI([
+      const response = await this.callGroqAPI([;
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
       ], 0.9);
@@ -196,16 +196,16 @@ export class EnhancedGroqDSAService {
         return {
           ...problem,
           id: `${company.toLowerCase()}-${Date.now()}-${index}`,
-          companies: [company],
+          companies: [company];
           interactiveFeatures: {
             hasVisualizer: this.shouldHaveVisualizer(problem.topics || []),
-            hasStepByStep: true,
-            hasHints: true,
+            hasStepByStep: true;
+            hasHints: true;
             realTimeExecution: true
           },
           metadata: {
             generatedAt: new Date(),
-            company: company,
+            company: company;
             uniqueId: `${company}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             version: 1
           }
@@ -225,8 +225,8 @@ export class EnhancedGroqDSAService {
    * Generate unique problems with enhanced test case validation
    */
   public async generateEnhancedDSAProblems(
-    companyName: string,
-    count: number = 5,
+    companyName: string;
+    count: number = 5;
     focusAreas: string[] = []
   ): Promise<DSAProblem[]> {
     const company = this.normalizeCompanyName(companyName);
@@ -312,7 +312,7 @@ export class EnhancedGroqDSAService {
     `;
 
     try {
-      const response = await this.callGroqAPI([
+      const response = await this.callGroqAPI([;
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage }
       ], 0.7);
@@ -339,16 +339,16 @@ export class EnhancedGroqDSAService {
         return {
           ...problem,
           id: `enhanced-${company.toLowerCase()}-${Date.now()}-${index}`,
-          companies: [company],
+          companies: [company];
           interactiveFeatures: {
             hasVisualizer: this.shouldHaveVisualizer(problem.topics || []),
-            hasStepByStep: true,
-            hasHints: true,
+            hasStepByStep: true;
+            hasHints: true;
             realTimeExecution: true
           },
           metadata: {
             generatedAt: new Date(),
-            company: company,
+            company: company;
             uniqueId: `enhanced-${company}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             version: 2
           }
@@ -375,7 +375,7 @@ export class EnhancedGroqDSAService {
   }
 
   private selectDifficultyBasedOnExperience(
-    experienceLevel: string,
+    experienceLevel: string;
     pattern: any
   ): 'easy' | 'medium' | 'hard' {
     switch (experienceLevel) {
@@ -386,10 +386,10 @@ export class EnhancedGroqDSAService {
   }
 
   private buildEnhancedCompanyPrompt(
-    company: string,
-    pattern: any,
-    count: number,
-    difficulty: string,
+    company: string;
+    pattern: any;
+    count: number;
+    difficulty: string;
     experienceLevel: string
   ): string {
     return `;
@@ -443,19 +443,19 @@ export class EnhancedGroqDSAService {
   private generateFallbackExamples(problem: any): any[] {
     return [
       {
-        input: 'Example input',
-        output: 'Expected output',
+        input: 'Example input';
+        output: 'Expected output';
         explanation: 'Explanation of the solution approach'
       }
     ];
   }
 
   private generateFallbackProblems(company: string, count: number, difficulty: string): DSAProblem[] {
-    const fallbackProblems = [
+    const fallbackProblems = [;
       {
         id: `fallback-${company.toLowerCase()}-1`,
         title: `${company} Two Sum Problem`,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
+        difficulty: difficulty as 'easy' | 'medium' | 'hard';
         description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. This is a classic problem commonly asked at ${company}.`,
         examples: [
           {
@@ -482,14 +482,14 @@ export class EnhancedGroqDSAService {
       ...problem,
       id: `${company.toLowerCase()}-fallback-${Date.now()}-${index}`,
       interactiveFeatures: {
-        hasVisualizer: true,
-        hasStepByStep: true,
-        hasHints: true,
+        hasVisualizer: true;
+        hasStepByStep: true;
+        hasHints: true;
         realTimeExecution: true
       },
       metadata: {
         generatedAt: new Date(),
-        company: company,
+        company: company;
         uniqueId: `${company}-fallback-${Date.now()}-${index}`,
         version: 1
       }
@@ -501,7 +501,7 @@ export class EnhancedGroqDSAService {
    */
   public async healthCheck(): Promise<{ status: string; groqAvailable: boolean }> {
     try {
-      const testResponse = await this.callGroqAPI([
+      const testResponse = await this.callGroqAPI([;
         { role: 'user', content: 'Health check - respond with "OK"' }
       ], 0);
       
@@ -511,7 +511,7 @@ export class EnhancedGroqDSAService {
       };
     } catch (error) {
       return {
-        status: 'error',
+        status: 'error';
         groqAvailable: false
       };
     }

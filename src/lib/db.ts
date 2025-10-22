@@ -8,9 +8,9 @@ if (!process.env.MONGODB_URI) {
 const uri = process.env.MONGODB_URI;
 const options = {
   serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
+    version: ServerApiVersion.v1;
+    strict: true;
+    deprecationErrors: true;
   },
   maxPoolSize: 10, // Maintain up to 10 socket connections
   serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds

@@ -31,13 +31,13 @@ export async function GET(request: NextRequest) {
     console.log('ObjectId created successfully:', testObjectId);
     
     return NextResponse.json({
-      success: true,
-      message: 'All tests passed',
+      success: true;
+      message: 'All tests passed';
       data: {
-        hasSession: !!session,
-        userId: session.user.id,
-        dbConnected: true,
-        collectionsCount: collections.length,
+        hasSession: !!session;
+        userId: session.user.id;
+        dbConnected: true;
+        collectionsCount: collections.length;
         performancesExists
       }
     })
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Test failed:', error);
     return NextResponse.json({
-      success: false,
+      success: false;
       error: error instanceof Error ? error.message : String(error)
     }, { status: 500 })
   }

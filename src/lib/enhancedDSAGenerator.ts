@@ -9,8 +9,8 @@ import { optimizedAIService } from './optimizedAIService';
 import client from '@/lib/db';
 
 interface CompanyDSAContext {
-  name: string,
-  industry: string,
+  name: string;
+  industry: string;
   techStack: string[];
   businessDomains: string[];
   scaleRequirements: string[];
@@ -25,8 +25,8 @@ export class EnhancedDSAGenerator {
   // Company-specific contexts for unique problem generation
   private companyContexts: Map<string, CompanyDSAContext> = new Map([
     ['google', {
-      name: 'Google',
-      industry: 'Search & Cloud',
+      name: 'Google';
+      industry: 'Search & Cloud';
       techStack: ['C++', 'Java', 'Python', 'Go', 'Bigtable', 'MapReduce', 'Kubernetes'],
       businessDomains: ['search', 'advertising', 'cloud computing', 'machine learning', 'maps'],
       scaleRequirements: ['billions of queries', 'real-time processing', 'global distribution'],
@@ -34,8 +34,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'algorithmic depth with system design'
     }],
     ['meta', {
-      name: 'Meta',
-      industry: 'Social Media',
+      name: 'Meta';
+      industry: 'Social Media';
       techStack: ['React', 'GraphQL', 'PHP', 'Python', 'PyTorch', 'Cassandra'],
       businessDomains: ['social networking', 'content delivery', 'recommendation systems', 'messaging'],
       scaleRequirements: ['3+ billion users', 'real-time feeds', 'content moderation at scale'],
@@ -43,8 +43,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'product-focused algorithms with optimization'
     }],
     ['amazon', {
-      name: 'Amazon',
-      industry: 'E-commerce & Cloud',
+      name: 'Amazon';
+      industry: 'E-commerce & Cloud';
       techStack: ['Java', 'Python', 'AWS', 'DynamoDB', 'Lambda', 'Kinesis'],
       businessDomains: ['e-commerce', 'logistics', 'cloud services', 'recommendation engines'],
       scaleRequirements: ['global marketplace', 'supply chain optimization', 'real-time inventory'],
@@ -52,8 +52,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'practical problem-solving with scalability focus'
     }],
     ['microsoft', {
-      name: 'Microsoft',
-      industry: 'Enterprise Software',
+      name: 'Microsoft';
+      industry: 'Enterprise Software';
       techStack: ['C#', '.NET', 'Azure', 'SQL Server', 'TypeScript', 'PowerBI'],
       businessDomains: ['productivity tools', 'cloud services', 'enterprise solutions', 'gaming'],
       scaleRequirements: ['enterprise-scale', 'multi-tenant systems', 'high availability'],
@@ -61,8 +61,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'structured approach with design patterns'
     }],
     ['apple', {
-      name: 'Apple',
-      industry: 'Consumer Electronics',
+      name: 'Apple';
+      industry: 'Consumer Electronics';
       techStack: ['Swift', 'Objective-C', 'Metal', 'Core Data', 'iOS', 'macOS'],
       businessDomains: ['mobile devices', 'operating systems', 'app ecosystem', 'hardware optimization'],
       scaleRequirements: ['billions of devices', 'battery optimization', 'real-time performance'],
@@ -70,8 +70,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'performance-critical algorithms with user experience focus'
     }],
     ['netflix', {
-      name: 'Netflix',
-      industry: 'Streaming Entertainment',
+      name: 'Netflix';
+      industry: 'Streaming Entertainment';
       techStack: ['Java', 'Python', 'React', 'Kafka', 'Cassandra', 'AWS'],
       businessDomains: ['video streaming', 'content recommendation', 'content delivery', 'personalization'],
       scaleRequirements: ['global streaming', 'content delivery optimization', 'real-time recommendations'],
@@ -79,8 +79,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'scalability and performance optimization'
     }],
     ['stripe', {
-      name: 'Stripe',
-      industry: 'Fintech',
+      name: 'Stripe';
+      industry: 'Fintech';
       techStack: ['Ruby', 'Scala', 'React', 'PostgreSQL', 'Kafka', 'Kubernetes'],
       businessDomains: ['payment processing', 'financial infrastructure', 'fraud detection', 'compliance'],
       scaleRequirements: ['high-reliability payments', 'fraud detection', 'regulatory compliance'],
@@ -88,8 +88,8 @@ export class EnhancedDSAGenerator {
       interviewStyle: 'reliability and accuracy focus with complex business logic'
     }],
     ['uber', {
-      name: 'Uber',
-      industry: 'Transportation Technology',
+      name: 'Uber';
+      industry: 'Transportation Technology';
       techStack: ['Go', 'Java', 'React', 'PostgreSQL', 'Kafka', 'Redis'],
       businessDomains: ['ride matching', 'route optimization', 'pricing algorithms', 'real-time tracking'],
       scaleRequirements: ['real-time matching', 'global operations', 'dynamic pricing'],
@@ -111,10 +111,10 @@ export class EnhancedDSAGenerator {
    * Generate company-unique DSA problems based on user preferences
    */
   async generateUniqueCompanyDSAProblems(
-    companyName: string,
-    preferences: UserInterviewPreferences,
-    count: number,
-    difficulties: Array<'easy' | 'medium' | 'hard'>,
+    companyName: string;
+    preferences: UserInterviewPreferences;
+    count: number;
+    difficulties: Array<'easy' | 'medium' | 'hard'>;
     experienceLevel: string
   ): Promise<DSACompanyProblem[]> {
     
@@ -131,7 +131,7 @@ export class EnhancedDSAGenerator {
       const difficulty = difficulties[i] || 'medium';
       
       try {
-        const problem = await this.generateSingleUniqueCompanyProblem(
+        const problem = await this.generateSingleUniqueCompanyProblem(;
           companyName,
           companyContext,
           preferences,
@@ -149,7 +149,7 @@ export class EnhancedDSAGenerator {
         console.error(`❌ Error generating problem ${i + 1} for ${companyName}:`, error);
         
         // Fallback to a template-based unique problem
-        const fallbackProblem = this.generateFallbackCompanyProblem(
+        const fallbackProblem = this.generateFallbackCompanyProblem(;
           companyName,
           companyContext,
           difficulty,
@@ -170,12 +170,12 @@ export class EnhancedDSAGenerator {
    * Generate a single unique company-specific DSA problem
    */
   private async generateSingleUniqueCompanyProblem(
-    companyName: string,
-    companyContext: CompanyDSAContext,
-    preferences: UserInterviewPreferences,
-    difficulty: 'easy' | 'medium' | 'hard',
-    experienceLevel: string,
-    existingProblems: DSACompanyProblem[],
+    companyName: string;
+    companyContext: CompanyDSAContext;
+    preferences: UserInterviewPreferences;
+    difficulty: 'easy' | 'medium' | 'hard';
+    experienceLevel: string;
+    existingProblems: DSACompanyProblem[];
     problemNumber: number
   ): Promise<DSACompanyProblem | null> {
 
@@ -252,9 +252,9 @@ Return ONLY valid JSON:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        provider: 'openai',
-        model: 'gpt-4o-mini',
-        max_tokens: 4000,
+        provider: 'openai';
+        model: 'gpt-4o-mini';
+        max_tokens: 4000;
         temperature: 0.8
       });
 
@@ -268,18 +268,18 @@ Return ONLY valid JSON:
       const dsaProblem: DSACompanyProblem = {
         id: `dsa-${companyName.toLowerCase()}-${Date.now()}-${problemNumber}`,
         companyName,
-        title: problemData.title,
-        description: problemData.description,
+        title: problemData.title;
+        description: problemData.description;
         difficulty,
-        topics: problemData.topics || ['general'],
-        uniquenessScore: problemData.uniquenessScore || 8,
+        topics: problemData.topics || ['general'];
+        uniquenessScore: problemData.uniquenessScore || 8;
         companyContext: problemData.companyContext || `Specific to ${companyName}'s technical challenges`,
         realWorldApplication: problemData.realWorldApplication || `Used in ${companyName}'s production systems`,
         expectedComplexity: problemData.expectedComplexity || { time: 'O(n)', space: 'O(1)' },
-        variations: problemData.variations || [],
-        hints: problemData.hints || [],
-        testCases: problemData.testCases || [],
-        followUpQuestions: problemData.followUpQuestions || [],
+        variations: problemData.variations || [];
+        hints: problemData.hints || [];
+        testCases: problemData.testCases || [];
+        followUpQuestions: problemData.followUpQuestions || [];
         companySpecificContext: problemData.companySpecificContext || {
           businessUseCase: `${companyName} business scenario`,
           industryRelevance: `Relevant to ${companyContext.industry}`,
@@ -345,8 +345,8 @@ Return ONLY valid JSON:
 
     // Return generic context for unknown companies
     return {
-      name: companyName,
-      industry: 'Technology',
+      name: companyName;
+      industry: 'Technology';
       techStack: ['JavaScript', 'Python', 'Java', 'SQL', 'AWS'],
       businessDomains: ['software development', 'data processing', 'web applications'],
       scaleRequirements: ['scalable systems', 'performance optimization', 'reliable services'],
@@ -359,9 +359,9 @@ Return ONLY valid JSON:
    * Generate fallback problem when AI generation fails
    */
   private generateFallbackCompanyProblem(
-    companyName: string,
-    companyContext: CompanyDSAContext,
-    difficulty: 'easy' | 'medium' | 'hard',
+    companyName: string;
+    companyContext: CompanyDSAContext;
+    difficulty: 'easy' | 'medium' | 'hard';
     problemNumber: number
   ): DSACompanyProblem {
     
@@ -391,14 +391,14 @@ Return ONLY valid JSON:
     return {
       id: `dsa-${companyName.toLowerCase()}-fallback-${Date.now()}-${problemNumber}`,
       companyName,
-      title: template.title,
-      description: template.description,
+      title: template.title;
+      description: template.description;
       difficulty,
-      topics: template.topics,
-      uniquenessScore: 7,
+      topics: template.topics;
+      uniquenessScore: 7;
       companyContext: `Addresses real technical challenges at ${companyName}`,
       realWorldApplication: `Used in ${companyName}'s production systems for ${companyContext.businessDomains[0]}`,
-      expectedComplexity: template.complexity,
+      expectedComplexity: template.complexity;
       variations: [`Alternative approaches for ${companyName}'s specific requirements`],
       hints: [
         `Consider ${companyName}'s scale requirements`,
@@ -406,16 +406,16 @@ Return ONLY valid JSON:
       ],
       testCases: [
         {
-          id: `test-fallback-1`,
-          input: 'Sample input data',
-          expectedOutput: 'Expected result',
+          id: `test-fallback-1`;
+          input: 'Sample input data';
+          expectedOutput: 'Expected result';
           description: 'Basic functionality test'
         },
         {
-          id: `test-fallback-2`,
-          input: 'Edge case input',
-          expectedOutput: 'Edge case result',
-          hidden: true,
+          id: `test-fallback-2`;
+          input: 'Edge case input';
+          expectedOutput: 'Edge case result';
+          hidden: true;
           description: 'Edge case handling'
         }
       ],
@@ -463,7 +463,7 @@ Return ONLY valid JSON:
    * Get problem statistics for a company
    */
   async getCompanyProblemStats(companyName: string): Promise<{
-    totalProblems: number,
+    totalProblems: number;
     difficultyBreakdown: { [key: string]: number };
     topicDistribution: { [key: string]: number };
     averageUniquenessScore: number
@@ -475,7 +475,7 @@ Return ONLY valid JSON:
         .toArray();
 
       const stats = {
-        totalProblems: problems.length,
+        totalProblems: problems.length;
         difficultyBreakdown: { easy: 0, medium: 0, hard: 0 },
         topicDistribution: {} as { [key: string]: number },
         averageUniquenessScore: 0
@@ -501,7 +501,7 @@ Return ONLY valid JSON:
     } catch (error) {
       console.error('❌ Error getting company problem stats:', error);
       return {
-        totalProblems: 0,
+        totalProblems: 0;
         difficultyBreakdown: { easy: 0, medium: 0, hard: 0 },
         topicDistribution: {},
         averageUniquenessScore: 0

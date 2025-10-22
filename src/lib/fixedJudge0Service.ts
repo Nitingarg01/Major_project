@@ -4,28 +4,28 @@
  */
 
 interface TestCase {
-  id: string,
-  input: string,
+  id: string;
+  input: string;
   expectedOutput: string;
   description?: string;
   hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean,
-  input: string,
-  expected: string,
-  actual: string,
-  executionTime: string,
+  passed: boolean;
+  input: string;
+  expected: string;
+  actual: string;
+  executionTime: string;
   status: string;
   error?: string;
   memory?: number
 }
 
 interface ExecutionResponse {
-  success: boolean,
+  success: boolean;
   results: CodeExecutionResult[];
-  totalPassed: number,
+  totalPassed: number;
   totalTests: number;
   compilationError?: string;
   runtimeError?: string
@@ -43,8 +43,8 @@ export class FixedJudge0Service {
     this.baseUrl = `https://${this.apiHost}`
     
     console.log('🔧 Fixed Judge0Service initialized:', {
-      hasKey: !!this.apiKey,
-      host: this.apiHost,
+      hasKey: !!this.apiKey;
+      host: this.apiHost;
       baseUrl: this.baseUrl
     });
   }
@@ -249,9 +249,9 @@ int main() {
   private async submitCode(sourceCode: string, languageId: number, stdin?: string): Promise<string> {
     const submission = {
       source_code: Buffer.from(sourceCode).toString('base64'),
-      language_id: languageId,
+      language_id: languageId;
       stdin: stdin ? Buffer.from(stdin).toString('base64') : undefined,
-      wait: false,
+      wait: false;
       cpu_time_limit: 5, // Increased timeout
       memory_limit: 256000, // Increased memory limit
       wall_time_limit: 10
@@ -307,7 +307,7 @@ int main() {
         
         try {
           console.log(`🧪 Running test case ${i + 1}/${testCases.length}:`, {
-            input: testCase.input,
+            input: testCase.input;
             expected: testCase.expectedOutput
           });
 
@@ -353,30 +353,30 @@ int main() {
           // Handle compilation errors
           if (statusId === 6 && i === 0) { // Compilation Error on first test case
             return {
-              success: false,
+              success: false;
               results: [{
-                passed: false,
-                input: testCase.input,
-                expected: expectedOutput,
-                actual: actualOutput,
+                passed: false;
+                input: testCase.input;
+                expected: expectedOutput;
+                actual: actualOutput;
                 executionTime: `${submission.time || 0}s`,
-                status: statusDescription,
-                error: compileOutput || stderr || 'Compilation failed',
+                status: statusDescription;
+                error: compileOutput || stderr || 'Compilation failed';
                 memory: submission.memory
               }],
-              totalPassed: 0,
-              totalTests: testCases.length,
+              totalPassed: 0;
+              totalTests: testCases.length;
               compilationError: compileOutput || stderr || 'Compilation failed'
             };
           }
 
           results.push({
             passed,
-            input: testCase.input,
-            expected: expectedOutput,
-            actual: actualOutput,
+            input: testCase.input;
+            expected: expectedOutput;
+            actual: actualOutput;
             executionTime: `${submission.time || 0}s`,
-            status: statusDescription,
+            status: statusDescription;
             error: (stderr || compileOutput) || undefined,
             memory: submission.memory
           });
@@ -384,12 +384,12 @@ int main() {
         } catch (error: any) {
           console.error(`❌ Test case ${i + 1} execution error:`, error);
           results.push({
-            passed: false,
-            input: testCase.input,
-            expected: testCase.expectedOutput,
-            actual: '',
-            executionTime: '0s',
-            status: 'Execution Error',
+            passed: false;
+            input: testCase.input;
+            expected: testCase.expectedOutput;
+            actual: '';
+            executionTime: '0s';
+            status: 'Execution Error';
             error: error.message
           });
         }
@@ -398,7 +398,7 @@ int main() {
       console.log(`✅ Code execution completed: ${totalPassed}/${testCases.length} passed`);
 
       return {
-        success: totalPassed > 0,
+        success: totalPassed > 0;
         results,
         totalPassed,
         totalTests: testCases.length
@@ -408,10 +408,10 @@ int main() {
       console.error('❌ Judge0 execution error:', error);
       
       return {
-        success: false,
-        results: [],
-        totalPassed: 0,
-        totalTests: testCases.length,
+        success: false;
+        results: [];
+        totalPassed: 0;
+        totalTests: testCases.length;
         runtimeError: error.message
       };
     }
@@ -448,11 +448,11 @@ int main() {
       
       return {
         passed,
-        input: testCase.input,
-        expected: testCase.expectedOutput,
+        input: testCase.input;
+        expected: testCase.expectedOutput;
         actual: passed ? testCase.expectedOutput : `mock_output_${index}_${Math.random().toString(36).substr(2, 4)}`,
         executionTime: `${(Math.random() * 0.8 + 0.1).toFixed(3)}s`,
-        status: passed ? 'Accepted' : 'Wrong Answer',
+        status: passed ? 'Accepted' : 'Wrong Answer';
         memory: Math.floor(Math.random() * 50 + 10) // 10-60 KB
       };
     });
@@ -460,7 +460,7 @@ int main() {
     const totalPassed = results.filter(r => r.passed).length;
 
     return {
-      success: totalPassed > 0,
+      success: totalPassed > 0;
       results,
       totalPassed,
       totalTests: testCases.length
@@ -486,20 +486,20 @@ int main() {
       const languages = await this.makeApiRequest('/languages');
       return { 
         status: 'healthy', 
-        judge0Available: true,
+        judge0Available: true;
         details: {
-          languagesCount: languages.length,
-          apiKey: !!this.apiKey,
+          languagesCount: languages.length;
+          apiKey: !!this.apiKey;
           baseUrl: this.baseUrl
         }
       };
     } catch (error: any) {
       return { 
         status: 'fallback', 
-        judge0Available: false,
+        judge0Available: false;
         details: {
-          error: error.message,
-          apiKey: !!this.apiKey,
+          error: error.message;
+          apiKey: !!this.apiKey;
           baseUrl: this.baseUrl
         }
       };

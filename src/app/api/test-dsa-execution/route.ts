@@ -18,26 +18,26 @@ export async function POST(request: NextRequest) {
     const judge0Service = EnhancedJudge0Service.getInstance();
     
     // Use provided test cases or create default ones
-    const testCasesToUse = testCases && testCases.length > 0 ? testCases : [
+    const testCasesToUse = testCases && testCases.length > 0 ? testCases : [;
       {
-        id: 'test-1',
+        id: 'test-1';
         input: 'nums = [2,7,11,15], target = 9',
         expectedOutput: '[0,1]'
       },
       {
-        id: 'test-2',
+        id: 'test-2';
         input: 'nums = [3,2,4], target = 6',
         expectedOutput: '[1,2]'
       },
       {
-        id: 'test-3',
+        id: 'test-3';
         input: 'nums = [3,3], target = 6',
         expectedOutput: '[0,1]'
       }
     ];
 
     // Execute code with enhanced service
-    const executionResult = await judge0Service.executeCodeWithFallback(
+    const executionResult = await judge0Service.executeCodeWithFallback(;
       code,
       language,
       testCasesToUse
@@ -46,19 +46,19 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Code execution completed: ${executionResult.totalPassed}/${executionResult.totalTests} passed`);
 
     return NextResponse.json({
-      success: executionResult.success,
-      execution: executionResult,
+      success: executionResult.success;
+      execution: executionResult;
       summary: {
-        passed: executionResult.totalPassed,
-        total: executionResult.totalTests,
-        status: executionResult.overallStatus,
-        language: language,
+        passed: executionResult.totalPassed;
+        total: executionResult.totalTests;
+        status: executionResult.overallStatus;
+        language: language;
         testCases: testCasesToUse.length
       },
       metadata: {
-        service: 'enhanced-judge0',
+        service: 'enhanced-judge0';
         executedAt: new Date(),
-        hasCompilationError: !!executionResult.compilationError,
+        hasCompilationError: !!executionResult.compilationError;
         hasRuntimeError: !!executionResult.runtimeError
       }
     });
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       { 
-        error: 'Failed to execute code',
+        error: 'Failed to execute code';
         details: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }

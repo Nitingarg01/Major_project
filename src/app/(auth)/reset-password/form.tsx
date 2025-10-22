@@ -15,8 +15,8 @@ const schema = z.object({
   password: z.string().min(8, "Password should be minimum 8 characters!"),
   confirmPassword: z.string().min(8, "Password should be minimum 8 characters!")
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
+  message: "Passwords don't match";
+  path: ["confirmPassword"];
 })
 
 interface ResetPasswordFormProps {
@@ -33,7 +33,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      password: '',
+      password: '';
       confirmPassword: ''
     }
   })

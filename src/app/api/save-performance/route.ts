@@ -20,11 +20,11 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     console.log('📋 Request body received:', { 
-      hasInterviewId: !!body.interviewId,
-      hasJobTitle: !!body.jobTitle,
-      hasCompanyName: !!body.companyName,
-      hasScore: body.score !== undefined,
-      score: body.score,
+      hasInterviewId: !!body.interviewId;
+      hasJobTitle: !!body.jobTitle;
+      hasCompanyName: !!body.companyName;
+      hasScore: body.score !== undefined;
+      score: body.score;
       interviewId: body.interviewId
     })
     
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     if (existingPerformance) {
       console.log('⚠️ Performance data already exists, skipping save');
       return NextResponse.json({
-        success: true,
+        success: true;
         performanceId: existingPerformance._id.toString(),
         message: 'Performance data already exists'
       })
@@ -85,21 +85,21 @@ export async function POST(request: NextRequest) {
 
     // Save performance data
     const performanceData = {
-      userId: userObjectId,
-      interviewId: interviewObjectId,
+      userId: userObjectId;
+      interviewId: interviewObjectId;
       jobTitle,
       companyName,
-      interviewType: interviewType || 'mixed',
-      experienceLevel: experienceLevel || 'mid',
+      interviewType: interviewType || 'mixed';
+      experienceLevel: experienceLevel || 'mid';
       completedAt: new Date(),
-      totalQuestions: totalQuestions || 0,
-      correctAnswers: correctAnswers || 0,
+      totalQuestions: totalQuestions || 0;
+      correctAnswers: correctAnswers || 0;
       score: Math.round(score),
-      timeSpent: timeSpent || 0,
+      timeSpent: timeSpent || 0;
       feedback: {
-        overall: feedback?.overall || 'Interview completed successfully.',
-        strengths: feedback?.strengths || [],
-        improvements: feedback?.improvements || [],
+        overall: feedback?.overall || 'Interview completed successfully.';
+        strengths: feedback?.strengths || [];
+        improvements: feedback?.improvements || [];
         recommendations: feedback?.recommendations || []
       },
       roundResults: roundResults || []
@@ -111,11 +111,11 @@ export async function POST(request: NextRequest) {
 
     // Update interview status to completed and remove from active list
     console.log('🔄 Updating interview status to completed...');
-    const updateResult = await db.collection('interviews').updateOne(
+    const updateResult = await db.collection('interviews').updateOne(;
       { _id: interviewObjectId },
       { 
         $set: { 
-          status: 'completed',
+          status: 'completed';
           completedAt: new Date(),
           performanceId: result.insertedId
         }
@@ -128,16 +128,16 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      success: true,
+      success: true;
       performanceId: result.insertedId.toString(),
-      message: 'Performance data saved and interview marked as completed',
+      message: 'Performance data saved and interview marked as completed';
       interviewUpdated: updateResult.modifiedCount > 0
     })
 
   } catch (error) {
     console.error('Error saving performance data:', error);
     console.error('Error details:', {
-      name: error instanceof Error ? error.name : 'Unknown',
+      name: error instanceof Error ? error.name : 'Unknown';
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined
     })
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Internal server error',
+        error: 'Internal server error';
         details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
       },
       { status: 500 }

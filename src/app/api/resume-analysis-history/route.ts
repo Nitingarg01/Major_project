@@ -25,14 +25,14 @@ export async function GET(request: NextRequest) {
     }));
 
     return NextResponse.json({ 
-      analyses: cleanedAnalyses,
+      analyses: cleanedAnalyses;
       count: cleanedAnalyses.length
     }, { status: 200 });
     
   } catch (error) {
     console.error("❌ Error fetching resume analysis history:", error);
     return NextResponse.json({
-      error: "Failed to fetch analysis history",
+      error: "Failed to fetch analysis history";
       details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }

@@ -65,13 +65,13 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 }) => {
   // Core state
   const [interviewState, setInterviewState] = useState<InterviewState>({
-    currentQuestionIndex: 0,
-    isListening: false,
-    isSpeaking: false,
-    userResponse: '',
-    aiResponse: '',
-    conversationHistory: [],
-    startTime: null,
+    currentQuestionIndex: 0;
+    isListening: false;
+    isSpeaking: false;
+    userResponse: '';
+    aiResponse: '';
+    conversationHistory: [];
+    startTime: null;
     responses: []
   })
 
@@ -202,7 +202,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       
       // Try to use a professional voice
       const voices = speechSynthesis.getVoices();
-      const preferredVoice = voices.find(voice =>
+      const preferredVoice = voices.find(voice =>;
         voice.name.includes('Google') || 
         voice.name.includes('Microsoft') ||
         voice.name.includes('Alex') ||
@@ -240,10 +240,10 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     
     setInterviewState(prev => ({
       ...prev,
-      aiResponse: welcomeMessage,
+      aiResponse: welcomeMessage;
       conversationHistory: [{
-        speaker: 'ai',
-        message: welcomeMessage,
+        speaker: 'ai';
+        message: welcomeMessage;
         timestamp: new Date()
       }]
     }))
@@ -259,17 +259,17 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   }, [jobTitle, companyName, interviewType, speakText])
 
   const askCurrentQuestion = useCallback(() => {
-    const currentQuestion = questions[interviewState.currentQuestionIndex]
+    const currentQuestion = questions[interviewState.currentQuestionIndex];
     if (!currentQuestion) return
 
     const questionText = `Question ${interviewState.currentQuestionIndex + 1}: ${currentQuestion.question}`;
     
     setInterviewState(prev => ({
       ...prev,
-      aiResponse: questionText,
+      aiResponse: questionText;
       conversationHistory: [...prev.conversationHistory, {
-        speaker: 'ai',
-        message: questionText,
+        speaker: 'ai';
+        message: questionText;
         timestamp: new Date(),
         questionIndex: prev.currentQuestionIndex
       }]
@@ -285,24 +285,24 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       return
     }
 
-    const currentQuestion = questions[interviewState.currentQuestionIndex]
+    const currentQuestion = questions[interviewState.currentQuestionIndex];
     const responseTime = questionStartTimeRef.current;
       ? Date.now() - questionStartTimeRef.current.getTime()
       : 0
 
     // Add user response to conversation
     const userMessage = {
-      speaker: 'user' as const,
-      message: interviewState.userResponse,
+      speaker: 'user' as const;
+      message: interviewState.userResponse;
       timestamp: new Date(),
       questionIndex: interviewState.currentQuestionIndex
     }
 
     // Save response
     const response = {
-      questionIndex: interviewState.currentQuestionIndex,
-      question: currentQuestion.question,
-      userAnswer: interviewState.userResponse,
+      questionIndex: interviewState.currentQuestionIndex;
+      question: currentQuestion.question;
+      userAnswer: interviewState.userResponse;
       timestamp: new Date(),
       responseTime
     }
@@ -313,8 +313,8 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
     const followUpMessage = generateFollowUp(interviewState.userResponse, currentQuestion);
     
     const aiMessage = {
-      speaker: 'ai' as const,
-      message: followUpMessage,
+      speaker: 'ai' as const;
+      message: followUpMessage;
       timestamp: new Date()
     }
 
@@ -336,7 +336,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
   const generateFollowUp = (userAnswer: string, question: any): string => {
     // Simple follow-up generation - in production, use your AI service
-    const followUps = [
+    const followUps = [;
       "That's an interesting perspective. Can you elaborate on that approach?",
       "Good answer. How would you handle this in a team environment?",
       "I see. What challenges might you face with that solution?",
@@ -369,12 +369,12 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
     // Calculate results
     const results = {
-      totalQuestions: questions.length,
-      answeredQuestions: interviewState.responses.length,
+      totalQuestions: questions.length;
+      answeredQuestions: interviewState.responses.length;
       totalTime: interviewState.startTime ? Date.now() - interviewState.startTime.getTime() : 0,
       averageResponseTime: interviewState.responses.reduce((sum, r) => sum + r.responseTime, 0) / interviewState.responses.length,
-      conversationHistory: interviewState.conversationHistory,
-      responses: interviewState.responses,
+      conversationHistory: interviewState.conversationHistory;
+      responses: interviewState.responses;
       completedAt: new Date()
     }
 
@@ -393,7 +393,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   }
 
   // AI Avatar Component
-  const AIAvatar = () => (
+  const AIAvatar = () => (;
     <div className="relative w-32 h-32 mx-auto mb-4">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-300 ${
         aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse' :;

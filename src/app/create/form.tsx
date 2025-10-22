@@ -27,7 +27,7 @@ const schema = z.object({
 })
 
 // Popular companies for quick selection
-const popularCompanies = [
+const popularCompanies = [;
     "Google", "Microsoft", "Amazon", "Apple", "Meta", "Netflix", "Tesla", "Uber", 
     "Airbnb", "LinkedIn", "Spotify", "Dropbox", "Slack", "Adobe", "Salesforce"
 ];
@@ -46,11 +46,11 @@ const Createform = () => {
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-            jobTitle: '',
-            jobDesc: '',
-            skills: [],
-            companyName: '',
-            experienceLevel: 'mid',
+            jobTitle: '';
+            jobDesc: '';
+            skills: [];
+            companyName: '';
+            experienceLevel: 'mid';
             interviewType: 'mixed'
         }
     })
@@ -422,7 +422,7 @@ const Createform = () => {
                                         accept=".pdf,.doc,.docx"
                                         className="hidden"
                                         onChange={(e) => {
-                                            const file = e.target.files?.[0]
+                                            const file = e.target.files?.[0];
                                             if (file) {
                                                 setFileName(file.name);
                                                 parseResume(file);

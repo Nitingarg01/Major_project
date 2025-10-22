@@ -24,30 +24,30 @@ async function generateQuestionsImmediately(interviewData: any, userId: string) 
         
         // Generate questions using the enhanced service manager
         const questions = await interviewServiceManager.generateInterviewQuestions({
-            jobTitle: interviewData.jobTitle || 'Software Engineer',
-            companyName: interviewData.companyName,
-            skills: interviewData.skills || [],
-            interviewType: interviewData.interviewType || 'mixed',
-            experienceLevel: interviewData.experienceLevel || 'mid',
+            jobTitle: interviewData.jobTitle || 'Software Engineer';
+            companyName: interviewData.companyName;
+            skills: interviewData.skills || [];
+            interviewType: interviewData.interviewType || 'mixed';
+            experienceLevel: interviewData.experienceLevel || 'mid';
             numberOfQuestions: getQuestionCountForType(interviewData.interviewType || 'mixed')
         });
 
         console.log(`✅ Generated ${questions.length} enhanced questions with proper distribution`);
 
         const allQuestions = questions.map((q: any) => ({
-            id: q.id,
-            question: q.question,
-            expectedAnswer: q.expectedAnswer,
-            difficulty: q.difficulty || 'medium',
-            category: q.category,
+            id: q.id;
+            question: q.question;
+            expectedAnswer: q.expectedAnswer;
+            difficulty: q.difficulty || 'medium';
+            category: q.category;
             points: q.points || getPointsForCategory(q.category, q.difficulty),
             timeLimit: q.timeLimit || getTimeLimitForCategory(q.category),
-            provider: q.provider || 'interview-service-manager',
-            model: q.model || 'enhanced-groq',
+            provider: q.provider || 'interview-service-manager';
+            model: q.model || 'enhanced-groq';
             evaluationCriteria: q.evaluationCriteria || ['Technical Knowledge', 'Communication', 'Problem Solving'],
             tags: q.tags || [interviewData.jobTitle, interviewData.companyName],
-            hints: q.hints || [],
-            companyRelevance: q.companyRelevance || 8,
+            hints: q.hints || [];
+            companyRelevance: q.companyRelevance || 8;
             dsaProblem: q.dsaProblem || null // Include DSA problem data if present
         }));
 
@@ -73,12 +73,12 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
             fallbackQuestions.push({
                 id: `enhanced-tech-fallback-${i}`,
                 question: `Describe your experience with ${interviewData.skills[i % interviewData.skills.length]} and how you would implement it at ${interviewData.companyName}.`,
-                expectedAnswer: "A comprehensive technical answer with practical examples and implementation details.",
-                difficulty: "medium",
-                category: "technical",
-                points: 15,
-                timeLimit: 5,
-                provider: 'enhanced-fallback',
+                expectedAnswer: "A comprehensive technical answer with practical examples and implementation details.";
+                difficulty: "medium";
+                category: "technical";
+                points: 15;
+                timeLimit: 5;
+                provider: 'enhanced-fallback';
                 evaluationCriteria: ['Technical Depth', 'Practical Application', 'Company Relevance'],
                 tags: ['technical', interviewData.companyName, interviewData.skills[i % interviewData.skills.length]],
                 companyRelevance: 8
@@ -86,7 +86,7 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         }
         
         // Behavioral questions (4)
-        const behavioralPrompts = [
+        const behavioralPrompts = [;
             "Tell me about a challenging project you led",
             "Describe a time when you had to work with a difficult team member",
             "How do you handle tight deadlines and pressure",
@@ -97,12 +97,12 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
             fallbackQuestions.push({
                 id: `enhanced-behavioral-fallback-${i}`,
                 question: `${behavioralPrompts[i]} and how it relates to working at ${interviewData.companyName}.`,
-                expectedAnswer: "A structured behavioral answer using the STAR method with specific examples.",
-                difficulty: "medium",
-                category: "behavioral",
-                points: 12,
-                timeLimit: 5,
-                provider: 'enhanced-fallback',
+                expectedAnswer: "A structured behavioral answer using the STAR method with specific examples.";
+                difficulty: "medium";
+                category: "behavioral";
+                points: 12;
+                timeLimit: 5;
+                provider: 'enhanced-fallback';
                 evaluationCriteria: ['Communication', 'Leadership', 'Problem Solving', 'Cultural Fit'],
                 tags: ['behavioral', interviewData.companyName],
                 companyRelevance: 7
@@ -110,7 +110,7 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         }
         
         // Aptitude questions (4)
-        const aptitudePrompts = [
+        const aptitudePrompts = [;
             "You have 8 balls, one of which weighs slightly more. Using a balance scale only twice, how do you identify the heavier ball?",
             "How would you explain cloud computing to a 5-year-old?",
             "Estimate how many smartphone users are there globally",
@@ -120,13 +120,13 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         for (let i = 0; i < 4; i++) {
             fallbackQuestions.push({
                 id: `enhanced-aptitude-fallback-${i}`,
-                question: aptitudePrompts[i],
-                expectedAnswer: "A logical approach with clear reasoning and systematic problem-solving.",
-                difficulty: "medium",
-                category: "aptitude",
-                points: 10,
-                timeLimit: 5,
-                provider: 'enhanced-fallback',
+                question: aptitudePrompts[i];
+                expectedAnswer: "A logical approach with clear reasoning and systematic problem-solving.";
+                difficulty: "medium";
+                category: "aptitude";
+                points: 10;
+                timeLimit: 5;
+                provider: 'enhanced-fallback';
                 evaluationCriteria: ['Logical Reasoning', 'Problem Solving', 'Creativity'],
                 tags: ['aptitude', 'logic', 'problem-solving'],
                 companyRelevance: 6
@@ -135,21 +135,21 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         
         // DSA questions (2)
         fallbackQuestions.push({
-            id: 'enhanced-dsa-fallback-1',
+            id: 'enhanced-dsa-fallback-1';
             question: `DSA Problem 1: Two Sum\n\nGiven an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.`,
             expectedAnswer: "A working solution with proper time and space complexity analysis. Expected approach: hash map with O(n) time complexity.",
             difficulty: "medium", 
-            category: "dsa",
-            points: 30,
-            timeLimit: 45,
-            provider: 'enhanced-fallback',
+            category: "dsa";
+            points: 30;
+            timeLimit: 45;
+            provider: 'enhanced-fallback';
             evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases'],
             tags: ['dsa', 'algorithms', 'array', interviewData.companyName],
-            companyRelevance: 9,
+            companyRelevance: 9;
             dsaProblem: {
-                id: 'fallback-two-sum',
-                title: 'Two Sum Problem',
-                difficulty: 'medium',
+                id: 'fallback-two-sum';
+                title: 'Two Sum Problem';
+                difficulty: 'medium';
                 description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
                 examples: [{
                     input: 'nums = [2,7,11,15], target = 9',
@@ -167,25 +167,25 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         });
         
         fallbackQuestions.push({
-            id: 'enhanced-dsa-fallback-2',
+            id: 'enhanced-dsa-fallback-2';
             question: `DSA Problem 2: Valid Parentheses\n\nGiven a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.`,
             expectedAnswer: "A stack-based solution with proper validation logic. Expected approach: stack data structure with O(n) time complexity.",
-            difficulty: "medium",
+            difficulty: "medium";
             category: "dsa", 
-            points: 30,
-            timeLimit: 45,
-            provider: 'enhanced-fallback',
+            points: 30;
+            timeLimit: 45;
+            provider: 'enhanced-fallback';
             evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Edge Cases'],
             tags: ['dsa', 'stack', 'string', interviewData.companyName],
-            companyRelevance: 8,
+            companyRelevance: 8;
             dsaProblem: {
-                id: 'fallback-valid-parentheses',
-                title: 'Valid Parentheses',
-                difficulty: 'medium',
+                id: 'fallback-valid-parentheses';
+                title: 'Valid Parentheses';
+                difficulty: 'medium';
                 description: 'Given a string s containing just the characters \'(\', \')\', \'{\', \'}\', \'[\' and \']\', determine if the input string is valid.',
                 examples: [{
                     input: 's = "()"',
-                    output: 'true',
+                    output: 'true';
                     explanation: 'The parentheses are properly matched.'
                 }],
                 testCases: [
@@ -202,14 +202,14 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
     } else if (interviewData.interviewType === 'dsa') {
         // Generate exactly 2 DSA problems
         fallbackQuestions.push({
-            id: 'enhanced-dsa-only-fallback-1',
+            id: 'enhanced-dsa-only-fallback-1';
             question: `DSA Problem 1: Binary Tree Level Order Traversal\n\nGiven the root of a binary tree, return the level order traversal of its nodes' values.`,
-            expectedAnswer: "A BFS-based solution using queue data structure with proper level separation.",
+            expectedAnswer: "A BFS-based solution using queue data structure with proper level separation.";
             difficulty: getDSADifficultyForLevel(interviewData.experienceLevel),
-            category: "dsa",
+            category: "dsa";
             points: getDSAPointsForDifficulty(getDSADifficultyForLevel(interviewData.experienceLevel)),
-            timeLimit: 45,
-            provider: 'enhanced-fallback',
+            timeLimit: 45;
+            provider: 'enhanced-fallback';
             evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'Tree Traversal Understanding'],
             tags: ['dsa', 'tree', 'bfs', interviewData.companyName],
             companyRelevance: 9
@@ -218,12 +218,12 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
         fallbackQuestions.push({
             id: 'enhanced-dsa-only-fallback-2', 
             question: `DSA Problem 2: Longest Substring Without Repeating Characters\n\nGiven a string s, find the length of the longest substring without repeating characters.`,
-            expectedAnswer: "A sliding window approach with hash set for character tracking.",
+            expectedAnswer: "A sliding window approach with hash set for character tracking.";
             difficulty: getDSADifficultyForLevel(interviewData.experienceLevel),
-            category: "dsa",
+            category: "dsa";
             points: getDSAPointsForDifficulty(getDSADifficultyForLevel(interviewData.experienceLevel)),
-            timeLimit: 45,
-            provider: 'enhanced-fallback',
+            timeLimit: 45;
+            provider: 'enhanced-fallback';
             evaluationCriteria: ['Correctness', 'Efficiency', 'Code Quality', 'String Processing'],
             tags: ['dsa', 'string', 'sliding-window', interviewData.companyName],
             companyRelevance: 8
@@ -235,11 +235,11 @@ function generateEnhancedFallbackQuestions(interviewData: any): any[] {
                 id: `enhanced-${interviewData.interviewType}-fallback-${i}`,
                 question: `Tell me about your experience with ${interviewData.skills[i % interviewData.skills.length]} in a ${interviewData.interviewType} context at ${interviewData.companyName}.`,
                 expectedAnswer: `A comprehensive ${interviewData.interviewType} answer with specific examples and practical application.`,
-                difficulty: "medium",
-                category: interviewData.interviewType,
+                difficulty: "medium";
+                category: interviewData.interviewType;
                 points: getPointsForCategory(interviewData.interviewType, "medium"),
                 timeLimit: getTimeLimitForCategory(interviewData.interviewType),
-                provider: 'enhanced-fallback',
+                provider: 'enhanced-fallback';
                 evaluationCriteria: ['Relevance', 'Depth', 'Communication', 'Practical Application'],
                 tags: [interviewData.interviewType, interviewData.companyName],
                 companyRelevance: 7
@@ -352,8 +352,8 @@ export async function POST(request: NextRequest) {
 
         // Check for duplicate company interview (only if there's a completed interview)
         const existingCompanyInterview = await db.collection('interviews').findOne({
-            userId: userId,
-            companyName: companyName,
+            userId: userId;
+            companyName: companyName;
             status: 'completed'
         });
 
@@ -362,7 +362,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { 
                     error: `You have already completed an interview for ${companyName}. Check your performance stats to view the results.`,
-                    existingInterviewId: existingCompanyInterview._id,
+                    existingInterviewId: existingCompanyInterview._id;
                     redirectTo: '/performance'
                 },
                 { status: 409 } // Conflict status
@@ -370,22 +370,22 @@ export async function POST(request: NextRequest) {
         }
 
         const interviewData = {
-            userId: userId,
+            userId: userId;
             jobDesc,
             skills,
             jobTitle,
             companyName,
-            projectContext: projectContext ?? [],
-            workExDetails: workExDetails ?? [],
-            experienceLevel: experienceLevel ?? 'mid',
-            interviewType: interviewType ?? 'mixed',
+            projectContext: projectContext ?? [];
+            workExDetails: workExDetails ?? [];
+            experienceLevel: experienceLevel ?? 'mid';
+            interviewType: interviewType ?? 'mixed';
             selectedRounds: selectedRounds ?? (interviewType === 'mixed' ? ['technical', 'behavioral', 'aptitude', 'dsa'] : [interviewType]),
             estimatedDuration: estimatedDuration ?? calculateEstimatedDuration(interviewType),
-            difficultyPreference: difficultyPreference ?? 'adaptive',
-            companyIntelligence: companyIntelligence,
-            roundConfigs: roundConfigs,
+            difficultyPreference: difficultyPreference ?? 'adaptive';
+            companyIntelligence: companyIntelligence;
+            roundConfigs: roundConfigs;
             createdAt: new Date(),
-            status: 'generating',
+            status: 'generating';
             enhancedFeatures: {
                 mixedInterviewIncludes: interviewType === 'mixed' ? ['technical', 'behavioral', 'aptitude', 'dsa'] : null,
                 dsaQuestionCount: interviewType === 'dsa' ? 2 : (interviewType === 'mixed' ? 2 : 0),
@@ -402,21 +402,21 @@ export async function POST(request: NextRequest) {
         
         // Store questions in database
         const questionsResult = await db.collection("questions").insertOne({
-            questions: questions,
-            answers: [],
+            questions: questions;
+            answers: [];
             interviewId: interviewResult.insertedId.toString(),
-            userId: session.user.id,
+            userId: session.user.id;
             metadata: {
                 generatedAt: new Date(),
-                questionType: 'enhanced-structured',
+                questionType: 'enhanced-structured';
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
-                service: 'enhanced-interview-service-manager',
-                provider: questions[0]?.provider || 'enhanced-generator',
-                model: questions[0]?.model || 'groq-enhanced',
-                processingMethod: 'intelligent-routing-v2',
+                service: 'enhanced-interview-service-manager';
+                provider: questions[0]?.provider || 'enhanced-generator';
+                model: questions[0]?.model || 'groq-enhanced';
+                processingMethod: 'intelligent-routing-v2';
                 interviewStructure: {
-                    mixed: interviewType === 'mixed',
-                    dsaOnly: interviewType === 'dsa',
+                    mixed: interviewType === 'mixed';
+                    dsaOnly: interviewType === 'dsa';
                     questionDistribution: getQuestionDistribution(questions),
                     enhancedFeatures: interviewData.enhancedFeatures
                 }
@@ -428,10 +428,10 @@ export async function POST(request: NextRequest) {
             { _id: interviewResult.insertedId },
             {
                 $set: {
-                    questions: questionsResult.insertedId,
-                    status: 'ready',
+                    questions: questionsResult.insertedId;
+                    status: 'ready';
                     questionStats: {
-                        totalQuestions: questions.length,
+                        totalQuestions: questions.length;
                         averageTimeLimit: questions.reduce((sum, q) => sum + (q.timeLimit || 8), 0) / questions.length,
                         totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0),
                         categoryBreakdown: getQuestionDistribution(questions)
@@ -446,14 +446,14 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             { 
                 message: `Enhanced interview created and ready! ${interviewType === 'mixed' ? 'Includes all 4 rounds: Technical + Behavioral + Aptitude + DSA' : interviewType === 'dsa' ? 'DSA interview with 2 challenging problems' : `${interviewType} interview ready`}`, 
-                id: interviewResult.insertedId,
-                status: 'ready',
-                questionsCount: questions.length,
+                id: interviewResult.insertedId;
+                status: 'ready';
+                questionsCount: questions.length;
                 averagePoints: questions.reduce((sum, q) => sum + (q.points || 15), 0) / questions.length,
                 totalPoints: questions.reduce((sum, q) => sum + (q.points || 15), 0),
-                service: 'enhanced-smart-ai',
-                userId: session.user.id,
-                enhancedFeatures: interviewData.enhancedFeatures,
+                service: 'enhanced-smart-ai';
+                userId: session.user.id;
+                enhancedFeatures: interviewData.enhancedFeatures;
                 questionDistribution: getQuestionDistribution(questions)
             },
             { status: 201 }
@@ -468,7 +468,7 @@ export async function POST(request: NextRequest) {
         
         return NextResponse.json(
             {
-                error: isAuthError ? "Authentication error" : "Failed to create enhanced interview",
+                error: isAuthError ? "Authentication error" : "Failed to create enhanced interview";
                 details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
             },
             { status: isAuthError ? 401 : 500 }

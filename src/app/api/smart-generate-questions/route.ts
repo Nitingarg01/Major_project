@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
 
       if (existingQuestions && existingQuestions.questions && existingQuestions.questions.length > 0) {
         return NextResponse.json({
-          message: 'Questions already exist',
-          questionsCount: existingQuestions.questions.length,
-          questions: existingQuestions.questions,
+          message: 'Questions already exist';
+          questionsCount: existingQuestions.questions.length;
+          questions: existingQuestions.questions;
           provider: 'cached'
         });
       }
@@ -51,11 +51,11 @@ export async function POST(request: NextRequest) {
     
     // Generate questions using SmartAI service
     const questionResponse = await smartAI.generateQuestions({
-      jobTitle: interview.jobTitle,
-      companyName: interview.companyName,
-      skills: interview.skills || [],
-      interviewType: interview.interviewType,
-      experienceLevel: interview.experienceLevel || 'mid',
+      jobTitle: interview.jobTitle;
+      companyName: interview.companyName;
+      skills: interview.skills || [];
+      interviewType: interview.interviewType;
+      experienceLevel: interview.experienceLevel || 'mid';
       numberOfQuestions: getQuestionCount(interview.interviewType),
       companyIntelligence: null // Can be enhanced later
     });
@@ -68,30 +68,30 @@ export async function POST(request: NextRequest) {
 
     // Enhanced question document with SmartAI metadata
     const questionDoc = {
-      interviewId: interviewId,
+      interviewId: interviewId;
       questions: allQuestions.map((q: any, index: number) => ({
         id: q.id || `smart-q-${Date.now()}-${index}`,
-        question: q.question,
-        expectedAnswer: q.expectedAnswer,
-        category: q.category,
-        difficulty: q.difficulty || 'medium',
-        points: q.points || 10,
-        timeLimit: q.timeLimit || 5,
-        followUpQuestions: q.followUpQuestions || [],
+        question: q.question;
+        expectedAnswer: q.expectedAnswer;
+        category: q.category;
+        difficulty: q.difficulty || 'medium';
+        points: q.points || 10;
+        timeLimit: q.timeLimit || 5;
+        followUpQuestions: q.followUpQuestions || [];
         evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
-        companyRelevance: q.companyRelevance || 8,
+        companyRelevance: q.companyRelevance || 8;
         tags: q.tags || [interview.jobTitle, interview.companyName],
-        hints: q.hints || [],
-        provider: questionResponse.provider,
+        hints: q.hints || [];
+        provider: questionResponse.provider;
         model: questionResponse.model
       })),
       metadata: {
         generatedAt: new Date(),
-        aiService: 'smart-ai-service',
-        provider: questionResponse.provider,
-        model: questionResponse.model,
-        processingTime: questionResponse.processingTime,
-        totalQuestions: allQuestions.length,
+        aiService: 'smart-ai-service';
+        provider: questionResponse.provider;
+        model: questionResponse.model;
+        processingTime: questionResponse.processingTime;
+        totalQuestions: allQuestions.length;
         categoryBreakdown: getCategoryBreakdown(allQuestions),
         difficultyBreakdown: getDifficultyBreakdown(allQuestions)
       },
@@ -110,8 +110,8 @@ export async function POST(request: NextRequest) {
       { _id: new ObjectId(interviewId) },
       { 
         $set: { 
-          status: 'ready',
-          questionMetadata: questionDoc.metadata,
+          status: 'ready';
+          questionMetadata: questionDoc.metadata;
           updatedAt: new Date()
         } 
       }
@@ -121,11 +121,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       message: `Smart AI questions generated successfully using ${questionResponse.provider}`,
-      questionsCount: allQuestions.length,
-      questions: allQuestions,
-      metadata: questionDoc.metadata,
-      provider: questionResponse.provider,
-      model: questionResponse.model,
+      questionsCount: allQuestions.length;
+      questions: allQuestions;
+      metadata: questionDoc.metadata;
+      provider: questionResponse.provider;
+      model: questionResponse.model;
       processingTime: questionResponse.processingTime
     });
 

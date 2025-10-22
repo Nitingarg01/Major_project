@@ -7,25 +7,25 @@ import SmartAIService from './smartAIService';
 import { extractJSON } from './jsonExtractor';
 
 interface CompanyResearchData {
-  name: string,
-  industry: string,
-  size: string,
+  name: string;
+  industry: string;
+  size: string;
   techStack: string[];
   interviewProcess: string[];
-  difficulty: 'easy' | 'medium' | 'hard',
+  difficulty: 'easy' | 'medium' | 'hard';
   focusAreas: string[];
   preparationTips: string[];
   commonQuestions: string[];
 }
 
 interface InterviewQuestion {
-  id: string,
-  question: string,
-  expectedAnswer: string,
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
-  difficulty: 'easy' | 'medium' | 'hard',
-  points: number,
-  timeLimit: number,
+  id: string;
+  question: string;
+  expectedAnswer: string;
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
+  difficulty: 'easy' | 'medium' | 'hard';
+  points: number;
+  timeLimit: number;
   evaluationCriteria: string[];
   tags: string[];
   hints: string[];
@@ -33,12 +33,12 @@ interface InterviewQuestion {
 }
 
 interface InterviewRoundConfig {
-  id: string,
-  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
-  name: string,
-  duration: number,
-  questionCount: number,
-  enabled: boolean,
+  id: string;
+  type: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
+  name: string;
+  duration: number;
+  questionCount: number;
+  enabled: boolean;
   order: number
 }
 
@@ -75,12 +75,12 @@ export class EnhancedInterviewAI {
       
       if (result.success && result.data) {
         const enhancedData: CompanyResearchData = {
-          name: result.data.name || companyName,
-          industry: result.data.industry || 'Technology',
-          size: result.data.size || 'medium',
+          name: result.data.name || companyName;
+          industry: result.data.industry || 'Technology';
+          size: result.data.size || 'medium';
           techStack: Array.isArray(result.data.techStack) ? result.data.techStack : ['JavaScript', 'React', 'Node.js'],
           interviewProcess: ['Phone Screening', 'Technical Interview', 'System Design', 'Cultural Fit'],
-          difficulty: 'medium',
+          difficulty: 'medium';
           focusAreas: ['Problem Solving', 'System Design', 'Communication'],
           preparationTips: [
             'Practice coding problems on LeetCode',
@@ -112,12 +112,12 @@ export class EnhancedInterviewAI {
 
   private getFallbackCompanyData(companyName: string): CompanyResearchData {
     const fallbackData: CompanyResearchData = {
-      name: companyName,
-      industry: 'Technology',
-      size: 'medium',
+      name: companyName;
+      industry: 'Technology';
+      size: 'medium';
       techStack: ['JavaScript', 'React', 'Node.js', 'Python', 'SQL'],
       interviewProcess: ['Phone Screening', 'Technical Interview', 'System Design', 'Final Round'],
-      difficulty: 'medium',
+      difficulty: 'medium';
       focusAreas: ['Problem Solving', 'Technical Skills', 'Communication', 'Cultural Fit'],
       preparationTips: [
         'Practice coding problems on LeetCode',
@@ -141,10 +141,10 @@ export class EnhancedInterviewAI {
    * Generate comprehensive interview questions using Smart AI
    */
   public async generateInterviewQuestions(params: {
-    companyName: string,
-    jobTitle: string,
+    companyName: string;
+    jobTitle: string;
     skills: string[];
-    experienceLevel: 'entry' | 'mid' | 'senior',
+    experienceLevel: 'entry' | 'mid' | 'senior';
     rounds: InterviewRoundConfig[];
   }): Promise<{[roundType: string]: InterviewQuestion[]}> {
     try {
@@ -152,11 +152,11 @@ export class EnhancedInterviewAI {
       
       // Use Smart AI service for question generation
       const result = await this.smartAIService.generateQuestions({
-        jobTitle: params.jobTitle,
-        companyName: params.companyName,
-        skills: params.skills,
+        jobTitle: params.jobTitle;
+        companyName: params.companyName;
+        skills: params.skills;
         interviewType: 'mixed', // Generate mixed questions
-        experienceLevel: params.experienceLevel,
+        experienceLevel: params.experienceLevel;
         numberOfQuestions: totalQuestions
       });
 
@@ -171,14 +171,14 @@ export class EnhancedInterviewAI {
           questionsByRound[round.type] = result.data.slice(questionIndex, questionIndex + round.questionCount).map((q: any, i: number) => ({
             id: q.id || `${round.type}-${Date.now()}-${questionIndex + i}`,
             question: q.question || `Sample ${round.type} question`,
-            expectedAnswer: q.expectedAnswer || 'Expected answer not provided',
-            category: round.type as any,
+            expectedAnswer: q.expectedAnswer || 'Expected answer not provided';
+            category: round.type as any;
             difficulty: q.difficulty || this.getDifficultyForLevel(params.experienceLevel),
-            points: q.points || 10,
+            points: q.points || 10;
             timeLimit: q.timeLimit || Math.ceil(round.duration / round.questionCount),
             evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
             tags: q.tags || [params.jobTitle, params.companyName, round.type],
-            hints: q.hints || ['Take your time to think through the problem'],
+            hints: q.hints || ['Take your time to think through the problem'];
             companyRelevance: q.companyRelevance || 7
           }));
 
@@ -216,13 +216,13 @@ export class EnhancedInterviewAI {
           id: `fallback-${round.type}-${i}`,
           question: `Tell me about your experience with ${params.skills[i % params.skills.length]} in ${round.type} context.`,
           expectedAnswer: `Comprehensive answer covering experience with ${params.skills[i % params.skills.length]}.`,
-          category: round.type as any,
+          category: round.type as any;
           difficulty: this.getDifficultyForLevel(params.experienceLevel),
-          points: 10,
+          points: 10;
           timeLimit: Math.ceil(round.duration / round.questionCount),
           evaluationCriteria: ['Technical accuracy', 'Communication', 'Real-world application'],
           tags: [params.jobTitle, params.companyName, round.type],
-          hints: ['Think about specific projects and outcomes'],
+          hints: ['Think about specific projects and outcomes'];
           companyRelevance: 6
         });
       }

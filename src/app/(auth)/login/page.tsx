@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    email: '',
+    email: '';
     password: ''
   })
   const [showPassword, setShowPassword] = useState(false);
@@ -23,9 +23,9 @@ export default function LoginPage() {
 
     try {
       const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
+        email: formData.email;
+        password: formData.password;
+        redirect: false;
       })
 
       if (result?.error) {

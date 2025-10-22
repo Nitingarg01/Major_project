@@ -19,25 +19,25 @@ export async function POST(request: NextRequest) {
 
     try {
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Authorization': `Bearer ${groqApiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
+          model: 'llama-3.1-8b-instant';
           messages: [
             {
-              role: 'system',
+              role: 'system';
               content: `You are a company search assistant. Given a search query, return a JSON array of company suggestions. Each company should have: name, industry, and description. Return only real, well-known companies. Limit to 5 companies maximum. Format: {"companies": [{"name": "Company Name", "industry": "Industry", "description": "Brief description"}]}`
             },
             {
-              role: 'user',
+              role: 'user';
               content: `Search for companies related to: "${query}". Only suggest real companies.`
             }
           ],
-          temperature: 0.3,
-          max_tokens: 500,
+          temperature: 0.3;
+          max_tokens: 500;
         }),
       })
 
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
       try {
         const parsed = JSON.parse(content);
-        const companies = parsed.companies || []
+        const companies = parsed.companies || [];
         
         return NextResponse.json({ 
           success: true, 

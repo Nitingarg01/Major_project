@@ -1,9 +1,9 @@
 export interface Interview  {
-  _id: Object,
-  userId: string,
-  jobDesc: string,
+  _id: Object;
+  userId: string;
+  jobDesc: string;
   skills: string[];
-  companyName: string,
+  companyName: string;
   projectContext: string[];
   workExDetails: string[];
   jobTitle:string,
@@ -15,13 +15,13 @@ export interface Interview  {
 }
 
 export interface InterviewRound {
-  id: string,
-  type: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed',
-  status: 'pending' | 'completed' | 'in-progress' | 'skipped',
+  id: string;
+  type: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed';
+  status: 'pending' | 'completed' | 'in-progress' | 'skipped';
   questions: Question[];
   answers?: string[];
   score?: number;
-  feedback?: string,
+  feedback?: string;
   duration: number; // in minutes
 }
 
@@ -30,8 +30,8 @@ export interface InterviewCardProps {
 }
 
 export type Question = {
-    id?: string,
-    question: string,
+    id?: string;
+    question: string;
     expectedAnswer: string;
     difficulty?: 'easy' | 'medium' | 'hard';
     category?: 'technical' | 'behavioral' | 'aptitude' | 'dsa';
@@ -39,14 +39,14 @@ export type Question = {
 }
 
 export interface InterviewPerformance {
-  totalScore: number,
+  totalScore: number;
   roundScores: { [roundId: string]: number };
-  overallFeedback: string,
+  overallFeedback: string;
   strengths: string[];
   improvements: string[];
   recommendations: string[];
   anomalousActivity?: {
-    detected: boolean,
+    detected: boolean;
     concerns: string[];
     riskLevel: 'low' | 'medium' | 'high'
   };

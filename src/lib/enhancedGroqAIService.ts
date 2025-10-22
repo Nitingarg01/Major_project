@@ -13,7 +13,7 @@ const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_
 
 interface GroqRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant',
+    role: 'system' | 'user' | 'assistant';
     content: string
   }>;
   model?: string;
@@ -22,13 +22,13 @@ interface GroqRequest {
 }
 
 interface InterviewQuestion {
-  id: string,
-  question: string,
-  expectedAnswer: string,
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design',
-  difficulty: 'easy' | 'medium' | 'hard',
+  id: string;
+  question: string;
+  expectedAnswer: string;
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude' | 'system_design';
+  difficulty: 'easy' | 'medium' | 'hard';
   points: number;
-  timeLimit?: number,
+  timeLimit?: number;
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
@@ -36,18 +36,18 @@ interface InterviewQuestion {
 }
 
 interface DSAProblem {
-  id: string,
-  title: string,
-  difficulty: 'easy' | 'medium' | 'hard',
-  description: string,
+  id: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
   examples: Array<{
-    input: string,
+    input: string;
     output: string;
     explanation?: string
   }>;
   testCases: Array<{
-    id: string,
-    input: string,
+    id: string;
+    input: string;
     expectedOutput: string;
     hidden?: boolean
   }>;
@@ -61,12 +61,12 @@ interface DSAProblem {
 }
 
 interface CompanyProfile {
-  name: string,
-  industry: string,
+  name: string;
+  industry: string;
   techStack: string[];
   culture: string[];
   recentNews?: string[];
-  interviewStyle: string,
+  interviewStyle: string;
   commonChallenges: string[];
   focusAreas: string[];
   valuedSkills: string[];
@@ -86,7 +86,7 @@ export class EnhancedGroqAIService {
     }
     
     this.groq = new Groq({
-      apiKey: groqApiKey,
+      apiKey: groqApiKey;
       dangerouslyAllowBrowser: true
     });
     
@@ -102,10 +102,10 @@ export class EnhancedGroqAIService {
   }
 
   private initializeCompanyProfiles() {
-    const companies: CompanyProfile[] = [
+    const companies: CompanyProfile[] = [;
       {
-        name: 'Google',
-        industry: 'Technology',
+        name: 'Google';
+        industry: 'Technology';
         techStack: ['Go', 'Python', 'Java', 'C++', 'Kubernetes', 'TensorFlow', 'BigQuery', 'Spanner', 'Protocol Buffers'],
         culture: ['Innovation first', 'Data-driven decisions', 'Collaborative problem solving', 'Think 10x', 'User focus'],
         interviewStyle: 'Technical depth, system design at scale, behavioral (Googleyness), coding excellence',
@@ -115,8 +115,8 @@ export class EnhancedGroqAIService {
         tipicalProblems: ['Search algorithms', 'Graph problems', 'Tree traversals', 'Dynamic programming', 'Distributed systems']
       },
       {
-        name: 'Meta',
-        industry: 'Social Media Technology',
+        name: 'Meta';
+        industry: 'Social Media Technology';
         techStack: ['React', 'PHP', 'Python', 'GraphQL', 'PyTorch', 'Hack', 'React Native', 'Flow', 'Jest'],
         culture: ['Move fast and break things', 'Be bold', 'Focus on impact', 'Be open', 'Build social value'],
         interviewStyle: 'Product sense, technical execution, leadership and drive, people and culture fit',
@@ -126,8 +126,8 @@ export class EnhancedGroqAIService {
         tipicalProblems: ['Graph algorithms', 'Feed ranking', 'Real-time updates', 'Social network analysis', 'Content filtering']
       },
       {
-        name: 'Amazon',
-        industry: 'E-commerce & Cloud Computing',
+        name: 'Amazon';
+        industry: 'E-commerce & Cloud Computing';
         techStack: ['Java', 'Python', 'AWS', 'DynamoDB', 'Lambda', 'S3', 'EC2', 'Kinesis', 'Spring'],
         culture: ['Customer obsession', 'Ownership', 'Invent and simplify', 'Bias for action', 'Dive deep', 'Frugality'],
         interviewStyle: 'Leadership principles focused, technical problems, system design, behavioral stories (STAR method)',
@@ -137,8 +137,8 @@ export class EnhancedGroqAIService {
         tipicalProblems: ['Optimization problems', 'Tree and graph algorithms', 'Dynamic programming', 'System design', 'Caching strategies']
       },
       {
-        name: 'Netflix',
-        industry: 'Streaming & Entertainment',
+        name: 'Netflix';
+        industry: 'Streaming & Entertainment';
         techStack: ['Java', 'Python', 'React', 'AWS', 'Microservices', 'Kafka', 'Cassandra', 'Spark', 'Hystrix'],
         culture: ['Freedom and responsibility', 'High performance', 'Candor', 'Innovation', 'Context not control'],
         interviewStyle: 'Culture fit (keeper test), technical mastery, real-world problem solving, engineering excellence',
@@ -148,8 +148,8 @@ export class EnhancedGroqAIService {
         tipicalProblems: ['Recommendation algorithms', 'Caching strategies', 'Load balancing', 'Stream processing', 'Graph algorithms']
       },
       {
-        name: 'Tesla',
-        industry: 'Automotive & Clean Energy',
+        name: 'Tesla';
+        industry: 'Automotive & Clean Energy';
         techStack: ['Python', 'C++', 'React', 'PostgreSQL', 'Docker', 'Kubernetes', 'ROS', 'PyTorch', 'OpenCV'],
         culture: ['Innovation', 'Sustainability', 'First principles thinking', 'Move fast', 'Excellence', 'Mission driven'],
         interviewStyle: 'Technical excellence, innovation capacity, problem-solving approach, mission alignment, hands-on skills',
@@ -159,8 +159,8 @@ export class EnhancedGroqAIService {
         tipicalProblems: ['Pathfinding algorithms', 'Computer vision problems', 'Optimization challenges', 'Real-time processing', 'Sensor fusion']
       },
       {
-        name: 'Microsoft',
-        industry: 'Technology Software',
+        name: 'Microsoft';
+        industry: 'Technology Software';
         techStack: ['C#', 'TypeScript', 'Azure', 'PowerShell', '.NET', 'Teams', 'Office 365', 'SQL Server'],
         culture: ['Respect', 'Integrity', 'Accountability', 'Inclusive', 'Growth mindset', 'Customer success'],
         interviewStyle: 'Technical skills assessment, collaborative problem-solving, growth mindset evaluation, inclusive leadership',
@@ -181,10 +181,10 @@ export class EnhancedGroqAIService {
       console.log(`🚀 Calling Enhanced Groq API with ${this.model}...`);
       
       const chatCompletion = await this.groq.chat.completions.create({
-        messages: request.messages as any,
-        model: request.model || this.model,
-        max_tokens: request.max_tokens || 4000,
-        temperature: request.temperature || 0.7,
+        messages: request.messages as any;
+        model: request.model || this.model;
+        max_tokens: request.max_tokens || 4000;
+        temperature: request.temperature || 0.7;
       });
 
       const content = chatCompletion.choices[0]?.message?.content || '';
@@ -199,11 +199,11 @@ export class EnhancedGroqAIService {
 
   // Enhanced interview question generation with better prompt engineering
   public async generateInterviewQuestions(params: {
-    jobTitle: string,
-    companyName: string,
+    jobTitle: string;
+    companyName: string;
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'system_design',
-    experienceLevel: 'entry' | 'mid' | 'senior',
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude' | 'system_design';
+    experienceLevel: 'entry' | 'mid' | 'senior';
     numberOfQuestions: number;
     companyIntelligence?: any
   }): Promise<InterviewQuestion[]> {
@@ -283,7 +283,7 @@ Return ONLY a valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 8000,
+        max_tokens: 8000;
         temperature: 0.8
       });
 
@@ -291,13 +291,13 @@ Return ONLY a valid JSON array:
       return questions.map((q: any, index: number) => ({
         ...q,
         id: q.id || `enhanced-groq-q-${Date.now()}-${index}`,
-        category: params.interviewType,
-        points: q.points || 10,
-        timeLimit: q.timeLimit || 8,
+        category: params.interviewType;
+        points: q.points || 10;
+        timeLimit: q.timeLimit || 8;
         evaluationCriteria: q.evaluationCriteria || ['Technical accuracy', 'Company relevance', 'Problem-solving', 'Communication'],
         tags: [...(q.tags || []), params.companyName, params.jobTitle, params.interviewType],
-        companyRelevance: q.companyRelevance || 8,
-        provider: 'enhanced-groq',
+        companyRelevance: q.companyRelevance || 8;
+        provider: 'enhanced-groq';
         model: this.model
       }));
     } catch (error) {
@@ -308,9 +308,9 @@ Return ONLY a valid JSON array:
 
   // Enhanced company-specific DSA problems
   public async generateCompanySpecificDSAProblems(
-    companyName: string,
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 6,
+    companyName: string;
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    count: number = 6;
     jobTitle: string = 'Software Engineer';
   ): Promise<DSAProblem[]> {
     
@@ -406,7 +406,7 @@ Return ONLY a valid JSON array:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 10000,
+        max_tokens: 10000;
         temperature: 0.8
       });
 
@@ -430,15 +430,15 @@ Return ONLY a valid JSON array:
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `enhanced-dsa-${companyName.toLowerCase()}-${Date.now()}-${index}`,
-        difficulty: difficulty,
-        examples: p.examples || [],
-        testCases: p.testCases || [],
-        constraints: p.constraints || [],
-        topics: p.topics || ['General'],
-        hints: p.hints || [],
+        difficulty: difficulty;
+        examples: p.examples || [];
+        testCases: p.testCases || [];
+        constraints: p.constraints || [];
+        topics: p.topics || ['General'];
+        hints: p.hints || [];
         companyContext: p.companyContext || `Relevant to ${companyName}'s engineering challenges`,
         realWorldApplication: p.realWorldApplication || `Used in ${companyName}'s systems`,
-        provider: 'enhanced-groq',
+        provider: 'enhanced-groq';
         model: this.model
       }));
     } catch (error) {
@@ -449,14 +449,14 @@ Return ONLY a valid JSON array:
 
   // Enhanced response analysis with company-specific evaluation
   public async analyzeInterviewResponse(
-    question: string,
-    userAnswer: string,
-    expectedAnswer: string,
-    category: string,
+    question: string;
+    userAnswer: string;
+    expectedAnswer: string;
+    category: string;
     companyContext: string
   ): Promise<{
-    score: number,
-    feedback: string,
+    score: number;
+    feedback: string;
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -524,14 +524,14 @@ Return ONLY valid JSON:
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 4000,
+        max_tokens: 4000;
         temperature: 0.5
       });
 
       const analysis = extractJSON(response);
       return {
         score: Math.max(0, Math.min(10, analysis.score || 5)),
-        feedback: analysis.feedback || 'Response analyzed successfully with comprehensive feedback.',
+        feedback: analysis.feedback || 'Response analyzed successfully with comprehensive feedback.';
         suggestions: analysis.suggestions || ['Continue practicing company-specific scenarios', 'Focus on technical depth', 'Improve communication clarity'],
         strengths: analysis.strengths || ['Attempted the question thoroughly', 'Showed technical understanding'],
         improvements: analysis.improvements || ['Add more company-specific context', 'Include more technical details'],
@@ -597,9 +597,9 @@ Return ONLY valid JSON:
 
   // Health check method
   public async healthCheck(): Promise<{
-    groqAvailable: boolean,
-    model: string,
-    status: string,
+    groqAvailable: boolean;
+    model: string;
+    status: string;
     companyProfilesLoaded: number
   }> {
     try {
@@ -609,24 +609,24 @@ Return ONLY valid JSON:
         messages: [
           { role: 'user', content: 'Health check - respond with "OK"' }
         ],
-        max_tokens: 10,
+        max_tokens: 10;
         temperature: 0
       });
 
       const isHealthy = testResponse.toLowerCase().includes('ok');
       
       return {
-        groqAvailable: isHealthy,
-        model: this.model,
-        status: isHealthy ? 'healthy' : 'degraded',
+        groqAvailable: isHealthy;
+        model: this.model;
+        status: isHealthy ? 'healthy' : 'degraded';
         companyProfilesLoaded: this.companyProfiles.size
       };
     } catch (error) {
       console.error('❌ Enhanced Groq health check failed:', error);
       return {
-        groqAvailable: false,
-        model: this.model,
-        status: 'unhealthy',
+        groqAvailable: false;
+        model: this.model;
+        status: 'unhealthy';
         companyProfilesLoaded: this.companyProfiles.size
       };
     }
@@ -661,10 +661,10 @@ Return ONLY valid JSON:
         id: `enhanced-mock-q-${i}`,
         question: `Describe your experience with ${params.skills[i % params.skills.length]} in the context of ${params.jobTitle} role at ${params.companyName}. How would you solve a real-world challenge they might face?`,
         expectedAnswer: `A comprehensive answer covering practical experience, specific examples relevant to ${params.companyName}, and problem-solving approach.`,
-        category: params.interviewType,
+        category: params.interviewType;
         difficulty: ['easy', 'medium', 'hard'][i % 3] as 'easy' | 'medium' | 'hard',
-        points: 10,
-        timeLimit: 8,
+        points: 10;
+        timeLimit: 8;
         evaluationCriteria: ['Technical accuracy', 'Company relevance', 'Problem-solving approach', 'Communication clarity'],
         tags: [params.companyName, params.jobTitle, params.skills[i % params.skills.length]],
         hints: [`Think about ${params.companyName}'s specific technical challenges`],
@@ -678,7 +678,7 @@ Return ONLY valid JSON:
   private generateMockDSAProblems(companyName: string, difficulty: string, count: number): DSAProblem[] {
     const problems: DSAProblem[] = [];
     
-    const problemTemplates = [
+    const problemTemplates = [;
       {
         title: `${companyName} Scale Data Processing`,
         description: `You're working at ${companyName} and need to process large datasets efficiently. Design an algorithm to handle this at their scale.`,
@@ -695,25 +695,25 @@ Return ONLY valid JSON:
       const template = problemTemplates[i % problemTemplates.length];
       problems.push({
         id: `enhanced-mock-dsa-${companyName.toLowerCase()}-${i}`,
-        title: template.title,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
-        description: template.description,
+        title: template.title;
+        difficulty: difficulty as 'easy' | 'medium' | 'hard';
+        description: template.description;
         examples: [
           {
-            input: 'Company-specific example input',
-            output: 'Expected output format',
+            input: 'Company-specific example input';
+            output: 'Expected output format';
             explanation: `This solution addresses ${companyName}'s specific technical challenges.`
           }
         ],
         testCases: [
           {
             id: `test-${i}-1`,
-            input: 'Test case input',
+            input: 'Test case input';
             expectedOutput: 'Expected result'
           }
         ],
         constraints: [`Scalable to ${companyName}'s user base`, 'Optimized for their infrastructure'],
-        topics: template.topics,
+        topics: template.topics;
         hints: [`Consider ${companyName}'s technical architecture`, 'Think about their scale requirements'],
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)',

@@ -13,7 +13,7 @@ export const handleLogin = async (formData: FormData) => {
      const result = await signIn("credentials", {
        email,
        password,
-       redirect: false,
+       redirect: false;
      })
 
      if (result?.error) {
@@ -31,7 +31,7 @@ export const handleLogin = async (formData: FormData) => {
 
 export const handleLogout = async () => {
     await signOut({
-        redirect: true,
+        redirect: true;
         redirectTo: "/login"
     });
 }

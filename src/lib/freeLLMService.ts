@@ -9,7 +9,7 @@ import { extractJSON } from './jsonExtractor';
 
 interface LLMRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant',
+    role: 'system' | 'user' | 'assistant';
     content: string
   }>;
   model?: string;
@@ -19,23 +19,23 @@ interface LLMRequest {
 }
 
 interface LLMResponse {
-  content: string,
-  provider: string,
+  content: string;
+  provider: string;
   model: string;
   usage?: {
-    prompt_tokens: number,
-    completion_tokens: number,
+    prompt_tokens: number;
+    completion_tokens: number;
     total_tokens: number
   };
 }
 
 interface ProviderConfig {
-  name: string,
-  apiUrl: string,
-  apiKey: string,
+  name: string;
+  apiUrl: string;
+  apiKey: string;
   models: { [key: string]: string };
   rateLimits: {
-    requestsPerMinute: number,
+    requestsPerMinute: number;
     requestsPerDay: number
   };
   priority: number
@@ -61,16 +61,16 @@ export class FreeLLMService {
     // Groq - PRIMARY Provider (Free Tier: 30 requests/min, ultra-fast)
     if (process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY) {
       this.providers.push({
-        name: 'groq',
-        apiUrl: 'https://api.groq.com/openai/v1/chat/completions',
-        apiKey: process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '',
+        name: 'groq';
+        apiUrl: 'https://api.groq.com/openai/v1/chat/completions';
+        apiKey: process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
         models: {
           'llama-3.1-8b': 'llama-3.1-8b-instant',
           'llama-3.1-70b': 'llama-3.1-70b-versatile',
           'mixtral-8x7b': 'mixtral-8x7b-32768'
         },
         rateLimits: {
-          requestsPerMinute: 30,
+          requestsPerMinute: 30;
           requestsPerDay: 14400
         },
         priority: 1
@@ -80,15 +80,15 @@ export class FreeLLMService {
     // Gemini - SECONDARY Provider (Generous free tier, excellent for analysis)
     if (process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
       this.providers.push({
-        name: 'gemini',
-        apiUrl: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent',
-        apiKey: process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
+        name: 'gemini';
+        apiUrl: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+        apiKey: process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
         models: {
           'gemini-1.5-flash': 'gemini-1.5-flash',
           'gemini-pro': 'gemini-1.5-pro'
         },
         rateLimits: {
-          requestsPerMinute: 60,
+          requestsPerMinute: 60;
           requestsPerDay: 1500
         },
         priority: 2
@@ -98,15 +98,15 @@ export class FreeLLMService {
     // Hugging Face - TERTIARY Provider (Free Inference API, reliable backup)
     if (process.env.HUGGINGFACE_API_KEY || process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY) {
       this.providers.push({
-        name: 'huggingface',
-        apiUrl: 'https://api-inference.huggingface.co/models',
-        apiKey: process.env.HUGGINGFACE_API_KEY || process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY || '',
+        name: 'huggingface';
+        apiUrl: 'https://api-inference.huggingface.co/models';
+        apiKey: process.env.HUGGINGFACE_API_KEY || process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY || '';
         models: {
           'mistral-7b': 'microsoft/DialoGPT-medium',
           'llama-2-7b': 'microsoft/DialoGPT-medium'
         },
         rateLimits: {
-          requestsPerMinute: 10,
+          requestsPerMinute: 10;
           requestsPerDay: 1000
         },
         priority: 3
@@ -204,16 +204,16 @@ export class FreeLLMService {
 
   private async callOpenAICompatible(provider: ProviderConfig, request: LLMRequest, modelName: string): Promise<LLMResponse> {
     const response = await fetch(provider.apiUrl, {
-      method: 'POST',
+      method: 'POST';
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${provider.apiKey}`,
       },
       body: JSON.stringify({
-        model: modelName,
-        messages: request.messages,
-        max_tokens: request.max_tokens || 4000,
-        temperature: request.temperature || 0.7,
+        model: modelName;
+        messages: request.messages;
+        max_tokens: request.max_tokens || 4000;
+        temperature: request.temperature || 0.7;
         stream: false
       }),
     });
@@ -230,9 +230,9 @@ export class FreeLLMService {
     }
 
     return {
-      content: data.choices[0].message.content,
-      provider: provider.name,
-      model: modelName,
+      content: data.choices[0].message.content;
+      provider: provider.name;
+      model: modelName;
       usage: data.usage
     };
   }
@@ -242,16 +242,16 @@ export class FreeLLMService {
     const prompt = request.messages.map(msg => `${msg.role}: ${msg.content}`).join('\n\n');
     
     const response = await fetch(`${provider.apiUrl}/${modelName}`, {
-      method: 'POST',
+      method: 'POST';
       headers: {
         'Authorization': `Bearer ${provider.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        inputs: prompt,
+        inputs: prompt;
         parameters: {
-          max_new_tokens: request.max_tokens || 1000,
-          temperature: request.temperature || 0.7,
+          max_new_tokens: request.max_tokens || 1000;
+          temperature: request.temperature || 0.7;
           return_full_text: false
         }
       }),
@@ -266,14 +266,14 @@ export class FreeLLMService {
     
     if (Array.isArray(data) && data[0] && data[0].generated_text) {
       return {
-        content: data[0].generated_text,
-        provider: provider.name,
+        content: data[0].generated_text;
+        provider: provider.name;
         model: modelName
       };
     } else if (data.generated_text) {
       return {
-        content: data.generated_text,
-        provider: provider.name,
+        content: data.generated_text;
+        provider: provider.name;
         model: modelName
       };
     } else {
@@ -286,7 +286,7 @@ export class FreeLLMService {
     const prompt = request.messages.map(msg => msg.content).join('\n\n');
     
     const response = await fetch(`${provider.apiUrl}?key=${provider.apiKey}`, {
-      method: 'POST',
+      method: 'POST';
       headers: {
         'Content-Type': 'application/json',
       },
@@ -297,8 +297,8 @@ export class FreeLLMService {
           }]
         }],
         generationConfig: {
-          temperature: request.temperature || 0.7,
-          maxOutputTokens: request.max_tokens || 4000,
+          temperature: request.temperature || 0.7;
+          maxOutputTokens: request.max_tokens || 4000;
         }
       }),
     });
@@ -312,9 +312,9 @@ export class FreeLLMService {
     
     if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
       return {
-        content: data.candidates[0].content.parts[0].text,
-        provider: provider.name,
-        model: modelName,
+        content: data.candidates[0].content.parts[0].text;
+        provider: provider.name;
+        model: modelName;
         usage: data.usageMetadata
       };
     } else {
@@ -324,11 +324,11 @@ export class FreeLLMService {
 
   // Enhanced Hard Question Generation Method
   public async generateHardInterviewQuestions(params: {
-    jobTitle: string,
-    companyName: string,
+    jobTitle: string;
+    companyName: string;
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed',
-    experienceLevel: 'entry' | 'mid' | 'senior',
+    interviewType: 'technical' | 'behavioral' | 'mixed';
+    experienceLevel: 'entry' | 'mid' | 'senior';
     numberOfQuestions: number;
     companyIntelligence?: any;
     difficultyLevel?: 'hard'
@@ -436,13 +436,13 @@ export class FreeLLMService {
       return questions.map((q: any, index: number) => ({
         ...q,
         id: q.id || `hard-q-${Date.now()}-${index}`,
-        category: params.interviewType,
+        category: params.interviewType;
         difficulty: 'hard', // Force hard difficulty
         points: q.points || 45, // High points for hard questions
         timeLimit: q.timeLimit || 12, // Longer time limit
         evaluationCriteria: q.evaluationCriteria || ['Advanced Technical Depth', 'System Thinking', 'Scalability', 'Best Practices'],
         tags: [...(q.tags || []), 'hard', 'senior-level', params.jobTitle, params.companyName],
-        provider: response.provider,
+        provider: response.provider;
         model: response.model
       }));
     } catch (error) {
@@ -452,9 +452,9 @@ export class FreeLLMService {
   }
 
   public async generateHardDSAProblems(
-    companyName: string,
-    difficulty: 'hard' = 'hard',
-    count: number = 8,
+    companyName: string;
+    difficulty: 'hard' = 'hard';
+    count: number = 8;
     companyIntelligence?: any
   ): Promise<any[]> {
     const systemMessage = `You are an expert DSA problem generator specializing in creating EXTREMELY CHALLENGING interview problems for ${companyName}.;
@@ -565,13 +565,13 @@ export class FreeLLMService {
         ...p,
         id: p.id || `hard-dsa-${Date.now()}-${index}`,
         difficulty: 'hard', // Force hard difficulty
-        examples: p.examples || [],
-        testCases: p.testCases || [],
-        constraints: p.constraints || [],
-        topics: p.topics || ['Advanced Algorithms'],
-        hints: p.hints || [],
-        followUpQuestions: p.followUpQuestions || [],
-        provider: response.provider,
+        examples: p.examples || [];
+        testCases: p.testCases || [];
+        constraints: p.constraints || [];
+        topics: p.topics || ['Advanced Algorithms'];
+        hints: p.hints || [];
+        followUpQuestions: p.followUpQuestions || [];
+        provider: response.provider;
         model: response.model
       }));
     } catch (error) {
@@ -582,11 +582,11 @@ export class FreeLLMService {
 
   // Convenience methods for different use cases (backward compatibility)
   public async generateInterviewQuestions(params: {
-    jobTitle: string,
-    companyName: string,
+    jobTitle: string;
+    companyName: string;
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed',
-    experienceLevel: 'entry' | 'mid' | 'senior',
+    interviewType: 'technical' | 'behavioral' | 'mixed';
+    experienceLevel: 'entry' | 'mid' | 'senior';
     numberOfQuestions: number;
     companyIntelligence?: any
   }): Promise<any[]> {
@@ -598,9 +598,9 @@ export class FreeLLMService {
   }
 
   public async generateDSAProblems(
-    companyName: string,
-    difficulty: 'easy' | 'medium' | 'hard' = 'hard',
-    count: number = 6,
+    companyName: string;
+    difficulty: 'easy' | 'medium' | 'hard' = 'hard';
+    count: number = 6;
     companyIntelligence?: any
   ): Promise<any[]> {
     // Default to hard DSA problems
@@ -608,14 +608,14 @@ export class FreeLLMService {
   }
 
   public async analyzeInterviewResponse(
-    question: string,
-    userAnswer: string,
-    expectedAnswer: string,
-    category: string,
+    question: string;
+    userAnswer: string;
+    expectedAnswer: string;
+    category: string;
     companyContext: string
   ): Promise<{
-    score: number,
-    feedback: string,
+    score: number;
+    feedback: string;
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -655,9 +655,9 @@ export class FreeLLMService {
       const analysis = extractJSON(response.content);
       return {
         score: Math.max(0, Math.min(10, analysis.score || 5)),
-        feedback: analysis.feedback || 'Response analyzed successfully.',
-        suggestions: analysis.suggestions || ['Continue practicing senior-level questions'],
-        strengths: analysis.strengths || ['Attempted the question'],
+        feedback: analysis.feedback || 'Response analyzed successfully.';
+        suggestions: analysis.suggestions || ['Continue practicing senior-level questions'];
+        strengths: analysis.strengths || ['Attempted the question'];
         improvements: analysis.improvements || ['Add more technical depth and senior-level insights']
       };
     } catch (error) {
@@ -675,14 +675,14 @@ export class FreeLLMService {
         id: `hard-mock-q-${i}`,
         question: `[HARD] Design and implement a scalable system for ${params.companyName} that handles ${params.skills[i % params.skills.length]} with high availability, fault tolerance, and handles 1M+ concurrent users. Discuss trade-offs, monitoring, and disaster recovery.`,
         expectedAnswer: `A comprehensive senior-level answer covering system architecture, scalability patterns, database sharding, caching strategies, load balancing, monitoring, disaster recovery, and specific implementation details for ${params.skills[i % params.skills.length]}.`,
-        category: params.interviewType,
-        difficulty: 'hard',
-        points: 45,
-        timeLimit: 12,
+        category: params.interviewType;
+        difficulty: 'hard';
+        points: 45;
+        timeLimit: 12;
         evaluationCriteria: ['System Design Expertise', 'Scalability Knowledge', 'Real-world Application', 'Technical Depth'],
         tags: ['hard', 'senior-level', params.jobTitle, params.companyName, params.skills[i % params.skills.length]],
         hints: ['Think about distributed systems', 'Consider scalability patterns', 'Focus on fault tolerance'],
-        provider: 'fallback',
+        provider: 'fallback';
         model: 'hard-mock'
       });
     }
@@ -692,9 +692,9 @@ export class FreeLLMService {
 
   private generateHardMockDSAProblems(count: number): any[] {
     const hardMockProblems: any[] = [];
-    const hardProblemTemplates = [
+    const hardProblemTemplates = [;
       {
-        title: "Multi-Dimensional Range Query Optimization",
+        title: "Multi-Dimensional Range Query Optimization";
         description: "Design a data structure that supports efficient range queries in a multi-dimensional space with dynamic updates, considering memory constraints and query optimization for distributed systems.",
         topics: ["Advanced Data Structures", "Optimization", "Distributed Systems"]
       },
@@ -704,7 +704,7 @@ export class FreeLLMService {
         topics: ["Stream Processing", "Fault Tolerance", "Distributed Algorithms"]
       },
       {
-        title: "Dynamic Graph Algorithms with Memory Optimization",
+        title: "Dynamic Graph Algorithms with Memory Optimization";
         description: "Design algorithms for dynamic graph problems where nodes and edges are constantly being added/removed, optimizing for both time complexity and memory usage in constraint environments.",
         topics: ["Graph Algorithms", "Dynamic Programming", "Memory Optimization"]
       }
@@ -714,30 +714,30 @@ export class FreeLLMService {
       const template = hardProblemTemplates[i % hardProblemTemplates.length];
       hardMockProblems.push({
         id: `hard-mock-dsa-${i}`,
-        title: template.title,
-        difficulty: 'hard',
-        description: template.description,
+        title: template.title;
+        difficulty: 'hard';
+        description: template.description;
         examples: [
           {
-            input: 'Complex input with multiple constraints',
-            output: 'Optimized output with complexity analysis',
+            input: 'Complex input with multiple constraints';
+            output: 'Optimized output with complexity analysis';
             explanation: 'Detailed explanation with trade-offs and alternative approaches'
           }
         ],
         testCases: [
           {
             id: `hard-test-${i}-1`,
-            input: 'Complex test input with edge cases',
+            input: 'Complex test input with edge cases';
             expectedOutput: 'Expected optimized output'
           }
         ],
         constraints: ['1 <= n <= 10^6', 'Memory limit: 256MB', 'Time limit: 2 seconds', 'Multiple constraints'],
-        topics: template.topics,
+        topics: template.topics;
         hints: ['Think about advanced data structures', 'Consider optimization techniques', 'Focus on scalability'],
         timeComplexity: 'O(n log n) or better',
         spaceComplexity: 'O(n)',
         followUpQuestions: ['How would you optimize for even larger datasets?', 'What if memory was more constrained?'],
-        provider: 'fallback',
+        provider: 'fallback';
         model: 'hard-mock'
       });
     }
@@ -761,7 +761,7 @@ export class FreeLLMService {
   // Health check method
   public async healthCheck(): Promise<{ 
     availableProviders: string[];
-    totalProviders: number,
+    totalProviders: number;
     rateLimitStatus: { [key: string]: boolean };
   }> {
     const availableProviders: string[] = [];
@@ -778,7 +778,7 @@ export class FreeLLMService {
 
     return {
       availableProviders,
-      totalProviders: this.providers.length,
+      totalProviders: this.providers.length;
       rateLimitStatus
     };
   }

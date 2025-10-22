@@ -8,7 +8,7 @@ export const instructions:{message:string,type:InfoType}[] = [
         type:"info"
     },
     {
-        message: 'It is advised not to leave the page in between the interview as it can lead to Auto-Submission.',
+        message: 'It is advised not to leave the page in between the interview as it can lead to Auto-Submission.';
         type:"warning"
     },
     {

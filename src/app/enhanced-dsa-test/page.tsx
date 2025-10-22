@@ -34,7 +34,7 @@ const EnhancedDSATestPage = () => {
   const [previousProblemIds, setPreviousProblemIds] = useState<string[]>([]);
   const [serviceStatus, setServiceStatus] = useState<any>(null);
 
-  const companies = [
+  const companies = [;
     { name: 'Google', color: 'bg-blue-100 text-blue-800', icon: '🔍' },
     { name: 'Amazon', color: 'bg-orange-100 text-orange-800', icon: '📦' },
     { name: 'Meta', color: 'bg-purple-100 text-purple-800', icon: '👤' },
@@ -64,13 +64,13 @@ const EnhancedDSATestPage = () => {
 
     try {
       const response = await fetch('/api/generate-company-dsa', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          companyName: selectedCompany,
-          count: problemCount,
+          companyName: selectedCompany;
+          count: problemCount;
           experienceLevel,
           challengeType,
           previousProblemIds,
@@ -110,7 +110,7 @@ const EnhancedDSATestPage = () => {
       code, 
       results, 
       timeSpent, 
-      company: selectedCompany,
+      company: selectedCompany;
       problemId: problems[currentProblemIndex]?.id
     })
     
@@ -127,7 +127,7 @@ const EnhancedDSATestPage = () => {
     }
   }
 
-  const currentProblem = problems[currentProblemIndex]
+  const currentProblem = problems[currentProblemIndex];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">

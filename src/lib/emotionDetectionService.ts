@@ -69,11 +69,11 @@ export class EmotionDetectionService {
       const emotion = this.determineEmotion(metrics, movement);
       
       const emotionData: EmotionData = {
-        emotion: emotion.type,
-        confidence: emotion.confidence,
+        emotion: emotion.type;
+        confidence: emotion.confidence;
         timestamp: new Date(),
         metrics: {
-          brightness: metrics.brightness,
+          brightness: metrics.brightness;
           movement,
           facePresent: metrics.facePresent
         }
@@ -108,12 +108,12 @@ export class EmotionDetectionService {
     let totalBrightness = 0;
     let totalContrast = 0;
     let nonZeroPixels = 0;
-    const colorValues: number[] = []
+    const colorValues: number[] = [];
 
     for (let i = 0; i < data.length; i += 4) {
-      const r = data[i]
-      const g = data[i + 1]
-      const b = data[i + 2]
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
       const brightness = (r + g + b) / 3;
       
       if (brightness > 10) {
@@ -133,7 +133,7 @@ export class EmotionDetectionService {
     const colorVariance = colorValues.length > 0 ? variance / colorValues.length : 0;
     
     return {
-      brightness: avgBrightness,
+      brightness: avgBrightness;
       contrast: Math.sqrt(colorVariance),
       facePresent: avgBrightness > 30 && nonZeroPixels > (imageData.width * imageData.height * 0.1),
       colorVariance
@@ -150,13 +150,13 @@ export class EmotionDetectionService {
     const sampleRate = 4 // Sample every 4th pixel for performance
     
     for (let i = 0; i < prevFrame.data.length; i += sampleRate * 4) {
-      const r1 = prevFrame.data[i]
-      const g1 = prevFrame.data[i + 1]
-      const b1 = prevFrame.data[i + 2]
+      const r1 = prevFrame.data[i];
+      const g1 = prevFrame.data[i + 1];
+      const b1 = prevFrame.data[i + 2];
       
-      const r2 = currentFrame.data[i]
-      const g2 = currentFrame.data[i + 1]
-      const b2 = currentFrame.data[i + 2]
+      const r2 = currentFrame.data[i];
+      const g2 = currentFrame.data[i + 1];
+      const b2 = currentFrame.data[i + 2];
       
       diff += Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
     }
@@ -211,28 +211,28 @@ export class EmotionDetectionService {
   public getEmotionAnalytics(): EmotionAnalytics {
     if (this.emotionHistory.length === 0) {
       return {
-        dominantEmotion: 'neutral',
+        dominantEmotion: 'neutral';
         emotionDistribution: {
-          neutral: 100,
-          happy: 0,
-          focused: 0,
-          confused: 0,
-          stressed: 0,
+          neutral: 100;
+          happy: 0;
+          focused: 0;
+          confused: 0;
+          stressed: 0;
           engaged: 0
         },
-        averageConfidence: 0,
-        engagementScore: 0,
+        averageConfidence: 0;
+        engagementScore: 0;
         timeline: []
       }
     }
 
     // Count emotion occurrences
     const emotionCounts: Record<EmotionType, number> = {
-      neutral: 0,
-      happy: 0,
-      focused: 0,
-      confused: 0,
-      stressed: 0,
+      neutral: 0;
+      happy: 0;
+      focused: 0;
+      confused: 0;
+      stressed: 0;
       engaged: 0
     }
 
@@ -255,7 +255,7 @@ export class EmotionDetectionService {
     }
 
     // Find dominant emotion
-    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>
+    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>;
       emotionCounts[a[0] as EmotionType] > emotionCounts[b[0] as EmotionType] ? a : b
     )[0] as EmotionType
 
@@ -268,7 +268,7 @@ export class EmotionDetectionService {
     return {
       dominantEmotion,
       emotionDistribution,
-      averageConfidence: totalConfidence / total,
+      averageConfidence: totalConfidence / total;
       engagementScore,
       timeline: [...this.emotionHistory]
     }
@@ -279,10 +279,10 @@ export class EmotionDetectionService {
    */
   public getEmotionFeedback(emotion: EmotionType): string {
     const feedback: Record<EmotionType, string> = {
-      neutral: 'You appear calm and composed',
-      happy: 'Great energy! You seem confident',
-      focused: 'Excellent focus and attention',
-      confused: 'Take your time to think',
+      neutral: 'You appear calm and composed';
+      happy: 'Great energy! You seem confident';
+      focused: 'Excellent focus and attention';
+      confused: 'Take your time to think';
       stressed: 'Take a deep breath, you\'re doing fine',
       engaged: 'You\'re showing great engagement'
     }
@@ -317,12 +317,12 @@ export class EmotionDetectionService {
    */
   private getDefaultEmotion(): EmotionData {
     return {
-      emotion: 'neutral',
-      confidence: 0.5,
+      emotion: 'neutral';
+      confidence: 0.5;
       timestamp: new Date(),
       metrics: {
-        brightness: 0,
-        movement: 0,
+        brightness: 0;
+        movement: 0;
         facePresent: false
       }
     }

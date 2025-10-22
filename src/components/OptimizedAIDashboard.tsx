@@ -24,36 +24,36 @@ import {
 } from 'lucide-react'
 
 interface OptimizedHealthStatus {
-  emergentAvailable: boolean,
-  geminiAvailable: boolean,
-  status: string,
+  emergentAvailable: boolean;
+  geminiAvailable: boolean;
+  status: string;
   companyDatabaseSize: number
 }
 
 interface SystemInfo {
-  timestamp: string,
+  timestamp: string;
   services: {
-    primary: string,
-    analysis: string,
+    primary: string;
+    analysis: string;
     fallback: string
   };
   performance: {
-    questionGeneration: string,
-    responseAnalysis: string,
+    questionGeneration: string;
+    responseAnalysis: string;
     overallAnalysis: string
   };
   features: {
-    questionGeneration: boolean,
-    responseAnalysis: boolean,
-    performanceAnalysis: boolean,
-    companyDatabase: boolean,
-    companySuggestions: boolean,
+    questionGeneration: boolean;
+    responseAnalysis: boolean;
+    performanceAnalysis: boolean;
+    companyDatabase: boolean;
+    companySuggestions: boolean;
     dsaProblems: boolean
   };
   apiStrategy: {
-    questionGeneration: string,
-    responseAnalysis: string,
-    performanceAnalysis: string,
+    questionGeneration: string;
+    responseAnalysis: string;
+    performanceAnalysis: string;
     companyIntelligence: string
   };
   replacedServices: string[];
@@ -90,9 +90,9 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
     } catch (error) {
       console.error('Error fetching Optimized AI health status:', error);
       setHealthStatus({
-        emergentAvailable: false,
-        geminiAvailable: false,
-        status: 'error',
+        emergentAvailable: false;
+        geminiAvailable: false;
+        status: 'error';
         companyDatabaseSize: 0
       });
       setLoading(false);
@@ -103,7 +103,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
     setTesting(true);
     try {
       const response = await fetch('/api/optimized-health', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
@@ -117,7 +117,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
     } catch (error) {
       console.error('Error running Optimized AI test:', error);
       setTestResults({
-        success: false,
+        success: false;
         error: 'Test failed to execute'
       });
     } finally {

@@ -20,10 +20,10 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, BarChart, Bar } from 'recharts';
 
 interface PerformanceAnalyticsProps {
-  performance: InterviewPerformance,
+  performance: InterviewPerformance;
   rounds: InterviewRound[];
-  companyName: string,
-  jobTitle: string,
+  companyName: string;
+  jobTitle: string;
   skills: string[];
 }
 
@@ -36,10 +36,10 @@ const PerformanceAnalytics = ({
 }: PerformanceAnalyticsProps) => {
   // Calculate scores by category
   const categoryScores: {[key: string]: number} = {
-    technical: 0,
-    behavioral: 0,
-    aptitude: 0,
-    dsa: 0,
+    technical: 0;
+    behavioral: 0;
+    aptitude: 0;
+    dsa: 0;
     mixed: 0
   };
 
@@ -50,7 +50,7 @@ const PerformanceAnalytics = ({
   });
 
   // Prepare data for charts
-  const radarData = [
+  const radarData = [;
     { subject: 'Technical', score: categoryScores.technical || 0, fullMark: 100 },
     { subject: 'Behavioral', score: categoryScores.behavioral || 0, fullMark: 100 },
     { subject: 'Aptitude', score: categoryScores.aptitude || 0, fullMark: 100 },
@@ -58,8 +58,8 @@ const PerformanceAnalytics = ({
   ];
 
   const progressData = rounds.map((round, index) => ({
-    name: round.type,
-    score: round.score || 0,
+    name: round.type;
+    score: round.score || 0;
     time: round.duration
   }));
 

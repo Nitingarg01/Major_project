@@ -4,27 +4,27 @@
  */
 
 interface TestCase {
-  id: string,
-  input: string,
+  id: string;
+  input: string;
   expectedOutput: string;
   description?: string;
   hidden?: boolean
 }
 
 interface CodeExecutionResult {
-  passed: boolean,
-  input: string,
-  expected: string,
-  actual: string,
-  executionTime: string,
+  passed: boolean;
+  input: string;
+  expected: string;
+  actual: string;
+  executionTime: string;
   status: string;
   error?: string
 }
 
 interface ExecutionResponse {
-  success: boolean,
+  success: boolean;
   results: CodeExecutionResult[];
-  totalPassed: number,
+  totalPassed: number;
   totalTests: number;
   compilationError?: string;
   runtimeError?: string
@@ -42,7 +42,7 @@ export class ImprovedJudge0Service {
     this.baseUrl = `https://${this.apiHost}`
     
     console.log('🔧 Judge0Service initialized with API:', {
-      hasKey: !!this.apiKey,
+      hasKey: !!this.apiKey;
       host: this.apiHost
     });
   }
@@ -98,10 +98,10 @@ export class ImprovedJudge0Service {
   private async submitCode(sourceCode: string, languageId: number, stdin?: string): Promise<string> {
     const submission = {
       source_code: Buffer.from(sourceCode).toString('base64'),
-      language_id: languageId,
+      language_id: languageId;
       stdin: stdin ? Buffer.from(stdin).toString('base64') : undefined,
-      wait: false,
-      cpu_time_limit: 2,
+      wait: false;
+      cpu_time_limit: 2;
       memory_limit: 128000
     };
 
@@ -212,9 +212,9 @@ except Exception as e:
           const passed = isSuccess && actualOutput === expectedOutput;
           
           console.log(`🧪 Test case result:`, {
-            input: testCase.input,
-            expected: expectedOutput,
-            actual: actualOutput,
+            input: testCase.input;
+            expected: expectedOutput;
+            actual: actualOutput;
             passed,
             status: submission.status.description
           });
@@ -225,21 +225,21 @@ except Exception as e:
 
           results.push({
             passed,
-            input: testCase.input,
-            expected: expectedOutput,
-            actual: actualOutput,
+            input: testCase.input;
+            expected: expectedOutput;
+            actual: actualOutput;
             executionTime: `${submission.time || 0}s`,
-            status: submission.status.description,
+            status: submission.status.description;
             error: stderr || compileOutput || undefined
           });
 
           // If there's a compilation error on first test case, return early
           if (submission.status.id === 6 && results.length === 1) { // Compilation Error
             return {
-              success: false,
+              success: false;
               results,
-              totalPassed: 0,
-              totalTests: testCases.length,
+              totalPassed: 0;
+              totalTests: testCases.length;
               compilationError: compileOutput || stderr || 'Compilation failed'
             };
           }
@@ -247,12 +247,12 @@ except Exception as e:
         } catch (error: any) {
           console.error(`❌ Test case execution error:`, error);
           results.push({
-            passed: false,
-            input: testCase.input,
-            expected: testCase.expectedOutput,
-            actual: '',
-            executionTime: '0s',
-            status: 'Execution Error',
+            passed: false;
+            input: testCase.input;
+            expected: testCase.expectedOutput;
+            actual: '';
+            executionTime: '0s';
+            status: 'Execution Error';
             error: error.message
           });
         }
@@ -261,7 +261,7 @@ except Exception as e:
       console.log(`✅ Code execution completed: ${totalPassed}/${testCases.length} passed`);
 
       return {
-        success: totalPassed > 0,
+        success: totalPassed > 0;
         results,
         totalPassed,
         totalTests: testCases.length
@@ -271,10 +271,10 @@ except Exception as e:
       console.error('❌ Judge0 execution error:', error);
       
       return {
-        success: false,
-        results: [],
-        totalPassed: 0,
-        totalTests: testCases.length,
+        success: false;
+        results: [];
+        totalPassed: 0;
+        totalTests: testCases.length;
         runtimeError: error.message
       };
     }
@@ -300,8 +300,8 @@ except Exception as e:
       
       return {
         passed,
-        input: testCase.input,
-        expected: testCase.expectedOutput,
+        input: testCase.input;
+        expected: testCase.expectedOutput;
         actual: passed ? testCase.expectedOutput : `mock_output_${index}`,
         executionTime: `${Math.random() * 0.5 + 0.1}s`,
         status: passed ? 'Accepted' : 'Wrong Answer'
@@ -311,7 +311,7 @@ except Exception as e:
     const totalPassed = results.filter(r => r.passed).length;
 
     return {
-      success: totalPassed > 0,
+      success: totalPassed > 0;
       results,
       totalPassed,
       totalTests: testCases.length

@@ -12,19 +12,19 @@ interface EnhancedCompanySearchProps {
 }
 
 interface CompanySuggestion {
-  name: string,
-  industry: string,
-  description: string,
-  relevanceScore: number,
+  name: string;
+  industry: string;
+  description: string;
+  relevanceScore: number;
   metadata: {
-    hasSpecificQuestions: boolean,
-    difficultyLevel: string,
+    hasSpecificQuestions: boolean;
+    difficultyLevel: string;
     popularRoles: string[];
     techStack: string[];
   };
 }
 
-const POPULAR_COMPANIES = [
+const POPULAR_COMPANIES = [;
   { name: 'Google', trend: 'hot', difficulty: 'High' },
   { name: 'Microsoft', trend: 'stable', difficulty: 'Medium' },
   { name: 'Amazon', trend: 'hot', difficulty: 'High' },
@@ -88,12 +88,12 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       
       // Use the new company intelligence API
       const response = await fetch('/api/company-intelligence', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          query: searchQuery,
+          query: searchQuery;
           limit: 8
         }),
       })
@@ -111,19 +111,19 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       } else {
         // Fallback to basic search
         console.warn('⚠️ Intelligence API failed, using fallback');
-        const fallbackSuggestions = POPULAR_COMPANIES
+        const fallbackSuggestions = POPULAR_COMPANIES;
           .filter(company => 
             company.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
           .slice(0, 6)
           .map(company => ({
-            name: company.name,
+            name: company.name;
             industry: getCompanyIndustry(company.name),
             description: `Leading company in ${getCompanyIndustry(company.name).toLowerCase()}`,
-            relevanceScore: 70,
+            relevanceScore: 70;
             metadata: {
-              hasSpecificQuestions: true,
-              difficultyLevel: company.difficulty,
+              hasSpecificQuestions: true;
+              difficultyLevel: company.difficulty;
               popularRoles: ['Software Engineer', 'Product Manager'],
               techStack: ['React', 'Python', 'AWS']
             }
@@ -135,19 +135,19 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
     } catch (error) {
       console.error('❌ Error in enhanced company search:', error);
       // Fallback to popular companies
-      const fallbackSuggestions = POPULAR_COMPANIES
+      const fallbackSuggestions = POPULAR_COMPANIES;
         .filter(company => 
           company.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
         .slice(0, 6)
         .map(company => ({
-          name: company.name,
+          name: company.name;
           industry: getCompanyIndustry(company.name),
           description: `Leading company in ${getCompanyIndustry(company.name).toLowerCase()}`,
-          relevanceScore: 70,
+          relevanceScore: 70;
           metadata: {
-            hasSpecificQuestions: false,
-            difficultyLevel: company.difficulty,
+            hasSpecificQuestions: false;
+            difficultyLevel: company.difficulty;
             popularRoles: ['Software Engineer', 'Product Manager'],
             techStack: ['JavaScript', 'Python']
           }
@@ -193,7 +193,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return
 
-    const currentSuggestions = showTrending ?
+    const currentSuggestions = showTrending ?;
       [...recentSearches.slice(0, 3), ...POPULAR_COMPANIES.slice(0, 5).map(c => c.name)] : 
       suggestions
 
@@ -209,12 +209,12 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       case 'Enter':
         e.preventDefault();
         if (showTrending) {
-          const selected = currentSuggestions[selectedIndex]
+          const selected = currentSuggestions[selectedIndex];
           if (selected) {
             handleSelect(typeof selected === 'string' ? selected : (selected as any).name || String(selected))
           }
         } else {
-          const selected = suggestions[selectedIndex]
+          const selected = suggestions[selectedIndex];
           if (selected) {
             handleSelect(selected.name, selected);
           }
@@ -229,7 +229,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   useEffect(() => {
     if (suggestionRefs.current[selectedIndex]) {
       suggestionRefs.current[selectedIndex]?.scrollIntoView({
-        block: 'nearest',
+        block: 'nearest';
         behavior: 'smooth'
       })
     }
@@ -437,7 +437,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    const randomCompany = POPULAR_COMPANIES[
+                    const randomCompany = POPULAR_COMPANIES[;
                       Math.floor(Math.random() * POPULAR_COMPANIES.length);
                     ]
                     handleSelect(randomCompany.name);

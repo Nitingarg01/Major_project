@@ -55,14 +55,14 @@ export class ConfidenceScoreService {
     responseScore?: number
   }): ConfidenceMetrics {
     // Calculate individual confidence components
-    const speechConfidence = this.calculateSpeechConfidence(
+    const speechConfidence = this.calculateSpeechConfidence(;
       params.userResponse || '',
       params.responseTime || 0
     )
 
     const bodyLanguageConfidence = params.bodyLanguageData?.confidence || 50;
 
-    const emotionalConfidence = this.calculateEmotionalConfidence(
+    const emotionalConfidence = this.calculateEmotionalConfidence(;
       params.emotionData
     )
 
@@ -71,7 +71,7 @@ export class ConfidenceScoreService {
       : 50
 
     // Calculate weighted overall confidence
-    const overallConfidence = Math.round(
+    const overallConfidence = Math.round(;
       (speechConfidence * 0.3) +
       (bodyLanguageConfidence * 0.25) +
       (emotionalConfidence * 0.2) +
@@ -84,11 +84,11 @@ export class ConfidenceScoreService {
     // Store in history
     this.addToHistory({
       timestamp: new Date(),
-      score: overallConfidence,
+      score: overallConfidence;
       factors: {
-        speech: speechConfidence,
-        bodyLanguage: bodyLanguageConfidence,
-        emotion: emotionalConfidence,
+        speech: speechConfidence;
+        bodyLanguage: bodyLanguageConfidence;
+        emotion: emotionalConfidence;
         responseQuality: responseQualityConfidence
       }
     })
@@ -141,8 +141,8 @@ export class ConfidenceScoreService {
     }
 
     // Confidence keywords
-    const confidenceKeywords = ['confident', 'definitely', 'certainly', 'absolutely', 'clearly']
-    const uncertainKeywords = ['maybe', 'perhaps', 'i think', 'not sure', 'kind of', 'sort of']
+    const confidenceKeywords = ['confident', 'definitely', 'certainly', 'absolutely', 'clearly'];
+    const uncertainKeywords = ['maybe', 'perhaps', 'i think', 'not sure', 'kind of', 'sort of'];
     
     const lowerResponse = response.toLowerCase();
     confidenceKeywords.forEach(word => {
@@ -168,11 +168,11 @@ export class ConfidenceScoreService {
     if (!emotionData) return 50
 
     const emotionScores: Record<string, number> = {
-      happy: 85,
-      engaged: 80,
-      focused: 75,
-      neutral: 60,
-      confused: 40,
+      happy: 85;
+      engaged: 80;
+      focused: 75;
+      neutral: 60;
+      confused: 40;
       stressed: 30
     }
 
@@ -186,7 +186,7 @@ export class ConfidenceScoreService {
    * Count filler words in response
    */
   private countFillerWords(text: string): number {
-    const fillers = [
+    const fillers = [;
       'um', 'uh', 'like', 'you know', 'so', 'basically',
       'actually', 'literally', 'sort of', 'kind of'
     ]
@@ -261,7 +261,7 @@ export class ConfidenceScoreService {
       return { speech: 0, bodyLanguage: 0, emotion: 0, responseQuality: 0 }
     }
 
-    const latest = this.confidenceHistory[this.confidenceHistory.length - 1]
+    const latest = this.confidenceHistory[this.confidenceHistory.length - 1];
     return latest.factors;
   }
 
@@ -275,26 +275,26 @@ export class ConfidenceScoreService {
   } {
     if (score >= 80) {
       return {
-        level: 'Excellent',
-        message: 'You\'re showing strong confidence! Keep it up!',
+        level: 'Excellent';
+        message: 'You\'re showing strong confidence! Keep it up!';
         color: 'text-green-600'
       }
     } else if (score >= 65) {
       return {
-        level: 'Good',
-        message: 'You\'re demonstrating good confidence. Stay focused!',
+        level: 'Good';
+        message: 'You\'re demonstrating good confidence. Stay focused!';
         color: 'text-blue-600'
       }
     } else if (score >= 50) {
       return {
-        level: 'Moderate',
-        message: 'Your confidence is moderate. Take deep breaths and stay calm.',
+        level: 'Moderate';
+        message: 'Your confidence is moderate. Take deep breaths and stay calm.';
         color: 'text-yellow-600'
       }
     } else {
       return {
-        level: 'Needs Improvement',
-        message: 'Take your time and speak with more certainty. You\'ve got this!',
+        level: 'Needs Improvement';
+        message: 'Take your time and speak with more certainty. You\'ve got this!';
         color: 'text-red-600'
       }
     }

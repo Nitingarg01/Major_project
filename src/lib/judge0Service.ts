@@ -2,16 +2,16 @@
 import axios from 'axios';
 
 interface CodeExecutionRequest {
-  source_code: string,
+  source_code: string;
   language_id: number;
   stdin?: string;
   expected_output?: string
 }
 
 interface CodeExecutionResult {
-  token: string,
+  token: string;
   status: {
-    id: number,
+    id: number;
     description: string
   };
   stdout?: string;
@@ -22,9 +22,9 @@ interface CodeExecutionResult {
 }
 
 interface TestCaseResult {
-  passed: boolean,
-  input: string,
-  expected: string,
+  passed: boolean;
+  input: string;
+  expected: string;
   actual: string;
   executionTime?: string;
   memory?: number;
@@ -83,11 +83,11 @@ export class Judge0Service {
         
         const testResult: TestCaseResult = {
           passed: this.compareOutputs(result.stdout || '', testCase.expectedOutput),
-          input: testCase.input,
-          expected: testCase.expectedOutput,
-          actual: result.stdout || result.stderr || 'No output',
-          executionTime: result.time,
-          memory: result.memory,
+          input: testCase.input;
+          expected: testCase.expectedOutput;
+          actual: result.stdout || result.stderr || 'No output';
+          executionTime: result.time;
+          memory: result.memory;
           error: result.stderr || result.compile_output || undefined
         };
 
@@ -111,12 +111,12 @@ export class Judge0Service {
   ): Promise<CodeExecutionResult> {
     const submissionData = {
       source_code: btoa(code), // Base64 encode
-      language_id: languageId,
+      language_id: languageId;
       stdin: input ? btoa(input) : undefined,
     };
 
     // Submit code for execution
-    const submitResponse = await axios.post(
+    const submitResponse = await axios.post(;
       `${this.baseUrl}/submissions?base64_encoded=true&wait=true`,
       submissionData,
       {
@@ -141,7 +141,7 @@ export class Judge0Service {
 
   // Get submission result
   private async getSubmissionResult(token: string): Promise<CodeExecutionResult> {
-    const response = await axios.get(
+    const response = await axios.get(;
       `${this.baseUrl}/submissions/${token}?base64_encoded=true`,
       {
         headers: {
@@ -163,7 +163,7 @@ export class Judge0Service {
 
   // Compare outputs with tolerance for whitespace and formatting
   private compareOutputs(actual: string, expected: string): boolean {
-    const normalize = (str: string) =>
+    const normalize = (str: string) =>;
       str.trim()
          .replace(/\s+/g, ' ')
          .replace(/[\r\n]+/g, '\n')
@@ -176,8 +176,8 @@ export class Judge0Service {
   private getMockResults(testCases: Array<{ input: string; expectedOutput: string }>): TestCaseResult[] {
     return testCases.map((testCase, index) => ({
       passed: Math.random() > 0.3, // 70% pass rate for demo
-      input: testCase.input,
-      expected: testCase.expectedOutput,
+      input: testCase.input;
+      expected: testCase.expectedOutput;
       actual: Math.random() > 0.3 ? testCase.expectedOutput : 'Mock execution result',
       executionTime: (Math.random() * 1000 + 100).toFixed(2) + 'ms',
       memory: Math.floor(Math.random() * 1024 + 512),
@@ -215,12 +215,12 @@ export class Judge0Service {
       const result = await this.executeCodeWithInput(code, languageId, '');
       
       return {
-        isValid: !result.compile_output && !result.stderr,
+        isValid: !result.compile_output && !result.stderr;
         error: result.compile_output || result.stderr
       };
     } catch (error) {
       return {
-        isValid: false,
+        isValid: false;
         error: 'Syntax validation failed'
       };
     }

@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     console.log('Session data:', { 
       hasSession: !!session, 
       hasUser: !!session?.user, 
-      hasUserId: !!session?.user?.id,
+      hasUserId: !!session?.user?.id;
       userId: session?.user?.id
     });
     
@@ -47,26 +47,26 @@ export async function GET(request: NextRequest) {
     console.log('Running optimized database queries for user:', userObjectId);
     
     // Add timeout wrapper for database operations
-    const timeout = new Promise((_, reject) =>
+    const timeout = new Promise((_, reject) =>;
       setTimeout(() => reject(new Error('Database query timeout')), 12000);
     )
     
     // Use aggregation pipeline for better performance
-    const dbQueries = Promise.all([
+    const dbQueries = Promise.all([;
       // Get user's recent NON-COMPLETED interviews (exclude completed ones from dashboard)
       db.collection('interviews')
         .find({ 
-          userId: userObjectId,
+          userId: userObjectId;
           status: { $ne: 'completed' } // Exclude completed interviews from dashboard
         })
     console.log('Running database queries for user:', userId);
     
     // Add timeout wrapper for database operations
-    const timeout = new Promise((_, reject) =>
+    const timeout = new Promise((_, reject) =>;
       setTimeout(() => reject(new Error('Database query timeout')), 8000);
     )
     
-    const dbQueries = Promise.all([
+    const dbQueries = Promise.all([;
       // Get user's recent interviews
       db.collection('interviews')
         .find({ userId })
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
           { $match: { userId: userObjectId } },
           {
             $group: {
-              _id: null,
+              _id: null;
               total: { $sum: 1 },
               completed: {
                 $sum: {
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
         })
     ]);
     
-    const result = await Promise.race([
+    const result = await Promise.race([;
       dbQueries,
       timeout
     ]);
@@ -123,10 +123,10 @@ export async function GET(request: NextRequest) {
     // Handle timeout case
     if (result === 'timeout') {
       return NextResponse.json({
-        error: 'Database query timeout',
-        interviews: [],
-        totalInterviews: 0,
-        completedInterviews: 0,
+        error: 'Database query timeout';
+        interviews: [];
+        totalInterviews: 0;
+        completedInterviews: 0;
         inProgressInterviews: 0
       }, { status: 408 });
     }
@@ -140,18 +140,18 @@ export async function GET(request: NextRequest) {
     const [interviews, totalInterviews, completedInterviews, inProgressInterviews] = result as [any[], number, number, number];
 
     console.log('Database query results:', {
-      interviewsCount: interviews.length,
+      interviewsCount: interviews.length;
       totalInterviews,
       completedInterviews,
       inProgressInterviews
     })
 
     return NextResponse.json({
-      success: true,
-      interviews: interviews,
+      success: true;
+      interviews: interviews;
       stats: {
-        total: totalInterviews,
-        completed: completedInterviews,
+        total: totalInterviews;
+        completed: completedInterviews;
         inProgress: inProgressInterviews
       }
     });
@@ -171,7 +171,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(
       { 
-        error: errorMessage,
+        error: errorMessage;
         details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
       },
       { status: 500 }

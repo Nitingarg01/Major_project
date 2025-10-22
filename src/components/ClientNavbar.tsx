@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation';
 
 // Create context for loading state
 const LoadingContext = createContext<{
-  isLoading: boolean,
+  isLoading: boolean;
   setIsLoading: (loading: boolean) => void
 }>({
-  isLoading: false,
+  isLoading: false;
   setIsLoading: () => {}
 });
 
@@ -33,7 +33,7 @@ const ClientNavbar = () => {
   const pathname = usePathname();
   
   // Show minimal navbar during any loading state on dashboard or protected routes
-  const shouldShowMinimal = isLoading && (
+  const shouldShowMinimal = isLoading && (;
     pathname === '/dashboard' ||
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/interview') ||

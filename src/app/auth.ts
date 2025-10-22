@@ -6,19 +6,19 @@ import { compare } from "bcrypt-ts";
 import { DBUser } from "@/types/user";
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
-    debug: true,
+    debug: true;
     session: {
-        strategy: "jwt",
+        strategy: "jwt";
         maxAge: 24 * 60 * 60, // 24 hours
         updateAge: 15 * 60, // Update session every 15 minutes
     },
     cookies: {
         sessionToken: {
-            name: 'next-auth.session-token',
+            name: 'next-auth.session-token';
             options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                secure: process.env.NODE_ENV === 'production',
+                httpOnly: true;
+                sameSite: 'lax';
+                secure: process.env.NODE_ENV === 'production';
                 maxAge: 24 * 60 * 60 // 24 hours
             }
         }
@@ -26,19 +26,19 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     trustHost: true, // This helps with session validation in some environments
     providers: [
         Google({
-            clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+            clientId: process.env.GOOGLE_CLIENT_ID ?? '';
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '';
             allowDangerousEmailAccountLinking: true
         }),
         Credentials({
-            name: "credentials",
+            name: "credentials";
             credentials: {
                 email: {
-                    label: "Email",
+                    label: "Email";
                     type: "email"
                 },
                 password: {
-                    label: "Password",
+                    label: "Password";
                     type: "password"
                 }
             },
@@ -68,8 +68,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 }
 
                 return {
-                    name: user.name,
-                    email: user.email,
+                    name: user.name;
+                    email: user.email;
                     id: user._id.toString(),
                 }
             }
@@ -84,7 +84,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             } else if (!token.id && token.email) {
                 try {
                     const db = client.db("Cluster0");
-                    const existingUser = await db
+                    const existingUser = await db;
                         .collection("users")
                         .findOne({ email: token.email });
                     if (existingUser) {
@@ -128,7 +128,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                                 { email: email.toLowerCase() },
                                 {
                                     $set: {
-                                        googleId: id,
+                                        googleId: id;
                                         updatedAt: new Date()
                                     }
                                 }
@@ -140,8 +140,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         // Create new user
                         const newUser = await db.collection("users").insertOne({
                             email: email.toLowerCase(),
-                            name: name,
-                            googleId: id,
+                            name: name;
+                            googleId: id;
                             createdAt: new Date(),
                             updatedAt: new Date()
                         });
@@ -162,7 +162,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         }
     },
     pages: {
-        signIn: '/login',
-        newUser: '/signup',
+        signIn: '/login';
+        newUser: '/signup';
     }
 })

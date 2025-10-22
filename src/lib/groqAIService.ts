@@ -12,7 +12,7 @@ const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_
 
 interface GroqRequest {
   messages: Array<{
-    role: 'system' | 'user' | 'assistant',
+    role: 'system' | 'user' | 'assistant';
     content: string
   }>;
   model?: string;
@@ -21,31 +21,31 @@ interface GroqRequest {
 }
 
 interface InterviewQuestion {
-  id: string,
-  question: string,
-  expectedAnswer: string,
-  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude',
-  difficulty: 'easy' | 'medium' | 'hard',
+  id: string;
+  question: string;
+  expectedAnswer: string;
+  category: 'technical' | 'behavioral' | 'dsa' | 'aptitude';
+  difficulty: 'easy' | 'medium' | 'hard';
   points: number;
-  timeLimit?: number,
+  timeLimit?: number;
   evaluationCriteria: string[];
   tags: string[];
   hints?: string[];
 }
 
 interface DSAProblem {
-  id: string,
-  title: string,
-  difficulty: 'easy' | 'medium' | 'hard',
-  description: string,
+  id: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
   examples: Array<{
-    input: string,
+    input: string;
     output: string;
     explanation?: string
   }>;
   testCases: Array<{
-    id: string,
-    input: string,
+    id: string;
+    input: string;
     expectedOutput: string;
     hidden?: boolean
   }>;
@@ -68,7 +68,7 @@ export class GroqAIService {
     }
     
     this.groq = new Groq({
-      apiKey: groqApiKey,
+      apiKey: groqApiKey;
       dangerouslyAllowBrowser: true
     });
     
@@ -87,10 +87,10 @@ export class GroqAIService {
       console.log(`🚀 Calling Groq API with ${this.model}...`);
       
       const chatCompletion = await this.groq.chat.completions.create({
-        messages: request.messages as any,
-        model: request.model || this.model,
-        max_tokens: request.max_tokens || 4000,
-        temperature: request.temperature || 0.7,
+        messages: request.messages as any;
+        model: request.model || this.model;
+        max_tokens: request.max_tokens || 4000;
+        temperature: request.temperature || 0.7;
       });
 
       const content = chatCompletion.choices[0]?.message?.content || '';
@@ -105,11 +105,11 @@ export class GroqAIService {
 
   // Generate interview questions with Groq AI
   public async generateInterviewQuestions(params: {
-    jobTitle: string,
-    companyName: string,
+    jobTitle: string;
+    companyName: string;
     skills: string[];
-    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude',
-    experienceLevel: 'entry' | 'mid' | 'senior',
+    interviewType: 'technical' | 'behavioral' | 'mixed' | 'aptitude';
+    experienceLevel: 'entry' | 'mid' | 'senior';
     numberOfQuestions: number;
     companyIntelligence?: any
   }): Promise<InterviewQuestion[]> {
@@ -161,7 +161,7 @@ export class GroqAIService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 6000,
+        max_tokens: 6000;
         temperature: 0.7
       });
 
@@ -169,12 +169,12 @@ export class GroqAIService {
       return questions.map((q: any, index: number) => ({
         ...q,
         id: q.id || `groq-q-${Date.now()}-${index}`,
-        category: params.interviewType,
-        points: q.points || 10,
-        timeLimit: q.timeLimit || 5,
+        category: params.interviewType;
+        points: q.points || 10;
+        timeLimit: q.timeLimit || 5;
         evaluationCriteria: q.evaluationCriteria || ['Accuracy', 'Clarity', 'Completeness'],
         tags: q.tags || [params.jobTitle, params.companyName, params.interviewType],
-        provider: 'groq',
+        provider: 'groq';
         model: this.model
       }));
     } catch (error) {
@@ -185,9 +185,9 @@ export class GroqAIService {
 
   // Generate DSA problems with Groq AI (Enhanced version available)
   public async generateDSAProblems(
-    companyName: string,
-    difficulty: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 6,
+    companyName: string;
+    difficulty: 'easy' | 'medium' | 'hard' = 'medium';
+    count: number = 6;
     companyIntelligence?: any
   ): Promise<DSAProblem[]> {
     const systemMessage = `You are an expert DSA problem generator creating challenging and realistic coding interview problems for ${companyName}. Generate problems with comprehensive test cases that work with code execution systems.`;
@@ -248,7 +248,7 @@ export class GroqAIService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 8000,
+        max_tokens: 8000;
         temperature: 0.8
       });
 
@@ -256,13 +256,13 @@ export class GroqAIService {
       return problems.map((p: any, index: number) => ({
         ...p,
         id: p.id || `groq-dsa-${Date.now()}-${index}`,
-        difficulty: difficulty,
-        examples: p.examples || [],
-        testCases: p.testCases || [],
-        constraints: p.constraints || [],
-        topics: p.topics || ['General'],
-        hints: p.hints || [],
-        provider: 'groq',
+        difficulty: difficulty;
+        examples: p.examples || [];
+        testCases: p.testCases || [];
+        constraints: p.constraints || [];
+        topics: p.topics || ['General'];
+        hints: p.hints || [];
+        provider: 'groq';
         model: this.model
       }));
     } catch (error) {
@@ -273,14 +273,14 @@ export class GroqAIService {
 
   // Analyze interview responses with Groq AI
   public async analyzeInterviewResponse(
-    question: string,
-    userAnswer: string,
-    expectedAnswer: string,
-    category: string,
+    question: string;
+    userAnswer: string;
+    expectedAnswer: string;
+    category: string;
     companyContext: string
   ): Promise<{
-    score: number,
-    feedback: string,
+    score: number;
+    feedback: string;
     suggestions: string[];
     strengths: string[];
     improvements: string[];
@@ -321,14 +321,14 @@ export class GroqAIService {
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 3000,
+        max_tokens: 3000;
         temperature: 0.5
       });
 
       const analysis = extractJSON(response);
       return {
         score: Math.max(0, Math.min(10, analysis.score || 5)),
-        feedback: analysis.feedback || 'Response analyzed successfully with comprehensive feedback.',
+        feedback: analysis.feedback || 'Response analyzed successfully with comprehensive feedback.';
         suggestions: analysis.suggestions || ['Continue practicing similar questions', 'Focus on providing more detailed examples', 'Structure responses more clearly'],
         strengths: analysis.strengths || ['Attempted the question thoroughly', 'Showed understanding of the topic'],
         improvements: analysis.improvements || ['Add more specific technical details', 'Include more practical examples']
@@ -342,9 +342,9 @@ export class GroqAIService {
   // Fast performance analysis with Groq AI (optimized for speed and accuracy)
   // Fast performance analysis with Groq AI (optimized for speed)
   public async analyzeOverallPerformance(
-    questions: any[],
-    answers: string[],
-    jobTitle: string,
+    questions: any[];
+    answers: string[];
+    jobTitle: string;
     skills: string[]
   ): Promise<any> {
     const systemMessage = `You are an expert interview evaluator for ${jobTitle} positions. Provide detailed, fair, and constructive performance analysis based on actual candidate responses. Focus on providing specific, actionable feedback that helps candidates improve.`;
@@ -468,7 +468,7 @@ export class GroqAIService {
       return validatedAnalysis;
       // Ensure all required fields are present
       return {
-        overallScore: analysis.overallScore || 6.5,
+        overallScore: analysis.overallScore || 6.5;
         parameterScores: analysis.parameterScores || {
           "Technical Knowledge": 7,
           "Problem Solving": 6,
@@ -492,8 +492,8 @@ export class GroqAIService {
 
   // Health check method
   public async healthCheck(): Promise<{
-    groqAvailable: boolean,
-    model: string,
+    groqAvailable: boolean;
+    model: string;
     status: string
   }> {
     try {
@@ -503,22 +503,22 @@ export class GroqAIService {
         messages: [
           { role: 'user', content: 'Health check - respond with "OK"' }
         ],
-        max_tokens: 10,
+        max_tokens: 10;
         temperature: 0
       });
 
       const isHealthy = testResponse.toLowerCase().includes('ok');
       
       return {
-        groqAvailable: isHealthy,
-        model: this.model,
+        groqAvailable: isHealthy;
+        model: this.model;
         status: isHealthy ? 'healthy' : 'degraded'
       };
     } catch (error) {
       console.error('❌ Groq health check failed:', error);
       return {
-        groqAvailable: false,
-        model: this.model,
+        groqAvailable: false;
+        model: this.model;
         status: 'unhealthy'
       };
     }
@@ -533,10 +533,10 @@ export class GroqAIService {
         id: `mock-groq-q-${i}`,
         question: `Describe your experience with ${params.skills[i % params.skills.length]} in the context of ${params.jobTitle} role at ${params.companyName}. How would you apply this skill to solve real-world challenges?`,
         expectedAnswer: `A comprehensive answer covering practical experience, specific projects, challenges overcome, and technical implementation details with ${params.skills[i % params.skills.length]}.`,
-        category: params.interviewType,
+        category: params.interviewType;
         difficulty: ['easy', 'medium', 'hard'][i % 3] as 'easy' | 'medium' | 'hard',
-        points: 10,
-        timeLimit: 5,
+        points: 10;
+        timeLimit: 5;
         evaluationCriteria: ['Technical accuracy', 'Communication clarity', 'Real-world application', 'Problem-solving approach'],
         tags: [params.jobTitle, params.companyName, params.skills[i % params.skills.length]],
         hints: ['Think about specific projects and measurable outcomes']
@@ -548,9 +548,9 @@ export class GroqAIService {
 
   private generateMockDSAProblems(difficulty: string, count: number): DSAProblem[] {
     const mockProblems: DSAProblem[] = [];
-    const problemTemplates = [
+    const problemTemplates = [;
       {
-        title: "Two Sum Problem",
+        title: "Two Sum Problem";
         description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
         topics: ["Array", "Hash Table", "Two Pointers"]
       },
@@ -560,23 +560,23 @@ export class GroqAIService {
         topics: ["String", "Stack", "Parsing"]
       },
       {
-        title: "Merge Two Sorted Lists",
-        description: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a sorted list. The list should be made by splicing together the nodes of the first two lists.",
+        title: "Merge Two Sorted Lists";
+        description: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a sorted list. The list should be made by splicing together the nodes of the first two lists.";
         topics: ["Linked List", "Recursion", "Two Pointers"]
       },
       {
-        title: "Binary Tree Inorder Traversal",
+        title: "Binary Tree Inorder Traversal";
         description: "Given the root of a binary tree, return the inorder traversal of its nodes' values. Implement both recursive and iterative solutions.",
         topics: ["Tree", "Depth-First Search", "Binary Tree", "Stack"]
       },
       {
-        title: "Maximum Subarray Sum",
+        title: "Maximum Subarray Sum";
         description: "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.",
         topics: ["Array", "Dynamic Programming", "Kadane's Algorithm"]
       },
       {
-        title: "Climbing Stairs",
-        description: "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+        title: "Climbing Stairs";
+        description: "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?";
         topics: ["Dynamic Programming", "Math", "Memoization"]
       }
     ];
@@ -585,25 +585,25 @@ export class GroqAIService {
       const template = problemTemplates[i % problemTemplates.length];
       mockProblems.push({
         id: `mock-groq-dsa-${i}`,
-        title: template.title,
-        difficulty: difficulty as 'easy' | 'medium' | 'hard',
-        description: template.description,
+        title: template.title;
+        difficulty: difficulty as 'easy' | 'medium' | 'hard';
+        description: template.description;
         examples: [
           {
-            input: 'Example input data',
-            output: 'Expected output result',
+            input: 'Example input data';
+            output: 'Expected output result';
             explanation: 'Detailed explanation of the solution approach and why this output is correct'
           }
         ],
         testCases: [
           {
             id: `test-${i}-1`,
-            input: 'Test case input',
+            input: 'Test case input';
             expectedOutput: 'Expected test result'
           }
         ],
         constraints: ['1 <= n <= 1000', 'Time limit: 2 seconds', 'Memory limit: 256 MB'],
-        topics: template.topics,
+        topics: template.topics;
         hints: ['Consider the optimal time complexity', 'Think about edge cases', 'Can you solve it in one pass?'],
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)'
@@ -628,7 +628,7 @@ export class GroqAIService {
 
   private generateMockOverallAnalysis(questions: any[], answers: string[]) {
     // Filter out empty or invalid answers
-    const meaningfulAnswers = answers.filter(ans =>
+    const meaningfulAnswers = answers.filter(ans =>;
       ans && 
       ans.trim() !== '' &&
       ans !== 'No answer provided' &&
@@ -640,9 +640,9 @@ export class GroqAIService {
     const completionRate = answeredQuestions / totalQuestions;
     
     // Calculate quality metrics
-    const avgWordCount = meaningfulAnswers.length > 0 ?
+    const avgWordCount = meaningfulAnswers.length > 0 ?;
       meaningfulAnswers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / meaningfulAnswers.length : 0;
-    const avgCharLength = meaningfulAnswers.length > 0 ?
+    const avgCharLength = meaningfulAnswers.length > 0 ?;
       meaningfulAnswers.reduce((sum, ans) => sum + ans.length, 0) / meaningfulAnswers.length : 0;
     
     // Improved scoring algorithm
@@ -746,7 +746,7 @@ export class GroqAIService {
       },
       overallVerdict: `The candidate demonstrated ${score >= 7 ? 'strong and well-rounded' : score >= 5 ? 'adequate but improvable' : 'basic but developing'} performance across the interview questions with good potential for growth.`,
       adviceForImprovement: questions.slice(0, 3).map((q, i) => ({
-        question: q.question,
+        question: q.question;
         advice: `For this ${q.category} question about ${q.question.substring(0, 50)}..., consider providing more structured responses with specific technical examples and practical implementation details.`
       })),
       strengths: ["Completed all interview questions", "Showed problem-solving mindset", "Maintained professional communication", "Demonstrated basic technical understanding"],
