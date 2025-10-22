@@ -224,12 +224,34 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
+      // Set cleanup flag
+      isCleaningUpRef.current = true
+      
+      // Clear all timeouts
+      if (recognitionRestartTimeoutRef.current) {
+        clearTimeout(recognitionRestartTimeoutRef.current)
+        recognitionRestartTimeoutRef.current = null
+      }
+      if (speakTimeoutRef.current) {
+        clearTimeout(speakTimeoutRef.current)
+        speakTimeoutRef.current = null
+      }
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current)
+        transitionTimeoutRef.current = null
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+      
+      // Stop speech and recognition
       virtualAI.current.stopSpeaking()
       if (speechRecognition) {
         try {
           speechRecognition.stop()
         } catch (e) {
-          console.log('Recognition already stopped')
+          console.log('Recognition cleanup:', e)
         }
       }
     }
