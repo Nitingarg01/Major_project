@@ -10,7 +10,6 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { extractJSON } from './jsonExtractor';
 
 export interface SmartAIRequest {
-  task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation',
   task: 'question_generation' | 'response_analysis' | 'resume_parsing' | 'company_search' | 'performance_analysis' | 'dsa_generation' | 'aptitude_generation',
   context: {
     jobTitle?: string;
