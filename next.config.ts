@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol:"https",
-        hostname:"api-ninjas-data.s3.us-west-2.amazonaws"
+        hostname:"api-ninjas-data.s3.us-west-2.amazonaws.com"
       },
       {
         protocol:"https",
