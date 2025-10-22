@@ -20,14 +20,14 @@ export interface InterviewAnalysis {
 }
 
 export interface QuestionGenerationParams {
-  jobTitle: string
-  companyName: string
-  skills: string[]
-  jobDescription: string
-  experienceLevel: 'entry' | 'mid' | 'senior'
-  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design'
-  resumeContent?: string
-  numberOfQuestions?: number
+  jobTitle: string;
+  companyName: string;
+  skills: string[];
+  jobDescription: string;
+  experienceLevel: 'entry' | 'mid' | 'senior';
+  interviewType: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'mixed' | 'system_design';
+  resumeContent?: string;
+  numberOfQuestions?: number;
 }
 
 class AIInterviewModel {
