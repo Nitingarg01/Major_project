@@ -99,7 +99,6 @@ export default function HomePage() {
           <div className="mb-8">
             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border border-blue-200">
               <Zap className="w-4 h-4 mr-2" />
-              <span className="font-bold text-xl">Advanced AI Interview Platform</span>
               <span className="font-bold text-xl">Advanced Interview AI Platform</span>
             </span>
           </div>
