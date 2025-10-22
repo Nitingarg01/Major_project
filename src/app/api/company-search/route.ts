@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       }
 
     } catch (groqError) {
-      console.error('Groq API error:', groqError)
+      console.error('Groq API error:', groqError);
       // Return empty results on API error
       return NextResponse.json({ 
         success: true, 
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Company search error:', error)
+    console.error('Company search error:', error);
     return NextResponse.json({ 
       success: false, 
       error: 'Failed to search companies' 

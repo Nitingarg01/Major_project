@@ -66,10 +66,10 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
       checks.microphone = true;
       
       // Stop the stream after checking
-      stream.getTracks().forEach(track => track.stop())
+      stream.getTracks().forEach(track => track.stop());
     } catch (error) {
-      console.error('Media access error:', error)
-      toast.error('Please allow camera and microphone access for the virtual interview')
+      console.error('Media access error:', error);
+      toast.error('Please allow camera and microphone access for the virtual interview');
     }
 
     // Check speakers (basic check)
@@ -88,10 +88,10 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
       await saveInterviewResults(interviewId, enhancedResults)
       
       onComplete(enhancedResults);
-      toast.success('🎉 Virtual interview completed successfully!')
+      toast.success('🎉 Virtual interview completed successfully!');
     } catch (error) {
-      console.error('Error processing interview results:', error)
-      toast.error('Error saving interview results')
+      console.error('Error processing interview results:', error);
+      toast.error('Error saving interview results');
       onComplete(results) // Fallback to original results;
     }
   }
@@ -159,7 +159,7 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
         throw new Error('Failed to save results');
       }
     } catch (error) {
-      console.error('Error saving interview results:', error)
+      console.error('Error saving interview results:', error);
       throw error;
     }
   }

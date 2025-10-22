@@ -51,7 +51,7 @@ export class BodyLanguageService {
 
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0)
+      ctx.drawImage(video, 0, 0);
 
       // Analyze various aspects
       const eyeContact = this.analyzeEyeContact(faceDetectionData);
@@ -87,7 +87,7 @@ export class BodyLanguageService {
       return bodyLanguageData;
       
     } catch (error) {
-      console.error('Body language analysis error:', error)
+      console.error('Body language analysis error:', error);
       return this.getDefaultBodyLanguage();
     }
   }
@@ -295,23 +295,23 @@ export class BodyLanguageService {
     const recommendations: string[] = []
 
     if (metrics.avgPosture < 6) {
-      recommendations.push('Sit upright and keep your shoulders back for better posture')
+      recommendations.push('Sit upright and keep your shoulders back for better posture');
     }
 
     if (metrics.avgEyeContact < 60) {
-      recommendations.push('Look directly at the camera more often to simulate eye contact')
+      recommendations.push('Look directly at the camera more often to simulate eye contact');
     }
 
     if (metrics.avgFidgeting > 6) {
-      recommendations.push('Try to minimize excessive head and body movements')
+      recommendations.push('Try to minimize excessive head and body movements');
     }
 
     if (metrics.avgConfidence < 60) {
-      recommendations.push('Practice maintaining consistent body language throughout the interview')
+      recommendations.push('Practice maintaining consistent body language throughout the interview');
     }
 
     if (recommendations.length === 0) {
-      recommendations.push('Excellent body language! Keep it up!')
+      recommendations.push('Excellent body language! Keep it up!');
     }
 
     return recommendations;
@@ -361,19 +361,19 @@ export class BodyLanguageService {
     const messages: string[] = []
 
     if (data.posture === 'poor') {
-      messages.push('Sit up straight')
+      messages.push('Sit up straight');
     } else if (data.posture === 'excellent') {
-      messages.push('Great posture!')
+      messages.push('Great posture!');
     }
 
     if (data.eyeContact < 50) {
-      messages.push('Look at the camera')
+      messages.push('Look at the camera');
     } else if (data.eyeContact > 80) {
-      messages.push('Excellent eye contact!')
+      messages.push('Excellent eye contact!');
     }
 
     if (data.fidgeting === 'high') {
-      messages.push('Try to stay still')
+      messages.push('Try to stay still');
     }
 
     if (messages.length === 0) {

@@ -142,15 +142,15 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
         }
 
         recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error)
+          console.error('Speech recognition error:', event.error);
           
           // Handle specific errors
           if (event.error === 'no-speech') {
-            console.log('No speech detected, continuing...')
+            console.log('No speech detected, continuing...');
           } else if (event.error === 'aborted') {
-            console.log('Recognition aborted')
+            console.log('Recognition aborted');
           } else if (event.error !== 'network') {
-            toast.error(`Speech recognition error: ${event.error}`)
+            toast.error(`Speech recognition error: ${event.error}`);
           }
           
           setInterviewState(prev => ({ ...prev, isListening: false }));
@@ -159,7 +159,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
         recognition.onend = () => {
           // Only auto-restart if still in listening mode and not cleaning up
           if (!isCleaningUpRef.current && interviewState.isListening && !isInterviewPaused) {
-            console.log('Recognition ended, scheduling restart...')
+            console.log('Recognition ended, scheduling restart...');
             // Clear any existing restart timeout
             if (recognitionRestartTimeoutRef.current) {
               clearTimeout(recognitionRestartTimeoutRef.current);
@@ -169,12 +169,12 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
               // Double-check conditions before restarting
               if (!isCleaningUpRef.current && interviewState.isListening && !isInterviewPaused) {
                 try {
-                  recognition.start()
-                  console.log('✓ Recognition restarted')
+                  recognition.start();
+                  console.log('✓ Recognition restarted');
                 } catch (e: any) {
                   // Only log if it's not "already started" error
                   if (!e.message?.includes('already started')) {
-                    console.warn('Could not restart recognition:', e)
+                    console.warn('Could not restart recognition:', e);
                   }
                 }
               }
@@ -184,7 +184,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
 
         setSpeechRecognition(recognition);
       } else {
-        toast.error('Speech recognition not supported in this browser. Please use Chrome or Edge.')
+        toast.error('Speech recognition not supported in this browser. Please use Chrome or Edge.');
       }
     }
 
@@ -250,9 +250,9 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       virtualAI.current.stopSpeaking()
       if (speechRecognition) {
         try {
-          speechRecognition.stop()
+          speechRecognition.stop();
         } catch (e) {
-          console.log('Recognition cleanup:', e)
+          console.log('Recognition cleanup:', e);
         }
       }
     }
@@ -267,18 +267,18 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   const startListening = useCallback(() => {
     if (speechRecognition && micEnabled && !interviewState.isSpeaking) {
       try {
-        speechRecognition.start()
+        speechRecognition.start();
         setInterviewState(prev => ({ ...prev, isListening: true }));
         updateAvatarState('listening');
-        toast.success('🎤 Listening... Speak your answer')
+        toast.success('🎤 Listening... Speak your answer');
       } catch (error: any) {
         if (error.message.includes('already started')) {
-          console.log('Recognition already running')
+          console.log('Recognition already running');
           setInterviewState(prev => ({ ...prev, isListening: true }));
           updateAvatarState('listening');
         } else {
-          console.error('Error starting speech recognition:', error)
-          toast.error('Could not start microphone. Please check permissions.')
+          console.error('Error starting speech recognition:', error);
+          toast.error('Could not start microphone. Please check permissions.');
         }
       }
     }
@@ -292,9 +292,9 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
           clearTimeout(recognitionRestartTimeoutRef.current);
           recognitionRestartTimeoutRef.current = null;
         }
-        speechRecognition.stop()
+        speechRecognition.stop();
       } catch (e) {
-        console.log('Recognition stop error:', e)
+        console.log('Recognition stop error:', e);
       }
       setInterviewState(prev => ({ ...prev, isListening: false }));
       updateAvatarState('thinking');
@@ -321,13 +321,13 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
           setInterviewState(prev => ({ ...prev, isSpeaking: false }));
         },
         onError: (error) => {
-          console.error('Speech error:', error)
+          console.error('Speech error:', error);
           updateAvatarState('idle');
           setInterviewState(prev => ({ ...prev, isSpeaking: false }));
         }
       })
     } catch (error) {
-      console.error('Speech error:', error)
+      console.error('Speech error:', error);
       updateAvatarState('idle');
       setInterviewState(prev => ({ ...prev, isSpeaking: false }));
     }
@@ -375,7 +375,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       }
     }, 5000)
 
-    toast.success('🎬 Interview started! Good luck!')
+    toast.success('🎬 Interview started! Good luck!');
   }, [companyName, jobTitle, interviewType, questions.length, currentPersonality, speakText])
 
   const askCurrentQuestion = useCallback(() => {
@@ -401,7 +401,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
 
   const submitResponse = useCallback(async () => {
     if (!interviewState.userResponse.trim()) {
-      toast.error('Please provide an answer before submitting.')
+      toast.error('Please provide an answer before submitting.');
       return
     }
 
@@ -485,7 +485,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     speakText(followUpResponse.message);
 
     // Show quick feedback
-    toast.success(`Score: ${analysis.score}/10 - ${analysis.feedback.substring(0, 50)}...`)
+    toast.success(`Score: ${analysis.score}/10 - ${analysis.feedback.substring(0, 50)}...`);
 
     // Move to next question after follow-up
     if (transitionTimeoutRef.current) {
@@ -561,9 +561,9 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     virtualAI.current.stopSpeaking()
     if (speechRecognition) {
       try {
-        speechRecognition.stop()
+        speechRecognition.stop();
       } catch (e) {
-        console.log('Recognition cleanup on complete:', e)
+        console.log('Recognition cleanup on complete:', e);
       }
     }
     
@@ -601,7 +601,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     // Store timeout for cleanup
     speakTimeoutRef.current = completionTimeoutRef;
 
-    toast.success('🎉 Interview completed successfully!')
+    toast.success('🎉 Interview completed successfully!');
   }, [questions.length, interviewState, onComplete, speakText, currentPersonality, useElevenLabs, speechRecognition])
 
   // Format time display

@@ -54,7 +54,7 @@ const EnhancedDSATestPage = () => {
       const data = await response.json();
       setServiceStatus(data);
     } catch (error) {
-      console.error('Failed to check service status:', error)
+      console.error('Failed to check service status:', error);
     }
   }
 
@@ -89,7 +89,7 @@ const EnhancedDSATestPage = () => {
         // Add new problem IDs to avoid duplicates in future generations
         setPreviousProblemIds(prev => [...prev, ...data.problems.map((p: DSAProblem) => p.id)]);
         
-        toast.dismiss(toastId)
+        toast.dismiss(toastId);
         toast.success(`🎉 Generated ${data.problems.length} ${selectedCompany}-style DSA problems!`, {
           description: `${generateInteractive ? 'Interactive' : generateUnique ? 'Unique' : 'Company-specific'} problems ready for practice`
         })
@@ -97,9 +97,9 @@ const EnhancedDSATestPage = () => {
         throw new Error(data.error || 'Failed to generate problems');
       }
     } catch (error: any) {
-      toast.dismiss(toastId)
-      toast.error('Failed to generate problems: ' + error.message)
-      console.error('Problem generation error:', error)
+      toast.dismiss(toastId);
+      toast.error('Failed to generate problems: ' + error.message);
+      console.error('Problem generation error:', error);
     } finally {
       setLoading(false);
     }
@@ -122,7 +122,7 @@ const EnhancedDSATestPage = () => {
     if (currentProblemIndex < problems.length - 1) {
       setTimeout(() => {
         setCurrentProblemIndex(prev => prev + 1);
-        toast.info('Moving to next problem...')
+        toast.info('Moving to next problem...');
       }, 2000)
     }
   }

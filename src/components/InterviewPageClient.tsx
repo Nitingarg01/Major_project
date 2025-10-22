@@ -37,9 +37,9 @@ const InterviewPageClient: React.FC<InterviewPageClientProps> = ({
 
   const handleModeSelect = (mode: 'standard' | 'virtual') => {
     if (mode === 'virtual') {
-      router.push(`/interview/${interview._id}/virtual`)
+      router.push(`/interview/${interview._id}/virtual`);
     } else {
-      router.push(`/interview/${interview._id}/perform`)
+      router.push(`/interview/${interview._id}/perform`);
     }
   }
 

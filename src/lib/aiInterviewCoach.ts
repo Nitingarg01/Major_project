@@ -49,7 +49,7 @@ export class AIInterviewCoach {
    */
   public setEnabled(enabled: boolean): void {
     this.isEnabled = enabled;
-    console.log(`🎓 AI Coach ${enabled ? 'enabled' : 'disabled'}`)
+    console.log(`🎓 AI Coach ${enabled ? 'enabled' : 'disabled'}`);
   }
 
   /**
@@ -122,7 +122,7 @@ export class AIInterviewCoach {
     // Provide question-specific hints
     const contextualHint = await this.getContextualHint(context);
     if (contextualHint) {
-      hints.push(contextualHint)
+      hints.push(contextualHint);
     }
 
     // Store hints and update timestamp
@@ -180,7 +180,7 @@ export class AIInterviewCoach {
       }
 
     } catch (error) {
-      console.error('Error getting contextual hint:', error)
+      console.error('Error getting contextual hint:', error);
     }
 
     return null;

@@ -51,7 +51,7 @@ export class EmotionDetectionService {
 
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0)
+      ctx.drawImage(video, 0, 0);
 
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       
@@ -90,7 +90,7 @@ export class EmotionDetectionService {
       return emotionData;
       
     } catch (error) {
-      console.error('Emotion analysis error:', error)
+      console.error('Emotion analysis error:', error);
       return this.getDefaultEmotion();
     }
   }
@@ -118,7 +118,7 @@ export class EmotionDetectionService {
       
       if (brightness > 10) {
         totalBrightness += brightness;
-        colorValues.push(brightness)
+        colorValues.push(brightness);
         nonZeroPixels++
       }
     }

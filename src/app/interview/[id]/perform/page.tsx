@@ -20,7 +20,7 @@ const page = async ({ params }: PageProps) => {
   }
 
   const id = (await params).id as string;
-  console.log('Interview ID:', id)
+  console.log('Interview ID:', id);
 
   const interview = await getInterviewDetails(id);
   const det = await getQuestions(id);

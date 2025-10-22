@@ -45,22 +45,22 @@ const CompanyAutofill = ({ onSelect, placeholder = "Search for company and role 
 
     switch (e.key) {
       case 'ArrowDown':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1));
-        break
+        break;
       case 'ArrowUp':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.max(prev - 1, 0));
-        break
+        break;
       case 'Enter':
-        e.preventDefault()
+        e.preventDefault();
         if (suggestions[selectedIndex]) {
           handleSelect(suggestions[selectedIndex]);
         }
-        break
+        break;
       case 'Escape':
         setIsOpen(false);
-        break
+        break;
     }
   }
 

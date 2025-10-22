@@ -23,7 +23,7 @@ export const handleLogin = async (formData: FormData) => {
      // Return success indicator instead of redirecting here
      return { success: true }
    } catch (error) {
-     console.error('Login error:', error)
+     console.error('Login error:', error);
      // Re-throw the error so it can be handled by the client
      throw error;
    }

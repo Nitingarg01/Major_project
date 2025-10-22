@@ -23,7 +23,7 @@ export const getInterviewDetails = async (id:string)=>{
 }
 
 export const getQuestions = async (interviewId:string)=>{
-    console.log(interviewId)
+    console.log(interviewId);
     if(!interviewId){
         return
     }

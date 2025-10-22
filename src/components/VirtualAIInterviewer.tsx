@@ -121,8 +121,8 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
         }
 
         recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error)
-          toast.error('Speech recognition error. Please try again.')
+          console.error('Speech recognition error:', event.error);
+          toast.error('Speech recognition error. Please try again.');
           setInterviewState(prev => ({ ...prev, isListening: false }));
         }
 
@@ -170,20 +170,20 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   const startListening = useCallback(() => {
     if (speechRecognition && micEnabled) {
       try {
-        speechRecognition.start()
+        speechRecognition.start();
         setInterviewState(prev => ({ ...prev, isListening: true }));
         updateAvatarState('listening');
-        toast.success('🎤 Listening... Speak your answer')
+        toast.success('🎤 Listening... Speak your answer');
       } catch (error) {
-        console.error('Error starting speech recognition:', error)
-        toast.error('Could not start microphone. Please check permissions.')
+        console.error('Error starting speech recognition:', error);
+        toast.error('Could not start microphone. Please check permissions.');
       }
     }
   }, [speechRecognition, micEnabled, updateAvatarState])
 
   const stopListening = useCallback(() => {
     if (speechRecognition) {
-      speechRecognition.stop()
+      speechRecognition.stop();
       setInterviewState(prev => ({ ...prev, isListening: false }));
       updateAvatarState('thinking');
     }
@@ -193,7 +193,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   const speakText = useCallback((text: string) => {
     if (speechSynthesis && audioEnabled) {
       // Cancel any ongoing speech
-      speechSynthesis.cancel()
+      speechSynthesis.cancel();
       
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.9;
@@ -222,7 +222,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
         updateAvatarState('idle');
       }
 
-      speechSynthesis.speak(utterance)
+      speechSynthesis.speak(utterance);
     }
   }, [speechSynthesis, audioEnabled, updateAvatarState])
 
@@ -255,7 +255,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       askCurrentQuestion();
     }, 3000)
 
-    toast.success('🎬 Interview started! Good luck!')
+    toast.success('🎬 Interview started! Good luck!');
   }, [jobTitle, companyName, interviewType, speakText])
 
   const askCurrentQuestion = useCallback(() => {
@@ -281,7 +281,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
 
   const submitResponse = useCallback(async () => {
     if (!interviewState.userResponse.trim()) {
-      toast.error('Please provide an answer before submitting.')
+      toast.error('Please provide an answer before submitting.');
       return
     }
 
@@ -382,7 +382,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       onComplete(results);
     }, 3000)
 
-    toast.success('🎉 Interview completed successfully!')
+    toast.success('🎉 Interview completed successfully!');
   }, [questions.length, interviewState, onComplete, speakText])
 
   // Format time display

@@ -64,22 +64,22 @@ class AIInterviewModel {
     switch (interviewType) {
       case 'technical':
         prompt = this.generateTechnicalPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions);
-        break
+        break;
       case 'behavioral':
         prompt = this.generateBehavioralPrompt(jobTitle, companyName, jobDescription, experienceLevel, numberOfQuestions, resumeContent);
-        break
+        break;
       case 'aptitude':
         prompt = this.generateAptitudePrompt(jobTitle, companyName, numberOfQuestions);
-        break
+        break;
       case 'dsa':
         prompt = this.generateDSAPrompt(skills, experienceLevel, numberOfQuestions);
-        break
+        break;
       case 'mixed':
         prompt = this.generateMixedPrompt(jobTitle, companyName, skills, jobDescription, experienceLevel, resumeContent, numberOfQuestions);
-        break
+        break;
       case 'system_design':
         prompt = this.generateSystemDesignPrompt(jobTitle, companyName, skills, experienceLevel, numberOfQuestions);
-        break
+        break;
     }
 
     try {
@@ -99,7 +99,7 @@ class AIInterviewModel {
         points: this.calculatePoints(q.difficulty || 'medium')
       }))
     } catch (error) {
-      console.error('Error generating questions:', error)
+      console.error('Error generating questions:', error);
       throw new Error('Failed to generate interview questions');
     }
   }
@@ -409,7 +409,7 @@ Focus on constructive feedback that helps the candidate improve while highlighti
       
       return extractJSON(text);
     } catch (error) {
-      console.error('Error analyzing performance:', error)
+      console.error('Error analyzing performance:', error);
       throw new Error('Failed to analyze interview performance');
     }
   }
@@ -430,10 +430,10 @@ Focus on constructive feedback that helps the candidate improve while highlighti
     const cloudSkills = ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes'];
 
     const primary = skills.filter(skill =>;
-      frontendSkills.includes(skill) || backendSkills.includes(skill)
+      frontendSkills.includes(skill) || backendSkills.includes(skill);
     );
     const secondary = skills.filter(skill =>;
-      databaseSkills.includes(skill) || cloudSkills.includes(skill)
+      databaseSkills.includes(skill) || cloudSkills.includes(skill);
     );
 
     return { primary: primary.length > 0 ? primary : skills.slice(0, 3), secondary };
@@ -474,7 +474,7 @@ Focus on constructive feedback that helps the candidate improve while highlighti
       const result = await this.model.generateContent(prompt);
       return result;
     } catch (error) {
-      console.error('Error generating content:', error)
+      console.error('Error generating content:', error);
       throw new Error('Failed to generate content');
     }
   }

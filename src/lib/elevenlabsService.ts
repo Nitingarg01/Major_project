@@ -47,7 +47,7 @@ export class ElevenLabsService {
   }
 
   private constructor() {
-    this.initialize()
+    this.initialize();
   }
 
   public static getInstance(): ElevenLabsService {
@@ -69,7 +69,7 @@ export class ElevenLabsService {
     }
 
     this.isAvailable = !!this.apiKey;
-    console.log('🎙️ ElevenLabs Service:', this.isAvailable ? 'Available' : 'Using fallback (Browser TTS)')
+    console.log('🎙️ ElevenLabs Service:', this.isAvailable ? 'Available' : 'Using fallback (Browser TTS)');
   }
 
   /**
@@ -81,10 +81,10 @@ export class ElevenLabsService {
     this.quotaExceeded = false;
     
     if (typeof window !== 'undefined') {
-      localStorage.setItem('elevenlabs_api_key', apiKey)
+      localStorage.setItem('elevenlabs_api_key', apiKey);
     }
     
-    console.log('✅ ElevenLabs API key configured')
+    console.log('✅ ElevenLabs API key configured');
   }
 
   /**
@@ -95,7 +95,7 @@ export class ElevenLabsService {
     this.isAvailable = false;
     
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('elevenlabs_api_key')
+      localStorage.removeItem('elevenlabs_api_key');
     }
   }
 
@@ -113,7 +113,7 @@ export class ElevenLabsService {
     const profile = this.voiceProfiles[personality]
     if (profile) {
       this.voiceId = profile.voiceId;
-      console.log(`🎭 Voice personality set to: ${personality}`)
+      console.log(`🎭 Voice personality set to: ${personality}`);
     }
   }
 
@@ -167,7 +167,7 @@ export class ElevenLabsService {
         // Check for quota exceeded
         if (response.status === 401 || response.status === 429) {
           this.quotaExceeded = true;
-          console.warn('⚠️ ElevenLabs quota exceeded, falling back to browser TTS')
+          console.warn('⚠️ ElevenLabs quota exceeded, falling back to browser TTS');
           return { success: false, error: 'Quota exceeded' }
         }
         
@@ -192,7 +192,7 @@ export class ElevenLabsService {
       }
       
       audio.onerror = (error) => {
-        URL.revokeObjectURL(audioUrl)
+        URL.revokeObjectURL(audioUrl);
         if (options?.onError) options.onError(error)
       }
 
@@ -202,7 +202,7 @@ export class ElevenLabsService {
       return { success: true, audio }
 
     } catch (error) {
-      console.error('❌ ElevenLabs TTS error:', error)
+      console.error('❌ ElevenLabs TTS error:', error);
       if (options?.onError) options.onError(error)
       return { success: false, error: String(error) }
     }
@@ -231,7 +231,7 @@ export class ElevenLabsService {
       return data.voices || []
 
     } catch (error) {
-      console.error('Error fetching voices:', error)
+      console.error('Error fetching voices:', error);
       return []
     }
   }
@@ -267,7 +267,7 @@ export class ElevenLabsService {
       }
 
     } catch (error) {
-      console.error('Error fetching usage stats:', error)
+      console.error('Error fetching usage stats:', error);
       return null;
     }
   }

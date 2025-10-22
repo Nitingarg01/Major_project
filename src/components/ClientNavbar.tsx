@@ -39,7 +39,7 @@ const ClientNavbar = () => {
     pathname.startsWith('/interview') ||
     pathname.startsWith('/create') ||
     pathname.startsWith('/resume-analyzer') ||
-    pathname.startsWith('/performance')
+    pathname.startsWith('/performance');
   );
 
   return (

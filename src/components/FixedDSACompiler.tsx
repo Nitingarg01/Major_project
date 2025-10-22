@@ -182,9 +182,9 @@ int main() {
         
         // Time warnings
         if (prev === 300) { // 5 minutes left;
-          toast.warning(`⏰ 5 minutes remaining!`)
+          toast.warning(`⏰ 5 minutes remaining!`);
         } else if (prev === 60) { // 1 minute left;
-          toast.error(`⏰ 1 minute remaining!`)
+          toast.error(`⏰ 1 minute remaining!`);
         }
         
         return prev - 1;
@@ -198,7 +198,7 @@ int main() {
   useEffect(() => {
     const autoSaveTimer = setInterval(() => {
       if (code.trim() && code !== languageTemplates[language as keyof typeof languageTemplates]) {
-        localStorage.setItem(`dsa_code_${companyName}_${problem.id}_${language}`, code)
+        localStorage.setItem(`dsa_code_${companyName}_${problem.id}_${language}`, code);
         setAutoSaveCount(prev => prev + 1);
       }
     }, 30000) // Auto-save every 30 seconds
@@ -238,7 +238,7 @@ int main() {
   // Enhanced code execution with proper error handling
   const runCode = async () => {
     if (!code.trim()) {
-      toast.error('Please write some code first!')
+      toast.error('Please write some code first!');
       return
     }
 
@@ -257,7 +257,7 @@ int main() {
             }
           ]
 
-      console.log(`🧪 Running ${testCasesToUse.length} test cases...`)
+      console.log(`🧪 Running ${testCasesToUse.length} test cases...`);
 
       // Execute code with enhanced Judge0 service
       const results = await judge0Service.executeCodeWithFallback(code, language, testCasesToUse);
@@ -268,13 +268,13 @@ int main() {
       
       // Handle different result types
       if (results.overallStatus === 'error') {
-        toast.dismiss(toastId)
+        toast.dismiss(toastId);
         if (results.compilationError) {
-          toast.error('Compilation Error: ' + results.compilationError)
+          toast.error('Compilation Error: ' + results.compilationError);
         } else if (results.runtimeError) {
-          toast.error('Runtime Error: ' + results.runtimeError)
+          toast.error('Runtime Error: ' + results.runtimeError);
         } else {
-          toast.error('Execution failed')
+          toast.error('Execution failed');
         }
         return
       }
@@ -295,7 +295,7 @@ int main() {
         codeQualityScore: calculateCodeQuality(code, passedCount, totalCount)
       }))
       
-      toast.dismiss(toastId)
+      toast.dismiss(toastId);
       
       if (results.overallStatus === 'passed') {
         toast.success(`🎉 All ${totalCount} test cases passed! Ready for ${companyName} submission.`, {
@@ -311,9 +311,9 @@ int main() {
         })
       }
     } catch (error: any) {
-      toast.dismiss(toastId)
-      console.error('Code execution error:', error)
-      toast.error('Code execution failed: ' + error.message)
+      toast.dismiss(toastId);
+      console.error('Code execution error:', error);
+      toast.error('Code execution failed: ' + error.message);
       setTestResults([]);
     } finally {
       setIsRunning(false);
@@ -337,7 +337,7 @@ int main() {
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||
-      line.includes('/*')
+      line.includes('/*');
     ).length
     score += Math.min(20, commentLines * 5);
     
@@ -369,7 +369,7 @@ int main() {
         
         const executionResult = await judge0Service.executeCodeWithFallback(code, language, testCasesToUse);
         finalResults = executionResult.results || []
-        toast.dismiss(toastId)
+        toast.dismiss(toastId);
       }
 
       const submissionData = {
@@ -388,7 +388,7 @@ int main() {
       }
       
       // Clear auto-saved code
-      localStorage.removeItem(`dsa_code_${companyName}_${problem.id}_${language}`)
+      localStorage.removeItem(`dsa_code_${companyName}_${problem.id}_${language}`);
       
       onSubmit(code, submissionData, timeSpent);
       
@@ -396,7 +396,7 @@ int main() {
         description: `Time taken: ${Math.floor(timeSpent / 60)}m ${timeSpent % 60}s`
       })
     } catch (error: any) {
-      toast.error('Submission failed: ' + error.message)
+      toast.error('Submission failed: ' + error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -411,7 +411,7 @@ int main() {
   const showNextHint = () => {
     if (problem.hints && currentHint < problem.hints.length - 1) {
       setCurrentHint(prev => prev + 1);
-      toast.info(`💡 Hint ${currentHint + 2} revealed`)
+      toast.info(`💡 Hint ${currentHint + 2} revealed`);
     }
   }
 

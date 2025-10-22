@@ -5,10 +5,10 @@ import { ObjectId } from 'mongodb';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Testing performance API...')
+    console.log('Testing performance API...');
     
     const session = await auth();
-    console.log('Session:', { hasSession: !!session, hasUserId: !!session?.user?.id })
+    console.log('Session:', { hasSession: !!session, hasUserId: !!session?.user?.id });
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -16,19 +16,19 @@ export async function GET(request: NextRequest) {
 
     // Test database connection
     const { db } = await connectToDatabase();
-    console.log('Database connected successfully')
+    console.log('Database connected successfully');
     
     // Test collections exist
     const collections = await db.listCollections().toArray();
-    console.log('Available collections:', collections.map(c => c.name))
+    console.log('Available collections:', collections.map(c => c.name));
     
     // Test if performances collection exists
     const performancesExists = collections.some(c => c.name === 'performances');
-    console.log('Performances collection exists:', performancesExists)
+    console.log('Performances collection exists:', performancesExists);
     
     // Test ObjectId creation
     const testObjectId = new ObjectId(session.user.id);
-    console.log('ObjectId created successfully:', testObjectId)
+    console.log('ObjectId created successfully:', testObjectId);
     
     return NextResponse.json({
       success: true,
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     })
     
   } catch (error) {
-    console.error('Test failed:', error)
+    console.error('Test failed:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : String(error)

@@ -46,19 +46,19 @@ const CreateSignUp = () => {
     setIsLoading(true);
     try {
       const formData = new FormData();
-      formData.append("name", data.name)
-      formData.append("email", data.email)
-      formData.append("password", data.password)
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
       
       const response = await handleSignUp(formData);
       if (response.status === 'success') {
-        toast.success("Account created successfully! You can now sign in.")
-        router.push('/login')
+        toast.success("Account created successfully! You can now sign in.");
+        router.push('/login');
       } else if (response.status === 'failed') {
-        toast.error("Could not create account. Please try again!")
+        toast.error("Could not create account. Please try again!");
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again!")
+      toast.error("Something went wrong. Please try again!");
     } finally {
       setIsLoading(false);
     }

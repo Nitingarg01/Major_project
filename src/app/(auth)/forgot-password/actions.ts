@@ -101,7 +101,7 @@ export const handleForgotPassword = async (formData: FormData) => {
 
     return { success: true }
   } catch (error) {
-    console.error('Forgot password error:', error)
+    console.error('Forgot password error:', error);
     return { 
       success: false, 
       error: "Failed to send reset email. Please try again." 

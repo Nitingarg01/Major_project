@@ -64,13 +64,13 @@ export default function ManualPerformanceSaver({
           label.toLowerCase().includes('technical') || 
           label.toLowerCase().includes('problem') ||
           label.toLowerCase().includes('coding') ||
-          label.toLowerCase().includes('algorithm')
+          label.toLowerCase().includes('algorithm');
         )
         const behavioralParams = labels.filter(label =>;
           label.toLowerCase().includes('behavioral') || 
           label.toLowerCase().includes('communication') ||
           label.toLowerCase().includes('leadership') ||
-          label.toLowerCase().includes('teamwork')
+          label.toLowerCase().includes('teamwork');
         )
         const otherParams = labels.filter(label =>;
           !technicalParams.includes(label) && !behavioralParams.includes(label)
@@ -143,14 +143,14 @@ export default function ManualPerformanceSaver({
               'Practice explaining your thought process clearly',
               'Build confidence through consistent practice'
             )
-            break
+            break;
           case 'senior':
             baseRecommendations.push(
               'Demonstrate leadership and system design thinking',
               'Share examples of mentoring and technical decisions',
               'Focus on architectural and scalability considerations'
             )
-            break
+            break;
           default: // mid-level
             baseRecommendations.push(
               'Balance technical depth with practical application',
@@ -162,28 +162,28 @@ export default function ManualPerformanceSaver({
         // Interview type specific advice
         switch (interviewType.toLowerCase()) {
           case 'technical':
-            baseRecommendations.push('Practice coding problems and system design')
-            break
+            baseRecommendations.push('Practice coding problems and system design');
+            break;
           case 'behavioral':
-            baseRecommendations.push('Prepare STAR method examples for common scenarios')
-            break
+            baseRecommendations.push('Prepare STAR method examples for common scenarios');
+            break;
           case 'dsa':
-            baseRecommendations.push('Focus on algorithm optimization and complexity analysis')
-            break
+            baseRecommendations.push('Focus on algorithm optimization and complexity analysis');
+            break;
           case 'aptitude':
-            baseRecommendations.push('Practice logical reasoning and quantitative problems')
-            break
+            baseRecommendations.push('Practice logical reasoning and quantitative problems');
+            break;
           default:
-            baseRecommendations.push('Continue well-rounded interview preparation')
+            baseRecommendations.push('Continue well-rounded interview preparation');
         }
 
         // Score-based advice
         if (score >= 80) {
-          baseRecommendations.push('You are well-prepared for real interviews!')
+          baseRecommendations.push('You are well-prepared for real interviews!');
         } else if (score >= 60) {
-          baseRecommendations.push('Good foundation, focus on refining weak areas')
+          baseRecommendations.push('Good foundation, focus on refining weak areas');
         } else {
-          baseRecommendations.push('Significant improvement needed, consider additional practice')
+          baseRecommendations.push('Significant improvement needed, consider additional practice');
         }
 
         return baseRecommendations.slice(0, 4) // Limit to 4 recommendations;
@@ -214,7 +214,7 @@ export default function ManualPerformanceSaver({
         roundResults
       }
 
-      console.log('Manual save - sending data:', performanceData)
+      console.log('Manual save - sending data:', performanceData);
 
       const response = await fetch('/api/save-performance', {
         method: 'POST',
@@ -225,21 +225,21 @@ export default function ManualPerformanceSaver({
       })
 
       const result = await response.json();
-      console.log('Manual save - response:', result)
+      console.log('Manual save - response:', result);
 
       if (result.success) {
         setSaved(true);
-        toast.success('Performance data saved successfully!')
+        toast.success('Performance data saved successfully!');
         // Refresh the page to update the dashboard
         setTimeout(() => {
           window.location.href = '/dashboard';
         }, 2000)
       } else {
-        toast.error(`Failed to save: ${result.error}`)
+        toast.error(`Failed to save: ${result.error}`);
       }
     } catch (error) {
-      console.error('Manual save error:', error)
-      toast.error('Error saving performance data')
+      console.error('Manual save error:', error);
+      toast.error('Error saving performance data');
     } finally {
       setSaving(false);
     }

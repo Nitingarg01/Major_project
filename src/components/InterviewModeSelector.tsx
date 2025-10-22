@@ -26,7 +26,7 @@ const InterviewModeSelector: React.FC<InterviewModeSelectorProps> = ({
       onModeSelect(mode);
     } else {
       // Navigate to interview with mode parameter
-      router.push(`/interview/${interviewId}/perform?mode=${mode}`)
+      router.push(`/interview/${interviewId}/perform?mode=${mode}`);
     }
   }
 

@@ -88,13 +88,13 @@ export default function InterviewPerformancePage() {
       if (data.success) {
         setPerformanceData(data.performance);
       } else {
-        toast.error('Failed to load performance data')
-        router.push('/dashboard')
+        toast.error('Failed to load performance data');
+        router.push('/dashboard');
       }
     } catch (error) {
-      console.error('Error fetching performance data:', error)
-      toast.error('Failed to load performance data')
-      router.push('/dashboard')
+      console.error('Error fetching performance data:', error);
+      toast.error('Failed to load performance data');
+      router.push('/dashboard');
     } finally {
       setLoading(false);
     }

@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
           // Send status updates
           for (const chunk of feedbackChunks) {
-            controller.enqueue(encoder.encode(`data: ${JSON.stringify(chunk)}\n\n`))
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify(chunk)}\n\n`));
             await new Promise(resolve => setTimeout(resolve, 800)) // Simulate processing time
           }
 
@@ -75,13 +75,13 @@ export async function POST(request: NextRequest) {
           })}\n\n`))
           
         } catch (error) {
-          console.error('Streaming error:', error)
+          console.error('Streaming error:', error);
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({
             type: 'error',
             data: 'Failed to generate feedback'
           })}\n\n`))
         } finally {
-          controller.close()
+          controller.close();
         }
       }
     })
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Stream API error:', error)
+    console.error('Stream API error:', error);
     return NextResponse.json(
       { error: 'Failed to process request' },
       { status: 500 }

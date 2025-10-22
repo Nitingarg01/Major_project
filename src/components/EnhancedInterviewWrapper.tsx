@@ -240,8 +240,8 @@ const EnhancedInterviewWrapper = ({
         const session = await createEnhancedSession(intelligence);
         setInterviewSession(session);
       } catch (error) {
-        console.error('Error initializing enhanced session:', error)
-        toast.error('Failed to initialize interview session')
+        console.error('Error initializing enhanced session:', error);
+        toast.error('Failed to initialize interview session');
       } finally {
         setIsLoading(false);
       }
@@ -365,9 +365,9 @@ const EnhancedInterviewWrapper = ({
       }
       
       // Save to localStorage as backup
-      localStorage.setItem(`interview_progress_${id}`, JSON.stringify(progress))
+      localStorage.setItem(`interview_progress_${id}`, JSON.stringify(progress));
       
-      console.log('Auto-saved enhanced progress:', progress)
+      console.log('Auto-saved enhanced progress:', progress);
     }
   }, [interviewSession, currentRound, timeElapsed, activityAlerts, performanceMetrics, id])
 
@@ -421,7 +421,7 @@ const EnhancedInterviewWrapper = ({
 
     const canSwitch = canSwitchToRound(roundIndex);
     if (!canSwitch) {
-      toast.error('This round is not available yet. Complete previous rounds first.')
+      toast.error('This round is not available yet. Complete previous rounds first.');
       return
     }
 
@@ -488,7 +488,7 @@ const EnhancedInterviewWrapper = ({
     if (!interviewSession) return
 
     try {
-      console.log('Completing enhanced round:', { answers, timeSpent })
+      console.log('Completing enhanced round:', { answers, timeSpent });
       
       // Update performance metrics
       setPerformanceMetrics(prev => ({
@@ -506,7 +506,7 @@ const EnhancedInterviewWrapper = ({
         interviewSession,
         Array.isArray(answers) ? answers : [JSON.stringify(answers)],
         timeSpent,
-        activityAlerts.filter(alert => alert.severity === 'high')
+        activityAlerts.filter(alert => alert.severity === 'high');
       )
 
       setInterviewSession(updatedSession);
@@ -527,7 +527,7 @@ const EnhancedInterviewWrapper = ({
           })
           
           const finalReport = await roundManager.generateFinalReport(updatedSession);
-          console.log('Enhanced Final Interview Report:', finalReport)
+          console.log('Enhanced Final Interview Report:', finalReport);
           
           toast.success('🎉 Interview completed successfully!', {
             description: `Overall Score: ${finalReport.overallScore}/10 | Redirecting to detailed feedback...`
@@ -539,20 +539,20 @@ const EnhancedInterviewWrapper = ({
           }
           
           // Clear saved progress
-          localStorage.removeItem(`interview_progress_${id}`)
+          localStorage.removeItem(`interview_progress_${id}`);
           
           // Redirect to feedback page
           setTimeout(() => {
             window.location.href = `/interview/${id}/feedback`;
           }, 3000)
         } catch (error) {
-          console.error('Error generating final report:', error)
-          toast.error("Error generating feedback. Please check your results later.")
+          console.error('Error generating final report:', error);
+          toast.error("Error generating feedback. Please check your results later.");
         }
       }
     } catch (error) {
-      console.error('Error completing round:', error)
-      toast.error("Error completing round. Please try again.")
+      console.error('Error completing round:', error);
+      toast.error("Error completing round. Please try again.");
     }
   }
 
@@ -581,13 +581,13 @@ const EnhancedInterviewWrapper = ({
     if (!started) return
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault()
+      e.preventDefault();
       e.returnValue = 'Are you sure you want to leave? Your interview progress will be saved but the session will end.';
       return 'Are you sure you want to leave? Your interview progress will be saved but the session will end.';
     }
 
     const handlePopState = (e: PopStateEvent) => {
-      e.preventDefault()
+      e.preventDefault();
       if (window.confirm('Are you sure you want to leave the interview? Your progress will be saved.')) {
         autoSaveProgress() // Save before leaving;
         if (autoSaveInterval) {
@@ -602,20 +602,20 @@ const EnhancedInterviewWrapper = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       // Prevent common shortcuts that might disrupt interview
       if (e.ctrlKey && (e.key === 'r' || e.key === 'w' || e.key === 't')) {
-        e.preventDefault()
-        toast.warning('Keyboard shortcuts are disabled during interview')
+        e.preventDefault();
+        toast.warning('Keyboard shortcuts are disabled during interview');
       }
     }
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    window.addEventListener('popstate', handlePopState)
-    document.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+    document.addEventListener('keydown', handleKeyDown);
     window.history.pushState(null, '', window.location.href)
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      window.removeEventListener('popstate', handlePopState)
-      document.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+      document.removeEventListener('keydown', handleKeyDown);
     }
   }, [started, autoSaveInterval, autoSaveProgress])
 

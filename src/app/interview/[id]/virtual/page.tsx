@@ -45,9 +45,9 @@ const VirtualInterviewPage = () => {
       const data = await response.json();
       setInterview(data.interview);
     } catch (error) {
-      console.error('Error fetching interview:', error)
+      console.error('Error fetching interview:', error);
       setError('Failed to load interview. Please try again.');
-      toast.error('Failed to load interview')
+      toast.error('Failed to load interview');
     } finally {
       setLoading(false);
     }
@@ -56,16 +56,16 @@ const VirtualInterviewPage = () => {
   const handleInterviewComplete = async (results: any) => {
     try {
       // Navigate to results page
-      router.push(`/interview/${interviewId}/results?type=virtual`)
-      toast.success('🎉 Virtual interview completed! Redirecting to results...')
+      router.push(`/interview/${interviewId}/results?type=virtual`);
+      toast.success('🎉 Virtual interview completed! Redirecting to results...');
     } catch (error) {
-      console.error('Error completing interview:', error)
-      toast.error('Error completing interview')
+      console.error('Error completing interview:', error);
+      toast.error('Error completing interview');
     }
   }
 
   const handleBack = () => {
-    router.push(`/interview/${interviewId}`)
+    router.push(`/interview/${interviewId}`);
   }
 
   if (loading) {

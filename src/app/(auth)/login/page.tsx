@@ -18,7 +18,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     setIsLoading(true);
 
     try {
@@ -29,16 +29,16 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        toast.error('Invalid credentials. Please try again.')
+        toast.error('Invalid credentials. Please try again.');
       } else {
-        toast.success('Welcome back!')
+        toast.success('Welcome back!');
         const session = await getSession();
         if (session) {
-          router.push('/dashboard')
+          router.push('/dashboard');
         }
       }
     } catch (error) {
-      toast.error('Something went wrong. Please try again.')
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +48,7 @@ export default function LoginPage() {
     try {
       await signIn('google', { callbackUrl: '/dashboard' })
     } catch (error) {
-      toast.error('Google sign-in failed. Please try again.')
+      toast.error('Google sign-in failed. Please try again.');
     }
   }
 

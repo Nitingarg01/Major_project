@@ -34,19 +34,19 @@ const ForgotPasswordForm = () => {
     setIsLoading(true);
     try {
       const formData = new FormData();
-      formData.append("email", data.email)
+      formData.append("email", data.email);
       
       const response = await handleForgotPassword(formData);
       
       if (response?.success) {
         setEmailSent(true);
-        toast.success("Password reset email sent! Check your inbox.")
+        toast.success("Password reset email sent! Check your inbox.");
       } else {
-        toast.error(response?.error || "Failed to send reset email")
+        toast.error(response?.error || "Failed to send reset email");
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to send reset email";
-      toast.error(errorMessage)
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

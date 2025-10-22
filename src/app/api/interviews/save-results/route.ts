@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error saving interview results:', error)
+    console.error('Error saving interview results:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -117,9 +117,9 @@ async function saveVirtualInterviewAnalytics(db: any, interviewId: string, resul
     // Save to virtual_interview_analytics collection
     await db.collection('virtual_interview_analytics').insertOne(analytics)
 
-    console.log(`✅ Virtual interview analytics saved for interview ${interviewId}`)
+    console.log(`✅ Virtual interview analytics saved for interview ${interviewId}`);
   } catch (error) {
-    console.error('Error saving virtual interview analytics:', error)
+    console.error('Error saving virtual interview analytics:', error);
     // Don't throw error - analytics failure shouldn't fail the main save
   }
 }

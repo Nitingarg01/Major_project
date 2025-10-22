@@ -59,7 +59,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
       try {
         setRecentSearches(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to parse recent searches')
+        console.error('Failed to parse recent searches');
       }
     }
   }, [])
@@ -84,7 +84,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   const searchCompaniesWithIntelligence = async (searchQuery: string) => {
     setLoading(true);
     try {
-      console.log('🔍 Searching with enhanced AI intelligence...')
+      console.log('🔍 Searching with enhanced AI intelligence...');
       
       // Use the new company intelligence API
       const response = await fetch('/api/company-intelligence', {
@@ -100,7 +100,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
 
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ Enhanced intelligence data received:', data)
+        console.log('✅ Enhanced intelligence data received:', data);
         
         if (data.success && data.companies) {
           setSuggestions(data.companies);
@@ -110,7 +110,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
         }
       } else {
         // Fallback to basic search
-        console.warn('⚠️ Intelligence API failed, using fallback')
+        console.warn('⚠️ Intelligence API failed, using fallback');
         const fallbackSuggestions = POPULAR_COMPANIES
           .filter(company => 
             company.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -133,7 +133,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
         setIsOpen(fallbackSuggestions.length > 0);
       }
     } catch (error) {
-      console.error('❌ Error in enhanced company search:', error)
+      console.error('❌ Error in enhanced company search:', error);
       // Fallback to popular companies
       const fallbackSuggestions = POPULAR_COMPANIES
         .filter(company => 
@@ -178,7 +178,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   const saveRecentSearch = (searchTerm: string) => {
     const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
     setRecentSearches(updated);
-    localStorage.setItem('recentCompanySearches', JSON.stringify(updated))
+    localStorage.setItem('recentCompanySearches', JSON.stringify(updated));
   }
 
   const handleSelect = (companyName: string, companyData?: CompanySuggestion) => {
@@ -193,21 +193,21 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return
 
-    const currentSuggestions = showTrending ? 
+    const currentSuggestions = showTrending ?;
       [...recentSearches.slice(0, 3), ...POPULAR_COMPANIES.slice(0, 5).map(c => c.name)] : 
       suggestions
 
     switch (e.key) {
       case 'ArrowDown':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.min(prev + 1, currentSuggestions.length - 1));
-        break
+        break;
       case 'ArrowUp':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.max(prev - 1, 0));
-        break
+        break;
       case 'Enter':
-        e.preventDefault()
+        e.preventDefault();
         if (showTrending) {
           const selected = currentSuggestions[selectedIndex]
           if (selected) {
@@ -219,10 +219,10 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
             handleSelect(selected.name, selected);
           }
         }
-        break
+        break;
       case 'Escape':
         setIsOpen(false);
-        break
+        break;
     }
   }
 
@@ -438,7 +438,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
                   size="sm"
                   onClick={() => {
                     const randomCompany = POPULAR_COMPANIES[
-                      Math.floor(Math.random() * POPULAR_COMPANIES.length)
+                      Math.floor(Math.random() * POPULAR_COMPANIES.length);
                     ]
                     handleSelect(randomCompany.name);
                   }}

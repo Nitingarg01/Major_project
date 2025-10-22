@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       const dsaProblems = await aiService.generateDSAProblems(
         interview.companyName,
         interview.difficulty || 'medium',
-        Math.min(6, Math.floor(interview.numberOfQuestions * 0.3))
+        Math.min(6, Math.floor(interview.numberOfQuestions * 0.3));
       );
       
       // Convert DSA problems to question format

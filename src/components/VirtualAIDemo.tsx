@@ -81,7 +81,7 @@ const VirtualAIDemo: React.FC = () => {
       timestamp: new Date()
     }])
     
-    toast.success('🤖 Virtual AI Interviewer activated!')
+    toast.success('🤖 Virtual AI Interviewer activated!');
   }
 
   // Simulate user response
@@ -134,7 +134,7 @@ const VirtualAIDemo: React.FC = () => {
           
           setTimeout(() => {
             setIsActive(false);
-            toast.success('🎉 Demo completed! Ready to try the real Virtual AI Interview?')
+            toast.success('🎉 Demo completed! Ready to try the real Virtual AI Interview?');
           }, 3000)
         }
       }, 2000)
@@ -146,7 +146,7 @@ const VirtualAIDemo: React.FC = () => {
     if (!isListening) {
       setIsListening(true);
       setAiState('listening');
-      toast.info('🎤 AI is listening... (Demo mode - click "Simulate Response")')
+      toast.info('🎤 AI is listening... (Demo mode - click "Simulate Response")');
     } else {
       setIsListening(false);
       setAiState('idle');
@@ -167,7 +167,7 @@ const VirtualAIDemo: React.FC = () => {
       window.speechSynthesis.cancel()
     }
     
-    toast.info('Demo stopped')
+    toast.info('Demo stopped');
   }
 
   // AI Avatar Component

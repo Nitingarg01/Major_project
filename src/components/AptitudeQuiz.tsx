@@ -82,7 +82,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
           if (currentQuestion < questions.length - 1) {
           if (currentQuestion < validQuestions.length - 1) {
             setCurrentQuestion(prev => prev + 1);
-            toast.warning('Time up! Moving to next question')
+            toast.warning('Time up! Moving to next question');
           }
           return 0;
         }

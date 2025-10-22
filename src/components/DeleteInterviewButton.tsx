@@ -37,17 +37,17 @@ const DeleteInterviewButton = ({ interviewId }: DeleteInterviewButtonProps) => {
       })
 
       if (response.data.success) {
-        toast.success('🗑️ Interview deleted successfully!')
+        toast.success('🗑️ Interview deleted successfully!');
         setIsOpen(false);
         // Refresh the page to show updated list
-        router.refresh()
+        router.refresh();
       } else {
-        toast.error('Failed to delete interview')
+        toast.error('Failed to delete interview');
       }
     } catch (error: any) {
-      console.error('Delete error:', error)
+      console.error('Delete error:', error);
       const errorMessage = error.response?.data?.error || 'Failed to delete interview';
-      toast.error(errorMessage)
+      toast.error(errorMessage);
     } finally {
       setIsDeleting(false);
     }

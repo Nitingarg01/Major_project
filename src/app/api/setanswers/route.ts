@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         const objid = new ObjectId(id);
         const db = client.db();
 
-        console.log(`📝 Saving ${data.length} answers for interview ${id}`)
+        console.log(`📝 Saving ${data.length} answers for interview ${id}`);
         console.log('📄 Answer data format:', {
             isArray: Array.isArray(data),
             length: data.length,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
                     timestamp: new Date()
                 }
             } else {
-                console.warn(`⚠️ Unexpected answer format at index ${index}:`, item)
+                console.warn(`⚠️ Unexpected answer format at index ${index}:`, item);
                 return {
                     questionIndex: index,
                     answer: item?.answer || 'No answer provided',
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        console.log(`✅ Interview ${id} completed successfully`)
+        console.log(`✅ Interview ${id} completed successfully`);
 
         return NextResponse.json({
             message: 'Answers uploaded successfully',
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
         })
 
     } catch (error) {
-        console.error('❌ Error saving answers:', error)
+        console.error('❌ Error saving answers:', error);
         return NextResponse.json(
             { 
                 message: "Failed to upload answers", 

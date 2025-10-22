@@ -389,7 +389,7 @@ export class QuestionGenerator {
       )
       
       const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
-      questions.push(...shuffled.slice(0, questionsPerType))
+      questions.push(...shuffled.slice(0, questionsPerType));
     })
 
     return questions.sort(() => Math.random() - 0.5);
@@ -412,11 +412,11 @@ export class QuestionGenerator {
       case 'entry':
         dsaDifficulty = 'easy';
         aptitudeDifficulty = 'easy';
-        break
+        break;
       case 'senior':
         dsaDifficulty = 'hard';
         aptitudeDifficulty = 'hard';
-        break
+        break;
     }
 
     // Company-specific adjustments
@@ -433,11 +433,11 @@ export class QuestionGenerator {
     
     // Different companies focus on different aptitude types
     if (['google', 'microsoft', 'apple'].includes(companyLower)) {
-      aptitudeTypes.push('logical', 'numerical', 'spatial')
+      aptitudeTypes.push('logical', 'numerical', 'spatial');
     } else if (['amazon', 'uber', 'airbnb'].includes(companyLower)) {
-      aptitudeTypes.push('logical', 'verbal', 'numerical')
+      aptitudeTypes.push('logical', 'verbal', 'numerical');
     } else {
-      aptitudeTypes.push('verbal', 'numerical', 'logical', 'spatial')
+      aptitudeTypes.push('verbal', 'numerical', 'logical', 'spatial');
     }
 
     const aptitudeQuestions = this.generateAptitudeQuestions(

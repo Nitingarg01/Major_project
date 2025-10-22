@@ -60,7 +60,7 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
             // If this is part of a multi-round interview
             if (onRoundComplete) {
                 onRoundComplete(answers, timeSpent);
-                toast.success("Round completed! Moving to next round...")
+                toast.success("Round completed! Moving to next round...");
                 return
             }
 
@@ -73,11 +73,11 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
 
             const result = await Promise.race([submitPromise, timeoutPromise]);
             
-            toast.success("Answers submitted successfully!")
+            toast.success("Answers submitted successfully!");
             
             // Generate fast feedback immediately
             try {
-                toast.info("⚡ Generating AI feedback...")
+                toast.info("⚡ Generating AI feedback...");
                 
                 const feedbackResponse = await fetch('/api/fast-feedback', {
                     method: 'POST',
@@ -98,11 +98,11 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
             
             // Redirect to feedback immediately
             setTimeout(() => {
-                router.push(`/interview/${id}/feedback`)
+                router.push(`/interview/${id}/feedback`);
             }, 1000)
             
         } catch (error: any) {
-            console.error('Submission error:', error)
+            console.error('Submission error:', error);
             
             let errorMessage = "Failed to submit answers. Please try again.";
             if (error.message === 'Request timeout') {
@@ -111,7 +111,7 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
                 errorMessage = "Server error occurred. Your answers may have been saved. Please check your interview status.";
             }
             
-            toast.error(errorMessage)
+            toast.error(errorMessage);
         } finally {
             setIsSubmitting(false);
         }
@@ -145,9 +145,9 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
             const newCompleted = new Set(completedQuestions);
             
             if (currentAnswer.trim().length >= 10) {
-                newCompleted.add(currentQuestion)
+                newCompleted.add(currentQuestion);
             } else {
-                newCompleted.delete(currentQuestion)
+                newCompleted.delete(currentQuestion);
             }
             
             setCompletedQuestions(newCompleted);

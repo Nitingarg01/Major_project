@@ -137,7 +137,7 @@ export class MultiRoundInterviewManager {
       status: 'not_started'
     }
 
-    console.log(`🎓 Multi-round interview initialized for ${companyName} - ${jobTitle}`)
+    console.log(`🎓 Multi-round interview initialized for ${companyName} - ${jobTitle}`);
     return this.currentSession;
   }
 
@@ -146,7 +146,7 @@ export class MultiRoundInterviewManager {
    */
   public startSession(): boolean {
     if (!this.currentSession) {
-      console.error('No session initialized')
+      console.error('No session initialized');
       return false;
     }
 
@@ -181,7 +181,7 @@ export class MultiRoundInterviewManager {
 
     const currentProgress = this.currentSession.progress[this.currentSession.currentRoundIndex]
     if (currentProgress) {
-      Object.assign(currentProgress, update)
+      Object.assign(currentProgress, update);
     }
   }
 
@@ -208,11 +208,11 @@ export class MultiRoundInterviewManager {
       nextProgress.status = 'active';
       nextProgress.startedAt = new Date();
       
-      console.log(`➡️ Moving to ${nextProgress.roundName}`)
+      console.log(`➡️ Moving to ${nextProgress.roundName}`);
       return true;
     } else {
       // All rounds completed
-      this.completeSession()
+      this.completeSession();
       return false;
     }
   }
@@ -230,7 +230,7 @@ export class MultiRoundInterviewManager {
     this.currentSession.status = 'completed';
     this.currentSession.completedAt = new Date();
 
-    console.log(`✅ Multi-round interview completed! Overall score: ${this.currentSession.overallScore.toFixed(1)}/10`)
+    console.log(`✅ Multi-round interview completed! Overall score: ${this.currentSession.overallScore.toFixed(1)}/10`);
   }
 
   /**

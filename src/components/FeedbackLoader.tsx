@@ -33,7 +33,7 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
           setProcessingTime(Date.now() - startTime);
         }
       } catch (error) {
-        console.error('Error checking feedback:', error)
+        console.error('Error checking feedback:', error);
         if (attempts > 3) {
           setStatus('error');
         }
@@ -56,11 +56,11 @@ export default function FeedbackLoader({ interviewId }: FeedbackLoaderProps) {
           }, 1500)
         } else {
           const errorData = await response.json().catch(() => ({}));
-          console.error('Feedback generation failed:', errorData)
+          console.error('Feedback generation failed:', errorData);
           throw new Error(errorData.error || 'Failed to generate feedback');
         }
       } catch (error) {
-        console.error('Error generating feedback:', error)
+        console.error('Error generating feedback:', error);
         setStatus('error');
       }
     }

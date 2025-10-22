@@ -396,7 +396,7 @@ const NewInterviewWrapper = ({
               questionsResult[round.type] = roundQuestions[round.type] || []
             }
           } catch (roundError) {
-            console.error(`Error generating ${round.type} questions:`, roundError)
+            console.error(`Error generating ${round.type} questions:`, roundError);
             // Use fallback questions for this round
             questionsResult[round.type] = questions.slice(0, round.questionCount);
           }
@@ -409,10 +409,10 @@ const NewInterviewWrapper = ({
           setCurrentRoundQuestions(questionsResult[roundConfigs[0].type]);
         }
 
-        toast.success(`🎉 Interview prepared for ${companyName}! ${Object.keys(questionsResult).length} rounds ready.`)
+        toast.success(`🎉 Interview prepared for ${companyName}! ${Object.keys(questionsResult).length} rounds ready.`);
       } catch (error) {
-        console.error('Error initializing interview:', error)
-        toast.error('Failed to initialize interview. Using fallback questions.')
+        console.error('Error initializing interview:', error);
+        toast.error('Failed to initialize interview. Using fallback questions.');
         
         // Use provided questions as fallback
         const fallbackQuestions = {
@@ -432,7 +432,7 @@ const NewInterviewWrapper = ({
   const handleStart = useCallback(() => {
     setStarted(true);
     setInterviewStartTime(new Date());
-    toast.success('Interview started! Good luck!')
+    toast.success('Interview started! Good luck!');
   }, [])
 
   // Handle activity detection (moderate monitoring)
@@ -441,7 +441,7 @@ const NewInterviewWrapper = ({
     
     // Only show alerts, don't pause interview (moderate monitoring)
     if (activity.severity === 'high') {
-      toast.warning(`⚠️ ${activity.message}`)
+      toast.warning(`⚠️ ${activity.message}`);
     }
   }, [])
 
@@ -473,7 +473,7 @@ const NewInterviewWrapper = ({
     // Clear activity alerts for new round
     setActivityAlerts([]);
     
-    toast.success(`Switched to ${targetRound.name}`)
+    toast.success(`Switched to ${targetRound.name}`);
   }, [roundConfigs, currentRound, interviewStartTime, roundTimeSpent, generatedQuestions])
 
   // Handle round completion
@@ -495,14 +495,14 @@ const NewInterviewWrapper = ({
       [currentRoundConfig.id]: timeSpent
     }))
 
-    toast.success(`${currentRoundConfig.name} completed!`)
+    toast.success(`${currentRoundConfig.name} completed!`);
 
     // Auto-advance to next round or complete interview
     if (currentRound + 1 < roundConfigs.length) {
       setTimeout(() => handleRoundSwitch(currentRound + 1), 1500);
     } else {
       // Interview completed
-      toast.success('🎉 Interview completed! Generating feedback...')
+      toast.success('🎉 Interview completed! Generating feedback...');
       
       setTimeout(() => {
         window.location.href = `/interview/${id}/feedback`;
@@ -551,15 +551,15 @@ const NewInterviewWrapper = ({
         let dsaProblem = dsaProblems.length > 0 ? dsaProblems[0] : null;
         
         // Debug logging to identify the issue
-        console.log('DSA Problems:', dsaProblems)
-        console.log('Selected DSA Problem:', dsaProblem)
+        console.log('DSA Problems:', dsaProblems);
+        console.log('Selected DSA Problem:', dsaProblem);
         
         // Validate and sanitize the DSA problem structure
         if (dsaProblem && typeof dsaProblem === 'object') {
           try {
             // Check if it has the expected DSAProblem structure
             if (!dsaProblem.title || !dsaProblem.description) {
-              console.warn('Invalid DSA problem structure, using fallback')
+              console.warn('Invalid DSA problem structure, using fallback');
               dsaProblem = null;
             } else {
               // Create a clean, serializable version of the DSA problem
@@ -585,7 +585,7 @@ const NewInterviewWrapper = ({
               }
             }
           } catch (sanitizeError) {
-            console.error('Error sanitizing DSA problem:', sanitizeError)
+            console.error('Error sanitizing DSA problem:', sanitizeError);
             dsaProblem = null;
           }
         }
@@ -624,7 +624,7 @@ const NewInterviewWrapper = ({
         )
       }
     } catch (error) {
-      console.error('Error rendering round component:', error)
+      console.error('Error rendering round component:', error);
       return (
         <div className="text-center p-8 bg-red-50 border border-red-200 rounded-lg">
           <h3 className="text-lg font-semibold text-red-800 mb-2">Component Error</h3>

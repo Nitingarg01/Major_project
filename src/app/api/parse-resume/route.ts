@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     try {
         const contentType = request.headers.get("content-type") ?? "";
         if (!contentType.includes("multipart/form-data")) {
-            console.log("❌ Invalid Content Type:", contentType)
+            console.log("❌ Invalid Content Type:", contentType);
             return NextResponse.json({
                 error: "Expected multipart/form-data",
                 status: 400
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
         console.log(`📄 Processing ${file.name} (${file.size} bytes)`);
 
         const textContent = await extractTextFromPDF(buffer);
-        console.log(`📝 Extracted text length: ${textContent.length} characters`)
+        console.log(`📝 Extracted text length: ${textContent.length} characters`);
 
         if (!textContent || textContent.length < 50) {
             return NextResponse.json({

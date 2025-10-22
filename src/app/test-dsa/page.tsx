@@ -4,7 +4,7 @@ import DSACompiler from '@/components/DSACompiler';
 
 const TestDSAPage = () => {
   const handleSubmit = (code: string, results: any) => {
-    console.log('DSA Solution submitted:', { code, results })
+    console.log('DSA Solution submitted:', { code, results });
     alert('DSA solution submitted successfully!');
   }
 

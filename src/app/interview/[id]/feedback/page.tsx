@@ -49,7 +49,7 @@ const page = async ({ params }: PageProps) => {
   }
 
   const id = (await params).id as string;
-  console.log("feedback", id)
+  console.log("feedback", id);
 
   const interview = await getInterviewDetails(id);
   const det = await getQuestions(id);
@@ -84,14 +84,14 @@ const page = async ({ params }: PageProps) => {
   const companyIntelligence = await CompanyIntelligenceService.getInstance().getCompanyIntelligence(interview.companyName);
 
   const arr = det?.extracted?.parameterScores || {}
-  console.log(det)
+  console.log(det);
 
   const labels = Object.keys(arr) as string[]
   const data = Object.values(arr) as number[]
-  console.log(data, labels)
+  console.log(data, labels);
 
   if (!det || !det.extracted) {
-  console.log(data,labels)
+  console.log(data,labels);
 
   if(!det || !det.extracted){
     return <FeedbackLoader interviewId={id} />;

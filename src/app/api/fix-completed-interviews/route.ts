@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔧 Fix completed interviews API called')
+    console.log('🔧 Fix completed interviews API called');
     
     const session = await auth();
     
@@ -19,14 +19,14 @@ export async function POST(request: NextRequest) {
     const { db } = await connectToDatabase();
     const userObjectId = new ObjectId(session.user.id);
     
-    console.log('🔍 Checking for inconsistent interview data for user:', userObjectId)
+    console.log('🔍 Checking for inconsistent interview data for user:', userObjectId);
 
     // Find interviews that have performance data but are not marked as completed
     const performances = await db.collection('performances')
       .find({ userId: userObjectId })
       .toArray()
 
-    console.log(`📊 Found ${performances.length} performance records`)
+    console.log(`📊 Found ${performances.length} performance records`);
 
     let fixedCount = 0;
     
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         .findOne({ _id: interviewId })
       
       if (interview && interview.status !== 'completed') {
-        console.log(`🔧 Fixing interview ${interviewId} - setting status to completed`)
+        console.log(`🔧 Fixing interview ${interviewId} - setting status to completed`);
         
         await db.collection('interviews').updateOne(
           { _id: interviewId },
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log(`✅ Fixed ${fixedCount} interviews`)
+    console.log(`✅ Fixed ${fixedCount} interviews`);
 
     // Also check for any interviews with string userId and convert to ObjectId
     const stringUserIdInterviews = await db.collection('interviews')
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       convertedCount++
     }
 
-    console.log(`🔄 Converted ${convertedCount} interviews to use ObjectId userId`)
+    console.log(`🔄 Converted ${convertedCount} interviews to use ObjectId userId`);
 
     return NextResponse.json({
       success: true,
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('❌ Error fixing completed interviews:', error)
+    console.error('❌ Error fixing completed interviews:', error);
     return NextResponse.json(
       { 
         success: false, 

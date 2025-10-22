@@ -35,7 +35,7 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
     if (query.length >= 1) {
       const filtered = COMPANY_LIST.filter(company =>;
         company.toLowerCase().startsWith(query.toLowerCase()) ||
-        company.toLowerCase().includes(query.toLowerCase())
+        company.toLowerCase().includes(query.toLowerCase());
       ).slice(0, 8) // Show max 8 suggestions
       
       setSuggestions(filtered);
@@ -59,22 +59,22 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
 
     switch (e.key) {
       case 'ArrowDown':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1));
-        break
+        break;
       case 'ArrowUp':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.max(prev - 1, 0));
-        break
+        break;
       case 'Enter':
-        e.preventDefault()
+        e.preventDefault();
         if (suggestions[selectedIndex]) {
           handleSelect(suggestions[selectedIndex]);
         }
-        break
+        break;
       case 'Escape':
         setIsOpen(false);
-        break
+        break;
     }
   }
 

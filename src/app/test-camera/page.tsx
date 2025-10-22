@@ -7,7 +7,7 @@ const TestCameraPage = () => {
   const [alerts, setAlerts] = useState<any[]>([]);
 
   const handleActivityDetected = (activity: any) => {
-    console.log('Activity detected:', activity)
+    console.log('Activity detected:', activity);
     setAlerts(prev => [...prev.slice(-4), activity]) // Keep last 5 alerts;
   }
 

@@ -122,7 +122,7 @@ export default function PerformancePage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/login')
+      router.push('/login');
       return
     }
 
@@ -184,8 +184,8 @@ export default function PerformancePage() {
         })
       }
     } catch (error) {
-      console.error('Error fetching performance data:', error)
-      toast.error('Failed to load performance data')
+      console.error('Error fetching performance data:', error);
+      toast.error('Failed to load performance data');
     } finally {
       setLoading(false);
     }
@@ -249,7 +249,7 @@ export default function PerformancePage() {
     const a = document.createElement('a');
     a.href = url;
     a.download = 'interview-performance.csv';
-    a.click()
+    a.click();
     window.URL.revokeObjectURL(url)
   }
 

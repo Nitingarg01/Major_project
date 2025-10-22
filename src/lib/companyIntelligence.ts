@@ -343,7 +343,7 @@ export function searchCompanyAndRole(query: string): { suggestions: string[]; co
   
   // Filter suggestions based on query
   const suggestions = COMPANY_SUGGESTIONS.filter(suggestion =>;
-    suggestion.toLowerCase().includes(lowerQuery)
+    suggestion.toLowerCase().includes(lowerQuery);
   ).slice(0, 10); // Limit to 10 suggestions
 
   // Extract company name from query
@@ -381,7 +381,7 @@ export function parseJobQuery(query: string): { company: string; jobTitle: strin
   for (const pattern of jobTitlePatterns) {
     if (lowerQuery.includes(pattern)) {
       jobTitle = pattern.split(' ').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
+        word.charAt(0).toUpperCase() + word.slice(1);
       ).join(' ');
       break;
     }

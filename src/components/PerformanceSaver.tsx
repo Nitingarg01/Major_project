@@ -33,18 +33,18 @@ export default function PerformanceSaver({
       if (saved) return // Prevent duplicate saves
 
       try {
-        console.log('🚀 Starting performance data save attempt', retryCount + 1)
+        console.log('🚀 Starting performance data save attempt', retryCount + 1);
         
         // Validate input data
         if (!interviewData.interviewId || !interviewData.jobTitle || !interviewData.companyName) {
-          console.error('❌ Missing required interview data:', interviewData)
-          toast.error('Cannot save performance: Missing interview data')
+          console.error('❌ Missing required interview data:', interviewData);
+          toast.error('Cannot save performance: Missing interview data');
           return
         }
 
         if (!feedbackData.parameterScores || typeof feedbackData.overallScore !== 'number') {
-          console.error('❌ Missing or invalid feedback data:', feedbackData)
-          toast.error('Cannot save performance: Missing feedback data')
+          console.error('❌ Missing or invalid feedback data:', feedbackData);
+          toast.error('Cannot save performance: Missing feedback data');
           return
         }
 
@@ -62,12 +62,12 @@ export default function PerformanceSaver({
         const technicalParams = labels.filter(label =>;
           label.toLowerCase().includes('technical') || 
           label.toLowerCase().includes('problem') ||
-          label.toLowerCase().includes('coding')
+          label.toLowerCase().includes('coding');
         )
         const behavioralParams = labels.filter(label =>;
           label.toLowerCase().includes('behavioral') || 
           label.toLowerCase().includes('communication') ||
-          label.toLowerCase().includes('leadership')
+          label.toLowerCase().includes('leadership');
         )
         const otherParams = labels.filter(label =>;
           !technicalParams.includes(label) && !behavioralParams.includes(label)
@@ -124,31 +124,31 @@ export default function PerformanceSaver({
           
           // Experience-based recommendations
           if (experienceLevel === 'entry') {
-            recs.push('Focus on fundamental concepts and clear communication')
+            recs.push('Focus on fundamental concepts and clear communication');
           } else if (experienceLevel === 'senior') {
-            recs.push('Demonstrate leadership experience and system design thinking')
+            recs.push('Demonstrate leadership experience and system design thinking');
           } else {
-            recs.push('Balance technical depth with practical problem-solving')
+            recs.push('Balance technical depth with practical problem-solving');
           }
 
           // Type-based recommendations
           if (interviewType.includes('technical')) {
-            recs.push('Practice coding problems and system architecture')
+            recs.push('Practice coding problems and system architecture');
           } else if (interviewType.includes('behavioral')) {
-            recs.push('Prepare STAR method examples for behavioral questions')
+            recs.push('Prepare STAR method examples for behavioral questions');
           } else if (interviewType.includes('dsa')) {
-            recs.push('Focus on algorithm optimization and complexity analysis')
+            recs.push('Focus on algorithm optimization and complexity analysis');
           } else {
-            recs.push('Continue comprehensive interview preparation')
+            recs.push('Continue comprehensive interview preparation');
           }
 
           // Score-based recommendations
           if (score >= 80) {
-            recs.push('Excellent performance - you are interview-ready!')
+            recs.push('Excellent performance - you are interview-ready!');
           } else if (score >= 60) {
-            recs.push('Good foundation, refine areas for improvement')
+            recs.push('Good foundation, refine areas for improvement');
           } else {
-            recs.push('Focus on consistent practice and skill building')
+            recs.push('Focus on consistent practice and skill building');
           }
 
           return recs;
@@ -179,7 +179,7 @@ export default function PerformanceSaver({
           roundResults
         }
 
-        console.log('📝 Sending performance data:', performanceData)
+        console.log('📝 Sending performance data:', performanceData);
         
         const response = await fetch('/api/save-performance', {
           method: 'POST',
@@ -189,43 +189,43 @@ export default function PerformanceSaver({
           body: JSON.stringify(performanceData),
         })
 
-        console.log('📡 Response status:', response.status)
+        console.log('📡 Response status:', response.status);
         const result = await response.json();
-        console.log('📋 Response data:', result)
+        console.log('📋 Response data:', result);
 
         if (result.success) {
           setSaved(true);
-          console.log('✅ Performance data saved successfully!')
-          toast.success('Performance data saved successfully!')
+          console.log('✅ Performance data saved successfully!');
+          toast.success('Performance data saved successfully!');
         } else {
-          console.error('❌ Failed to save performance data:', result.error)
+          console.error('❌ Failed to save performance data:', result.error);
           if (result.details) {
-            console.error('Error details:', result.details)
+            console.error('Error details:', result.details);
           }
           
           // Retry logic
           if (retryCount < maxRetries) {
-            console.log(`🔄 Retrying... (${retryCount + 1}/${maxRetries})`)
+            console.log(`🔄 Retrying... (${retryCount + 1}/${maxRetries})`);
             setRetryCount(prev => prev + 1);
             setTimeout(() => {
               savePerformanceData();
             }, 2000) // Wait 2 seconds before retry
           } else {
-            toast.error(`Failed to save performance data after ${maxRetries} attempts: ${result.error}`)
+            toast.error(`Failed to save performance data after ${maxRetries} attempts: ${result.error}`);
           }
         }
       } catch (error) {
-        console.error('❌  Error saving performance data:', error)
+        console.error('❌  Error saving performance data:', error);
         
         // Retry logic for network errors
         if (retryCount < maxRetries) {
-          console.log(`🔄 Retrying due to error... (${retryCount + 1}/${maxRetries})`)
+          console.log(`🔄 Retrying due to error... (${retryCount + 1}/${maxRetries})`);
           setRetryCount(prev => prev + 1);
           setTimeout(() => {
             savePerformanceData();
           }, 2000)
         } else {
-          toast.error(`Network error: Failed to save performance data after ${maxRetries} attempts`)
+          toast.error(`Network error: Failed to save performance data after ${maxRetries} attempts`);
         }
       }
     }

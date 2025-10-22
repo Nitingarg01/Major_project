@@ -83,7 +83,7 @@ const EnhancedInterviewCreationForm = () => {
 
         setLoading(true);
         try {
-            console.log('🚀 Creating enhanced interview with AI intelligence...')
+            console.log('🚀 Creating enhanced interview with AI intelligence...');
             const response = await createInterview(data, projectContext, workExDetails);
             
             // Check if there's a specific error response
@@ -113,9 +113,9 @@ const EnhancedInterviewCreationForm = () => {
                     : "Interview ready with intelligent question generation"
             })
             
-            router.push('/dashboard')
+            router.push('/dashboard');
         } catch (error) {
-            console.error('Interview creation error:', error)
+            console.error('Interview creation error:', error);
             toast.error("❌ Interview Creation Failed", {
                 description: "Please check your inputs and try again"
             })
@@ -137,7 +137,7 @@ const EnhancedInterviewCreationForm = () => {
 
             setProjectContext(prev => [...prev, projects]);
             setWorkExDetails(prev => [...prev, workex]);
-            form.setValue("skills", skills)
+            form.setValue("skills", skills);
             
             toast.success("✅ Resume Analysis Complete!", {
                 description: `Found ${skills.length} skills and enhanced context for AI questions`
@@ -154,13 +154,13 @@ const EnhancedInterviewCreationForm = () => {
     const addSkillFromCategory = (skill: string) => {
         const currentSkills = form.getValues("skills");
         if (!currentSkills.includes(skill) && currentSkills.length < 20) {
-            form.setValue("skills", [...currentSkills, skill])
-            toast.success(`➕ Added ${skill} to your skill set`)
+            form.setValue("skills", [...currentSkills, skill]);
+            toast.success(`➕ Added ${skill} to your skill set`);
         }
     }
 
     const handleCompanySelect = (company: string, jobTitle: string, companyData?: any) => {
-        form.setValue("companyName", company)
+        form.setValue("companyName", company);
         setSelectedCompanyData(companyData);
         
         if (companyData) {
@@ -388,14 +388,14 @@ const EnhancedInterviewCreationForm = () => {
                                 if (trimmed && !field.value.includes(trimmed) && field.value.length < 20) {
                                     form.setValue("skills", [...field.value, trimmed]);
                                     setInput("");
-                                    toast.success(`➕ Added ${trimmed}`)
+                                    toast.success(`➕ Added ${trimmed}`);
                                 }
                             }
 
                             const removeSkill = (skill: string) => {
                                 const newSkills = field.value.filter((s) => s !== skill);
-                                form.setValue("skills", newSkills)
-                                toast.info(`➖ Removed ${skill}`)
+                                form.setValue("skills", newSkills);
+                                toast.info(`➖ Removed ${skill}`);
                             }
 
                             return (
@@ -422,7 +422,7 @@ const EnhancedInterviewCreationForm = () => {
                                             onChange={(e) => setInput(e.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
-                                                    e.preventDefault()
+                                                    e.preventDefault();
                                                     addSkill();
                                                 }
                                             }}

@@ -79,7 +79,7 @@ export const createInterview = async (data: formD, projectContext: string[], wor
 
     if (!fetchRes.ok) {
       const errJson = await fetchRes.json().catch(() => ({}));
-      console.log("❌ API error:", fetchRes.status, errJson)
+      console.log("❌ API error:", fetchRes.status, errJson);
       return {
         success: false,
         error: errJson?.error || `Server error: ${fetchRes.status}`,
@@ -147,7 +147,7 @@ export const createInterview = async (data: formD, projectContext: string[], wor
 
 export const parsingResume = async (file: File) => {
   const formData = new FormData();
-  formData.append("resume", file)
+  formData.append("resume", file);
 
   for (const [key, value] of formData.entries()) {
     if (value instanceof File) {
@@ -173,7 +173,7 @@ export const parsingResume = async (file: File) => {
     // console.log("reasponse aagya",res.data)
     return res.data;
   } catch (error: any) {
-    console.log(error.message)
+    console.log(error.message);
     return { error: error.message }
   }
 }

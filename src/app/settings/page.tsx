@@ -46,7 +46,7 @@ const SettingsPage = () => {
       const stats = await elevenLabsService.getUsageStats();
       setUsageStats(stats);
     } catch (error) {
-      console.error('Error loading usage stats:', error)
+      console.error('Error loading usage stats:', error);
     } finally {
       setIsLoading(false);
     }
@@ -54,26 +54,26 @@ const SettingsPage = () => {
 
   const handleSaveKey = () => {
     if (!elevenLabsKey.trim()) {
-      toast.error('Please enter a valid API key')
+      toast.error('Please enter a valid API key');
       return
     }
 
     try {
-      elevenLabsService.setApiKey(elevenLabsKey.trim())
+      elevenLabsService.setApiKey(elevenLabsKey.trim());
       setIsKeySet(true);
       setElevenLabsKey('');
-      toast.success('✅ ElevenLabs API key saved successfully!')
+      toast.success('✅ ElevenLabs API key saved successfully!');
       loadUsageStats();
     } catch (error) {
-      toast.error('Failed to save API key')
+      toast.error('Failed to save API key');
     }
   }
 
   const handleRemoveKey = () => {
-    elevenLabsService.removeApiKey()
+    elevenLabsService.removeApiKey();
     setIsKeySet(false);
     setUsageStats(null);
-    toast.info('ElevenLabs API key removed')
+    toast.info('ElevenLabs API key removed');
   }
 
   const testVoice = async () => {
@@ -85,22 +85,22 @@ const SettingsPage = () => {
           personality: 'professional',
           onStart: () => toast.info('🎙️ Playing test voice...'),
           onEnd: () => {
-            toast.success('✅ Voice test completed!')
+            toast.success('✅ Voice test completed!');
             setIsLoading(false);
           },
           onError: (error) => {
-            toast.error('Voice test failed')
+            toast.error('Voice test failed');
             setIsLoading(false);
           }
         }
       )
 
       if (!result.success) {
-        toast.error(result.error || 'Voice test failed')
+        toast.error(result.error || 'Voice test failed');
         setIsLoading(false);
       }
     } catch (error) {
-      toast.error('Voice test failed')
+      toast.error('Voice test failed');
       setIsLoading(false);
     }
   }

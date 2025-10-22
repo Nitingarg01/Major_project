@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('GET /api/user-interviews called')
+    console.log('GET /api/user-interviews called');
     
     const session = await auth();
     console.log('Session data:', { 
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     });
     
     if (!session?.user?.id) {
-      console.log('No session or user ID found')
+      console.log('No session or user ID found');
       return NextResponse.json(
         { error: 'Unauthorized - Please log in' },
         { status: 401 }
@@ -25,9 +25,9 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10');
-    console.log('Query limit:', limit)
+    console.log('Query limit:', limit);
 
-    console.log('Connecting to MongoDB...')
+    console.log('Connecting to MongoDB...');
     const db = client.db("Cluster0");
     const userId = session.user.id;
     
@@ -35,16 +35,16 @@ export async function GET(request: NextRequest) {
     let userObjectId;
     try {
       userObjectId = new ObjectId(userId);
-      console.log('UserObjectId created successfully:', userObjectId)
+      console.log('UserObjectId created successfully:', userObjectId);
     } catch (objectIdError) {
-      console.error('Invalid userId ObjectId format:', objectIdError)
+      console.error('Invalid userId ObjectId format:', objectIdError);
       return NextResponse.json(
         { error: 'Invalid user ID format' },
         { status: 400 }
       );
     }
     
-    console.log('Running optimized database queries for user:', userObjectId)
+    console.log('Running optimized database queries for user:', userObjectId);
     
     // Add timeout wrapper for database operations
     const timeout = new Promise((_, reject) =>;
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
           userId: userObjectId,
           status: { $ne: 'completed' } // Exclude completed interviews from dashboard
         })
-    console.log('Running database queries for user:', userId)
+    console.log('Running database queries for user:', userId);
     
     // Add timeout wrapper for database operations
     const timeout = new Promise((_, reject) =>;

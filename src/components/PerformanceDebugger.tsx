@@ -21,8 +21,8 @@ export default function PerformanceDebugger({ interviewId }: PerformanceDebugger
       const data = await response.json();
       setDebugInfo(data);
     } catch (error) {
-      console.error('Debug check failed:', error)
-      toast.error('Failed to get debug info')
+      console.error('Debug check failed:', error);
+      toast.error('Failed to get debug info');
     } finally {
       setLoading(false);
     }
@@ -38,14 +38,14 @@ export default function PerformanceDebugger({ interviewId }: PerformanceDebugger
       const result = await response.json();
       
       if (result.success) {
-        toast.success(`Fixed ${result.fixedInterviews} interviews and converted ${result.convertedUserIds} userId formats`)
+        toast.success(`Fixed ${result.fixedInterviews} interviews and converted ${result.convertedUserIds} userId formats`);
         checkInterviewStatus() // Refresh debug info;
       } else {
-        toast.error(`Fix failed: ${result.error}`)
+        toast.error(`Fix failed: ${result.error}`);
       }
     } catch (error) {
-      console.error('Fix failed:', error)
-      toast.error('Fix operation failed')
+      console.error('Fix failed:', error);
+      toast.error('Fix operation failed');
     } finally {
       setLoading(false);
     }

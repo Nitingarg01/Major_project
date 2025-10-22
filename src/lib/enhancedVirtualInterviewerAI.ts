@@ -67,7 +67,7 @@ export class EnhancedVirtualInterviewerAI {
    */
   public async speak(text: string, options?: SpeechOptions): Promise<void> {
     // Stop any ongoing speech
-    this.stopSpeaking()
+    this.stopSpeaking();
 
     const useElevenLabs = options?.useElevenLabs !== false;
     const personality = options?.personality || 'professional';
@@ -80,9 +80,9 @@ export class EnhancedVirtualInterviewerAI {
           onStart: options?.onStart,
           onEnd: options?.onEnd,
           onError: (error) => {
-            console.warn('ElevenLabs failed, falling back to browser TTS:', error)
+            console.warn('ElevenLabs failed, falling back to browser TTS:', error);
             // Fallback to browser TTS on error
-            this.speakWithBrowserTTS(text, options)
+            this.speakWithBrowserTTS(text, options);
           }
         })
 
@@ -91,13 +91,13 @@ export class EnhancedVirtualInterviewerAI {
           return
         }
       } catch (error) {
-        console.warn('ElevenLabs exception, using browser TTS:', error)
+        console.warn('ElevenLabs exception, using browser TTS:', error);
         // Continue to fallback
       }
     }
 
     // Fallback to browser TTS
-    this.speakWithBrowserTTS(text, options)
+    this.speakWithBrowserTTS(text, options);
   }
 
   /**
@@ -105,7 +105,7 @@ export class EnhancedVirtualInterviewerAI {
    */
   private speakWithBrowserTTS(text: string, options?: SpeechOptions): void {
     if (!window.speechSynthesis) {
-      console.error('Speech synthesis not supported')
+      console.error('Speech synthesis not supported');
       return
     }
 
@@ -113,7 +113,7 @@ export class EnhancedVirtualInterviewerAI {
     
     // Configure voice based on personality
     const personality = options?.personality || 'professional';
-    this.configureBrowserVoice(utterance, personality)
+    this.configureBrowserVoice(utterance, personality);
 
     utterance.onstart = () => {
       if (options?.onStart) options.onStart()
@@ -124,7 +124,7 @@ export class EnhancedVirtualInterviewerAI {
     }
 
     utterance.onerror = (error) => {
-      console.error('Browser TTS error:', error)
+      console.error('Browser TTS error:', error);
       if (options?.onError) options.onError(error)
     }
 
@@ -153,7 +153,7 @@ export class EnhancedVirtualInterviewerAI {
         )
         utterance.rate = 0.95;
         utterance.pitch = 1.0;
-        break
+        break;
       
       case 'friendly':
         preferredVoice = voices.find(v => 
@@ -163,7 +163,7 @@ export class EnhancedVirtualInterviewerAI {
         )
         utterance.rate = 1.0;
         utterance.pitch = 1.1;
-        break
+        break;
       
       case 'strict':
         preferredVoice = voices.find(v => 
@@ -172,7 +172,7 @@ export class EnhancedVirtualInterviewerAI {
         )
         utterance.rate = 0.9;
         utterance.pitch = 0.9;
-        break
+        break;
       
       case 'encouraging':
         preferredVoice = voices.find(v => 
@@ -181,7 +181,7 @@ export class EnhancedVirtualInterviewerAI {
         )
         utterance.rate = 1.05;
         utterance.pitch = 1.2;
-        break
+        break;
     }
 
     if (preferredVoice) {
@@ -294,7 +294,7 @@ export class EnhancedVirtualInterviewerAI {
         }
       }
     } catch (error) {
-      console.error('Error generating AI follow-up:', error)
+      console.error('Error generating AI follow-up:', error);
     }
 
     // Fallback to personality-based follow-ups
@@ -341,7 +341,7 @@ export class EnhancedVirtualInterviewerAI {
         }
       }
     } catch (error) {
-      console.error('Error analyzing response:', error)
+      console.error('Error analyzing response:', error);
     }
 
     return this.generateFallbackAnalysis(userResponse, question);
@@ -508,17 +508,17 @@ export class EnhancedVirtualInterviewerAI {
 
     if (wordCount > 50) {
       score += 2;
-      strengths.push('Detailed and comprehensive response')
+      strengths.push('Detailed and comprehensive response');
     } else if (wordCount < 20) {
       score -= 1;
-      improvements.push('Provide more detailed explanations')
+      improvements.push('Provide more detailed explanations');
     }
 
     if (hasExamples) {
       score += 2;
-      strengths.push('Included specific examples')
+      strengths.push('Included specific examples');
     } else {
-      improvements.push('Add concrete examples from experience')
+      improvements.push('Add concrete examples from experience');
     }
 
     return {

@@ -119,7 +119,7 @@ Generate only the follow-up response, nothing else.`
         }
       }
     } catch (error) {
-      console.error('Error generating AI follow-up:', error)
+      console.error('Error generating AI follow-up:', error);
     }
 
     // Fallback to predefined follow-ups
@@ -197,7 +197,7 @@ Generate only the follow-up response, nothing else.`
         }
       }
     } catch (error) {
-      console.error('Error analyzing response:', error)
+      console.error('Error analyzing response:', error);
     }
 
     // Fallback analysis
@@ -313,7 +313,7 @@ Generate only the follow-up response, nothing else.`
     const wordCount = userResponse.split(' ').length;
     const hasExamples = userResponse.toLowerCase().includes('example') ||;
                        userResponse.toLowerCase().includes('instance') ||
-                       userResponse.toLowerCase().includes('time when')
+                       userResponse.toLowerCase().includes('time when');
 
     let score = 5;
     const strengths: string[] = []
@@ -321,21 +321,21 @@ Generate only the follow-up response, nothing else.`
 
     if (wordCount > 30) {
       score += 1;
-      strengths.push('Detailed response')
+      strengths.push('Detailed response');
     } else {
-      improvements.push('Provide more detailed explanations')
+      improvements.push('Provide more detailed explanations');
     }
 
     if (hasExamples) {
       score += 1;
-      strengths.push('Included specific examples')
+      strengths.push('Included specific examples');
     } else {
-      improvements.push('Add concrete examples from your experience')
+      improvements.push('Add concrete examples from your experience');
     }
 
     if (wordCount > 50) {
       score += 1;
-      strengths.push('Comprehensive coverage of the topic')
+      strengths.push('Comprehensive coverage of the topic');
     }
 
     return {

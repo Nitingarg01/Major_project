@@ -47,7 +47,7 @@ export const handleResetPassword = async (token: string, newPassword: string) =>
 
     return { success: true }
   } catch (error) {
-    console.error('Reset password error:', error)
+    console.error('Reset password error:', error);
     return { 
       success: false, 
       error: "Failed to reset password. Please try again." 

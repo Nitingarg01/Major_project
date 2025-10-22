@@ -132,7 +132,7 @@ export class HybridAIService {
   public getCompanySuggestions(query: string): string[] {
     const suggestions = ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple', 'Netflix', 'Tesla', 'Spotify'];
     return suggestions.filter(company =>;
-      company.toLowerCase().includes(query.toLowerCase())
+      company.toLowerCase().includes(query.toLowerCase());
     ).slice(0, 5);
   }
 

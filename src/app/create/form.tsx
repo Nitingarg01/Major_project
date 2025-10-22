@@ -88,11 +88,11 @@ const Createform = () => {
         setLoading(true);
         try {
             const response = await createInterview(data, projectContext, workExDetails);
-            toast.success("🎉 Interview Created Successfully with Smart AI!")
-            router.push('/dashboard')
+            toast.success("🎉 Interview Created Successfully with Smart AI!");
+            router.push('/dashboard');
         } catch (error) {
-            console.error('Interview creation error:', error)
-            toast.error("❌ Interview Creation Failed! Please try again.")
+            console.error('Interview creation error:', error);
+            toast.error("❌ Interview Creation Failed! Please try again.");
         } finally {
             setLoading(false);
         }
@@ -109,11 +109,11 @@ const Createform = () => {
 
             setProjectContext(prev => [...prev, projects]);
             setWorkExDetails(prev => [...prev, workex]);
-            form.setValue("skills", skills)
+            form.setValue("skills", skills);
             
             toast.success("✅ Resume parsed and skills auto-filled!");
         } catch (error) {
-            toast.error("❌ Failed to parse resume")
+            toast.error("❌ Failed to parse resume");
         } finally {
             setUploading(false);
         }
@@ -122,12 +122,12 @@ const Createform = () => {
     const addSkillFromCategory = (skill: string) => {
         const currentSkills = form.getValues("skills");
         if (!currentSkills.includes(skill) && currentSkills.length < 15) {
-            form.setValue("skills", [...currentSkills, skill])
+            form.setValue("skills", [...currentSkills, skill]);
         }
     }
 
     const selectCompany = (company: string) => {
-        form.setValue("companyName", company)
+        form.setValue("companyName", company);
     }
 
     return (
@@ -162,7 +162,7 @@ const Createform = () => {
                                     <div className="space-y-4">
                                         <SimpleCompanyAutofill
                                             onSelect={(company, jobTitle, companyData) => {
-                                                form.setValue("companyName", company)
+                                                form.setValue("companyName", company);
                                             }}
                                             placeholder="Type company name (e.g., Google, Microsoft)"
                                         />
@@ -270,7 +270,7 @@ const Createform = () => {
 
                             const removeSkill = (skill: string) => {
                                 const newSkills = field.value.filter((s) => s !== skill);
-                                form.setValue("skills", newSkills)
+                                form.setValue("skills", newSkills);
                             }
 
                             return (
@@ -286,7 +286,7 @@ const Createform = () => {
                                             onChange={(e) => setInput(e.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
-                                                    e.preventDefault()
+                                                    e.preventDefault();
                                                     addSkill();
                                                 }
                                             }}

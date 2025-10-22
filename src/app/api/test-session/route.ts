@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 Test session endpoint called')
+    console.log('🔍 Test session endpoint called');
     
     // Try multiple ways to get session
     let session1, session2, session3;
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString()
     })
   } catch (error) {
-    console.error('❌ Test session error:', error)
+    console.error('❌ Test session error:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

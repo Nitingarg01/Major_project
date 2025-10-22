@@ -46,7 +46,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
       try {
         setRecentSearches(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to parse recent searches')
+        console.error('Failed to parse recent searches');
       }
     }
   }, [])
@@ -72,7 +72,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
       // First, check if it matches popular companies for quick response
       const popularMatches = POPULAR_COMPANIES
         .filter(company => 
-          company.toLowerCase().includes(searchQuery.toLowerCase())
+          company.toLowerCase().includes(searchQuery.toLowerCase());
         )
         .slice(0, 5)
         .map(company => ({
@@ -110,7 +110,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
           const combined = [...popularMatches]
           aiSuggestions.forEach((aiSugg: CompanySuggestion) => {
             if (!combined.some(existing => existing.name.toLowerCase() === aiSugg.name.toLowerCase())) {
-              combined.push(aiSugg)
+              combined.push(aiSugg);
             }
           })
           
@@ -120,11 +120,11 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
         }
       }
     } catch (error) {
-      console.error('Error searching companies:', error)
+      console.error('Error searching companies:', error);
       // Fallback to popular companies only
       const fallbackMatches = POPULAR_COMPANIES
         .filter(company => 
-          company.toLowerCase().includes(searchQuery.toLowerCase())
+          company.toLowerCase().includes(searchQuery.toLowerCase());
         )
         .slice(0, 6)
         .map(company => ({
@@ -172,7 +172,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   const saveRecentSearch = (searchTerm: string) => {
     const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
     setRecentSearches(updated);
-    localStorage.setItem('recentCompanySearches', JSON.stringify(updated))
+    localStorage.setItem('recentCompanySearches', JSON.stringify(updated));
   }
 
   const handleSelect = (companyName: string) => {
@@ -187,21 +187,21 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return
 
-    const currentSuggestions = showTrending ? 
+    const currentSuggestions = showTrending ?;
       [...recentSearches, ...POPULAR_COMPANIES.slice(0, 6)] : 
       suggestions
 
     switch (e.key) {
       case 'ArrowDown':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.min(prev + 1, currentSuggestions.length - 1));
-        break
+        break;
       case 'ArrowUp':
-        e.preventDefault()
+        e.preventDefault();
         setSelectedIndex(prev => Math.max(prev - 1, 0));
-        break
+        break;
       case 'Enter':
-        e.preventDefault()
+        e.preventDefault();
         if (showTrending) {
           const selected = currentSuggestions[selectedIndex]
           if (selected) {
@@ -213,10 +213,10 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
             handleSelect(selected.name);
           }
         }
-        break
+        break;
       case 'Escape':
         setIsOpen(false);
-        break
+        break;
     }
   }
 
@@ -229,7 +229,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     }
   }, [selectedIndex])
 
-  const trendingSuggestions = showTrending ? 
+  const trendingSuggestions = showTrending ?;
     [...recentSearches, ...POPULAR_COMPANIES.slice(0, 8)] : 
     []
 
@@ -373,7 +373,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
                   size="sm"
                   onClick={() => {
                     const randomCompany = POPULAR_COMPANIES[
-                      Math.floor(Math.random() * POPULAR_COMPANIES.length)
+                      Math.floor(Math.random() * POPULAR_COMPANIES.length);
                     ]
                     handleSelect(randomCompany);
                   }}

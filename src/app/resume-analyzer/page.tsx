@@ -55,13 +55,13 @@ const ResumeAnalyzer = () => {
         setAnalysisHistory(data.analyses || []);
       }
     } catch (error) {
-      console.error('Error fetching history:', error)
+      console.error('Error fetching history:', error);
     }
   }
 
   const analyzeResume = async (file: File) => {
     if (!targetRole.trim()) {
-      toast.error('Please specify a target role for better analysis')
+      toast.error('Please specify a target role for better analysis');
       return
     }
 
@@ -70,8 +70,8 @@ const ResumeAnalyzer = () => {
 
     try {
       const formData = new FormData();
-      formData.append('resume', file)
-      formData.append('targetRole', targetRole)
+      formData.append('resume', file);
+      formData.append('targetRole', targetRole);
 
       const response = await fetch('/api/analyze-resume', {
         method: 'POST',
@@ -83,13 +83,13 @@ const ResumeAnalyzer = () => {
       if (response.ok) {
         setCurrentAnalysis(result.analysis);
         setAnalysisHistory(prev => [result.analysis, ...prev]);
-        toast.success('✅ Resume analysis complete!')
+        toast.success('✅ Resume analysis complete!');
       } else {
-        toast.error(result.error || 'Analysis failed')
+        toast.error(result.error || 'Analysis failed');
       }
     } catch (error) {
-      console.error('Analysis error:', error)
-      toast.error('Failed to analyze resume')
+      console.error('Analysis error:', error);
+      toast.error('Failed to analyze resume');
     } finally {
       setUploading(false);
     }
@@ -106,13 +106,13 @@ const ResumeAnalyzer = () => {
         if (currentAnalysis?.id === id) {
           setCurrentAnalysis(null);
         }
-        toast.success('Analysis deleted successfully')
+        toast.success('Analysis deleted successfully');
       } else {
-        toast.error('Failed to delete analysis')
+        toast.error('Failed to delete analysis');
       }
     } catch (error) {
-      console.error('Delete error:', error)
-      toast.error('Failed to delete analysis')
+      console.error('Delete error:', error);
+      toast.error('Failed to delete analysis');
     }
   }
 

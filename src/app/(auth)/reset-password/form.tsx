@@ -45,16 +45,16 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
       
       if (response?.success) {
         setResetSuccess(true);
-        toast.success("Password reset successfully!")
+        toast.success("Password reset successfully!");
         setTimeout(() => {
-          router.push('/login')
+          router.push('/login');
         }, 2000)
       } else {
-        toast.error(response?.error || "Failed to reset password")
+        toast.error(response?.error || "Failed to reset password");
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to reset password";
-      toast.error(errorMessage)
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

@@ -542,14 +542,14 @@ export function searchCompanyAndRole(query: string): {
     if (company.name.toLowerCase().includes(lowerQuery) || 
         lowerQuery.includes(company.name.toLowerCase())) {
       matchedCompany = company;
-      break
+      break;
     }
   }
   
   // Generate suggestions
   const suggestions = POPULAR_SEARCH_SUGGESTIONS
     .filter(suggestion => 
-      suggestion.toLowerCase().includes(lowerQuery)
+      suggestion.toLowerCase().includes(lowerQuery);
     )
     .slice(0, 8)
   
@@ -559,7 +559,7 @@ export function searchCompanyAndRole(query: string): {
       .filter(role => 
         role.keywords.some(keyword => 
           keyword.toLowerCase().includes(lowerQuery) ||
-          lowerQuery.includes(keyword.toLowerCase())
+          lowerQuery.includes(keyword.toLowerCase());
         )
       )
       .slice(0, 5)
@@ -568,7 +568,7 @@ export function searchCompanyAndRole(query: string): {
       const topCompanies = ['Google', 'Meta', 'Amazon', 'Microsoft', 'Apple']
       roleMatches.forEach(role => {
         topCompanies.forEach(company => {
-          suggestions.push(`${company} ${role.title}`)
+          suggestions.push(`${company} ${role.title}`);
         })
       })
     }

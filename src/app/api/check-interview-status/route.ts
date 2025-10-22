@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     })
     
   } catch (error) {
-    console.error('Error checking interview status:', error)
+    console.error('Error checking interview status:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : String(error)

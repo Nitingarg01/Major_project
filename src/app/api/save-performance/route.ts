@@ -5,13 +5,13 @@ import { ObjectId } from 'mongodb';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('💾 Save performance API called')
+    console.log('💾 Save performance API called');
     
     const session = await auth();
-    console.log('🔐 Session check:', { hasSession: !!session, hasUserId: !!session?.user?.id })
+    console.log('🔐 Session check:', { hasSession: !!session, hasUserId: !!session?.user?.id });
     
     if (!session?.user?.id) {
-      console.log('❌ Unauthorized: No session or user ID')
+      console.log('❌ Unauthorized: No session or user ID');
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -44,25 +44,25 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!interviewId || !jobTitle || !companyName || score === undefined) {
-      console.log('❌ Validation failed:', { interviewId, jobTitle, companyName, score })
+      console.log('❌ Validation failed:', { interviewId, jobTitle, companyName, score });
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    console.log('🔗 Connecting to database...')
+    console.log('🔗 Connecting to database...');
     const { db } = await connectToDatabase();
-    console.log('✅ Database connected successfully')
+    console.log('✅ Database connected successfully');
 
     // Validate ObjectId format
     let userObjectId, interviewObjectId;
     try {
       userObjectId = new ObjectId(session.user.id);
       interviewObjectId = new ObjectId(interviewId);
-      console.log('🆔 ObjectIds created successfully:', { userObjectId, interviewObjectId })
+      console.log('🆔 ObjectIds created successfully:', { userObjectId, interviewObjectId });
     } catch (objectIdError) {
-      console.error('❌ Invalid ObjectId format:', objectIdError)
+      console.error('❌ Invalid ObjectId format:', objectIdError);
       return NextResponse.json(
         { success: false, error: 'Invalid ID format' },
         { status: 400 }
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     })
     
     if (existingPerformance) {
-      console.log('⚠️ Performance data already exists, skipping save')
+      console.log('⚠️ Performance data already exists, skipping save');
       return NextResponse.json({
         success: true,
         performanceId: existingPerformance._id.toString(),
@@ -105,12 +105,12 @@ export async function POST(request: NextRequest) {
       roundResults: roundResults || []
     }
 
-    console.log('💾 Inserting performance data...')
+    console.log('💾 Inserting performance data...');
     const result = await db.collection('performances').insertOne(performanceData);
-    console.log('✅ Performance data inserted with ID:', result.insertedId)
+    console.log('✅ Performance data inserted with ID:', result.insertedId);
 
     // Update interview status to completed and remove from active list
-    console.log('🔄 Updating interview status to completed...')
+    console.log('🔄 Updating interview status to completed...');
     const updateResult = await db.collection('interviews').updateOne(
       { _id: interviewObjectId },
       { 
@@ -121,10 +121,10 @@ export async function POST(request: NextRequest) {
         }
       }
     )
-    console.log('📊 Interview updated:', updateResult.modifiedCount, 'documents modified')
+    console.log('📊 Interview updated:', updateResult.modifiedCount, 'documents modified');
 
     if (updateResult.modifiedCount === 0) {
-      console.warn('⚠️ No interview was updated - interview may not exist or already completed')
+      console.warn('⚠️ No interview was updated - interview may not exist or already completed');
     }
 
     return NextResponse.json({
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error saving performance data:', error)
+    console.error('Error saving performance data:', error);
     console.error('Error details:', {
       name: error instanceof Error ? error.name : 'Unknown',
       message: error instanceof Error ? error.message : String(error),

@@ -152,8 +152,8 @@ const SuperEnhancedInterviewWrapper = ({
         const session = await createEnhancedSession(intelligence);
         setInterviewSession(session);
       } catch (error) {
-        console.error('Error initializing enhanced session:', error)
-        toast.error('Failed to initialize interview session')
+        console.error('Error initializing enhanced session:', error);
+        toast.error('Failed to initialize interview session');
       } finally {
         setIsLoading(false);
       }
@@ -286,7 +286,7 @@ const SuperEnhancedInterviewWrapper = ({
 
     const canSwitch = canSwitchToRound(roundIndex);
     if (!canSwitch) {
-      toast.error('This round is not available yet. Complete previous rounds first.')
+      toast.error('This round is not available yet. Complete previous rounds first.');
       return
     }
 
@@ -321,7 +321,7 @@ const SuperEnhancedInterviewWrapper = ({
     }
     
     setInterviewSession(updatedSession);
-    toast.success(`Switched to ${updatedSession.rounds[roundIndex].type} round`)
+    toast.success(`Switched to ${updatedSession.rounds[roundIndex].type} round`);
   }, [interviewSession, currentRound, interviewStartTime, roundTimeSpent])
 
   const canSwitchToRound = useCallback((roundIndex: number): boolean => {
@@ -347,7 +347,7 @@ const SuperEnhancedInterviewWrapper = ({
     if (!interviewSession) return
 
     try {
-      console.log('Completing round:', { answers, timeSpent })
+      console.log('Completing round:', { answers, timeSpent });
       
       // Update round time tracking
       setRoundTimeSpent(prev => ({
@@ -359,7 +359,7 @@ const SuperEnhancedInterviewWrapper = ({
         interviewSession,
         Array.isArray(answers) ? answers : [JSON.stringify(answers)],
         timeSpent,
-        activityAlerts.filter(alert => alert.severity === 'high')
+        activityAlerts.filter(alert => alert.severity === 'high');
       )
 
       setInterviewSession(updatedSession);
@@ -369,14 +369,14 @@ const SuperEnhancedInterviewWrapper = ({
         setCurrentRound(updatedSession.currentRound);
         setActivityAlerts([]) // Clear alerts for new round;
         
-        toast.success(`Round ${currentRound + 1} completed! Moving to next round...`)
+        toast.success(`Round ${currentRound + 1} completed! Moving to next round...`);
       } else {
         // Interview completed - generate final report
         try {
           const finalReport = await roundManager.generateFinalReport(updatedSession);
-          console.log('Final Interview Report:', finalReport)
+          console.log('Final Interview Report:', finalReport);
           
-          toast.success("Interview completed! Generating your feedback...")
+          toast.success("Interview completed! Generating your feedback...");
           
           // Clean up auto-save
           if (autoSaveInterval) {
@@ -388,13 +388,13 @@ const SuperEnhancedInterviewWrapper = ({
             window.location.href = `/interview/${id}/feedback`;
           }, 2000)
         } catch (error) {
-          console.error('Error generating final report:', error)
-          toast.error("Error generating feedback. Please check your results later.")
+          console.error('Error generating final report:', error);
+          toast.error("Error generating feedback. Please check your results later.");
         }
       }
     } catch (error) {
-      console.error('Error completing round:', error)
-      toast.error("Error completing round. Please try again.")
+      console.error('Error completing round:', error);
+      toast.error("Error completing round. Please try again.");
     }
   }
 
@@ -423,13 +423,13 @@ const SuperEnhancedInterviewWrapper = ({
     if (!started) return
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault()
+      e.preventDefault();
       e.returnValue = '';
       return 'Are you sure you want to leave? Your interview progress may be lost.';
     }
 
     const handlePopState = (e: PopStateEvent) => {
-      e.preventDefault()
+      e.preventDefault();
       if (window.confirm('Are you sure you want to leave the interview? Your progress may be lost.')) {
         if (autoSaveInterval) {
           clearInterval(autoSaveInterval);
@@ -440,13 +440,13 @@ const SuperEnhancedInterviewWrapper = ({
       }
     }
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    window.addEventListener('popstate', handlePopState)
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
     window.history.pushState(null, '', window.location.href)
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      window.removeEventListener('popstate', handlePopState)
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
     }
   }, [started, autoSaveInterval])
 

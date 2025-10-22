@@ -80,7 +80,7 @@ const StreamingFeedback = ({
                 case 'status':
                   setCurrentStatus(data.data);
                   setProgress(prev => Math.min(prev + 20, 90));
-                  break
+                  break;
                 case 'feedback':
                   setFeedback(data.data);
                   setProgress(100);
@@ -88,24 +88,24 @@ const StreamingFeedback = ({
                   if (onFeedbackComplete) {
                     onFeedbackComplete(data.data);
                   }
-                  break
+                  break;
                 case 'complete':
                   setIsStreaming(false);
-                  break
+                  break;
                 case 'error':
-                  toast.error(data.data)
+                  toast.error(data.data);
                   setIsStreaming(false);
-                  break
+                  break;
               }
             } catch (e) {
-              console.error('Error parsing streaming data:', e)
+              console.error('Error parsing streaming data:', e);
             }
           }
         }
       }
     } catch (error) {
-      console.error('Streaming error:', error)
-      toast.error('Failed to generate feedback')
+      console.error('Streaming error:', error);
+      toast.error('Failed to generate feedback');
       setIsStreaming(false);
     }
   }

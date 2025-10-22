@@ -317,7 +317,7 @@ function isDSASkill(skill: string): boolean {
     'arrays', 'strings', 'hash tables', 'linked lists'
   ];
   return dsaSkills.some(dsaSkill =>;
-    skill.toLowerCase().includes(dsaSkill)
+    skill.toLowerCase().includes(dsaSkill);
   );
 }
 

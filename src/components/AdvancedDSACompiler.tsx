@@ -185,9 +185,9 @@ int main() {
         
         // Show warnings at key intervals
         if (prev === 300) { // 5 minutes left;
-          toast.warning('⏰ 5 minutes remaining!')
+          toast.warning('⏰ 5 minutes remaining!');
         } else if (prev === 60) { // 1 minute left;
-          toast.error('⏰ 1 minute remaining!')
+          toast.error('⏰ 1 minute remaining!');
         }
         
         return prev - 1;
@@ -201,7 +201,7 @@ int main() {
   useEffect(() => {
     const autoSaveTimer = setInterval(() => {
       if (code.trim() && code !== languageTemplates[language as keyof typeof languageTemplates]) {
-        localStorage.setItem(`dsa_code_${problem.id}_${language}`, code)
+        localStorage.setItem(`dsa_code_${problem.id}_${language}`, code);
         setAutoSaveCount(prev => prev + 1);
       }
     }, 30000) // Auto-save every 30 seconds
@@ -247,7 +247,7 @@ int main() {
       setSyntaxValid(validation.isValid);
       
       if (!validation.isValid && validation.error) {
-        toast.error(`Syntax Error: ${validation.error}`)
+        toast.error(`Syntax Error: ${validation.error}`);
       }
       
       return validation.isValid;
@@ -260,7 +260,7 @@ int main() {
   // Enhanced code execution with real Judge0 service
   const runCode = async () => {
     if (!code.trim()) {
-      toast.error('Please write some code first!')
+      toast.error('Please write some code first!');
       return
     }
 
@@ -271,8 +271,8 @@ int main() {
       // First validate syntax
       const isValid = await validateSyntax();
       if (!isValid) {
-        toast.dismiss(toastId)
-        toast.error('Please fix syntax errors before running')
+        toast.dismiss(toastId);
+        toast.error('Please fix syntax errors before running');
         return
       }
 
@@ -295,7 +295,7 @@ int main() {
         codeQualityScore: calculateCodeQuality(code, passedCount, totalCount)
       }))
       
-      toast.dismiss(toastId)
+      toast.dismiss(toastId);
       
       if (passedCount === totalCount) {
         toast.success(`🎉 All ${totalCount} test cases passed!`, {
@@ -307,9 +307,9 @@ int main() {
         })
       }
     } catch (error) {
-      toast.dismiss(toastId)
-      toast.error('Execution failed: ' + error)
-      console.error('Code execution error:', error)
+      toast.dismiss(toastId);
+      toast.error('Execution failed: ' + error);
+      console.error('Code execution error:', error);
     } finally {
       setIsRunning(false);
     }
@@ -333,7 +333,7 @@ int main() {
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||
-      line.includes('/*')
+      line.includes('/*');
     ).length
     score += Math.min(20, commentLines * 4);
     
@@ -356,7 +356,7 @@ int main() {
       // Final validation and execution
       let finalResults = testResults;
       if (testResults.length === 0) {
-        toast.loading('Running final tests before submission...')
+        toast.loading('Running final tests before submission...');
         finalResults = await judge0Service.executeCode(code, language, problem.testCases);
       }
 
@@ -375,7 +375,7 @@ int main() {
       }
       
       // Clear auto-saved code
-      localStorage.removeItem(`dsa_code_${problem.id}_${language}`)
+      localStorage.removeItem(`dsa_code_${problem.id}_${language}`);
       
       onSubmit(code, submissionData, timeSpent);
       
@@ -383,7 +383,7 @@ int main() {
         description: `Time taken: ${Math.floor(timeSpent / 60)}m ${timeSpent % 60}s`
       })
     } catch (error) {
-      toast.error('Submission failed: ' + error)
+      toast.error('Submission failed: ' + error);
     } finally {
       setIsSubmitting(false);
     }
@@ -398,7 +398,7 @@ int main() {
   const showNextHint = () => {
     if (problem.hints && currentHint < problem.hints.length - 1) {
       setCurrentHint(prev => prev + 1);
-      toast.info(`💡 Hint ${currentHint + 2} revealed`)
+      toast.info(`💡 Hint ${currentHint + 2} revealed`);
     }
   }
 

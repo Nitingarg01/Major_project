@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error fetching performance stats:', error)
+    console.error('Error fetching performance stats:', error);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }

@@ -52,55 +52,55 @@ export default function DashboardPage() {
   const [serviceStatus, setServiceStatus] = useState<'checking' | 'online' | 'offline'>('checking');
 
   useEffect(() => {
-    console.log('Auth status changed:', status)
-    console.log('Session:', session)
+    console.log('Auth status changed:', status);
+    console.log('Session:', session);
     
     // Prevent multiple initializations
     if (hasInitialized) {
-      console.log('Already initialized, skipping...')
+      console.log('Already initialized, skipping...');
       return
     }
     
     if (status === 'loading') {
-      console.log('Session still loading...')
+      console.log('Session still loading...');
       return
     }
     
     if (status === 'unauthenticated') {
-      console.log('User not authenticated, redirecting to login')
-      router.push('/login')
+      console.log('User not authenticated, redirecting to login');
+      router.push('/login');
       return
     }
 
     if (status === 'authenticated' && session?.user?.id) {
-      console.log('User authenticated, fetching interviews...')
+      console.log('User authenticated, fetching interviews...');
       setHasInitialized(true);
       fetchUserInterviews();
     } else if (status === 'authenticated' && !session?.user?.id) {
-      console.error('Authenticated but no user ID found')
-      toast.error('Authentication error. Please try logging in again.')
-      router.push('/login')
+      console.error('Authenticated but no user ID found');
+      toast.error('Authentication error. Please try logging in again.');
+      router.push('/login');
     }
   }, [status, hasInitialized, router])
 
   const fetchUserInterviews = async () => {
     // Prevent multiple simultaneous calls
     if (!loading) {
-      console.log('Already loaded or loading, skipping fetch...')
+      console.log('Already loaded or loading, skipping fetch...');
       return
     }
 
     try {
-      console.log('Starting to fetch user interviews...')
+      console.log('Starting to fetch user interviews...');
       
       // Add timeout to prevent hanging requests
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
-        console.log('Request timeout - aborting...')
-        controller.abort()
+        console.log('Request timeout - aborting...');
+        controller.abort();
       }, 8000) // 8 second timeout
       
-      console.log('Making API call to /api/user-interviews...')
+      console.log('Making API call to /api/user-interviews...');
       const response = await fetch('/api/user-interviews?limit=5', {
         signal: controller.signal,
         headers: {
@@ -110,43 +110,43 @@ export default function DashboardPage() {
       })
       
       clearTimeout(timeoutId);
-      console.log('API Response status:', response.status)
+      console.log('API Response status:', response.status);
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('API Error Response:', errorText)
+        console.error('API Error Response:', errorText);
         throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
       
       const data = await response.json();
-      console.log('API Response data:', data)
+      console.log('API Response data:', data);
 
       if (data.success) {
         setInterviews(data.interviews || []);
         setStats(data.stats || { total: 0, completed: 0, inProgress: 0 });
-        console.log('Successfully loaded interviews:', data.interviews?.length || 0)
+        console.log('Successfully loaded interviews:', data.interviews?.length || 0);
       } else {
-        console.error('API returned success: false', data.error)
+        console.error('API returned success: false', data.error);
         throw new Error(data.error || 'Failed to fetch data');
       }
     } catch (error: any) {
-      console.error('Error fetching interviews:', error)
+      console.error('Error fetching interviews:', error);
       if (error?.name === 'AbortError') {
-        toast.error('Request timeout. Please try again.')
+        toast.error('Request timeout. Please try again.');
       } else if (error?.message?.includes('401')) {
-        console.error('Authentication error - redirecting to login')
+        console.error('Authentication error - redirecting to login');
         setHasInitialized(false) // Reset initialization flag;
-        router.push('/login')
+        router.push('/login');
         return
       } else {
-        toast.error('Failed to load interviews. Please refresh the page.')
+        toast.error('Failed to load interviews. Please refresh the page.');
       }
       
       // Set empty data to prevent infinite loading
       setInterviews([]);
       setStats({ total: 0, completed: 0, inProgress: 0 });
     } finally {
-      console.log('Setting loading to false')
+      console.log('Setting loading to false');
       setLoading(false);
     }
   }
@@ -201,13 +201,13 @@ export default function DashboardPage() {
         // Remove from local state
         setInterviews(prev => prev.filter(interview => interview._id !== interviewId));
         setStats(prev => ({ ...prev, total: prev.total - 1 }));
-        toast.success('Interview deleted successfully')
+        toast.success('Interview deleted successfully');
       } else {
         throw new Error(data.error || 'Failed to delete interview');
       }
     } catch (error: any) {
-      console.error('Error deleting interview:', error)
-      toast.error('Failed to delete interview. Please try again.')
+      console.error('Error deleting interview:', error);
+      toast.error('Failed to delete interview. Please try again.');
     } finally {
       setDeletingId(null);
     }

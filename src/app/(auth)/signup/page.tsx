@@ -21,15 +21,15 @@ export default function SignUpPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error('Passwords do not match');
       return
     }
 
     if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters')
+      toast.error('Password must be at least 6 characters');
       return
     }
 
@@ -51,7 +51,7 @@ export default function SignUpPage() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Account created successfully!')
+        toast.success('Account created successfully!');
         
         // Auto sign in after successful signup
         const result = await signIn('credentials', {
@@ -61,15 +61,15 @@ export default function SignUpPage() {
         })
 
         if (result?.ok) {
-          router.push('/dashboard')
+          router.push('/dashboard');
         } else {
-          router.push('/login')
+          router.push('/login');
         }
       } else {
-        toast.error(data.error || 'Something went wrong')
+        toast.error(data.error || 'Something went wrong');
       }
     } catch (error) {
-      toast.error('Something went wrong. Please try again.')
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +79,7 @@ export default function SignUpPage() {
     try {
       await signIn('google', { callbackUrl: '/dashboard' })
     } catch (error) {
-      toast.error('Google sign-in failed. Please try again.')
+      toast.error('Google sign-in failed. Please try again.');
     }
   }
 

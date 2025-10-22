@@ -697,7 +697,7 @@ export class SmartAIService {
     return commonSkills.filter(skill =>;
 
     return commonSkills.filter(skill =>;
-      text.toLowerCase().includes(skill.toLowerCase())
+      text.toLowerCase().includes(skill.toLowerCase());
     );
   }
 

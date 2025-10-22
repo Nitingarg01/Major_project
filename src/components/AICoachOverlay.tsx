@@ -71,7 +71,7 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={(e) => {
-                e.stopPropagation()
+                e.stopPropagation();
                 setIsExpanded(!isExpanded);
               }}
               className="text-white hover:bg-white/20 rounded p-1"
@@ -81,7 +81,7 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
             </button>
             <button
               onClick={(e) => {
-                e.stopPropagation()
+                e.stopPropagation();
                 onToggle();
               }}
               className="text-white hover:bg-white/20 rounded p-1"
