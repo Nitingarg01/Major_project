@@ -156,16 +156,28 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
         }
 
         recognition.onend = () => {
-          // Auto-restart if still in listening mode
-          if (interviewState.isListening && !isInterviewPaused) {
-            console.log('Recognition ended, restarting...')
+          // Only auto-restart if still in listening mode and not cleaning up
+          if (!isCleaningUpRef.current && interviewState.isListening && !isInterviewPaused) {
+            console.log('Recognition ended, scheduling restart...')
+            // Clear any existing restart timeout
+            if (recognitionRestartTimeoutRef.current) {
+              clearTimeout(recognitionRestartTimeoutRef.current)
+            }
+            
             recognitionRestartTimeoutRef.current = setTimeout(() => {
-              try {
-                recognition.start()
-              } catch (e) {
-                console.log('Could not restart recognition:', e)
+              // Double-check conditions before restarting
+              if (!isCleaningUpRef.current && interviewState.isListening && !isInterviewPaused) {
+                try {
+                  recognition.start()
+                  console.log('✓ Recognition restarted')
+                } catch (e: any) {
+                  // Only log if it's not "already started" error
+                  if (!e.message?.includes('already started')) {
+                    console.warn('Could not restart recognition:', e)
+                  }
+                }
               }
-            }, 100)
+            }, 300) // Increased delay for better stability
           }
         }
 
@@ -176,8 +188,10 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     }
 
     return () => {
+      // Cleanup timeouts
       if (recognitionRestartTimeoutRef.current) {
         clearTimeout(recognitionRestartTimeoutRef.current)
+        recognitionRestartTimeoutRef.current = null
       }
     }
   }, [])
