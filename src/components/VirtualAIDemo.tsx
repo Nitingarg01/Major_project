@@ -180,8 +180,8 @@ const VirtualAIDemo: React.FC = () => {
         'border-purple-300 shadow-lg shadow-purple-100'
       } bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 flex items-center justify-center`}>
         <Bot className={`w-20 h-20 text-white transition-all duration-300 ${
-          aiState === 'speaking' ? 'scale-110 animate-bounce' :;
-          aiState === 'thinking' ? 'animate-pulse' :;
+          aiState === 'speaking' ? 'scale-110 animate-bounce' :
+          aiState === 'thinking' ? 'animate-pulse' :
           'scale-100'
         }`} />
       </div>
