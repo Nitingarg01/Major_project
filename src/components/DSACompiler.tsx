@@ -53,7 +53,7 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [
       {
         input: 'nums = [3,2,4], target = 6',
         output: '[1,2]',
-        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].';
+        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].'
       }
     ],
     testCases: [
