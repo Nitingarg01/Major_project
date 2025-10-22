@@ -128,18 +128,39 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
 
   // Stop camera
   const stopCamera = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    if (videoRef.current) {
-      // Pause video before cleanup to prevent AbortError
-      videoRef.current.pause();
-      videoRef.current.srcObject = null;
-    }
-    setIsInitialized(false);
+    // First, stop detection and clear state
     setDetectionActive(false);
     setFaceDetected(false);
+    
+    // Pause video first to prevent AbortError
+    if (videoRef.current) {
+      try {
+        videoRef.current.pause();
+        // Wait for pause to complete before cleanup
+        videoRef.current.onpause = () => {
+          if (videoRef.current) {
+            videoRef.current.srcObject = null;
+            videoRef.current.onpause = null;
+          }
+        };
+      } catch (e) {
+        console.log('Video pause error:', e);
+      }
+    }
+    
+    // Stop media tracks
+    if (streamRef.current) {
+      try {
+        streamRef.current.getTracks().forEach(track => {
+          track.stop();
+        });
+        streamRef.current = null;
+      } catch (e) {
+        console.log('Stream cleanup error:', e);
+      }
+    }
+    
+    setIsInitialized(false);
   }, []);
 
   // Toggle recording
