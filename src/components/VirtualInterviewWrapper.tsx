@@ -389,13 +389,14 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
   }
 
   return (
-    <VirtualAIInterviewer
+    <EnhancedVirtualAIInterviewer
       questions={questions}
       onComplete={handleInterviewComplete}
       companyName={companyName}
       jobTitle={jobTitle}
       interviewType={interviewType}
       timeLimit={45}
+      personality="professional"
     />
   )
 }
