@@ -440,7 +440,7 @@ export class QuestionGenerator {
       aptitudeTypes.push('verbal', 'numerical', 'logical', 'spatial');
     }
 
-    const aptitudeQuestions = this.generateAptitudeQuestions(;
+    const aptitudeQuestions = this.generateAptitudeQuestions(
       aptitudeTypes, 
       aptitudeDifficulty, 
       2

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         // Initialize a new interview session
         const { userId, companyName, jobTitle, interviewType } = sessionData;
         
-        const session = await roundManager.initializeSession(;
+        const session = await roundManager.initializeSession(
           userId,
           interviewId,
           companyName,

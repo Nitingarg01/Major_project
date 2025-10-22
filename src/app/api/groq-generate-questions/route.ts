@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const companyIntelligence = EnhancedCompanyIntelligenceService.getInstance();
     
     // Get enhanced company intelligence
-    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(;
+    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
       interview.companyName,
       interview.jobTitle
     );
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       });
 
       // DSA Problems (2 questions - 12.5%)
-      const dsaProblems = await groqAIService.generateDSAProblems(;
+      const dsaProblems = await groqAIService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
         2, // Fixed to exactly 2 DSA questions
@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
       
     } else if (interview.interviewType === 'dsa') {
       console.log('💻 Generating DSA-focused interview with exactly 2 questions...');
-      const dsaProblems = await groqAIService.generateDSAProblems(;
+      const dsaProblems = await groqAIService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
         2, // Fixed to exactly 2 DSA questions

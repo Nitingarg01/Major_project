@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
 
     console.log(`📝 Updating preferences for user: ${session.user.id}`);
 
-    const updatedPreferences = await userPreferencesService.updateUserPreferences(;
+    const updatedPreferences = await userPreferencesService.updateUserPreferences(
       session.user.id,
       preferences
     );
@@ -139,7 +139,7 @@ export async function DELETE(request: NextRequest) {
 
     const smartDefaults = userPreferencesService.getSmartDefaults(jobTitle, companyName);
     
-    const resetPreferences = await userPreferencesService.updateUserPreferences(;
+    const resetPreferences = await userPreferencesService.updateUserPreferences(
       session.user.id,
       {
         ...smartDefaults,

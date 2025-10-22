@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
 
         // Generate DSA problems
         if (dsaCount > 0) {
-          const dsaProblems = await aiService.generateCompanySpecificDSAProblems(;
+          const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
             companyName,
             experienceLevel === 'entry' ? 'easy' : experienceLevel === 'senior' ? 'hard' : 'medium',
             dsaCount,
@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
         const difficulty = experienceLevel === 'entry' ? 'easy' :;
                           experienceLevel === 'senior' ? 'hard' : 'medium',
         
-        const dsaProblems = await aiService.generateCompanySpecificDSAProblems(;
+        const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
           companyName,
           difficulty,
           numberOfQuestions,

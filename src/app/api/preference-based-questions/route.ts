@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Generate preference-based questions
-    const generationResult = await preferenceBasedQuestionGenerator.generatePreferenceBasedQuestions(;
+    const generationResult = await preferenceBasedQuestionGenerator.generatePreferenceBasedQuestions(
       generationRequest
     );
 

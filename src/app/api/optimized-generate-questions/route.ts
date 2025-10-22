@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
     // Generate DSA problems if requested
     if (interview.includeDSA) {
       console.log('💻 Generating DSA problems with OpenAI GPT-4o-mini...');
-      const dsaProblems = await aiService.generateDSAProblems(;
+      const dsaProblems = await aiService.generateDSAProblems(
         interview.companyName,
         interview.difficulty || 'medium',
         Math.min(6, Math.floor(interview.numberOfQuestions * 0.3));

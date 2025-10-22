@@ -258,7 +258,7 @@ const solution = new Solution();
     try {
       console.log(`🎯 Generating ${count} ${difficulty} DSA problems for ${companyName}...`);
       
-      const problems = await this.aiService.generateCompanySpecificDSAProblems(;
+      const problems = await this.aiService.generateCompanySpecificDSAProblems(
         companyName,
         difficulty,
         count,
@@ -295,7 +295,7 @@ const solution = new Solution();
 
       // Run code against all test cases
       for (const testCase of submission.problem.testCases) {
-        const result = await this.runSingleTest(;
+        const result = await this.runSingleTest(
           submission.sourceCode,
           language.id,
           testCase
@@ -310,7 +310,7 @@ const solution = new Solution();
       const avgExecutionTime = totalExecutionTime / testResults.length;
 
       // Provide intelligent feedback based on results
-      let feedback = this.generateExecutionFeedback(;
+      let feedback = this.generateExecutionFeedback(
         testResults,
         submission.problem,
         submission.companyName

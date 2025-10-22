@@ -102,7 +102,7 @@ export class EnhancedCompanyIntelligenceService {
       const companyData = this.fetchFromPredefinedData(companyName);
       
       // Generate AI-enhanced insights using Smart AI
-      const enhancedInsights = await this.generateEnhancedInsightsWithSmartAI(;
+      const enhancedInsights = await this.generateEnhancedInsightsWithSmartAI(
         companyData, 
         jobTitle
       );

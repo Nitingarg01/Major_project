@@ -392,7 +392,7 @@ export class EnhancedJudge0Service {
       const hasFunction = sourceCode.includes('def ') || sourceCode.includes('function ') || sourceCode.includes('public ');
       const hasLogic = sourceCode.includes('for ') || sourceCode.includes('while ') || sourceCode.includes('if ');
       
-      const passProbability = Math.min(;
+      const passProbability = Math.min(
         0.8, 
         (codeLength / 100) + 
         (hasFunction ? 0.3 : 0) + 

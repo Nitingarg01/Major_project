@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       for (let i = 0; i < questions.length; i++) {
         if (answers[i] && answers[i].trim().length > 0) {
           try {
-            const analysis = await aiService.analyzeInterviewResponse(;
+            const analysis = await aiService.analyzeInterviewResponse(
               questions[i].question,
               answers[i],
               questions[i].expectedAnswer || 'Comprehensive answer expected',
@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
       } : null,
 
       // Generate comprehensive overall analysis
-      const overallAnalysis = await generateOverallAnalysis(;
+      const overallAnalysis = await generateOverallAnalysis(
         enhancedQuestions,
         answers,
         jobTitle,
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ AI Analysis Error:', aiError);
       
       // Generate fallback analysis
-      const fallbackAnalysis = generateFallbackAnalysis(;
+      const fallbackAnalysis = generateFallbackAnalysis(
         questions,
         answers,
         jobTitle,

@@ -393,7 +393,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
   }
 
   // AI Avatar Component
-  const AIAvatar = () => (;
+  const AIAvatar = () => (
     <div className="relative w-32 h-32 mx-auto mb-4">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-300 ${
         aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse' :;

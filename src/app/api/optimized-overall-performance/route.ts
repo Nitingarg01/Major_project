@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Perform comprehensive performance analysis using Claude 3.5 Sonnet
-    const performanceAnalysis = await aiService.analyzeOverallPerformance(;
+    const performanceAnalysis = await aiService.analyzeOverallPerformance(
       questions,
       answers,
       jobTitle || 'Software Engineer',

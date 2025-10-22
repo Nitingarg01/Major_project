@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     try {
       // Generate company-specific DSA problems
-      const dsaProblems = await aiService.generateCompanySpecificDSAProblems(;
+      const dsaProblems = await aiService.generateCompanySpecificDSAProblems(
         companyName,
         difficulty as 'easy' | 'medium' | 'hard',
         count,

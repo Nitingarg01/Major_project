@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Analyze the response using Anthropic Claude 3.5 Sonnet for best analysis quality
-    const analysis = await aiService.analyzeInterviewResponse(;
+    const analysis = await aiService.analyzeInterviewResponse(
       question,
       userAnswer,
       expectedAnswer,

@@ -82,7 +82,7 @@ export class HybridAIService {
     companyContext: string = 'Technology Company';
   ): Promise<any> {
     try {
-      const result = await this.smartAIService.analyzeResponse(;
+      const result = await this.smartAIService.analyzeResponse(
         question,
         userAnswer,
         expectedAnswer,

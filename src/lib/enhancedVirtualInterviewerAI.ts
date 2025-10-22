@@ -280,7 +280,7 @@ export class EnhancedVirtualInterviewerAI {
       })
 
       if (result.success && result.data) {
-        const followUp = this.makeFollowUpConversational(;
+        const followUp = this.makeFollowUpConversational(
           this.extractFollowUpQuestion(result.data, userResponse),
           personality
         )

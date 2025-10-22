@@ -78,7 +78,7 @@ export class UserPreferencesService {
         version: '1.0'
       };
 
-      const result = await db.collection('user_preferences').findOneAndUpdate(;
+      const result = await db.collection('user_preferences').findOneAndUpdate(
         { userId },
         { $set: updateData },
         { upsert: true, returnDocument: 'after' }

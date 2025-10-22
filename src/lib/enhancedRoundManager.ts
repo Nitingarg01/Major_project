@@ -236,7 +236,7 @@ export class EnhancedRoundManager {
 
     try {
       // Analyze round performance using AI
-      const roundAnalysis = await this.analyzeRoundPerformance(;
+      const roundAnalysis = await this.analyzeRoundPerformance(
         currentRound,
         answers,
         timeSpent,

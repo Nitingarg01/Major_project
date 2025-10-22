@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     console.log('🧠 Starting Groq AI performance analysis...');
     const groqService = GroqAIService.getInstance();
     
-    const performanceAnalysis = await groqService.analyzeOverallPerformance(;
+    const performanceAnalysis = await groqService.analyzeOverallPerformance(
       questions,
       answers,
       interview.jobTitle,
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     const completionStats = calculateCompletionStats(questions, responses);
     
     // Get user's historical performance for comparison
-    const historicalPerformance = await getUserHistoricalPerformance(;
+    const historicalPerformance = await getUserHistoricalPerformance(
       db, interview.userId, interview.companyName
     );
 

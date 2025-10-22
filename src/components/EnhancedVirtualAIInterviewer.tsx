@@ -426,7 +426,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     updateAvatarState('thinking');
 
     // Analyze response in real-time
-    const analysis = await virtualAI.current.analyzeResponse(;
+    const analysis = await virtualAI.current.analyzeResponse(
       interviewState.userResponse,
       currentQuestion.question,
       {
@@ -444,7 +444,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     setRealTimeScore(analysis.score);
 
     // Generate AI follow-up
-    const followUpResponse = await virtualAI.current.generateFollowUp(;
+    const followUpResponse = await virtualAI.current.generateFollowUp(
       interviewState.userResponse,
       currentQuestion.question,
       {
@@ -502,7 +502,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   const moveToNextQuestion = useCallback(() => {
     if (interviewState.currentQuestionIndex < questions.length - 1) {
       // Generate transition
-      const transition = virtualAI.current.generateTransition(;
+      const transition = virtualAI.current.generateTransition(
         interviewState.currentQuestionIndex,
         questions.length,
         {
@@ -612,7 +612,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
   }
 
   // AI Avatar Component
-  const AIAvatar = () => (;
+  const AIAvatar = () => (
     <div className="relative w-32 h-32 mx-auto mb-4">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-300 ${
         aiAvatarState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :

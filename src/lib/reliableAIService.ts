@@ -169,7 +169,7 @@ export class ReliableAIService {
     improvements: string[];
   }> {
     try {
-      const result = await this.smartAIService.analyzeResponse(;
+      const result = await this.smartAIService.analyzeResponse(
         question,
         userAnswer,
         expectedAnswer,

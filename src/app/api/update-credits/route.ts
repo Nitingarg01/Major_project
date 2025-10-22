@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // For now, we'll maintain unlimited access by always returning high credit count
-    const updatedUser = await db.collection('users').findOneAndUpdate(;
+    const updatedUser = await db.collection('users').findOneAndUpdate(
       { email: session.user.email },
       { 
         $set: { 

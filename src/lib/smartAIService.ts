@@ -230,7 +230,7 @@ export class SmartAIService {
 
       case 'dsa_generation':
         try {
-          const dsaProblems = await this.groqService.generateCompanySpecificDSAProblems(;
+          const dsaProblems = await this.groqService.generateCompanySpecificDSAProblems(
             request.context.companyName || 'Technology Company',
             request.context.difficulty as any || 'medium',
             request.context.count || 3,

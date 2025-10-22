@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const { db } = await connectToDatabase();
 
     // Update the interview with results
-    const updateResult = await db.collection('interviews').updateOne(;
+    const updateResult = await db.collection('interviews').updateOne(
       { _id: new ObjectId(interviewId) },
       {
         $set: {

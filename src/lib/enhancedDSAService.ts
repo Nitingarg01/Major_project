@@ -134,7 +134,7 @@ export class EnhancedDSAService {
     const userMessage = this.buildCompanySpecificPrompt(company, pattern, count, difficulty, experienceLevel);
 
     try {
-      const response = await this.emergentIntegration.makeRequest(;
+      const response = await this.emergentIntegration.makeRequest(
         [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
@@ -244,7 +244,7 @@ export class EnhancedDSAService {
     `;
 
     try {
-      const response = await this.emergentIntegration.makeRequest(;
+      const response = await this.emergentIntegration.makeRequest(
         [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
@@ -328,7 +328,7 @@ export class EnhancedDSAService {
     `;
 
     try {
-      const response = await this.emergentIntegration.makeRequest(;
+      const response = await this.emergentIntegration.makeRequest(
         [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }

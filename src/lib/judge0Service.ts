@@ -116,7 +116,7 @@ export class Judge0Service {
     };
 
     // Submit code for execution
-    const submitResponse = await axios.post(;
+    const submitResponse = await axios.post(
       `${this.baseUrl}/submissions?base64_encoded=true&wait=true`,
       submissionData,
       {
@@ -141,7 +141,7 @@ export class Judge0Service {
 
   // Get submission result
   private async getSubmissionResult(token: string): Promise<CodeExecutionResult> {
-    const response = await axios.get(;
+    const response = await axios.get(
       `${this.baseUrl}/submissions/${token}?base64_encoded=true`,
       {
         headers: {

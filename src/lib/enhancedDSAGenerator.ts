@@ -131,7 +131,7 @@ export class EnhancedDSAGenerator {
       const difficulty = difficulties[i] || 'medium';
       
       try {
-        const problem = await this.generateSingleUniqueCompanyProblem(;
+        const problem = await this.generateSingleUniqueCompanyProblem(
           companyName,
           companyContext,
           preferences,
@@ -149,7 +149,7 @@ export class EnhancedDSAGenerator {
         console.error(`❌ Error generating problem ${i + 1} for ${companyName}:`, error);
         
         // Fallback to a template-based unique problem
-        const fallbackProblem = this.generateFallbackCompanyProblem(;
+        const fallbackProblem = this.generateFallbackCompanyProblem(
           companyName,
           companyContext,
           difficulty,

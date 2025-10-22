@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     ];
 
     // Execute code with enhanced service
-    const executionResult = await judge0Service.executeCodeWithFallback(;
+    const executionResult = await judge0Service.executeCodeWithFallback(
       code,
       language,
       testCasesToUse

@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       }
     };
 
-    const problems = await enhancedDSAGenerator.generateUniqueCompanyDSAProblems(;
+    const problems = await enhancedDSAGenerator.generateUniqueCompanyDSAProblems(
       companyName,
       testPreferences as any,
       count,

@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     try {
       // Analyze response with company-specific criteria
-      const analysis = await aiService.analyzeInterviewResponse(;
+      const analysis = await aiService.analyzeInterviewResponse(
         question,
         userAnswer,
         expectedAnswer || 'Comprehensive answer expected',

@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const groqAIService = GroqAIService.getInstance();
     
     // Analyze the interview response
-    const analysis = await groqAIService.analyzeInterviewResponse(;
+    const analysis = await groqAIService.analyzeInterviewResponse(
       question,
       userAnswer,
       expectedAnswer,

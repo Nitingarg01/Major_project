@@ -154,7 +154,7 @@ export default function PerformanceSaver({
           return recs;
         }
 
-        const recommendations = getSmartRecommendations(;
+        const recommendations = getSmartRecommendations(
           interviewData.experienceLevel,
           interviewData.interviewType,
           overallScore

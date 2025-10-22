@@ -55,14 +55,14 @@ export class ConfidenceScoreService {
     responseScore?: number
   }): ConfidenceMetrics {
     // Calculate individual confidence components
-    const speechConfidence = this.calculateSpeechConfidence(;
+    const speechConfidence = this.calculateSpeechConfidence(
       params.userResponse || '',
       params.responseTime || 0
     )
 
     const bodyLanguageConfidence = params.bodyLanguageData?.confidence || 50;
 
-    const emotionalConfidence = this.calculateEmotionalConfidence(;
+    const emotionalConfidence = this.calculateEmotionalConfidence(
       params.emotionData
     )
 
@@ -71,7 +71,7 @@ export class ConfidenceScoreService {
       : 50
 
     // Calculate weighted overall confidence
-    const overallConfidence = Math.round(;
+    const overallConfidence = Math.round(
       (speechConfidence * 0.3) +
       (bodyLanguageConfidence * 0.25) +
       (emotionalConfidence * 0.2) +

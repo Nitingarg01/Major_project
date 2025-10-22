@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const companyIntelligence = EnhancedCompanyIntelligenceService.getInstance();
     
     // Get enhanced company intelligence with recent news and posts
-    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(;
+    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
       interview.companyName,
       interview.jobTitle
     );
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
       });
 
       // DSA Problems (30%) - Company-specific HARD difficulty
-      const dsaProblems = await freeLLMService.generateHardDSAProblems(;
+      const dsaProblems = await freeLLMService.generateHardDSAProblems(
         interview.companyName,
         'hard', // Force hard difficulty regardless of experience
         8,
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
       ];
     } else if (interview.interviewType === 'dsa') {
       console.log('💻 Generating DSA-focused HARD interview questions...');
-      const dsaProblems = await freeLLMService.generateHardDSAProblems(;
+      const dsaProblems = await freeLLMService.generateHardDSAProblems(
         interview.companyName,
         'hard', // Always hard for DSA
         10,

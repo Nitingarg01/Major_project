@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     const answerTexts = answers.map((answerObj: any) => answerObj?.answer || ''),
 
     // Perform fast comprehensive analysis
-    const overallAnalysis = await feedbackService.generateFastOverallAnalysis(;
+    const overallAnalysis = await feedbackService.generateFastOverallAnalysis(
       questions,
       answerTexts,
       interview.companyName,

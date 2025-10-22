@@ -171,7 +171,7 @@ const VirtualAIDemo: React.FC = () => {
   }
 
   // AI Avatar Component
-  const AIAvatar = () => (;
+  const AIAvatar = () => (
     <div className="relative w-40 h-40 mx-auto mb-6">
       <div className={`w-full h-full rounded-full border-4 transition-all duration-500 ${
         aiState === 'speaking' ? 'border-green-400 animate-pulse shadow-lg shadow-green-200' :

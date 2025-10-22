@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         })
 
         // Update questions with answers
-        const quesBank = await db.collection("questions").findOneAndUpdate(;
+        const quesBank = await db.collection("questions").findOneAndUpdate(
             { interviewId: id },
             {
                 $set: {
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Update interview status to completed
-        const intSet = await db.collection("interviews").findOneAndUpdate(;
+        const intSet = await db.collection("interviews").findOneAndUpdate(
             { _id: objid },
             {
                 $set: {

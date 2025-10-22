@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const companyIntelligence = EnhancedCompanyIntelligenceService.getInstance();
     
     // Get enhanced company intelligence with recent news and posts
-    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(;
+    const enhancedCompanyData = await companyIntelligence.getEnhancedCompanyIntelligence(
       interview.companyName,
       interview.jobTitle
     );
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       });
 
       // DSA Problems (30%) - Company-specific difficulty
-      const dsaProblems = await freeLLMService.generateDSAProblems(;
+      const dsaProblems = await freeLLMService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
         6,
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
       ];
     } else if (interview.interviewType === 'dsa') {
       console.log('💻 Generating DSA-focused interview questions with Groq...');
-      const dsaProblems = await freeLLMService.generateDSAProblems(;
+      const dsaProblems = await freeLLMService.generateDSAProblems(
         interview.companyName,
         getDSADifficulty(interview.experienceLevel),
         8,
@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Store or update questions
-    const result = await db.collection('questions').replaceOne(;
+    const result = await db.collection('questions').replaceOne(
       { interviewId: interviewId },
       questionDoc,
       { upsert: true }

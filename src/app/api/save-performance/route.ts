@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
 
     // Update interview status to completed and remove from active list
     console.log('🔄 Updating interview status to completed...');
-    const updateResult = await db.collection('interviews').updateOne(;
+    const updateResult = await db.collection('interviews').updateOne(
       { _id: interviewObjectId },
       { 
         $set: { 

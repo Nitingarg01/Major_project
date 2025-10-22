@@ -189,7 +189,7 @@ export default function ManualPerformanceSaver({
         return baseRecommendations.slice(0, 4) // Limit to 4 recommendations
       }
 
-      const recommendations = getRecommendations(;
+      const recommendations = getRecommendations(
         interviewData.experienceLevel, 
         interviewData.interviewType, 
         overallScore

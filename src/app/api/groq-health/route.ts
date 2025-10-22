@@ -234,7 +234,7 @@ export async function POST(req: NextRequest) {
       case 'dsa_generation':
         console.log(`🧮 Testing DSA problem generation for ${companyName}`);
         try {
-          const problems = await groqService.generateCompanySpecificDSAProblems(;
+          const problems = await groqService.generateCompanySpecificDSAProblems(
             companyName,
             'medium',
             1,
@@ -258,7 +258,7 @@ export async function POST(req: NextRequest) {
       case 'response_analysis':
         console.log(`📊 Testing response analysis for ${companyName}`);
         try {
-          const analysis = await groqService.analyzeInterviewResponse(;
+          const analysis = await groqService.analyzeInterviewResponse(
             'What is your experience with React?',
             'I have 3 years of experience building web applications with React, including hooks, context API, and component optimization.',
             'Should demonstrate practical React experience with specific examples',

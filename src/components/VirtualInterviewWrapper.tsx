@@ -98,7 +98,7 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
 
   const processInterviewResults = async (results: any) => {
     const analysisPromises = results.responses.map(async (response: any) => {
-      const analysis = await virtualAI.analyzeResponse(;
+      const analysis = await virtualAI.analyzeResponse(
         response.userAnswer,
         response.question,
         {

@@ -42,7 +42,7 @@ export class PreferenceBasedQuestionGenerator {
 
     try {
       // Get question distribution based on user preferences
-      const questionDistribution = userPreferencesService.getQuestionDistribution(;
+      const questionDistribution = userPreferencesService.getQuestionDistribution(
         request.userPreferences,
         request.numberOfQuestions,
         request.interviewType
@@ -57,7 +57,7 @@ export class PreferenceBasedQuestionGenerator {
       // Generate Technical Questions
       if (questionDistribution.technical > 0) {
         console.log(`💻 Generating ${questionDistribution.technical} technical questions with preferences...`);
-        const techQuestions = await this.generateTechnicalQuestionsWithPreferences(;
+        const techQuestions = await this.generateTechnicalQuestionsWithPreferences(
           request,
           questionDistribution.technical
         );
@@ -68,7 +68,7 @@ export class PreferenceBasedQuestionGenerator {
       // Generate Behavioral Questions  
       if (questionDistribution.behavioral > 0) {
         console.log(`🤝 Generating ${questionDistribution.behavioral} behavioral questions with preferences...`);
-        const behavioralQuestions = await this.generateBehavioralQuestionsWithPreferences(;
+        const behavioralQuestions = await this.generateBehavioralQuestionsWithPreferences(
           request,
           questionDistribution.behavioral
         );
@@ -79,7 +79,7 @@ export class PreferenceBasedQuestionGenerator {
       // Generate Company-Unique DSA Questions - The Special Feature!
       if (questionDistribution.dsa > 0) {
         console.log(`⚡ Generating ${questionDistribution.dsa} UNIQUE company-specific DSA problems...`);
-        const dsaQuestions = await this.generateCompanyUniqueDSAQuestions(;
+        const dsaQuestions = await this.generateCompanyUniqueDSAQuestions(
           request,
           questionDistribution.dsa
         );
@@ -91,7 +91,7 @@ export class PreferenceBasedQuestionGenerator {
       // Generate System Design Questions
       if (questionDistribution.system_design > 0) {
         console.log(`🏗️ Generating ${questionDistribution.system_design} system design questions...`);
-        const systemQuestions = await this.generateSystemDesignQuestionsWithPreferences(;
+        const systemQuestions = await this.generateSystemDesignQuestionsWithPreferences(
           request,
           questionDistribution.system_design
         );
@@ -102,7 +102,7 @@ export class PreferenceBasedQuestionGenerator {
       // Generate Aptitude Questions
       if (questionDistribution.aptitude > 0) {
         console.log(`🧠 Generating ${questionDistribution.aptitude} aptitude questions...`);
-        const aptitudeQuestions = await this.generateAptitudeQuestionsWithPreferences(;
+        const aptitudeQuestions = await this.generateAptitudeQuestionsWithPreferences(
           request,
           questionDistribution.aptitude
         );
@@ -327,14 +327,14 @@ Return ONLY valid JSON array:
     console.log(`🔥 Creating UNIQUE DSA problems specifically for ${companyName}...`);
 
     // Get difficulty progression based on user preferences
-    const difficulties = userPreferencesService.getDSADifficultyProgression(;
+    const difficulties = userPreferencesService.getDSADifficultyProgression(
       userPreferences,
       count,
       experienceLevel
     );
 
     // Generate unique company-specific DSA problems
-    const uniqueDSAProblems = await enhancedDSAGenerator.generateUniqueCompanyDSAProblems(;
+    const uniqueDSAProblems = await enhancedDSAGenerator.generateUniqueCompanyDSAProblems(
       companyName,
       userPreferences,
       count,

@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       const userAnswer = answerObj?.answer || '';
 
       try {
-        const analysis = await freeLLMService.analyzeInterviewResponse(;
+        const analysis = await freeLLMService.analyzeInterviewResponse(
           question.question,
           userAnswer,
           question.expectedAnswer,

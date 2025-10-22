@@ -114,7 +114,7 @@ const ImprovedRoundSwitcher: React.FC<ImprovedRoundSwitcherProps> = ({
 
     // Show warning if trying to access submitted round
     if (submittedRounds.has(roundIndex) && showSubmissionWarning) {
-      const confirmed = window.confirm(;
+      const confirmed = window.confirm(
         `You have already submitted this round. You cannot make changes once submitted. Continue to view only?`
       )
       if (!confirmed) return

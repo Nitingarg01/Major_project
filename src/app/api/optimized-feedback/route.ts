@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       // Generate individual question feedback
       const individualFeedback = [];
       for (let i = 0; i < Math.min(questions.length, answers.length, 5); i++) {
-        const questionFeedback = await feedbackService.generateQuickFeedback(;
+        const questionFeedback = await feedbackService.generateQuickFeedback(
           questions[i].question,
           answers[i]?.answer || '',
           questions[i].category,
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate simple performance metrics
-    const metrics = feedbackService.calculatePerformanceMetrics(;
+    const metrics = feedbackService.calculatePerformanceMetrics(
       questions,
       answers.map((a: any) => a?.answer || ''),
       0 // timeSpent not available here

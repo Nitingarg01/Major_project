@@ -146,7 +146,7 @@ export class ElevenLabsService {
       const voiceSettings = profile.settings;
 
       // Call ElevenLabs API
-      const response = await fetch(;
+      const response = await fetch(
         `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
         {
           method: 'POST',

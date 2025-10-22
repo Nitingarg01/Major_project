@@ -119,7 +119,7 @@ const generateInsightsDirectly = async (interviewId: string) => {
         console.log(`🧠 Analyzing ${questions.length} questions with Groq AI...`);
         
         // Generate comprehensive analysis with Groq
-        const insights = await groqService.analyzeOverallPerformance(;
+        const insights = await groqService.analyzeOverallPerformance(
             questions,
             answers,
             jobTitle,

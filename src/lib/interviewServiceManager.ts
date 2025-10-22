@@ -111,7 +111,7 @@ export class InterviewServiceManager {
         hidden: tc.hidden || false
       }));
       
-      const result = await this.codeExecutionService.executeCodeWithFallback(;
+      const result = await this.codeExecutionService.executeCodeWithFallback(
         code,
         language,
         formattedTestCases
@@ -138,7 +138,7 @@ export class InterviewServiceManager {
     try {
       console.log(`⚡ Generating fast feedback for ${companyName} interview...`);
       
-      const analysis = await this.feedbackService.generateFastOverallAnalysis(;
+      const analysis = await this.feedbackService.generateFastOverallAnalysis(
         questions,
         answers,
         companyName,
@@ -172,7 +172,7 @@ export class InterviewServiceManager {
         console.log('💻 Generating DSA-only interview with exactly 2 problems...');
         
         // Use enhanced DSA service for DSA questions - force exactly 2 questions
-        const dsaProblems = await this.generateDSAProblems(;
+        const dsaProblems = await this.generateDSAProblems(
           params.companyName,
           2, // FIXED: Always generate exactly 2 DSA problems
           params.experienceLevel
