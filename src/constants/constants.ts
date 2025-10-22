@@ -1,6 +1,6 @@
 type InfoType = "info" | "warning" | "alert";
 
-export const modelUsed = 'gemini-2.5-flash-lite'
+export const modelUsed = 'gemini-2.5-flash-lite';
 
 export const instructions:{message:string,type:InfoType}[] = [
     {
