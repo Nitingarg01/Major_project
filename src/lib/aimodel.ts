@@ -3,12 +3,12 @@ import { extractJSON } from './jsonExtractor';
 
 // Types for interview questions and analysis
 export interface InterviewQuestion {
-  id: string
-  question: string
-  expectedAnswer: string
-  difficulty: 'easy' | 'medium' | 'hard'
-  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design'
-  points: number
+  id: string;
+  question: string;
+  expectedAnswer: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  category: 'technical' | 'behavioral' | 'aptitude' | 'dsa' | 'system_design';
+  points: number;
 }
 
 export interface InterviewAnalysis {
