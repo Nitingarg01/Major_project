@@ -6,10 +6,10 @@ import GroqAIService from '@/lib/groqAIService';
 // Enhanced fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
-  const meaningfulAnswers = answers.filter(answer =>;
+  const meaningfulAnswers = answers.filter(answer =>
     answer && 
     answer.trim().length > 10 && 
-    answer !== 'No answer provided' &&;
+    answer !== 'No answer provided' &&
     !answer.toLowerCase().includes('no answer')
   );
   const answeredQuestions = meaningfulAnswers.length;
