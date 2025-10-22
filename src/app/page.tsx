@@ -331,7 +331,6 @@ export default function HomePage() {
             Ready to Ace Your Next Interview?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of professionals who've successfully prepared with RecruiterAI
             Join thousands of professionals who've successfully prepared with Interview AI
           </p>
           
