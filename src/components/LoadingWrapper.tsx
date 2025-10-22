@@ -12,7 +12,7 @@ const LoadingWrapper: React.FC<LoadingWrapperProps> = ({
   children, 
   isLoading, 
   loadingMessage = "Loading your dashboard...",
-  loadingSubMessage = "Please wait while we fetch your data";
+  loadingSubMessage = "Please wait while we fetch your data"
 }) => {
   if (isLoading) {
     return (
