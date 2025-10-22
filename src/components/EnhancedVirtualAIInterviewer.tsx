@@ -26,6 +26,7 @@ import {
 import { toast } from 'sonner'
 import AdvancedCameraFeed from './AdvancedCameraFeed'
 import { EnhancedVirtualInterviewerAI } from '@/lib/enhancedVirtualInterviewerAI'
+import EmotionDetectionService, { type EmotionData } from '@/lib/emotionDetectionService'
 
 interface EnhancedVirtualAIInterviewerProps {
   questions: any[]
