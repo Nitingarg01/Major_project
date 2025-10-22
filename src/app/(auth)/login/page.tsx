@@ -23,10 +23,10 @@ export default function LoginPage() {
 
     try {
       const result = await signIn('credentials', {
-        email: formData.email;
-        password: formData.password;
-        redirect: false;
-      })
+        email: formData.email,
+        password: formData.password,
+        redirect: false
+      });
 
       if (result?.error) {
         toast.error('Invalid credentials. Please try again.');
