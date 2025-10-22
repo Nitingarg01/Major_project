@@ -7,12 +7,12 @@ import { Camera, CameraOff, AlertTriangle, Shield, Eye, EyeOff, Activity } from 
 import * as faceapi from 'face-api.js';
 
 interface AdvancedCameraFeedProps {
-  isRecording: boolean,
+  isRecording: boolean;
   onRecordingChange: (recording: boolean) => void;
   onAnomalyDetected?: (anomaly: string) => void;
   enableFaceDetection?: boolean;
   enableMisbehaviorDetection?: boolean;
-  className?: string
+  className?: string;
 }
 
 const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
@@ -21,7 +21,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
   onAnomalyDetected,
   enableFaceDetection = false,
   enableMisbehaviorDetection = false,
-  className = ","
+  className = ""
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
