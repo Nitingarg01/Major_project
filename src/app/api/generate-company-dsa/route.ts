@@ -115,9 +115,9 @@ export async function POST(req: NextRequest) {
           aiProvider: 'enhanced-groq',
           companySpecific: true,
           jobTitle,
-          estimatedTime: problem.difficulty === 'easy' ? '15-20 min' :;
+          estimatedTime: problem.difficulty === 'easy' ? '15-20 min' :
                        problem.difficulty === 'hard' ? '35-45 min' : '25-30 min',
-          difficultyScore: problem.difficulty === 'easy' ? 3 :;
+          difficultyScore: problem.difficulty === 'easy' ? 3 :
                           problem.difficulty === 'hard' ? 8 : 5,
           tags: [...(problem.topics || []), companyName, jobTitle, 'company-specific']
         },
