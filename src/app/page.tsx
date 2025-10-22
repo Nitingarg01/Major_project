@@ -45,7 +45,6 @@ const testimonials = [
   {
     name: 'Sarah Chen',
     role: 'Software Engineer at Google',
-    content: 'RecruiterAI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
     content: 'Interview AI helped me prepare for my Google interview. The company-specific questions were incredibly accurate!',
     rating: 5
   },
