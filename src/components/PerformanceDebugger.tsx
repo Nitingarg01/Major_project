@@ -39,7 +39,7 @@ export default function PerformanceDebugger({ interviewId }: PerformanceDebugger
       
       if (result.success) {
         toast.success(`Fixed ${result.fixedInterviews} interviews and converted ${result.convertedUserIds} userId formats`);
-        checkInterviewStatus() // Refresh debug info;
+        checkInterviewStatus() // Refresh debug info
       } else {
         toast.error(`Fix failed: ${result.error}`);
       }
@@ -56,7 +56,7 @@ export default function PerformanceDebugger({ interviewId }: PerformanceDebugger
   }, [interviewId])
 
   if (process.env.NODE_ENV === 'production') {
-    return null // Don't show in production;
+    return null // Don't show in production
   }
 
   return (

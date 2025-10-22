@@ -342,7 +342,7 @@ export function searchCompanyAndRole(query: string): { suggestions: string[]; co
   const lowerQuery = query.toLowerCase().trim();
   
   // Filter suggestions based on query
-  const suggestions = COMPANY_SUGGESTIONS.filter(suggestion =>;
+  const suggestions = COMPANY_SUGGESTIONS.filter(suggestion =>
     suggestion.toLowerCase().includes(lowerQuery);
   ).slice(0, 10); // Limit to 10 suggestions
 
@@ -374,7 +374,7 @@ export function parseJobQuery(query: string): { company: string; jobTitle: strin
     'ios developer', 'android developer', 'machine learning engineer', 'data engineer'
   ];
   
-  let jobTitle = 'Software Engineer'; // default;
+  let jobTitle = 'Software Engineer'; // default
   let company = '';
   
   // Find job title
@@ -654,7 +654,7 @@ export class CompanyIntelligenceService {
         break;
     }
 
-    return questions.slice(0, 5); // Return top 5 questions;
+    return questions.slice(0, 5); // Return top 5 questions
   }
 
   private generateTechnicalQuestions(

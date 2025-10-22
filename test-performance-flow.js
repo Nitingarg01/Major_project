@@ -1,13 +1,13 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
 async function testCompletePerformanceFlow() {
-    const client = new MongoClient('mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0');
+    const client = new MongoClient('mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0')
     
     try {
         await client.connect();
         console.log('✅ Connected to MongoDB for complete performance flow test');
         
-        const db = client.db('Cluster0'); // Make sure we use the right database;
+        const db = client.db('Cluster0'); // Make sure we use the right database
         
         // Create or find test user
         const testUserEmail = 'performance.test@example.com';
@@ -127,7 +127,7 @@ async function testCompletePerformanceFlow() {
         
         // Step 2: Create performance analysis data (this would be created by complete-interview API)
         const performanceAnalyses = [];
-        for (let i = 0; i < 4; i++) { // Only for completed interviews;
+        for (let i = 0; i < 4; i++) { // Only for completed interviews
             const questionsDoc = await db.collection('questions').findOne({ interviewId: interviewData[i]._id.toString() });
             
             const analysis = {

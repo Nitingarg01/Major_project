@@ -34,7 +34,7 @@ const ClientNavbar = () => {
   
   // Show minimal navbar during any loading state on dashboard or protected routes
   const shouldShowMinimal = isLoading && (
-    pathname === '/dashboard' ||;
+    pathname === '/dashboard' ||
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/interview') ||
     pathname.startsWith('/create') ||

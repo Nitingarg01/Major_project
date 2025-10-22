@@ -591,7 +591,7 @@ Return ONLY valid JSON:
       'microsoft': 'Focus on enterprise-scale problems, integration challenges, productivity optimization, and collaborative algorithms.'
     };
 
-    return guidance[companyName.toLowerCase()] ||;
+    return guidance[companyName.toLowerCase()] ||
            `Focus on problems relevant to ${profile.industry} industry, especially: ${profile.commonChallenges.slice(0, 2).join(' and ')}.`;
   }
 

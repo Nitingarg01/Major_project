@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 
 export async function getLogo(name: string) {
-  const apiUrl = `https://api.api-ninjas.com/v1/logo?name=${name}`;
+  const apiUrl = `https://api.api-ninjas.com/v1/logo?name=${name}`
   try {
     const response = await axios.get(apiUrl, {
       headers: {

@@ -39,7 +39,7 @@ const FreeLLMDashboard: React.FC<LLMDashboardProps> = ({ className = "" }) => {
 
   useEffect(() => {
     fetchProviderStatus();
-    const interval = setInterval(fetchProviderStatus, 30000); // Update every 30 seconds;
+    const interval = setInterval(fetchProviderStatus, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
   }, []);
 

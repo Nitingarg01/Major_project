@@ -68,7 +68,7 @@ const AdvancedCameraMonitoring = ({
 
   const addActivityAlert = useCallback((alert: ActivityAlert) => {
     setActivityAlerts(prev => {
-      const newAlerts = [...prev.slice(-9), alert]; // Keep last 10 alerts;
+      const newAlerts = [...prev.slice(-9), alert]; // Keep last 10 alerts
       return newAlerts;
     });
     

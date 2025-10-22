@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
         categoryPerformance[q.category] = { total: 0, count: 0, average: 0 };
       }
       // Use overall score estimation for each category
-      const estimatedScore = averageScore + (Math.random() - 0.5); // Add some variation;
+      const estimatedScore = averageScore + (Math.random() - 0.5); // Add some variation
       categoryPerformance[q.category].total += Math.max(0, Math.min(10, estimatedScore));
       categoryPerformance[q.category].count += 1;
     });

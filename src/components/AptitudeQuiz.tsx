@@ -31,7 +31,7 @@ const AptitudeQuiz: React.FC<AptitudeQuizProps> = ({
   timeLimit = 30;
 }) => {
   // Validate and filter questions to ensure they have required properties
-  const validQuestions = questions.filter(q =>;
+  const validQuestions = questions.filter(q =>
     q && q.type && q.difficulty && q.question && q.options
   )
   const [currentQuestion, setCurrentQuestion] = useState(0);

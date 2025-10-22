@@ -85,7 +85,7 @@ export class PreferenceBasedQuestionGenerator {
         );
         allQuestions.push(...dsaQuestions);
         uniqueDSACount = dsaQuestions.length;
-        totalPreferenceAlignment += dsaQuestions.length; // DSA questions always align with preferences;
+        totalPreferenceAlignment += dsaQuestions.length; // DSA questions always align with preferences
       }
 
       // Generate System Design Questions

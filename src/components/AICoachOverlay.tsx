@@ -25,7 +25,7 @@ const AICoachOverlay: React.FC<AICoachOverlayProps> = ({
 
   useEffect(() => {
     if (isEnabled) {
-      setVisibleHints(currentHints.slice(-3)) // Show last 3 hints;
+      setVisibleHints(currentHints.slice(-3)) // Show last 3 hints
     }
   }, [currentHints, isEnabled])
 

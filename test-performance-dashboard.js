@@ -1,7 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
 async function testPerformanceDashboard() {
-    const client = new MongoClient('mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0');
+    const client = new MongoClient('mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0')
     
     try {
         await client.connect();
@@ -34,7 +34,7 @@ async function testPerformanceDashboard() {
         
         // Step 2: Create test performance analyses
         const performanceAnalyses = [];
-        for (let i = 0; i < 3; i++) { // Only for completed interviews;
+        for (let i = 0; i < 3; i++) { // Only for completed interviews
             const analysis = {
                 _id: new ObjectId(),
                 userId: testUserId,

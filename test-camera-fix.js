@@ -56,11 +56,11 @@ const simulateVideoPlayScenarios = () => {
 const testCleanupImprovements = () => {
   console.log('\n\n🧹 TESTING CLEANUP IMPROVEMENTS:');
   console.log('\n1. Previous Approach (AbortError prone):');
-  console.log('   videoRef.current.srcObject = null; // ❌ Could cause AbortError');
+  console.log('   videoRef.current.srcObject = null; // ❌ Could cause AbortError')
   
   console.log('\n2. New Improved Approach:');
-  console.log('   videoRef.current.pause();         // ✅ Stop playback first');
-  console.log('   videoRef.current.srcObject = null; // ✅ Then remove source');
+  console.log('   videoRef.current.pause();         // ✅ Stop playback first')
+  console.log('   videoRef.current.srcObject = null; // ✅ Then remove source')
   console.log('   → This prevents AbortError during cleanup');
 };
 

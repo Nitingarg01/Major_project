@@ -136,7 +136,7 @@ public class Solution {
     
     public static void main(String[] args) {
         // Test your solution
-        // System.out.println(solution(${problem.examples[0]?.input || 'new int[]{1,2,3}'}));
+        // System.out.println(solution(${problem.examples[0]?.input || 'new int[]{1,2,3}'}))
     }
 }`,
     
@@ -161,7 +161,7 @@ ${getCppReturnType(problem)} solution(${getCppParams(problem)}) {
 
 int main() {
     // Test your solution
-    // cout << solution(${problem.examples[0]?.input || '{1,2,3}'}) << endl;
+    // cout << solution(${problem.examples[0]?.input || '{1,2,3}'}) << endl
     return 0;
 }`
   }
@@ -176,14 +176,14 @@ int main() {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          handleSubmit() // Auto-submit when time is up;
+          handleSubmit() // Auto-submit when time is up
           return 0;
         }
         
         // Time warnings
-        if (prev === 300) { // 5 minutes left;
+        if (prev === 300) { // 5 minutes left
           toast.warning(`⏰ 5 minutes remaining!`);
-        } else if (prev === 60) { // 1 minute left;
+        } else if (prev === 60) { // 1 minute left
           toast.error(`⏰ 1 minute remaining!`);
         }
         
@@ -333,7 +333,7 @@ int main() {
     score += lengthScore;
     
     // Comments (20% weight)
-    const commentLines = code.split('\n').filter(line =>;
+    const commentLines = code.split('\n').filter(line =>
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||

@@ -4,7 +4,7 @@ const fs = require('fs');
 
 async function createTestUser() {
   // Use the URI directly
-  const uri = "mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0";
+  const uri = "mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
   console.log('Using URI:', uri);
 
   try {

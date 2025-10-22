@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0'
 const BACKUP_DIR = './migration-backup';
 
 // Colors for console output
@@ -120,7 +120,7 @@ async function testOptimizedService() {
     logInfo('Testing Optimized AI service...');
     
     // Test health endpoint
-    const healthResponse = await fetch('http://localhost:3000/api/optimized-health');
+    const healthResponse = await fetch('http://localhost:3000/api/optimized-health')
     if (!healthResponse.ok) {
       throw new Error('Health check failed - is the Next.js server running?');
     }
@@ -331,7 +331,7 @@ async function main() {
       logError('Optimized AI service is not ready. Please:');
       log('1. Make sure your Next.js server is running (npm run dev)');
       log('2. Check that EMERGENT_LLM_KEY is set in your .env file');
-      log('3. Verify API keys are working with: curl http://localhost:3000/api/optimized-health');
+      log('3. Verify API keys are working with: curl http://localhost:3000/api/optimized-health')
       process.exit(1);
     }
     

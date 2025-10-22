@@ -128,7 +128,7 @@ function calculateConversationNaturalness(conversationHistory: any[]): number {
   if (!conversationHistory || conversationHistory.length === 0) return 0;
   
   // Simple metric based on conversation flow
-  let naturalness = 5 // Base score;
+  let naturalness = 5 // Base score
   
   // Check for back-and-forth conversation
   let alternatingCount = 0;
@@ -139,7 +139,7 @@ function calculateConversationNaturalness(conversationHistory: any[]): number {
   }
   
   const alternatingRatio = alternatingCount / (conversationHistory.length - 1);
-  naturalness += alternatingRatio * 3 // Up to 3 bonus points;
+  naturalness += alternatingRatio * 3 // Up to 3 bonus points
   
   return Math.min(naturalness, 10);
 }
@@ -168,5 +168,5 @@ function calculateFollowUpQuality(responses: any[]): number {
   const responsesWithFollowUp = responses.filter(r => r.aiFollowUp);
   const followUpRatio = responsesWithFollowUp.length / responses.length;
   
-  return followUpRatio * 10 // 0-10 scale based on follow-up frequency;
+  return followUpRatio * 10 // 0-10 scale based on follow-up frequency
 }

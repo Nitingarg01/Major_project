@@ -135,7 +135,7 @@ export default function DashboardPage() {
         toast.error('Request timeout. Please try again.');
       } else if (error?.message?.includes('401')) {
         console.error('Authentication error - redirecting to login');
-        setHasInitialized(false) // Reset initialization flag;
+        setHasInitialized(false) // Reset initialization flag
         router.push('/login');
         return
       } else {

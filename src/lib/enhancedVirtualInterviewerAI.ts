@@ -476,9 +476,9 @@ export class EnhancedVirtualInterviewerAI {
     
     // Optimal sentence length is 15-25 words
     let score = 7;
-    if (avgLength < 10) score -= 2 // Too short;
-    if (avgLength > 30) score -= 2 // Too long;
-    if (avgLength >= 15 && avgLength <= 25) score += 2 // Perfect;
+    if (avgLength < 10) score -= 2 // Too short
+    if (avgLength > 30) score -= 2 // Too long
+    if (avgLength >= 15 && avgLength <= 25) score += 2 // Perfect
     
     return Math.max(1, Math.min(10, score));
   }

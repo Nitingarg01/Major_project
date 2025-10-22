@@ -232,7 +232,7 @@ const solution = new Solution();
     this.aiService = EnhancedGroqAIService.getInstance();
     this.judge0ApiKey = process.env.JUDGE0_API_KEY || process.env.NEXT_PUBLIC_JUDGE0_API_KEY || '';
     this.judge0Host = process.env.JUDGE0_API_HOST || 'judge0-ce.p.rapidapi.com';
-    this.judge0BaseUrl = `https://${this.judge0Host}`;
+    this.judge0BaseUrl = `https://${this.judge0Host}`
     
     if (!this.judge0ApiKey) {
       console.warn('⚠️ Judge0 API key not found - compiler will use mock results');
@@ -304,7 +304,7 @@ const solution = new Solution();
         testResults.push(result);
         if (!result.passed) allPassed = false;
         totalExecutionTime += result.executionTime;
-        maxMemory = Math.max(maxMemory, 0); // Judge0 doesn't always provide memory info;
+        maxMemory = Math.max(maxMemory, 0); // Judge0 doesn't always provide memory info
       }
 
       const avgExecutionTime = totalExecutionTime / testResults.length;
@@ -388,7 +388,7 @@ const solution = new Solution();
       const actualOutput = (result.stdout || '').trim();
       const expectedOutput = testCase.expectedOutput.trim();
       const passed = actualOutput === expectedOutput;
-      const executionTime = parseFloat(result.time || '0') * 1000; // Convert to ms;
+      const executionTime = parseFloat(result.time || '0') * 1000; // Convert to ms
 
       return {
         testCase: testCase,
@@ -479,7 +479,7 @@ const solution = new Solution();
   // Get template for a specific language
   public getLanguageTemplate(languageName: string): string {
     const language = this.languages.find(lang => lang.name === languageName);
-    return language?.template || '// Code template not found';
+    return language?.template || '// Code template not found'
   }
 
   // Health check for compiler service

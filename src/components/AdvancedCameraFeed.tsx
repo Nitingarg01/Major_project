@@ -215,7 +215,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       return await performFallbackDetection(video);
     } catch (error) {
       console.warn('Face detection failed:', error);
-      return true; // Assume face present if detection fails;
+      return true; // Assume face present if detection fails
     }
   };
 
@@ -237,7 +237,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
 
         // Continue detection loop
         if (detectionActive) {
-          setTimeout(detectFaces, 500); // Check every 500ms;
+          setTimeout(detectFaces, 500); // Check every 500ms
         }
       } catch (error) {
         console.error('Face detection error:', error);
@@ -284,7 +284,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       return avgBrightness > 30 && nonZeroPixels > (canvas.width * canvas.height * 0.1);
     } catch (error) {
       console.error('Fallback detection failed:', error);
-      return true; // Assume face present if detection fails;
+      return true; // Assume face present if detection fails
     }
   };
 

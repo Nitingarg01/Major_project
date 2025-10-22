@@ -31,7 +31,7 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
     roundId,
     onRoundComplete 
 }) => {
-    const TOTAL_TIME = 30 * 60 // 30 minutes in seconds;
+    const TOTAL_TIME = 30 * 60 // 30 minutes in seconds
     
     const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,7 +66,7 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
 
             // Traditional single round interview with timeout protection
             const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout;
+                setTimeout(() => reject(new Error('Request timeout')), 30000) // 30 second timeout
             })
 
             const submitPromise = setAnswers(data.submitted, id);
@@ -163,12 +163,12 @@ const InterviewClientForm: React.FC<InterviewClientFormProps> = ({
     }
 
     const getTimeColor = () => {
-        if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes;
-        if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes;
+        if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes
+        if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes
         return 'text-green-600 bg-green-50 border-green-200';
     }
 
-    const canSubmit = completedQuestions.size >= Math.ceil(questions.length * 0.7) // At least 70% answered;
+    const canSubmit = completedQuestions.size >= Math.ceil(questions.length * 0.7) // At least 70% answered
 
     return (
         <div className="w-full max-w-4xl mx-auto">

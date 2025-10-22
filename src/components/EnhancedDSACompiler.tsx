@@ -142,7 +142,7 @@ public class Solution {
     
     public static void main(String[] args) {
         // Example usage:
-        // System.out.println(solution(${problem.examples[0]?.input || 'new int[]{1,2,3}'}));
+        // System.out.println(solution(${problem.examples[0]?.input || 'new int[]{1,2,3}'}))
     }
 }`,
     
@@ -173,7 +173,7 @@ ${getCppReturnType(problem)} solution(${getCppParams(problem)}) {
 
 int main() {
     // Example usage:
-    // cout << solution(${problem.examples[0]?.input || '{1,2,3}'}) << endl;
+    // cout << solution(${problem.examples[0]?.input || '{1,2,3}'}) << endl
     return 0;
 }`
   }
@@ -189,14 +189,14 @@ int main() {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          handleSubmit() // Auto-submit when time is up;
+          handleSubmit() // Auto-submit when time is up
           return 0;
         }
         
         // Company-specific time warnings
-        if (prev === 300) { // 5 minutes left;
+        if (prev === 300) { // 5 minutes left
           toast.warning(`⏰ 5 minutes remaining! ${companyName} interviews are time-critical.`);
-        } else if (prev === 60) { // 1 minute left;
+        } else if (prev === 60) { // 1 minute left
           toast.error(`⏰ 1 minute remaining! Time to finalize your solution.`);
         }
         
@@ -234,8 +234,8 @@ int main() {
   }
 
   const getTimeColor = () => {
-    if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes;
-    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes;
+    if (timeLeft <= 300) return 'text-red-600 bg-red-50 border-red-200' // Last 5 minutes
+    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50 border-yellow-200' // Last 10 minutes
     return 'text-green-600 bg-green-50 border-green-200';
   }
 
@@ -334,12 +334,12 @@ int main() {
     
     // Code length (20% weight) - prefer concise but readable code
     const lines = code.split('\n').filter(line => line.trim()).length;
-    const optimalLines = 50 // Assume 50 lines is optimal;
+    const optimalLines = 50 // Assume 50 lines is optimal
     const lengthScore = Math.max(0, 20 - Math.abs(lines - optimalLines) * 0.4);
     score += lengthScore;
     
     // Comments and documentation (20% weight)
-    const commentLines = code.split('\n').filter(line =>;
+    const commentLines = code.split('\n').filter(line =>
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||

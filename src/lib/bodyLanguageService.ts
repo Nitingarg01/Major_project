@@ -97,7 +97,7 @@ export class BodyLanguageService {
    */
   private analyzeEyeContact(faceData: any): number {
     if (!faceData || !faceData.landmarks) {
-      return 50 // Default neutral score;
+      return 50 // Default neutral score
     }
 
     // Check face orientation
@@ -108,7 +108,7 @@ export class BodyLanguageService {
     let eyeContactScore = 50;
     
     if (faceCentered) eyeContactScore += 30;
-    if (faceSize > 0.2) eyeContactScore += 20 // Face is close enough;
+    if (faceSize > 0.2) eyeContactScore += 20 // Face is close enough
     
     return Math.min(100, eyeContactScore);
   }
@@ -257,17 +257,17 @@ export class BodyLanguageService {
 
     // Calculate averages
     const postureScores = { excellent: 10, good: 7.5, fair: 5, poor: 2.5 }
-    const avgPosture = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgPosture = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + postureScores[data.posture], 0) / this.bodyLanguageHistory.length
 
-    const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + data.eyeContact, 0) / this.bodyLanguageHistory.length
 
     const fidgetingScores = { low: 2, moderate: 5, high: 8 }
-    const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + fidgetingScores[data.fidgeting], 0) / this.bodyLanguageHistory.length
 
-    const avgConfidence = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgConfidence = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + data.confidence, 0) / this.bodyLanguageHistory.length
 
     // Generate recommendations
@@ -331,7 +331,7 @@ export class BodyLanguageService {
   private getFaceSize(faceData: any): number {
     if (!faceData?.detection?.box) return 0
     const box = faceData.detection.box;
-    return (box.width * box.height) / (640 * 480) // Normalized;
+    return (box.width * box.height) / (640 * 480) // Normalized
   }
 
   private getDefaultBodyLanguage(): BodyLanguageData {

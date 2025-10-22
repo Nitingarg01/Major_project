@@ -349,7 +349,7 @@ export class MultiRoundInterviewManager {
       remainingTime += this.currentSession.rounds[i].duration;
     }
 
-    return remainingTime * 60 // Convert to seconds;
+    return remainingTime * 60 // Convert to seconds
   }
 }
 

@@ -33,7 +33,7 @@ export interface ConfidenceHistory {
 export class ConfidenceScoreService {
   private static instance: ConfidenceScoreService
   private confidenceHistory: ConfidenceHistory[] = []
-  private readonly HISTORY_WINDOW = 50 // Keep last 50 data points;
+  private readonly HISTORY_WINDOW = 50 // Keep last 50 data points
 
   private constructor() {}
 
@@ -109,35 +109,35 @@ export class ConfidenceScoreService {
   private calculateSpeechConfidence(response: string, responseTime: number): number {
     if (!response || response.trim().length === 0) return 0;
 
-    let score = 50 // Base score;
+    let score = 50 // Base score
 
     // Word count analysis
     const wordCount = response.split(/\s+/).length;
     if (wordCount >= 30 && wordCount <= 150) {
-      score += 15 // Good length;
+      score += 15 // Good length
     } else if (wordCount < 10) {
-      score -= 20 // Too short;
+      score -= 20 // Too short
     } else if (wordCount > 200) {
-      score -= 10 // Too long;
+      score -= 10 // Too long
     }
 
     // Response time analysis (assuming normal speaking pace)
     const wordsPerSecond = responseTime > 0 ? wordCount / responseTime : 0;
     if (wordsPerSecond >= 1.5 && wordsPerSecond <= 2.5) {
-      score += 10 // Good pace;
+      score += 10 // Good pace
     } else if (wordsPerSecond < 1) {
-      score -= 5 // Too slow (hesitant);
+      score -= 5 // Too slow (hesitant)
     } else if (wordsPerSecond > 3) {
-      score -= 5 // Too fast (nervous);
+      score -= 5 // Too fast (nervous)
     }
 
     // Filler word analysis
     const fillerCount = this.countFillerWords(response);
     const fillerRatio = fillerCount / Math.max(wordCount, 1);
     if (fillerRatio < 0.05) {
-      score += 10 // Very few fillers;
+      score += 10 // Very few fillers
     } else if (fillerRatio > 0.15) {
-      score -= 15 // Too many fillers;
+      score -= 15 // Too many fillers
     }
 
     // Confidence keywords

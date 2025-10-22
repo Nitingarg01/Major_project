@@ -253,7 +253,7 @@ const SuperEnhancedInterviewWrapper = ({
     }
 
     // Start auto-save
-    const interval = setInterval(autoSaveProgress, 30000) // Auto-save every 30 seconds;
+    const interval = setInterval(autoSaveProgress, 30000) // Auto-save every 30 seconds
     setAutoSaveInterval(interval);
   }
 
@@ -275,7 +275,7 @@ const SuperEnhancedInterviewWrapper = ({
     // Auto-pause for high severity alerts
     if (activity.severity === 'high' && activity.type !== 'looking_away') {
       setIsPaused(true);
-      setTimeout(() => setIsPaused(false), 5000) // Resume after 5 seconds;
+      setTimeout(() => setIsPaused(false), 5000) // Resume after 5 seconds
     }
   }, [])
 
@@ -367,7 +367,7 @@ const SuperEnhancedInterviewWrapper = ({
       // Move to next round if available
       if (updatedSession.currentRound < updatedSession.rounds.length) {
         setCurrentRound(updatedSession.currentRound);
-        setActivityAlerts([]) // Clear alerts for new round;
+        setActivityAlerts([]) // Clear alerts for new round
         
         toast.success(`Round ${currentRound + 1} completed! Moving to next round...`);
       } else {

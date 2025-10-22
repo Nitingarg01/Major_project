@@ -229,7 +229,7 @@ export class OptimizedAIService {
         'Google', 'Meta', 'Amazon', 'Microsoft', 'Apple', 'Tesla', 
         'OpenAI', 'Anthropic', 'Netflix', 'Stripe', 'Uber', 'Airbnb'
       ];
-      return popularCompanies.filter(name =>;
+      return popularCompanies.filter(name =>
         name.toLowerCase().includes(queryLower);
       ).slice(0, 8);
     }

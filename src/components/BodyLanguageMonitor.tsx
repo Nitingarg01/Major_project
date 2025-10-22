@@ -122,7 +122,7 @@ const BodyLanguageMonitor: React.FC<BodyLanguageMonitorProps> = ({
                 {data.posture === 'poor' && '💺 Sit up straight for better posture. '}
                 {data.eyeContact < 50 && '👁️ Try to look at the camera more often. '}
                 {data.fidgeting === 'high' && '🤚 Minimize excessive movements. '}
-                {data.posture === 'excellent' && data.eyeContact >= 70 && data.fidgeting === 'low' &&;
+                {data.posture === 'excellent' && data.eyeContact >= 70 && data.fidgeting === 'low' &&
                   '✅ Excellent body language! Keep it up!'}
               </p>
             </div>

@@ -628,10 +628,10 @@ export class GroqAIService {
 
   private generateMockOverallAnalysis(questions: any[], answers: string[]) {
     // Filter out empty or invalid answers
-    const meaningfulAnswers = answers.filter(ans =>;
+    const meaningfulAnswers = answers.filter(ans =>
       ans && 
-      ans.trim() !== '' &&;
-      ans !== 'No answer provided' &&;
+      ans.trim() !== '' &&
+      ans !== 'No answer provided' &&
       ans.trim().length > 5
     );
     

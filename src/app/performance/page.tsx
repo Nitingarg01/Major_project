@@ -193,7 +193,7 @@ export default function PerformancePage() {
 
   const filteredData = performanceData.filter(item => {
     const matchesType = filterType === 'all' || item.interviewType === filterType;
-    const matchesSearch = searchTerm === '' ||;
+    const matchesSearch = searchTerm === '' ||
       item.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.companyName.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesType && matchesSearch;

@@ -46,7 +46,7 @@ export class InterviewServiceManager {
    */
   public async generateDSAProblems(
     companyName: string,
-    count: number = 2, // Default to 2 as per user requirements;
+    count: number = 2, // Default to 2 as per user requirements
     experienceLevel: 'entry' | 'mid' | 'senior' = 'mid',
     focusAreas: string[] = []
   ): Promise<DSAProblem[]> {

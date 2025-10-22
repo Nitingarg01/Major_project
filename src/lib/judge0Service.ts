@@ -38,7 +38,7 @@ export class Judge0Service {
 
   private constructor() {
     this.apiKey = process.env.JUDGE0_API_KEY || '';
-    this.baseUrl = 'https://judge0-ce.p.rapidapi.com';
+    this.baseUrl = 'https://judge0-ce.p.rapidapi.com'
   }
 
   public static getInstance(): Judge0Service {
@@ -64,7 +64,7 @@ export class Judge0Service {
       'swift': 83,      // Swift
     };
     
-    return languageMap[language.toLowerCase()] || 71; // Default to Python;
+    return languageMap[language.toLowerCase()] || 71; // Default to Python
   }
 
   // Execute code with test cases
@@ -131,7 +131,7 @@ export class Judge0Service {
     const submission = submitResponse.data;
 
     // Wait for completion if needed
-    if (submission.status?.id <= 2) { // Still processing;
+    if (submission.status?.id <= 2) { // Still processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       return this.getSubmissionResult(submission.token);
     }
@@ -163,7 +163,7 @@ export class Judge0Service {
 
   // Compare outputs with tolerance for whitespace and formatting
   private compareOutputs(actual: string, expected: string): boolean {
-    const normalize = (str: string) =>;
+    const normalize = (str: string) =>
       str.trim()
          .replace(/\s+/g, ' ')
          .replace(/[\r\n]+/g, '\n')

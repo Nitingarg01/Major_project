@@ -311,7 +311,7 @@ Generate only the follow-up response, nothing else.`
 
   private generateFallbackAnalysis(userResponse: string, question: string) {
     const wordCount = userResponse.split(' ').length;
-    const hasExamples = userResponse.toLowerCase().includes('example') ||;
+    const hasExamples = userResponse.toLowerCase().includes('example') ||
                        userResponse.toLowerCase().includes('instance') ||
                        userResponse.toLowerCase().includes('time when');
 

@@ -21,8 +21,8 @@ interface ElevenLabsConfig {
 export class ElevenLabsService {
   private static instance: ElevenLabsService
   private apiKey: string | null = null;
-  private voiceId: string = 'EXAVITQu4vr4xnSDxMaL' // Default: Sarah - Professional female voice;
-  private model: string = 'eleven_turbo_v2' // Fast, low-latency model;
+  private voiceId: string = 'EXAVITQu4vr4xnSDxMaL' // Default: Sarah - Professional female voice
+  private model: string = 'eleven_turbo_v2' // Fast, low-latency model
   private isAvailable: boolean = false;
   private quotaExceeded: boolean = false;
 

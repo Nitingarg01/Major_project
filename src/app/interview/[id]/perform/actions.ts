@@ -3,7 +3,7 @@ import client from "@/lib/db";
 import axios from "axios";
 import { ObjectId } from "mongodb";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
 export const getInterviewDetails = async (id:string)=>{
     if(!id){

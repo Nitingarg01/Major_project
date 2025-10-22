@@ -1,7 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
 async function testCompleteInterviewFlow() {
-    const client = new MongoClient('mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0');
+    const client = new MongoClient('mongodb+srv://gargn4034:N1i2t3i4n5@cluster0.67w57ax.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0')
     
     try {
         await client.connect();
@@ -68,7 +68,7 @@ async function testCompleteInterviewFlow() {
         
         // Step 4: Check if feedback is ready (simulate FeedbackLoader GET check)
         console.log('🔍 Step 4: Checking if feedback is ready...');
-        const checkFeedbackResponse = await fetch(`http://localhost:3000/api/fast-feedback?interviewId=${testInterviewId.toString()}`);
+        const checkFeedbackResponse = await fetch(`http://localhost:3000/api/fast-feedback?interviewId=${testInterviewId.toString()}`)
         const checkResult = await checkFeedbackResponse.json();
         console.log('📄 Feedback Check Result:', checkResult.message, '| Ready:', checkResult.feedbackReady);
         
@@ -100,7 +100,7 @@ async function testCompleteInterviewFlow() {
         
         // Step 6: Final check - verify feedback is now ready
         console.log('🔍 Step 6: Final check - verifying feedback is now available...');
-        const finalCheckResponse = await fetch(`http://localhost:3000/api/fast-feedback?interviewId=${testInterviewId.toString()}`);
+        const finalCheckResponse = await fetch(`http://localhost:3000/api/fast-feedback?interviewId=${testInterviewId.toString()}`)
         const finalCheckResult = await finalCheckResponse.json();
         console.log('📄 Final Check Result:', finalCheckResult.message, '| Ready:', finalCheckResult.feedbackReady);
         

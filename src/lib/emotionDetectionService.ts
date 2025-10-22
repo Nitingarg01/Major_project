@@ -29,7 +29,7 @@ export class EmotionDetectionService {
   private static instance: EmotionDetectionService
   private previousFrame: ImageData | null = null;
   private emotionHistory: EmotionData[] = []
-  private detectionInterval: number = 2000 // Analyze every 2 seconds;
+  private detectionInterval: number = 2000 // Analyze every 2 seconds
   
   private constructor() {}
 
@@ -147,7 +147,7 @@ export class EmotionDetectionService {
     if (prevFrame.data.length !== currentFrame.data.length) return 0;
     
     let diff = 0;
-    const sampleRate = 4 // Sample every 4th pixel for performance;
+    const sampleRate = 4 // Sample every 4th pixel for performance
     
     for (let i = 0; i < prevFrame.data.length; i += sampleRate * 4) {
       const r1 = prevFrame.data[i]
@@ -162,7 +162,7 @@ export class EmotionDetectionService {
     }
     
     const avgDiff = diff / (prevFrame.data.length / sampleRate);
-    return Math.min(avgDiff / 255, 1) // Normalize to 0-1;
+    return Math.min(avgDiff / 255, 1) // Normalize to 0-1
   }
 
   /**
@@ -255,7 +255,7 @@ export class EmotionDetectionService {
     }
 
     // Find dominant emotion
-    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>;
+    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>
       emotionCounts[a[0] as EmotionType] > emotionCounts[b[0] as EmotionType] ? a : b
     )[0] as EmotionType
 

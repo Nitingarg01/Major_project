@@ -197,7 +197,7 @@ const DSACompiler: React.FC<DSACompilerProps> = ({
     
     public static void main(String[] args) {
         // Test your solution
-        // System.out.println(solution(${problem?.examples?.[0]?.input || 'new int[]{1,2,3}'}));
+        // System.out.println(solution(${problem?.examples?.[0]?.input || 'new int[]{1,2,3}'}))
     }
 }`,
     
@@ -212,7 +212,7 @@ ${getCppReturnType(problem)} solution(${getCppParams(problem)}) {
 
 int main() {
     // Test your solution
-    // cout << solution(${problem?.examples?.[0]?.input || '{1,2,3}'}) << endl;
+    // cout << solution(${problem?.examples?.[0]?.input || '{1,2,3}'}) << endl
     return 0;
 }`
   }
@@ -229,7 +229,7 @@ int main() {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          handleSubmit() // Auto-submit when time is up;
+          handleSubmit() // Auto-submit when time is up
           return 0;
         }
         return prev - 1;
@@ -246,8 +246,8 @@ int main() {
   }
 
   const getTimeColor = () => {
-    if (timeLeft <= 300) return 'text-red-600 bg-red-50' // Last 5 minutes;
-    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50' // Last 10 minutes;
+    if (timeLeft <= 300) return 'text-red-600 bg-red-50' // Last 5 minutes
+    if (timeLeft <= 600) return 'text-yellow-600 bg-yellow-50' // Last 10 minutes
     return 'text-green-600 bg-green-50';
   }
 
@@ -619,7 +619,7 @@ function getReturnType(problem: DSAProblem | null): string {
 }
 
 function getJavaParams(problem: DSAProblem | null): string {
-  return 'int[] nums' // Simplified;
+  return 'int[] nums' // Simplified
 }
 
 function getCppReturnType(problem: DSAProblem | null): string {
@@ -631,7 +631,7 @@ function getCppReturnType(problem: DSAProblem | null): string {
 }
 
 function getCppParams(problem: DSAProblem | null): string {
-  return 'vector<int>& nums' // Simplified;
+  return 'vector<int>& nums' // Simplified
 }
 
 // Mock code execution function
@@ -641,7 +641,7 @@ async function mockExecuteCode(code: string, language: string, testCases: TestCa
   
   // Mock results - in real implementation, you'd use a code execution service
   return testCases.map((testCase, index) => {
-    const passed = Math.random() > 0.3 // 70% pass rate for demo;
+    const passed = Math.random() > 0.3 // 70% pass rate for demo
     return {
       passed,
       input: testCase.input,

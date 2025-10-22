@@ -41,7 +41,7 @@ export class EnhancedJudge0Service {
   private constructor() {
     this.apiKey = process.env.JUDGE0_API_KEY || process.env.NEXT_PUBLIC_JUDGE0_API_KEY || '';
     this.apiHost = process.env.JUDGE0_API_HOST || 'judge0-ce.p.rapidapi.com';
-    this.baseUrl = `https://${this.apiHost}`;
+    this.baseUrl = `https://${this.apiHost}`
     
     console.log('🔧 Enhanced Judge0Service initialized');
   }
@@ -66,7 +66,7 @@ export class EnhancedJudge0Service {
       'ruby': 72        // Ruby 2.7.0
     };
     
-    return languageMap[language.toLowerCase()] || 71; // Default to Python;
+    return languageMap[language.toLowerCase()] || 71; // Default to Python
   }
 
   private async makeApiRequest(endpoint: string, method: 'GET' | 'POST' = 'GET', body?: any): Promise<any> {
@@ -168,7 +168,7 @@ export class EnhancedJudge0Service {
       const functionMatch = userCode.match(/function\s+(\w+)\s*\(/);
       const functionName = functionMatch ? functionMatch[1] : 'solution';
       
-      let executableCode = userCode + '\n\n// Test execution\ntry {\n';
+      let executableCode = userCode + '\n\n// Test execution\ntry {\n'
       
       if (testCase.input.includes('=')) {
         const assignments = testCase.input.split(',').map(part => part.trim());
@@ -243,8 +243,8 @@ export class EnhancedJudge0Service {
           const compileOutput = submission.compile_output ? Buffer.from(submission.compile_output, 'base64').toString() : '';
           
           // Check execution status
-          const isSuccess = submission.status.id === 3; // Accepted;
-          const actualOutput = stdout.replace(/\s/g, ''); // Remove whitespace for comparison;
+          const isSuccess = submission.status.id === 3; // Accepted
+          const actualOutput = stdout.replace(/\s/g, ''); // Remove whitespace for comparison
           const expectedOutput = testCase.expectedOutput.replace(/\s/g, '');
           const passed = isSuccess && actualOutput === expectedOutput;
           

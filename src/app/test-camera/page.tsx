@@ -8,7 +8,7 @@ const TestCameraPage = () => {
 
   const handleActivityDetected = (activity: any) => {
     console.log('Activity detected:', activity);
-    setAlerts(prev => [...prev.slice(-4), activity]) // Keep last 5 alerts;
+    setAlerts(prev => [...prev.slice(-4), activity]) // Keep last 5 alerts
   }
 
   return (

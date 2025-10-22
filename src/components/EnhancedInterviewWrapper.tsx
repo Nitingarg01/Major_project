@@ -395,7 +395,7 @@ const EnhancedInterviewWrapper = ({
         toast.warning('⚠️ Interview paused - Please return focus to the interview', {
           description: 'The interview will resume automatically in 10 seconds'
         })
-        setTimeout(() => setIsPaused(false), 10000) // Resume after 10 seconds;
+        setTimeout(() => setIsPaused(false), 10000) // Resume after 10 seconds
       } else if (activity.type === 'multiple_faces') {
         toast.error('🚨 Multiple people detected in camera', {
           description: 'Please ensure only you are visible in the camera'
@@ -514,7 +514,7 @@ const EnhancedInterviewWrapper = ({
       // Move to next round if available
       if (updatedSession.currentRound < updatedSession.rounds.length) {
         setCurrentRound(updatedSession.currentRound);
-        setActivityAlerts([]) // Clear alerts for new round;
+        setActivityAlerts([]) // Clear alerts for new round
         
         toast.success(`✅ Round ${currentRound + 1} completed successfully!`, {
           description: `Score: ${roundResult.score}/10 | Moving to next round...`
@@ -589,7 +589,7 @@ const EnhancedInterviewWrapper = ({
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault();
       if (window.confirm('Are you sure you want to leave the interview? Your progress will be saved.')) {
-        autoSaveProgress() // Save before leaving;
+        autoSaveProgress() // Save before leaving
         if (autoSaveInterval) {
           clearInterval(autoSaveInterval);
         }

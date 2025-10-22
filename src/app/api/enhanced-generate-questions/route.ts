@@ -316,7 +316,7 @@ function isDSASkill(skill: string): boolean {
     'graph theory', 'tree traversal', 'sorting', 'searching',
     'arrays', 'strings', 'hash tables', 'linked lists'
   ];
-  return dsaSkills.some(dsaSkill =>;
+  return dsaSkills.some(dsaSkill =>
     skill.toLowerCase().includes(dsaSkill);
   );
 }

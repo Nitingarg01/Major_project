@@ -694,9 +694,9 @@ export class SmartAIService {
       'Git', 'GitHub', 'GitLab', 'Linux', 'Bash', 'PowerShell'
     ];
     
-    return commonSkills.filter(skill =>;
+    return commonSkills.filter(skill =>
 
-    return commonSkills.filter(skill =>;
+    return commonSkills.filter(skill =>
       text.toLowerCase().includes(skill.toLowerCase());
     );
   }

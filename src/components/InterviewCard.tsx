@@ -22,7 +22,7 @@ function capitalizeFirstWord(str: string) {
 
 const InterviewCard = async ({ interview }: InterviewCardProps) => {
   const res = await getLogo(interview.companyName);
-  const image = res?.image || 'https://picsum.photos/200/300';
+  const image = res?.image || 'https://picsum.photos/200/300'
 
   const createdAt = new Date(interview.createdAt);
   const formatted = `${createdAt.getFullYear()}-${String(createdAt.getMonth() + 1).padStart(2, '0')}-${String(createdAt.getDate()).padStart(2, '0')} ${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}`;

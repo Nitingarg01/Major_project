@@ -92,7 +92,7 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
     } catch (error) {
       console.error('Error processing interview results:', error);
       toast.error('Error saving interview results');
-      onComplete(results) // Fallback to original results;
+      onComplete(results) // Fallback to original results
     }
   }
 

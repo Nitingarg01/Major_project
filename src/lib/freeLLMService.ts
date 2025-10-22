@@ -146,7 +146,7 @@ export class FreeLLMService {
     }
 
     // Check rate limits
-    return counts.minute < provider.rateLimits.requestsPerMinute &&;
+    return counts.minute < provider.rateLimits.requestsPerMinute &&
            counts.day < provider.rateLimits.requestsPerDay;
   }
 
@@ -747,7 +747,7 @@ export class FreeLLMService {
 
   private generateMockAnalysis(userAnswer: string) {
     const wordCount = userAnswer.split(' ').length;
-    const score = Math.min(8, Math.max(3, wordCount / 15)); // Slightly lower scores for hard questions;
+    const score = Math.min(8, Math.max(3, wordCount / 15)); // Slightly lower scores for hard questions
     
     return {
       score,

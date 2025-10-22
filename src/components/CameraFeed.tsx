@@ -21,7 +21,7 @@ const CameraFeed = ({cameraOn,setCameraOn}:Props) => {
   const recognitionRef = useRef(null);
 
 
-  // const [cameraOn, setCameraOn] = useState(true);
+  // const [cameraOn, setCameraOn] = useState(true)
   const [micOn, setMicOn] = useState(false);
   const [transcript, setTranscript] = useState('');
 

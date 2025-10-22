@@ -69,7 +69,7 @@ export class EnhancedCompanyIntelligenceService {
   private static instance: EnhancedCompanyIntelligenceService;
   private smartAIService: SmartAIService;
   private cache: Map<string, { data: EnhancedCompanyIntelligence; timestamp: number }> = new Map();
-  private cacheExpiry = 3600000; // 1 hour;
+  private cacheExpiry = 3600000; // 1 hour
 
   private constructor() {
     this.smartAIService = SmartAIService.getInstance();

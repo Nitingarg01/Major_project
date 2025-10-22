@@ -31,7 +31,7 @@ export class AIInterviewCoach {
   private hintHistory: CoachHint[] = []
   private isEnabled: boolean = true;
   private lastHintTime: Date | null = null;
-  private minHintInterval: number = 10000 // 10 seconds between hints;
+  private minHintInterval: number = 10000 // 10 seconds between hints
 
   private constructor() {
     this.smartAI = SmartAIService.getInstance();
@@ -312,7 +312,7 @@ export class AIInterviewCoach {
       }
     })
 
-    return matchedCategories >= 2 // At least 2 STAR components mentioned;
+    return matchedCategories >= 2 // At least 2 STAR components mentioned
   }
 
   /**

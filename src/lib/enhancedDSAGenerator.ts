@@ -455,7 +455,7 @@ Return ONLY valid JSON:
       return !similarProblems;
     } catch (error) {
       console.error('❌ Error checking problem uniqueness:', error);
-      return true; // Assume unique if check fails;
+      return true; // Assume unique if check fails
     }
   }
 

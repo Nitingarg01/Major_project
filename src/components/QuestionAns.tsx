@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import React from 'react';
 import { Tabs, TabsList, TabsContent, TabsTrigger } from './ui/tabs';
-// import { questions } from '@/constants/constants';
+// import { questions } from '@/constants/constants'
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
 import { Mic } from 'lucide-react';
@@ -29,7 +29,7 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
     const [micOn, setMicOn] = useState(false);
     const [transcript, setTranscript] = useState('');
     const [showFeedback, setShowFeedback] = useState(false);
-    const fieldName = `submitted.${index}.answer`; // Dynamic field name for form;
+    const fieldName = `submitted.${index}.answer`; // Dynamic field name for form
 
     const {control,setValue,getValues} = useFormContext();
     const value = useWatch({
@@ -60,7 +60,7 @@ const QuestionAns = ({ question,form,index}: { question: Question,form:UseFormRe
                 const transcript = event.results[i][0].transcript;
                 if (event.results[i].isFinal) final += transcript + ' ';
             }
-            // setTranscript(prev => prev + final);
+            // setTranscript(prev => prev + final)
             const currentVal = getValues(fieldName) || '';
             setValue(fieldName,currentVal+final);
         };

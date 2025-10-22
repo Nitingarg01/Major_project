@@ -433,7 +433,7 @@ export class EnhancedGroqDSAService {
         id: `fallback-test-${i + 1}`,
         input: problem.examples?.[0]?.input || `input_${i + 1}`,
         expectedOutput: problem.examples?.[0]?.output || `output_${i + 1}`,
-        hidden: i >= 2 // First 2 visible, rest hidden;
+        hidden: i >= 2 // First 2 visible, rest hidden
       });
     }
     

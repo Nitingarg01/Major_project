@@ -74,7 +74,7 @@ const OptimizedAIDashboard: React.FC<OptimizedAIDashboardProps> = ({ className =
 
   useEffect(() => {
     fetchHealthStatus();
-    const interval = setInterval(fetchHealthStatus, 30000); // Update every 30 seconds;
+    const interval = setInterval(fetchHealthStatus, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
   }, []);
 

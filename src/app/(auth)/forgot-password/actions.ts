@@ -25,7 +25,7 @@ export const handleForgotPassword = async (formData: FormData) => {
 
     // Generate reset token
     const resetToken = randomBytes(32).toString('hex');
-    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour;
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
     // Store reset token in database
     await db.collection("users").updateOne(

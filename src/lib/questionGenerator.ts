@@ -384,7 +384,7 @@ export class QuestionGenerator {
 
     types.forEach(type => {
       const typeQuestions = this.aptitudeQuestions[type] || []
-      const filteredQuestions = typeQuestions.filter(q =>;
+      const filteredQuestions = typeQuestions.filter(q =>
         q.difficulty === difficulty || difficulty === 'medium';
       )
       

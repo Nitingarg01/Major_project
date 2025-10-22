@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
 import MobileNavigator from "@/components/MobileNavigator";
 import { SessionProvider } from "next-auth/react";
-import { auth } from "@/app/auth"; // your NextAuth server auth helper;
+import { auth } from "@/app/auth"; // your NextAuth server auth helper
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const geistSans = Geist({

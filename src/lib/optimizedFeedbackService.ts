@@ -28,7 +28,7 @@ interface PerformanceMetrics {
 export class OptimizedFeedbackService {
   private static instance: OptimizedFeedbackService;
   private groq: Groq;
-  private model = 'llama-3.1-70b-versatile'; // Faster model for feedback;
+  private model = 'llama-3.1-70b-versatile'; // Faster model for feedback
 
   private constructor() {
     if (!groqApiKey) {
@@ -196,7 +196,7 @@ export class OptimizedFeedbackService {
     questions.forEach((q, index) => {
       const answer = answers[index] || '';
       const wordCount = answer.split(' ').length;
-      const score = Math.min(10, Math.max(1, wordCount / 10)); // Simple scoring;
+      const score = Math.min(10, Math.max(1, wordCount / 10)); // Simple scoring
       
       if (!categoryScores[q.category]) {
         categoryScores[q.category] = 0;

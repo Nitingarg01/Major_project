@@ -269,7 +269,7 @@ async function getUserHistoricalPerformance(db: any, userId: string, companyName
       };
     }
     
-    const scores = previousAnalyses.map((analysis: any) =>;
+    const scores = previousAnalyses.map((analysis: any) =>
       analysis.performance?.overallScore || 0
     );
     
