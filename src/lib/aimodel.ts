@@ -12,11 +12,11 @@ export interface InterviewQuestion {
 }
 
 export interface InterviewAnalysis {
-  score: number
-  feedback: string
-  strengths: string[]
-  improvements: string[]
-  recommendations: string[]
+  score: number;
+  feedback: string;
+  strengths: string[];
+  improvements: string[];
+  recommendations: string[];
 }
 
 export interface QuestionGenerationParams {
