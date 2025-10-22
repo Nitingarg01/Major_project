@@ -283,8 +283,8 @@ function getDSADifficultyForLevel(experienceLevel: string): 'easy' | 'medium' | 
     switch (experienceLevel) {
         case 'entry': return 'easy';
         case 'mid': return 'medium';
-        case 'senior': return 'hard',
-        default: return 'medium'
+        case 'senior': return 'hard';
+        default: return 'medium';
     }
 }
 
