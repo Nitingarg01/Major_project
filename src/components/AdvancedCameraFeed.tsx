@@ -88,37 +88,6 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         
-<<<<<<< HEAD
-        // Handle video play with improved error handling
-        const playPromise = videoRef.current.play();
-        
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setIsInitialized(true);
-            })
-            .catch((playError) => {
-              // Handle AbortError specifically - this is expected when switching rapidly
-              if (playError.name === 'AbortError') {
-                console.log('Video play was interrupted (normal during initialization)');
-              } else {
-                console.error('Video play failed:', playError);
-                setCameraError('Video playback failed. Please check your browser settings.');
-                // Only retry for non-AbortError cases
-                setTimeout(async () => {
-                  if (videoRef.current && streamRef.current) {
-                    try {
-                      await videoRef.current.play();
-                      setIsInitialized(true);
-                    } catch (retryError) {
-                      console.error('Video play retry failed:', retryError);
-                      setCameraError('Video playback failed. Please refresh the page.');
-                    }
-                  }
-                }, 100);
-              }
-            });
-=======
         // Handle video play with proper error handling
         try {
           await videoRef.current.play();
@@ -143,7 +112,6 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
             console.error('Video play failed:', playError);
             setCameraError('Video playback failed. Please check your browser settings.');
           }
->>>>>>> e191508 (Initial commit)
         }
       }
     } catch (error: any) {
