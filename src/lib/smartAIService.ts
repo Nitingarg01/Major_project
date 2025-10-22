@@ -51,12 +51,6 @@ export class SmartAIService {
     // Initialize Gemini for lightweight tasks (resume parsing only)
     const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (geminiKey) {
-      this.geminiAI = new GoogleGenerativeAI(geminiKey);
-      this.geminiModel = this.geminiAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-    // Initialize Gemini for lightweight tasks (resume parsing only)
-    const geminiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-    if (geminiKey) {
       try {
         this.geminiAI = new GoogleGenerativeAI(geminiKey);
         // Try the most stable model first
