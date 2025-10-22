@@ -197,19 +197,19 @@ const VirtualAIDemo: React.FC = () => {
       {/* Status indicator */}
       <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
         <Badge variant={
-          aiState === 'speaking' ? 'default' :;
-          aiState === 'listening' ? 'secondary' :;
-          aiState === 'thinking' ? 'outline' :;
+          aiState === 'speaking' ? 'default' :
+          aiState === 'listening' ? 'secondary' :
+          aiState === 'thinking' ? 'outline' :
           'secondary'
         } className={`text-sm px-3 py-1 ${
-          aiState === 'speaking' ? 'bg-green-500 animate-pulse' :;
-          aiState === 'listening' ? 'bg-blue-500 animate-pulse' :;
-          aiState === 'thinking' ? 'bg-yellow-500 animate-pulse' :;
+          aiState === 'speaking' ? 'bg-green-500 animate-pulse' :
+          aiState === 'listening' ? 'bg-blue-500 animate-pulse' :
+          aiState === 'thinking' ? 'bg-yellow-500 animate-pulse' :
           'bg-purple-500'
         }`}>
-          {aiState === 'speaking' ? '🗣️ Speaking' :;
-           aiState === 'listening' ? '👂 Listening' :;
-           aiState === 'thinking' ? '🤔 Thinking' :;
+          {aiState === 'speaking' ? '🗣️ Speaking' :
+           aiState === 'listening' ? '👂 Listening' :
+           aiState === 'thinking' ? '🤔 Thinking' :
            '😊 Ready'}
         </Badge>
       </div>
