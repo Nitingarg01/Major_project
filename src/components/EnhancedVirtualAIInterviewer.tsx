@@ -538,13 +538,27 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
 
   const handleInterviewComplete = useCallback(() => {
     setIsInterviewStarted(false)
+    isCleaningUpRef.current = true
+    
+    // Clear all timeouts
+    if (recognitionRestartTimeoutRef.current) {
+      clearTimeout(recognitionRestartTimeoutRef.current)
+    }
+    if (speakTimeoutRef.current) {
+      clearTimeout(speakTimeoutRef.current)
+    }
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current)
+    }
     
     // Stop any ongoing speech/listening
     virtualAI.current.stopSpeaking()
     if (speechRecognition) {
       try {
         speechRecognition.stop()
-      } catch (e) {}
+      } catch (e) {
+        console.log('Recognition cleanup on complete:', e)
+      }
     }
     
     const completionMessage = "Thank you for completing the interview. Your responses have been recorded and analyzed. You'll receive detailed feedback shortly."
@@ -558,7 +572,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       totalQuestions: questions.length,
       answeredQuestions: interviewState.responses.length,
       totalTime: interviewState.startTime ? Date.now() - interviewState.startTime.getTime() : 0,
-      averageResponseTime: interviewState.responses.reduce((sum, r) => sum + r.responseTime, 0) / interviewState.responses.length,
+      averageResponseTime: interviewState.responses.reduce((sum, r) => sum + r.responseTime, 0) / Math.max(interviewState.responses.length, 1),
       conversationHistory: interviewState.conversationHistory,
       responses: interviewState.responses,
       completedAt: new Date(),
@@ -572,9 +586,14 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
       }
     }
 
-    setTimeout(() => {
-      onComplete(results)
+    const completionTimeoutRef = setTimeout(() => {
+      if (!isCleaningUpRef.current) {
+        onComplete(results)
+      }
     }, 3000)
+
+    // Store timeout for cleanup
+    speakTimeoutRef.current = completionTimeoutRef
 
     toast.success('🎉 Interview completed successfully!')
   }, [questions.length, interviewState, onComplete, speakText, currentPersonality, useElevenLabs, speechRecognition])
