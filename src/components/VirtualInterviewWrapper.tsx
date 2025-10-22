@@ -13,8 +13,8 @@ import {
   CheckCircle
 } from 'lucide-react'
 import { toast } from 'sonner'
-import VirtualAIInterviewer from './VirtualAIInterviewer'
-import { VirtualInterviewerAI } from '@/lib/virtualInterviewerAI'
+import EnhancedVirtualAIInterviewer from './EnhancedVirtualAIInterviewer'
+import { EnhancedVirtualInterviewerAI } from '@/lib/enhancedVirtualInterviewerAI'
 
 interface VirtualInterviewWrapperProps {
   interviewId: string
