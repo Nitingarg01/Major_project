@@ -191,7 +191,11 @@ export async function POST(request: NextRequest) {
       console.error('❌ No questions document found for interviewId:', interviewId);
       return NextResponse.json(
         { error: 'Interview questions not found' },
-    if (!questionsDoc || !questionsDoc.answers || questionsDoc.answers.length === 0) {
+        { status: 404 }
+      );
+    }
+    
+    if (!questionsDoc.answers || questionsDoc.answers.length === 0) {
       return NextResponse.json(
         { error: 'No answers found for analysis' },
         { status: 404 }
