@@ -5,7 +5,7 @@ import client from "./db";
 import { ObjectId } from "mongodb";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 
