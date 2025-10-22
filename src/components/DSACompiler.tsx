@@ -146,7 +146,7 @@ const DEFAULT_DSA_PROBLEMS: DSAProblem[] = [
 const DSACompiler: React.FC<DSACompilerProps> = ({ 
   problem: providedProblem, 
   onSubmit, 
-  timeLimit = 45;
+  timeLimit = 45
 }) => {
   // Use provided problem or default to first problem
   const problem = providedProblem || DEFAULT_DSA_PROBLEMS[0];
