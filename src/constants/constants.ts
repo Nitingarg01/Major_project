@@ -15,4 +15,4 @@ export const instructions:{message:string,type:InfoType}[] = [
         message:'Once submitted you cannot Re-Attempt this Interview.',
         type: "alert"
     }
-] as const
+] as const;
