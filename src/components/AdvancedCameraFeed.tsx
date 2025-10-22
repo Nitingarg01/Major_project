@@ -21,7 +21,7 @@ const AdvancedCameraFeed: React.FC<AdvancedCameraFeedProps> = ({
   onAnomalyDetected,
   enableFaceDetection = false,
   enableMisbehaviorDetection = false,
-  className = "";
+  className = ","
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
