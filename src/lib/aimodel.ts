@@ -31,16 +31,16 @@ export interface QuestionGenerationParams {
 }
 
 class AIInterviewModel {
-  private genAI: GoogleGenerativeAI | null = null
-  private model: any = null
+  private genAI: GoogleGenerativeAI | null = null;
+  private model: any = null;
 
   constructor() {
     if (!process.env.GEMINI_API_KEY) {
-      console.warn('GEMINI_API_KEY is not configured - Gemini features will be disabled')
-      return
+      console.warn('GEMINI_API_KEY is not configured - Gemini features will be disabled');
+      return;
     }
-    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
   }
 
   async generateInterviewQuestions(params: QuestionGenerationParams): Promise<InterviewQuestion[]> {
