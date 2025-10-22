@@ -43,7 +43,7 @@ const VirtualInterviewWrapper: React.FC<VirtualInterviewWrapperProps> = ({
     speakers: false,
     browser: false
   })
-  const [virtualAI] = useState(() => VirtualInterviewerAI.getInstance())
+  const [virtualAI] = useState(() => EnhancedVirtualInterviewerAI.getInstance())
 
   // System compatibility checks
   useEffect(() => {
