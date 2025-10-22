@@ -17,7 +17,8 @@ import {
   Target,
   ArrowRight,
   Briefcase,
-  Trash2
+  Trash2,
+  Bot
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
