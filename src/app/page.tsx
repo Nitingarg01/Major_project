@@ -4,10 +4,9 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle, Star, Users, Zap, Shield, Clock, Target } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'RecruiterAI - Advanced AI Interview Platform',
   title: 'Interview AI - Advanced AI Interview Platform',
   description: 'Master your interview skills with AI-powered mock interviews, real-time feedback, and personalized coaching.',
-}
+};
 
 const features = [
   {
