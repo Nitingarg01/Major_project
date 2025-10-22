@@ -193,7 +193,7 @@ const EnhancedCompanySearchWithIntelligence: React.FC<EnhancedCompanySearchProps
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return
 
-    const currentSuggestions = showTrending ?;
+    const currentSuggestions = showTrending ?
       [...recentSearches.slice(0, 3), ...POPULAR_COMPANIES.slice(0, 5).map(c => c.name)] : 
       suggestions
 

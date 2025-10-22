@@ -187,7 +187,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return
 
-    const currentSuggestions = showTrending ?;
+    const currentSuggestions = showTrending ?
       [...recentSearches, ...POPULAR_COMPANIES.slice(0, 6)] : 
       suggestions
 
@@ -229,7 +229,7 @@ const EnhancedCompanySearch: React.FC<EnhancedCompanySearchProps> = ({
     }
   }, [selectedIndex])
 
-  const trendingSuggestions = showTrending ?;
+  const trendingSuggestions = showTrending ?
     [...recentSearches, ...POPULAR_COMPANIES.slice(0, 8)] : 
     []
 

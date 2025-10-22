@@ -640,9 +640,9 @@ export class GroqAIService {
     const completionRate = answeredQuestions / totalQuestions;
     
     // Calculate quality metrics
-    const avgWordCount = meaningfulAnswers.length > 0 ?;
+    const avgWordCount = meaningfulAnswers.length > 0 ?
       meaningfulAnswers.reduce((sum, ans) => sum + ans.split(' ').length, 0) / meaningfulAnswers.length : 0;
-    const avgCharLength = meaningfulAnswers.length > 0 ?;
+    const avgCharLength = meaningfulAnswers.length > 0 ?
       meaningfulAnswers.reduce((sum, ans) => sum + ans.length, 0) / meaningfulAnswers.length : 0;
     
     // Improved scoring algorithm

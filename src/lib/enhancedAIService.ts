@@ -354,7 +354,7 @@ export class EnhancedAIService {
       - Add company-relevant context and scenarios
       - Ensure questions test the specified skills: ${params.skills.join(', ')}
       
-      ${params.interviewType === 'mixed' ?;
+      ${params.interviewType === 'mixed' ?
         `Distribute questions across categories:
         - 40% Technical questions
         - 30% Behavioral questions  

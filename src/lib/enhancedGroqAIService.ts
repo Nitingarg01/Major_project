@@ -560,17 +560,17 @@ Return ONLY valid JSON:
   private getInterviewTypeFocus(type: string, companyName: string, profile?: CompanyProfile): string {
     switch (type) {
       case 'technical':
-        return profile ?;
+        return profile ?
           `Technical deep-dive focusing on ${profile.techStack.slice(0, 3).join(', ')}, real ${companyName} scenarios, and their engineering challenges: ${profile.commonChallenges.slice(0, 2).join(', ')}.` :
           `Technical skills assessment with practical coding scenarios and system design thinking.`;
       
       case 'behavioral':
-        return profile ?;
+        return profile ?
           `Behavioral assessment based on ${companyName}'s culture: ${profile.culture.slice(0, 3).join(', ')}. Focus on scenarios that demonstrate these values in action.` :
           `Leadership, teamwork, problem-solving approach, and cultural alignment assessment.`;
       
       case 'system_design':
-        return profile ?;
+        return profile ?
           `System design challenges reflecting ${companyName}'s scale and technical challenges: ${profile.commonChallenges.join(', ')}. Focus on their architecture patterns.` :
           `Scalable system architecture, design trade-offs, and technical decision-making.`;
       
