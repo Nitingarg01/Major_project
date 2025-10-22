@@ -49,7 +49,7 @@ const EnhancedDSACompiler: React.FC<EnhancedDSACompilerProps> = ({
   problem, 
   onSubmit, 
   timeLimit = 45,
-  companyName = 'Company';
+  companyName = 'Company'
 }) => {
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('python');
