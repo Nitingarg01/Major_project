@@ -469,7 +469,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             {
                 error: isAuthError ? "Authentication error" : "Failed to create enhanced interview",
-                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined;
+                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
             },
             { status: isAuthError ? 401 : 500 }
         )
