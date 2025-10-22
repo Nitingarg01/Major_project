@@ -72,9 +72,6 @@ export async function POST(request: NextRequest) {
                     completedAt: new Date(),
                     answersCount: transformedAnswers.length,
                     lastUpdated: new Date()
-                    answers: data,
-                    completedAt: new Date(),
-                    answersCount: data.length
                 }
             },
             { returnDocument: 'after' }
