@@ -296,7 +296,6 @@ export default function HomePage() {
               Success Stories
             </h2>
             <p className="text-xl text-gray-600">
-              See how RecruiterAI helped professionals land their dream jobs
               See how Interview AI helped professionals land their dream jobs
             </p>
           </div>
