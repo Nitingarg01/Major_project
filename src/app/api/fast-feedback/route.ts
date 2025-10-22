@@ -98,7 +98,7 @@ function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle:
         "Good response - consider adding more specific technical details and real-world examples" :
         "Provide a more comprehensive answer with specific examples and technical depth"
     })),
-    summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`;
+    summary: `Your ${jobTitle} interview performance shows ${performanceLevel} results with ${answeredQuestions}/${totalQuestions} questions answered. ${overallScore >= 6 ? 'You demonstrated solid understanding and communication skills.' : 'Focus on providing more detailed responses and preparing specific examples.'} Continue practicing to improve your interview confidence and technical communication.`
   }
 }
 
