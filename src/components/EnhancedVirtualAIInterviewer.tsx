@@ -975,7 +975,7 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
               >
                 <div
                   className={`max-w-[80%] p-3 rounded-lg ${
-                    entry.speaker === 'user';
+                    entry.speaker === 'user'
                       ? 'bg-blue-500 text-white'
                       : 'bg-purple-100 text-gray-800 border border-purple-200'
                   }`}
