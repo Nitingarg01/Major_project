@@ -9,4 +9,4 @@ export const config = {
     // Explicitly exclude API routes from middleware to prevent session conflicts
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ]
-}
+};
