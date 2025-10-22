@@ -343,7 +343,7 @@ int main() {
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||
-      line.includes('/*');
+      line.includes('/*')
     ).length
     score += Math.min(20, commentLines * 4);
     
