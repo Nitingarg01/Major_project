@@ -342,7 +342,7 @@ export function searchCompanyAndRole(query: string): { suggestions: string[]; co
   const lowerQuery = query.toLowerCase().trim();
   
   // Filter suggestions based on query
-  const suggestions = COMPANY_SUGGESTIONS.filter(suggestion =>;
+  const suggestions = COMPANY_SUGGESTIONS.filter(suggestion =>
     suggestion.toLowerCase().includes(lowerQuery);
   ).slice(0, 10); // Limit to 10 suggestions
 

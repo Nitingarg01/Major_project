@@ -60,24 +60,24 @@ export default function ManualPerformanceSaver({
       // Create appropriate round results based on interview type
       if (interviewData.interviewType === 'mixed' && labels.length > 3) {
         // For mixed interviews, try to categorize by parameter names
-        const technicalParams = labels.filter(label =>;
+        const technicalParams = labels.filter(label =>
           label.toLowerCase().includes('technical') || 
           label.toLowerCase().includes('problem') ||
           label.toLowerCase().includes('coding') ||
           label.toLowerCase().includes('algorithm');
         )
-        const behavioralParams = labels.filter(label =>;
+        const behavioralParams = labels.filter(label =>
           label.toLowerCase().includes('behavioral') || 
           label.toLowerCase().includes('communication') ||
           label.toLowerCase().includes('leadership') ||
           label.toLowerCase().includes('teamwork');
         )
-        const otherParams = labels.filter(label =>;
+        const otherParams = labels.filter(label =>
           !technicalParams.includes(label) && !behavioralParams.includes(label)
         )
 
         if (technicalParams.length > 0) {
-          const techScore = technicalParams.reduce((sum, param) =>;
+          const techScore = technicalParams.reduce((sum, param) =>
             sum + (feedbackData.parameterScores[param] || 0), 0) / technicalParams.length
           roundResults.push({
             roundType: 'technical',
@@ -89,7 +89,7 @@ export default function ManualPerformanceSaver({
         }
 
         if (behavioralParams.length > 0) {
-          const behavioralScore = behavioralParams.reduce((sum, param) =>;
+          const behavioralScore = behavioralParams.reduce((sum, param) =>
             sum + (feedbackData.parameterScores[param] || 0), 0) / behavioralParams.length
           roundResults.push({
             roundType: 'behavioral',
@@ -101,7 +101,7 @@ export default function ManualPerformanceSaver({
         }
 
         if (otherParams.length > 0) {
-          const otherScore = otherParams.reduce((sum, param) =>;
+          const otherScore = otherParams.reduce((sum, param) =>
             sum + (feedbackData.parameterScores[param] || 0), 0) / otherParams.length
           roundResults.push({
             roundType: 'mixed',

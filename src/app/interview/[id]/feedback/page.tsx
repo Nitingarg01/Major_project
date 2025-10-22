@@ -121,16 +121,16 @@ const page = async ({ params }: PageProps) => {
   }
 
   // Generate strengths and improvements
-  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>;
+  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>
     `Strong ${label.toLowerCase()} skills demonstrated`
   )
-  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>;
+  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>
   
   // Generate strengths and improvements
-  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>;
+  const strengths = labels.filter((_, index) => data[index] >= 7).map(label =>
     `Strong ${label.toLowerCase()} skills demonstrated`
   )
-  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>;
+  const improvements = labels.filter((_, index) => data[index] < 5).map(label =>
     `Focus on improving ${label.toLowerCase()} abilities`
   )
 

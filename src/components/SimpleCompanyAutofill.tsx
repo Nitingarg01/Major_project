@@ -33,7 +33,7 @@ const SimpleCompanyAutofill: React.FC<SimpleCompanyAutofillProps> = ({
   // Simple N-gram style filtering
   useEffect(() => {
     if (query.length >= 1) {
-      const filtered = COMPANY_LIST.filter(company =>;
+      const filtered = COMPANY_LIST.filter(company =>
         company.toLowerCase().startsWith(query.toLowerCase()) ||
         company.toLowerCase().includes(query.toLowerCase());
       ).slice(0, 8) // Show max 8 suggestions

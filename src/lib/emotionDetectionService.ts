@@ -255,7 +255,7 @@ export class EmotionDetectionService {
     }
 
     // Find dominant emotion
-    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>;
+    const dominantEmotion = Object.entries(emotionCounts).reduce((a, b) =>
       emotionCounts[a[0] as EmotionType] > emotionCounts[b[0] as EmotionType] ? a : b
     )[0] as EmotionType
 

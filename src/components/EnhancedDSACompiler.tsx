@@ -339,7 +339,7 @@ int main() {
     score += lengthScore;
     
     // Comments and documentation (20% weight)
-    const commentLines = code.split('\n').filter(line =>;
+    const commentLines = code.split('\n').filter(line =>
       line.trim().startsWith('//') || 
       line.trim().startsWith('#') || 
       line.includes('"""') ||

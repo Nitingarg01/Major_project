@@ -202,7 +202,7 @@ const VirtualAIInterviewer: React.FC<VirtualAIInterviewerProps> = ({
       
       // Try to use a professional voice
       const voices = speechSynthesis.getVoices();
-      const preferredVoice = voices.find(voice =>;
+      const preferredVoice = voices.find(voice =>
         voice.name.includes('Google') || 
         voice.name.includes('Microsoft') ||
         voice.name.includes('Alex') ||

@@ -6,7 +6,7 @@ import GroqAIService from '@/lib/groqAIService';
 // Enhanced fallback analysis function when AI services are not available
 function generateFallbackAnalysis(questions: any[], answers: string[], jobTitle: string) {
   const totalQuestions = questions.length;
-  const meaningfulAnswers = answers.filter(answer =>;
+  const meaningfulAnswers = answers.filter(answer =>
     answer && 
     answer.trim().length > 10 && 
     answer !== 'No answer provided' &&
@@ -240,7 +240,7 @@ export async function POST(request: NextRequest) {
         hasValidAnswers = true;
         // Convert DSA executions to answer format
         dsaAnswers = questionsDoc.questions?.map((question: any) => {
-          const execution = dsaExecutions.find(exec =>;
+          const execution = dsaExecutions.find(exec =>
             exec.problemId === question.id || exec.problemId === question.dsaProblem?.id
           );
           const response = interviewResponses.find((r: any) => r.questionId === question.id),
@@ -440,7 +440,7 @@ Execution Time: ${execution.executionTime}ms`;
     const questions = questionsDoc.questions || [];
 
     // Final validation - ensure we have meaningful answers
-    const meaningfulAnswers = answers.filter(answer =>;
+    const meaningfulAnswers = answers.filter(answer =>
       answer && 
       answer.trim() !== '' &&
       answer !== 'No answer provided' &&

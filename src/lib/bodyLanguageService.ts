@@ -257,17 +257,17 @@ export class BodyLanguageService {
 
     // Calculate averages
     const postureScores = { excellent: 10, good: 7.5, fair: 5, poor: 2.5 };
-    const avgPosture = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgPosture = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + postureScores[data.posture], 0) / this.bodyLanguageHistory.length
 
-    const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgEyeContact = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + data.eyeContact, 0) / this.bodyLanguageHistory.length
 
     const fidgetingScores = { low: 2, moderate: 5, high: 8 };
-    const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgFidgeting = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + fidgetingScores[data.fidgeting], 0) / this.bodyLanguageHistory.length
 
-    const avgConfidence = this.bodyLanguageHistory.reduce((sum, data) =>;
+    const avgConfidence = this.bodyLanguageHistory.reduce((sum, data) =>
       sum + data.confidence, 0) / this.bodyLanguageHistory.length
 
     // Generate recommendations

@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     console.log('Running optimized database queries for user:', userObjectId);
     
     // Add timeout wrapper for database operations
-    const timeout = new Promise((_, reject) =>;
+    const timeout = new Promise((_, reject) =>
       setTimeout(() => reject(new Error('Database query timeout')), 12000);
     )
     
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     console.log('Running database queries for user:', userId);
     
     // Add timeout wrapper for database operations
-    const timeout = new Promise((_, reject) =>;
+    const timeout = new Promise((_, reject) =>
       setTimeout(() => reject(new Error('Database query timeout')), 8000);
     )
     

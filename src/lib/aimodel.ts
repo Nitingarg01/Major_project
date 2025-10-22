@@ -429,10 +429,10 @@ Focus on constructive feedback that helps the candidate improve while highlighti
     const databaseSkills = ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'Elasticsearch'];
     const cloudSkills = ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes'];
 
-    const primary = skills.filter(skill =>;
+    const primary = skills.filter(skill =>
       frontendSkills.includes(skill) || backendSkills.includes(skill);
     );
-    const secondary = skills.filter(skill =>;
+    const secondary = skills.filter(skill =>
       databaseSkills.includes(skill) || cloudSkills.includes(skill);
     );
 
