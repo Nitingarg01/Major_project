@@ -482,8 +482,13 @@ const EnhancedVirtualAIInterviewer: React.FC<EnhancedVirtualAIInterviewerProps> 
     toast.success(`Score: ${analysis.score}/10 - ${analysis.feedback.substring(0, 50)}...`)
 
     // Move to next question after follow-up
-    setTimeout(() => {
-      moveToNextQuestion()
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current)
+    }
+    transitionTimeoutRef.current = setTimeout(() => {
+      if (!isCleaningUpRef.current) {
+        moveToNextQuestion()
+      }
     }, 6000)
 
   }, [interviewState, questions, stopListening, speakText, currentPersonality, companyName, jobTitle, interviewType, updateAvatarState])
