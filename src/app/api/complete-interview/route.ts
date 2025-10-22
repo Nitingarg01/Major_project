@@ -273,7 +273,7 @@ async function getUserHistoricalPerformance(db: any, userId: string, companyName
       analysis.performance?.overallScore || 0
     );
     
-    const improvementTrend = scores.length > 1 ?;
+    const improvementTrend = scores.length > 1 ?
       (scores[0] > scores[1] ? 'improving' : 
        scores[0] < scores[1] ? 'declining' : 'stable') : 'insufficient_data';
     
