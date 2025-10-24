@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  
 }: Readonly<{
   children: React.ReactNode
 }>) {
@@ -39,18 +38,10 @@ const session = await auth();
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider session={session}>
-        
-       <div className="w-full">
-        <ClientNavbar />
-
-      </div>
-      <MobileNavigator/>
-
-         
-          {children}</SessionProvider>
+          {children}
+        </SessionProvider>
         <Toaster/>
       </body>
-      <GoogleAnalytics gaId='G-8BQBLPCH8P'/>
     </html>
   );
 }
