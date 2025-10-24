@@ -10,7 +10,7 @@ const options = {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
-    deprecationErrors: true;
+    deprecationErrors: true,
   },
   maxPoolSize: 10, // Maintain up to 10 socket connections
   serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
@@ -19,9 +19,9 @@ const options = {
   // Remove these unsupported options for MongoDB driver
   // bufferMaxEntries: 0, // This is for mongoose, not MongoDB driver
   // bufferCommands: false, // This is for mongoose, not MongoDB driver
-}
+};
  
-let client: MongoClient,
+let client: MongoClient;
  
 if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
