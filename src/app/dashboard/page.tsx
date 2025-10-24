@@ -2,7 +2,7 @@ import { auth } from '@/app/auth';
 import { redirect } from 'next/navigation';
 import { connectToDatabase } from '@/lib/db';
 import Link from 'next/link';
-import { Plus, Video, Clock, CheckCircle, ArrowRight } from 'lucide-react';
+import { Plus, Video, Clock, CheckCircle, ArrowRight, FileText, TrendingUp } from 'lucide-react';
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -11,13 +11,20 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
-  // Fetch user's interviews
+  // Fetch user's interviews and resume analyses
   const { db } = await connectToDatabase();
   const interviews = await db
     .collection('interviews')
     .find({ userId: session.user.id })
     .sort({ createdAt: -1 })
     .limit(10)
+    .toArray();
+
+  const resumeAnalyses = await db
+    .collection('resumeAnalyses')
+    .find({ userId: session.user.id })
+    .sort({ createdAt: -1 })
+    .limit(5)
     .toArray();
 
   const pendingInterviews = interviews.filter(i => i.status === 'pending');
