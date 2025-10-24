@@ -110,17 +110,82 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Create New Interview Button */}
-        <div className="mb-8">
+        {/* Quick Actions - Resume Analyzer */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Link
             href="/create"
-            className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all"
+            className="bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl p-6 text-white hover:shadow-xl transition-all group"
             data-testid="create-interview-btn"
           >
-            <Plus className="w-5 h-5 mr-2" />
-            Create New Interview
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                <Plus className="w-6 h-6" />
+              </div>
+              <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Start Mock Interview</h3>
+            <p className="text-indigo-100 text-sm">Practice with AI interviewer and get instant feedback</p>
+          </Link>
+          
+          <Link
+            href="/resume-analyzer"
+            className="bg-gradient-to-br from-green-500 to-teal-500 rounded-xl p-6 text-white hover:shadow-xl transition-all group"
+            data-testid="resume-analyzer-btn"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                <FileText className="w-6 h-6" />
+              </div>
+              <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Analyze Resume</h3>
+            <p className="text-green-100 text-sm">Get ATS score and role-specific improvement tips</p>
           </Link>
         </div>
+
+        {/* Resume Analyses History */}
+        {resumeAnalyses.length > 0 && (
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-900">Recent Resume Analyses</h2>
+              <Link href="/resume-analyzer" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+                View All
+              </Link>
+            </div>
+            <div className="divide-y divide-gray-200">
+              {resumeAnalyses.map((analysis: any) => (
+                <Link
+                  key={analysis._id.toString()}
+                  href={`/resume-analyzer/result/${analysis._id.toString()}`}
+                  className="p-6 hover:bg-gray-50 transition-colors block"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <FileText className="w-5 h-5 text-gray-400" />
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {analysis.targetRole}
+                        </h3>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          analysis.atsScore >= 80 ? 'bg-green-100 text-green-700' :
+                          analysis.atsScore >= 60 ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-red-100 text-red-700'
+                        }`}>
+                          ATS Score: {analysis.atsScore}%
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        Analyzed {new Date(analysis.createdAt).toLocaleDateString()}
+                        {analysis.targetCompany && ` • ${analysis.targetCompany}`}
+                      </p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Interviews List */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
