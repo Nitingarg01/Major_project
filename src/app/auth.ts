@@ -163,6 +163,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     },
     pages: {
         signIn: '/login',
-        newUser: '/signup';
+        newUser: '/signup'
     }
 })
